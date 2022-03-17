@@ -1,0 +1,40 @@
+name: "my-website"
+navbar:
+  title: "My Website"
+  left:
+    - icon: fa-home
+      href: index.html
+    - text: "About"
+      href: about.html
+    - text: "Lectures"
+      icon: fa-chalkboard-teacher
+      menu:
+        - text: "Example"
+          href: example.html
+    - text: "Labs"
+      icon: fa-laptop
+      menu:
+      - text: "Lab 1"
+        href:
+      - text: "Lab 2"
+        href:
+  right:
+    - icon: fab fa-github
+      href: https://github.com/statOmics/Rmd-website
+    - text: "statOmics"
+      href: http://statomics.github.io/
+output:
+  html_document:
+      code_download: true
+      df_print: paged
+      theme: flatly
+      highlight: tango
+      toc: true
+      toc_float: true
+      number_sections: true
+      code_folding: show
+      include:
+        after_body: footer.html
+      css: style.css
+new_session: true
+exclude: ["renv.lock"]

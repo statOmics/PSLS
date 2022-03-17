@@ -1,0 +1,82 @@
+name: Render and Deploy
+
+on:
+  push:
+  pull_request:
+
+## If you need to clear the cache, update the number inside cache-version as
+## discussed at https://github.com/r-lib/actions/issues/86.
+## Note that you can always run a GHA test without the cache by using the word
+## "/nocache" in the commit message.
+env:
+  cache-version: 1
+
+jobs:
+  render:
+    runs-on: macos-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.1'
+          crayon.enabled: 'FALSE'
+
+      - name: Set up pandoc
+        uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Set up TinyTex
+        uses: r-lib/actions/setup-tinytex@v2
+
+      - name: Install X11 dependencies on MacOS
+        if: runner.os == 'macOS'
+        run: |
+          brew install --cask xquartz
+
+      - name: Set up renv
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: ${{ env.cache-version }}
+
+      - name: Session info
+        run: |
+          install.packages('sessioninfo')
+          options(width = 100)
+          pkgs <- installed.packages()[, "Package"]
+          sessioninfo::session_info(pkgs, include_base = TRUE)
+        shell: Rscript {0}
+
+      - name: Cache knitr results
+        if: "!contains(github.event.head_commit.message, '/nocache')"
+        uses: actions/cache@v2
+        with:
+          path: |
+            '**/*_cache'
+            '**/*_files'
+          key: cache-version-${{ env.cache-version }}-knitr-${{ runner.os }}
+          restore-keys: cache-version-${{ env.cache-version }}-knitr-
+
+      - name: Render site
+        run: |
+          rmarkdown::render_site()
+        shell: Rscript {0}
+
+      - name: Deploy 🚀
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        uses: JamesIves/github-pages-deploy-action@3.6.2
+        with:
+          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: _site
+
+      - name: Upload LaTeX logs
+        if: failure()
+        uses: actions/upload-artifact@main
+        with:
+          name: latex-logs
+          path: |
+            *.log
+            *.tex
