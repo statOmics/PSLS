@@ -1,0 +1,37 @@
+# Workflow derived from https://github.com/r-lib/actions/tree/master/examples
+# Runs the update_install_R.R script and commits the result
+
+on:
+  push:
+    branches:
+      - "master"
+
+name: Update install.R
+
+jobs:
+  update-install_R:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: r-lib/actions/setup-r@v1
+
+      - name: Install dependencies
+        run: |
+          Rscript --vanilla -e 'install.packages(c("renv", "jsonlite", "yaml"), repos = "https://cloud.r-project.org")'
+
+      - name: Update install.R script
+        run: |
+          Rscript --vanilla update_install_R.R
+
+      - name: Commit results
+        run: |
+          git config --local user.name "$GITHUB_ACTOR"
+          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git commit install.R -m 'Update install.R' || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
