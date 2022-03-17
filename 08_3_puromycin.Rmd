@@ -1,0 +1,90 @@
+---
+title: "8.3. Multiple regression with interaction: puromycin example"
+author: "Lieven Clement & Jeroen Gilis"
+date: "statOmics, Ghent University (https://statomics.github.io)"
+output:
+  html_document:
+    code_download: yes
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+    highlight: tango
+    number_sections: yes
+---
+
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+# Puromycin data
+
+Data on the velocity of an enzymatic reaction were obtained by Treloar (1974).  
+The number of counts per minute of radioactive product from the reaction was 
+measured as a function of substrate concentration in parts per million (ppm) and
+from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min). The experiment was conducted once with the enzyme treated
+with Puromycin, and once with the enzyme untreated.
+
+Assess if there is an association between the substrate concentration and rate 
+**for both the treated and untreated enzymes.**
+
+# Import data
+
+```{r}
+data(Puromycin)
+```
+
+# Data wrangling
+
+For a clearer interpretation of the model parameters later on, we will make
+the untreated state enzymes the reference category.
+
+```{r}
+
+```
+
+## Data Exploration
+
+First, we visualize the association between the concentration and the enzyme 
+rate, for both of the enzyme states. 
+
+```{r}
+
+```
+
+# Linear regression 
+
+We will model the data that explains enzyme rates in function of a main effect 
+for concentration, a main effect for enzyme state and an interaction term 
+between these two variables.
+
+## Assess model assumptions
+
+## Inference
+
+Use the model to test the parameters of interest. We are now interested in 
+assessing if 
+
+1. the association between velocity and the concentration is significant in 
+the untreated group 
+
+2. the association between velocity and the concentration is significant in 
+the treated group
+
+3. the association between velocity and the concentration is different between 
+treated and untreated group 
+
+Step 1: translate these research questions into parameters (cobinations of
+parameters) of the linear model.
+Step 2: test the relevant parameters. This can be done for the three hypotheses
+at once using the package `multcomp`.
+
+## Conclusion
+
+
+
+
+
+
+

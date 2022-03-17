@@ -1,0 +1,237 @@
+---
+title: "Experimental Design II: replication and power exercise 2"
+author: "Lieven Clement & Alexandre Segers"
+date: "statOmics, Ghent University (https://statomics.github.io)"
+output:
+  html_document:
+    code_download: yes
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+    highlight: tango
+    number_sections: yes
+---
+
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+
+# Puromycin dataset
+
+Data on the velocity of an enzymatic reaction were obtained by Treloar (1974).  
+The number of counts per minute of radioactive product from the reaction was 
+measured as a function of substrate concentration in parts per million (ppm) and
+from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min). The experiment was conducted once with the enzyme treated 
+with Puromycin, and once with the enzyme untreated.
+
+Import libraries
+
+```{r, message=FALSE, warning=FALSE}
+
+```
+
+# Import data
+
+In contrast to the other datasets we have worked with so far, this dataset is
+not available through a URL link. In stead, the data is directly available from
+an R package that was pre-installed in your R working environment. As such, we
+can simple do
+
+```{r}
+data(Puromycin)
+```
+
+and an object called `Puromycin` is immediately available in your working 
+environment.
+
+# Data wrangling
+
+Filter the data so that we are left with only the "treated" enzymes.
+
+```{r}
+
+```
+
+# Data exploration
+
+In the original publication the authors observed a linear relationship between
+the log10 substrate concentration and the reaction rate. Make a visualization
+that allows for reproducing this finding.
+
+```{r, eval=FALSE}
+Puromycin %>%
+  ggplot(...) + # select which elements of the dataset we need to visualize
+  ... # use a relevant plotting geometry
+  stat_smooth(...) + # draw a smooth line through the data cloud
+  stat_smooth(...) # draw a straight (linear regression) line through the data cloud
+  ... # you can add some extra elements like axis labels, title, ...
+```
+
+Note, that the researchers have chosen 6 different substrate concentrations and 
+conducted an experiment where they assessed the initial reaction rate twice for 
+every concentration. 
+
+# Question 1
+
+Use the data to calculate the power to pick up an association that is as 
+least as strong as the association you observed in the dataset when using an 
+experiment with the same design. 
+
+## Simulation function
+
+For this first question, we will need a function that allows us to simulate data 
+similar to that of our experiment under our model assumptions. We provide this 
+function for you:
+
+```{r}
+simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
+{
+    ySim <- rnorm(nrow(data)*nSim,sd=sd)
+    dim(ySim) <-c(nrow(data),nSim)
+    design <- model.matrix(form, data)
+    ySim <- ySim + c(design %*%betas)
+    ySim <- t(ySim)
+  
+    ### Fitting
+    fitAll <- limma::lmFit(ySim,design)
+  
+    ### Inference
+    varUnscaled <- c(t(contrasts)%*%fitAll$cov.coefficients%*%contrasts)
+    contrasts <- fitAll$coefficients %*%contrasts
+    seContrasts <- varUnscaled^.5*fitAll$sigma
+    tstats <- contrasts/seContrasts
+    pvals <- pt(abs(tstats),fitAll$df.residual,lower.tail = FALSE)*2
+    return(mean(pvals < alpha))
+}
+```
+
+Without going into the full code details, this function allows us to simulate 
+data similar to that of our experiment under our model assumptions, given the 
+following inputs:
+
+- `form`: model formula for the experiment we want to simulate
+- `data`: the target dataset on which we want to base our simulations on
+- `betas`: the linear regression coefficients for the target dataset
+- `sd`: the residual standard errors from the linear regression model fit on 
+the target dataset
+- `contrasts`: comparison of interest, i.e. which (combination of) model 
+parameters we would like to assess
+- `alpha`: alpha-level at which to conduct the hypothesis testing
+- `nSim`: number of datasets we would like to simulate
+
+To simulate new data based on our target dataset `Puromycin`, we will need to 
+fill in all the arguments to the `simFast` function.
+
+**Hint: for the betas and sd, we will need to fit a linear model first!**
+
+```{r, eval=FALSE}
+power1 <- simFast(form = ..., 
+                  data = ..., 
+                  betas = ..., 
+                  sd = ..., 
+                  contrasts = ..., 
+                  alpha = ..., 
+                  nSim = ...)
+power1
+```
+
+# Question 2
+
+Use the data to calculate the power to pick up an association where the 
+reaction rate increases on average with 10 counts/min when the substrate 
+concentration is 10 times higher ($\beta_1=10$).
+
+Again, we will need to fill in all the arguments to the `simFast` function. 
+This time, however, the question is slightly different from question 1.
+Adjust the inputs accordingly!
+
+```{r, eval=FALSE}
+power2 <- simFast(form = ..., 
+                  data = ..., 
+                  betas = ..., 
+                  sd = ..., 
+                  contrasts = ..., 
+                  alpha = ..., 
+                  nSim = ...)
+power2
+```
+
+**Compare your result with the one from question 1!**
+
+# Question 3
+
+Use the data to calculate the number of repeats you need for each 
+concentration to pick up an association where the reaction rate increases on 
+average with 10 counts/min when the substrate concentration is 10 times higher
+($\beta_1=10$) with a power of at least 90%. 
+
+**Hint: this will require us to repeat the simulation process as many times**
+**as we have concentration values.**
+
+```{r, eval=FALSE}
+concentrations <- Puromycin %>% 
+  pull(conc) %>% 
+  unique
+  
+powers <- data.frame(n = 1:10, power=NA) # to later store our results
+
+for (i in 1:10)
+{
+  simData <- data.frame(conc = rep(concentrations,each=i))
+  powers[i,2] <- simFast(form = ..., 
+                         data = ..., 
+                         betas = ..., 
+                         sd = ..., 
+                         contrasts = ..., 
+                         alpha = ..., 
+                         nSim = ...)
+}
+```
+
+Make a visualization that displays the power in function of the number of
+repeats in the data.
+
+```{r, eval=FALSE}
+powers %>% 
+  ggplot(...) +
+  geom_line() +
+  geom_hline(yintercept = 0.9, lty = 2)
+```
+
+# Question 4 
+
+Suppose that you would set up an experiment with a design similar with the 
+same concentrations as in the puromycin dataset and you have the following 
+restriction: you need to use each concentration at least once and can setup at 
+most 12 reactions, how would you choose your design points? Calculate the power 
+for this design when the effect size is 10 counts/min per 10 times increase in 
+the substrate concentration ($\beta_1=10$).
+
+```{r, eval=FALSE}
+concentrations <- ...
+  
+
+simData <- data.frame(conc = c(concentrations,rep(min(concentrations),3),
+                               rep(max(concentrations),3)))
+
+powerOpt <- simFast(form = ..., 
+                    data = ..., 
+                    betas = ..., 
+                    sd = ..., 
+                    contrasts = ..., 
+                    alpha = ..., 
+                    nSim = ...)
+
+simData
+powerOpt
+```
+
+Make a visualization that displays the power in function of the number of
+repeats in the data.
+
+```{r, eval=FALSE}
+
+```
+
+Inspect and interpret the results.
+
+
+

@@ -1,0 +1,175 @@
+---
+title: "Exercise 6.1: Linear regression on puromycin data"
+author: "Lieven Clement & Alexandre Segers"
+date: "statOmics, Ghent University (https://statomics.github.io)"
+output:
+  html_document:
+    code_download: yes
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+    highlight: tango
+    number_sections: yes
+---
+
+
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+# Puromycin data
+
+Data on the velocity of an enzymatic reaction were obtained by Treloar (1974).  
+The number of counts per minute of radioactive product from the reaction was measured as a function of substrate concentration in parts per million (ppm) and from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min).  The experiment was conducted once with the enzyme treated with Puromycin, and once with the enzyme untreated.
+
+Assess if there is an association between the substrate concentration and rate for the treated enzyme. 
+
+
+```{r}
+data(Puromycin)
+Puromycin <- Puromycin %>% 
+  filter(state=="treated")
+```
+
+## Data Exploration
+
+```{r}
+Puromycin  %>%
+  ggplot(aes(x=conc,y=rate)) +
+  geom_point() + 
+  stat_smooth(method = "loess",col="red") + # fit een kromme door de punten (rode lijn)
+  stat_smooth(method='lm',col="black") + # fit een rechte door de punten aan de hand van de kleinstekwadratenmethode
+  ylab("Reaction rate (counts/min)") +
+  xlab("Substrate concentratie (ppm)")
+```
+
+The plot shows that there is a relation between the velocity and the concentration, however, the relation does not seem to be linear. 
+
+We will assess the impact of log-transforming the concentration. Because the concentration is measured in ppm we will log$_{10}$ transform the data. 
+
+```{r}
+Puromycin  %>%
+  ggplot(aes(x=conc %>% log10,y=rate)) +
+  geom_point() + 
+  stat_smooth(method = "loess",col="red") + 
+  stat_smooth(method='lm',col="black") +
+  ylab("Reaction Rate (counts/min)") +
+  xlab("log10(Substrate concentration) (log10 ppm)")
+```
+
+The relation between the velocity and the log$_{10}$ transformed concentration seems to be linear. 
+
+# Linear regression 
+
+We will fit the following model to the data 
+
+$Y_i = \beta_0 + \beta_1 log_{10}(x_i) + \epsilon_i$
+
+with $Y_i$ the reaction rate, $x_i$ the adopted concentration, $\beta_0$ the **intercept**, $\beta_1$ the slope or the **effect of the log$_{10}$(concentratie) on the average  reaction rate**, and $\epsilon_i$ the error term that is $\epsilon_i$ i.i.d. normally distributed with mean 0 and variance $\sigma^2$.
+
+Note, that we write the substrate concentratio with a small letter because the predictor is not random. The researchers have chosen the substrate concentrations in the design phase and it is thus no random variable.
+
+```{r}
+mod1 <- lm(rate ~ conc %>% log10, Puromycin)
+summary(mod1)
+```
+
+Before we perform inference we will first assess the assumptions
+
+## Assumptions 
+
+1. Independence 
+2. Linearity
+3. Normal distribution of the residuals
+4. Homoscedasticity 
+
+We assume that the experiment was well designed and that the different reactions that were use in the experiment are independent.
+
+## Linearity 
+
+We assess linearity in a residual analysis 
+
+```{r}
+plot(mod1, which=1)
+```
+
+There seem to be small deviations for the residuals at high concentrations. 
+However, we do not have many observation in the study so this might be caused by random varibility.
+
+We will use simulation to assess if we can observe similar residual plots if all assumptions for the linear model hold.
+
+```{r}
+set.seed(1031)
+sigma <- mod1 %>% sigma 
+dataHlp <- Puromycin
+
+simModels <- list()
+
+par(mfrow=c(3,3))
+for (i in 1:9)
+{
+  nobs <- Puromycin %>% nrow
+  dataHlp$ySim <- mod1$fit + rnorm(nobs, sd = sigma)
+  simModels[[i]] <- lm(ySim~conc %>% log10, dataHlp)
+  plot(simModels[[i]], which = 1)
+}
+```
+
+We observe that similar deviations might be generated for a model where all assumptions are valid. 
+
+### Normality 
+
+
+```{r}
+plot(mod1,which=2)
+```
+
+The QQ-plot does not show large deviations from normality. 
+
+### Homoscedasticity: equality of the variance
+
+We can again use the residual plot for assessing this assumption or the plot were we plot the square root of the standardized residuals in function of the fit. 
+
+```{r}
+plot(mod1, which=3)
+```
+
+We see that the spread of the majority of the residuals is more or less similar. However, the two residuals at low concentrations are slightly higher. 
+Again we can use our simulations to show that similar deviations might occur for models where all assumptions hold. 
+
+```{r}
+par(mfrow = c(3,3))
+for (i in 1:9)
+  plot(simModels[[i]], which = 3)
+```
+
+## Inference 
+### hypotheses 
+
+We want to assess if there is a linear association between the reaction rate and the log$_{10}$ transformed concentration. 
+
+So we will assess 
+
+$H_0$: $\beta_1 = 0$
+ 
+against
+
+$H_A$: $\beta_1 \ne 0$ 
+
+using a t-test on the slope parameter. 
+
+```{r}
+summary(mod1)
+confint(mod1)
+```
+
+
+### Conclusion
+
+There is an extremely significant linear association between the substrate concentration on the log-scale and the reaction rate (p<<0.001). 
+A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average  `r round(mod1$coef[2],1)` counts/min higher (95% CI [`r round(confint(mod1)[2,],1)`] counts/min). 
+
+
+

@@ -1,0 +1,116 @@
+---
+title: "Exercise 9.1: Non-parametric statistics on the shrimps dataset - solution"   
+author: "Lieven Clement and Jeroen Gilis"
+date: "statOmics, Ghent University (https://statomics.github.io)"  
+output:
+    html_document:
+      code_download: true    
+      theme: cosmo
+      toc: true
+      toc_float: true
+      highlight: tango
+      number_sections: true
+---
+
+# The shrimps dataset
+
+Dataset on the accumulation of PCBs (Polychlorinated biphenyls)
+in the adipose tissue of shrimps. PCBs are often present in coolants, and are 
+know to accumulate easily in the adipose tissue of shrimps. In this experiment, 
+two groups of 18 samples (each 100 grams) of shrimps each were cultivated 
+in different conditions, one control condition and one condition 
+where the medium was poluted with PCBs. Note that the PCB concentrations were 
+measured in pg/g adipose tissue.
+
+# Goal
+
+The research question is; is there an effect of the 
+growth condition on the PCB concentration in the adipose 
+tissue of shrimps?
+
+Load libraries:
+
+```{r}
+library(tidyverse)
+```
+
+# Import the data
+
+```{r}
+shrimps <- read.table("https://raw.githubusercontent.com/statOmics/PSLS21/data/shrimps.txt",
+                      header = TRUE)
+glimpse(shrimps)
+```
+
+# Data tidying
+
+```{r}
+shrimps <- shrimps %>%
+  mutate(group = as.factor(group))
+```
+
+# Data exploration
+
+The first step is to explore the data.
+
+```{r}
+shrimps %>%
+  count(group)
+```
+
+Visualize the data:
+
+```{r}
+shrimps %>% 
+  ggplot(aes(x=group,y=PCB.conc,fill=group)) + 
+  scale_fill_brewer(palette="RdGy") +
+  theme_bw() +
+  geom_boxplot(outlier.shape=NA) + 
+  geom_jitter(width = 0.2) +
+  ggtitle("Boxplot of the PCB concentrations in two groups of shrimps") +
+  ylab("PCB concentration (pg/g)") + 
+  stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
+```
+
+We can see that for group 1 we have four very clear outliers
+in the data. These values were double-checked (i.e for
+typing errors), but there was no reason found to believe
+that these values are incorrect.
+
+# Analysis
+
+A good way for
+testing the research hypothesis is to perform an unpaired
+two-sample t-test to find out whether there is a significant
+difference in the mean PCB concentrations between both groups
+of samples. Before we can do this, we must check if all the 
+required assumptions are met.
+
+## Assumptions
+
+1. The observations are independent of each other (in both groups)
+2. The data (PCB.conc) must be normally distributed (in both groups)
+3. The variance is equal in the two groups.
+
+The first assumption is met, as we randomly selected shrimps and
+submitted them to one of two growth conditions. No underlying
+correlation patterns are expected.
+
+We can check the second assumption with a QQ-plot.
+
+```{r}
+shrimps %>% 
+  ggplot(aes(sample=PCB.conc)) +
+  geom_qq() +
+  geom_qq_line() + 
+  facet_grid(~group)
+```
+
+We clearly see that we have strong deviations from
+normality. Many datapoints do not lie near the quantile-quantile
+line. As such, we may conclude that our data are not normally distributed.
+In addition, the boxplots suggest that the
+variability differs between the two groups.
+
+Given the location of the outliers transformation will not help here.As such, 
+we are not allowed to perform the t-test. 

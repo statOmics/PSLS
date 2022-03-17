@@ -1,0 +1,302 @@
+---
+title: "Exercise 7.1: ANOVA on the lettuce dataset - solution"   
+author: "Lieven Clement and Jeroen Gilis"
+date: "statOmics, Ghent University (https://statomics.github.io)"  
+output:
+    html_document:
+      code_download: true    
+      theme: cosmo
+      toc: true
+      toc_float: true
+      highlight: tango
+      number_sections: true
+---
+
+# Background
+
+In agriculture, it is important to have a high yield of crops. For lettuce 
+plants, plants with many leaves are known to be preferred by the consumers.
+
+One way to increase the number of leaves (or better, total
+leaf weight) is by using a fertilizer. Recently, there has been 
+a tendency to rely more on natural fertilizers, such as compost.
+Near Ghent, the institute of research for agriculture and fishery is testing 
+new, natural fertilization methods. One of these new fertilizers is called 
+biochar. Biochar is a residual product from pyrolysis, a process in which 
+biomass is burned under specific conditions (such as high pressure) in order 
+to produce energy. Biochar is similar to charcoal, but has some very useful 
+properties, such as retaining water in the soil. It also has a positive 
+influence on the soil microbiome.
+
+# The lettuce dataset
+
+The researchers hypothesize that biochar, compost and
+a combination of both biochar and compost can have a different influence
+on the growth of lettuce plants. To this end, they grew up
+lettuce plants in a greenhouse. The pots were filled with
+one of four soil types;
+
+1. Soil only (control)
+2. Soil supplemented with biochar (refoak)
+3. Soil supplemented with compost (compost)
+4. Soil supplemented with both biochar and compost (cobc)
+
+The dataset `freshweight_lettuce.txt` contains the freshweight
+(in grams) for 28 lettuce plants (7 per condition). The researchers
+want to use an ANOVA test to assess if the treatments have a different effect 
+on the growth of lettuce plants. If so, they will use a post-hoc test 
+(Tuckey test) to discover which specific treatments have an effect.
+
+Load the required libraries
+
+```{r, message = FALSE, warning=FALSE}
+library(tidyverse)
+library(car)
+```
+
+# Data import
+
+```{r,message=FALSE}
+lettuce <- read_csv("https://raw.githubusercontent.com/statOmics/PSLS21/data/freshweight_lettuce.txt")
+#Take a glimpse at the data
+glimpse(lettuce)
+```
+
+First, we will set the `treatment` variable to a factor
+
+```{r}
+## treatment to factor
+lettuce <- lettuce %>%
+  mutate(treatment = as.factor(treatment))
+```
+
+# Data exploration
+
+```{r}
+## Count the number of observations per treatment
+lettuce %>%
+  count(treatment)
+```
+
+Now let's make a boxplot displaying the freshweight of each treatment condition:
+
+```{r}
+lettuce %>%
+  ggplot(aes(x=treatment,y=freshweight,fill=treatment)) + 
+    scale_fill_brewer(palette="RdGy") +
+    theme_bw() +
+    geom_boxplot(outlier.shape=NA) + 
+    geom_jitter(width = 0.2) +
+    ggtitle("Boxplot of the freshweigth for each treatment condition") +
+    ylab("freshweight (gram)") + 
+    stat_summary(fun=mean, geom="point", shape=5, size=3, color="black", fill="black")
+```
+
+Note that there are no clear outliers in the data.
+We can see that the mean freshweight is very comparable
+between the control and refoak treatments and between the
+compost and cobc treatments. We can also see that the mean
+freshweight is much higher in the cobc and control treatments
+than in the control and refoak treatments. But is this
+observed difference significant?
+
+# ANOVA
+
+To study if the observed difference between the
+average freshweight values of the different treatment groups
+are significant, we may perform an ANOVA.
+
+## Formulate null and alternative hypotheses
+
+The null hypothesis of ANOVA states that:
+$H0$: The mean freshweigth is equal between the different treatment groups.
+
+The alternative hypothesis of ANOVA states that:
+$HA$: The mean freshweigth for at least one treatment group is different 
+from the mean freshweight in at least one other treatment group.
+
+## Checking the assumptions for ANOVA
+
+Before we may proceed with the analysis, we must make sure that all
+assumptions for ANOVA are met. ANOVA has three assumptions:
+
+1. The observations are independent of each other (in all groups)
+2. The data (freshweigth) must be normally distributed (in all groups)
+3. The variability within all groups is similar
+
+### Assumption of independence
+
+The first assumption is met; we started of with 28 lettuce plants and
+we randomly submitted them to one of four treatment conditions. There
+is no reason to believe that the plants display systematic differences
+between treatment groups, other than the actual treatment.
+
+### Assumption of normality
+
+For the second assumption, we must check normality in each group.
+
+```{r}
+## get qqplots for each individual treatment group
+par(mfrow = c(2,2))
+for(i in levels(lettuce$treatment)){
+  qqPlot(subset(lettuce,treatment == i)$freshweight, main = i, ylab = "")
+}
+```
+
+According to these plots, the normality assumption is met
+for each group. However, we need to be careful with relying on 
+these plots, as they are only based on 7 observations per group.
+Indeed, checking the assumptions of normality (and equal variances)
+on such small datasets can be tricky. For instance, when
+sampling 7 datapoints from data that has an underlying distribution 
+that is not normally distributed, the small sample may be normally
+distributed by chance. Equivalently, when sampling 7 datapoints
+from a normal distribution, the small sample may appear not normally
+distributed. We can show this as follows.
+
+Simulate from uniform distribution:
+
+```{r}
+set.seed(5)
+par(mfrow = c(3,2),mar=c(2, 4, 2, 0.2))
+for (i in 1:6) {
+  x <- runif(7) ## sample 7 observations from a uniform distribution
+  qqPlot(x,ylab = "")
+}
+```
+
+Even though the data originates from a uniform distribution, several
+samples meet the normality requirements by chance.
+
+Sample from normal distribution:
+
+```{r}
+set.seed(5)
+par(mfrow = c(3,2),mar=c(2, 4, 2, 0.2))
+for (i in 1:6) {
+  x <- rnorm(7) ## sample 7 sobservations from a normal distribution
+  qqPlot(x,ylab = "")
+}
+```
+
+Even though the data originates from a normal distribution, several
+samples do not meet the normality requirements by chance.
+
+Alternatively, we may generate a qq-plot of the residuals
+of a linear model. These residuals should be normally distributed
+if the data for each treatment condition is normally distributed.
+
+```{r}
+fit <- lm(freshweight~treatment, lettuce)
+plot(fit, which = 2,col = fit$model$treatment)
+legend('bottomright', levels(fit$model$treatment), text.col = 1:4)
+```
+
+The data seems to be approximately normally distributed,
+with a slight left skew.
+
+### Assumption of equal variances
+
+We can check the assumption of equal variance with a boxplot:
+
+```{r}
+lettuce %>%
+  ggplot(aes(x=treatment,y=freshweight,fill=treatment)) + 
+  scale_fill_brewer(palette="RdGy") +
+  theme_bw() +
+  geom_boxplot(outlier.shape=NA) + 
+  geom_jitter(width = 0.2) +
+  ggtitle("Boxplot of the freshweigth for each treatment condition") +
+  ylab("freshweight (gram)") + 
+  stat_summary(fun=mean, geom="point", shape=5, size=3, color="black", fill="black")
+```
+
+As a measure of variability, we may take the height
+of each box. This is the interval between
+the 25% and 75% quantile. Here we can see that this
+interval, as well as the length of the whiskers, is
+approximately equal for most groups. However, the
+variability of cobc does seem to be quite a bit larger 
+than the variability in the refoak group. 
+
+With this little observations per group, it is very
+difficult to reliably assess the assumptions of normality and equal variances. 
+In this tutorial, we will assume that all assumptions are met. 
+**In a later tutorial, "Kruskal_lettuce_plants.Rmd",**
+**we will see would happen if we decide to reject these assumptions.**
+
+## Modeling
+
+```{r}
+fit <- lm(freshweight~treatment, data=lettuce)
+fit_anova <- anova(fit)
+fit_anova
+```
+
+The p-value of the ANOVA analysis is extremely significant
+(p-value = `r format(fit_anova$"Pr(>F)"[1],digits=4)`), 
+so we reject the null hypothesis that the mean 
+freshweigth is equal for the different treatment groups.
+We can say that the mean freshweigth is significantly different
+between at least two treatment groups on the 5% significance level.
+
+Based on this analysis, we do not yet know between which particular
+groups there is a significant difference. To assess this, we will
+perfrom the Tuckey post-hoc analysis.
+
+## Post-hoc analysis
+
+We will perform a post-hoc analysis to look at the difference 
+in fresweigth between each pairwise comparison of treatment groups.
+Importantly, with this strategy, the p-values will be automatically
+adjusted for multiple testing.
+
+The null hypothesis for each pairwise test is that 
+$H0$ there is no difference in the average freshweight values between 
+both groups.
+
+The alternative hypothesis for each pairwise test states that 
+$HA$ there is indeed a difference in the average freshweight values 
+between both groups.
+
+```{r,message=FALSE}
+library(multcomp, quietly = TRUE)
+mcp <- glht(fit, linfct = mcp(treatment = "Tukey"))
+mcp_summary <- summary(mcp)
+mcp_summary
+
+#We will also calculate the confidence interval on the mean differences.
+mcp_confint <- confint(mcp)
+mcp_confint
+```
+
+## Conclusion
+
+We have found an extremely significant dependence 
+(p-value = `r round(fit_anova$"Pr(>F)"[1],digits=12)`), 
+between the mean freshweigth and the treatment condition
+on the global 5% significance level.
+
+The mean freshweight of plants grown with compost is extremely
+significantly higher as compared to in control plants (Tuckey test,
+adjusted p-value < 0.0001, 20.9g higher, 95% CI: [13.2; 28.5])
+and as compared to refoak plants (Tuckey test, adjusted 
+p-value < 0.0001, 22.7g higher, 95% CI: [15.1; 30.3]).
+
+The mean freshweight of plants grown with cobc is extremely
+significantly higher as compared to in control plants (Tuckey test,
+adjusted p-value < 0.0001, 16.1g higher, 95% CI: [8.5; 23.8])
+and as compared to refoak plants (Tuckey test, adjusted 
+p-value < 0.0001, 18.0g higher, 95% CI: [10.4; 25.6]).
+
+We do not find enough evidence to claim a difference in mean
+freshweight between refoak and control plants or between cobc
+and compost plants.
+
+We may conclude that supplementing soil with compost or with
+both compost and biochar will have a positive effect on the 
+freshweigth of lettuce plants.
+
+
+
+

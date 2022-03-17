@@ -1,0 +1,230 @@
+---
+title: "Tutorial 7.3: ANOVA in the NHANES dataset"   
+output:
+    html_document:
+      code_download: true    
+      theme: cosmo
+      toc: true
+      toc_float: true
+      highlight: tango
+      number_sections: true
+---
+
+# The NHANES dataset
+
+The National Health and Nutrition Examination Survey (NHANES) contains data 
+that has been collected since 1960. For this tutorial, we will make use of 
+the data that were collected between 2009 and 2012, for 10.000 U.S. civilians. 
+The dataset contains a large number of physical, demographic, nutritional and 
+life-style-related parameters.
+
+# Goal
+
+In the NHANES dataset, one of the columns is named `HealthGen`. 
+HealthGen is a self-reported rating of a participant’s health 
+in general terms. HealthGen is reported for participants aged 12
+years or older. It is a factor with the following levels:
+Excellent, Vgood, Good, Fair, or Poor.
+
+We want to test whether or not the mean systolic blood pressure 
+value (take column `BPSys1`) is equal between the five self-reported
+health categories. To this end, we will use an ANOVA analysis
+(if the required assumptions are met).
+
+Load the required libraries
+
+```{r, message = FALSE}
+library(tidyverse)
+```
+
+# Data import  
+
+```{r, message=FALSE, warning=FALSE}
+NHANES <- read_csv("https://raw.githubusercontent.com/statOmics/PSLS21/data/NHANES.csv")
+glimpse(NHANES[1:10])
+```
+
+# Data Exploration
+
+```{r}
+NHANES %>%
+  ggplot(aes(x=HealthGen,y=BPSys1,fill=HealthGen)) + 
+  scale_fill_brewer(palette="RdGy") +
+  theme_bw() +
+  geom_boxplot(outlier.shape=NA) +
+  #geom_jitter(width = 0.2,size=0.01) + ## omitted as it makes the plot messy
+  ggtitle("Boxplot of the systolic bloodpressure for each health category") +
+  ylab("Systolic blood pressure (mmHg)") + 
+  stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
+```
+
+This plot is not ideal; it would be far more intuitive if
+the health categories were ordered properly (i.e., Poor --> excellent).
+In addition, we observe a sixth "category" of NA values.
+
+To get a more informative and intuitive visualization, you can:
+
+1. Filter out subjects with NA values for `HealthGen` or `BPSys1`
+2. Set `HealthGen` to a factor and relevel it to Poor --> Excellent
+
+**Hint:** The second task can be achieved by using the `mutate`, 
+`as.factor` and `fct_relevel` functions.
+
+```{r}
+NHANES <- NHANES %>%
+  filter(!is.na(HealthGen),!is.na(BPSys1)) %>%
+  mutate(HealthGen = as.factor(HealthGen)) %>%
+  mutate(HealthGen =fct_relevel(HealthGen,c("Poor","Fair","Good","Vgood","Excellent")))
+```
+
+```{r}
+NHANES %>%
+  ggplot(aes(x=HealthGen,y=BPSys1,fill=HealthGen)) + 
+  scale_fill_brewer(palette="RdGy") +
+  theme_bw() +
+  geom_boxplot(outlier.shape=NA) +
+  ggtitle("Boxplot of the systolic bloodpressure for each health category") +
+  ylab("Systolic blood pressure (mmHg)") + 
+  stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
+```
+
+# ANOVA
+
+To study if the observed difference between the
+average systolic blood pressure values of the different health groups
+are significant, we may perform an ANOVA.
+
+## Formulate null and alternative hyoptheses
+
+The null hypothesis of ANOVA states that:
+$H0$: The mean systolic blood pressure is equal between the different health groups.
+
+The alternative hypothesis of ANOVA states that:
+$HA$: The mean systolic blood pressure for at least one health group is different 
+from the mean systolic blood pressure in at least one other health group.
+
+## Check the assumptions for ANOVA
+
+Before we may proceed with the analysis, we must make sure that all
+assumptions for ANOVA are met. ANOVA has three assumptions:
+
+1. The observations are independent of each other (in all groups)
+2. The data (BPSys1) must be normally distributed (in all groups)
+3. The variability within all groups is similar
+
+### Assumption of independence
+
+The first assumption is met; there shoud be no specific pattterns of dependence.
+
+### Assumption of normality
+
+For the second assumption, we must check normality in each group.
+
+```{r}
+NHANES %>% 
+  ggplot(aes(sample=BPSys1)) +
+  geom_qq() +
+  geom_qq_line() + 
+  facet_grid(~HealthGen)
+```
+
+The data does not appear to be normally distributed for
+each group. It seems to have a heavy right tail. We can
+perform a log transformation on the data.
+
+```{r}
+NHANES %>% 
+  mutate(BPSys1_log = log(BPSys1)) %>%
+  ggplot(aes(sample=BPSys1_log)) +
+  geom_qq() +
+  geom_qq_line() + 
+  facet_grid(~HealthGen)
+```
+
+While the log transformation improved the distributions somewhat,
+the data still does not appear to be normally distributed for
+each group. However, we do have a very large number of
+observations per group:
+
+```{r}
+## Count the number of observations per treatment
+NHANES %>%
+  count(HealthGen)
+```
+
+As such, we may rely on the cental limit theorem.
+Remember, the cental limit theorem that when the number
+of observations is sufficiently large (i.e. >100), we 
+will assume that the distribution of the sample mean will 
+approximate a normal distribution, even if the underlying
+data is not normally distributed.
+
+## ANOVA model
+
+```{r}
+fit <- lm(log(BPSys1)~HealthGen, NHANES)
+fit_anova <- anova(fit)
+fit_anova
+print(paste("Not-rounded p-value:", fit_anova$`Pr(>F)`[1]))
+```
+
+The p-value of the ANOVA analysis is extremely significant
+(p-value = `r format(fit_anova$"Pr(>F)"[1],digits=4)`), 
+so we reject the null hypothesis that the mean 
+egg length is equal between the different bird types.
+We can say that the mean egg length is significantly different
+between at least two bird types on the 5% significance level.
+
+Based on this analysis, we do not yet know between which particular
+bird types there is a significant difference. To study this, we will
+perfrom the Tuckey post-hoc analysis.
+
+## Post-hoc analysis
+
+```{r,message=FALSE}
+library(multcomp, quietly = TRUE)
+mcp <- glht(fit, linfct = mcp(HealthGen = "Tukey"))
+summary(mcp)
+confint(mcp)
+```
+
+## Conclusion
+
+We have found an extremely significant dependence (p-value = `r format(fit_anova$"Pr(>F)"[1],digits=4)`), 
+between the mean systolic blood pressure and the health group
+on the global 5% significance level.
+
+The mean logarithm of systolic blood pressure in the self-reported health
+category `Poor` is significantly higher as compared three other groups:
+
+- the `Good` group (adjusted p-value = < 0.001, mean difference = -0.036762 mmHg, 95% CI [-0.034725; -0.007142])
+- the `Vgood` group (adjusted p-value = < 0.001, mean difference = -0.059415 mmHg, 95% CI [-0.087352; -0.031477])
+- the `Excellent` group (adjusted p-value = < 0.001, mean difference = -0.059415 mmHg, 95% CI [-0.085164; -0.025789])
+
+The mean logarithm of  systolic blood pressure in the self-reported health
+category `Fair` is significantly higher as compared three other groups:
+
+- the `Good` group (adjusted p-value = 0.00317, mean difference = -0.020934  mmHg, 95% CI [-0.064542; -0.008982])
+- the `Vgood` group (adjusted p-value = < 0.001, mean difference = -0.043587 mmHg, 95% CI [-0.057692; -0.029481])
+- the `Excellent` group (adjusted p-value = < 0.001, mean difference = -0.039648 mmHg, 95% CI [-0.056963; -0.022333])
+
+The mean logarithm of systolic blood pressure in the self-reported health
+category `Good` is significantly higher as compared two other groups:
+
+- the `Vgood` group (adjusted p-value = < 0.001, mean difference = -0.022653 mmHg, 95% CI [-0.032843; -0.012463])
+- the `Excellent` group (adjusted p-value = 0.00362, mean difference = -0.018714 mmHg, 95% CI [-0.033021; -0.004408])
+
+We do not find enough evidence to claim a difference in systolic
+blood pressure levels between the other groups.
+
+Note that in order to interpret the outcomes on the original scale,
+we should backtransform the outcomes with the `exp()` functions 
+(interpretation on the geometric mean).
+
+
+
+
+
+
+
+

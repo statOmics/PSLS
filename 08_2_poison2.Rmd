@@ -1,0 +1,137 @@
+---
+title: "Exercise 8.2: Non-additive linear model on the poison dataset"   
+author: "Lieven Clement and Jeroen Gilis"
+date: "statOmics, Ghent University (https://statomics.github.io)"  
+output:
+    html_document:
+      code_download: true    
+      theme: cosmo
+      toc: true
+      toc_float: true
+      highlight: tango
+      number_sections: true
+---
+
+# The poison dataset
+
+In this experiment, 96 fish (dojofish, goldfish and zebrafish)
+were placed separately in a tank with two liters of water and
+a certain dose (in mg) of the poison EI-43,064. The resistance
+of the fish against the poison was measured as the amount of
+minutes the fish survived after being exposed to the poison (`Surv_time`, in
+minutes). Additionally, the weight of each fish was measured.
+
+# Goal
+
+Suppose that researchers are ,mainly interested in studying the effect of 
+poison dose on the survival of fish. They know however that the weight can 
+also impact the survival and might also change the effect of the poison dose. 
+
+In this tutorial session we will focus on Dojofish and we will model the 
+survival time in function of the dose and the weight of the fish, 
+**including an interaction between dose and weight.**  
+
+Load libraries
+
+```{r, message=FALSE, warning=FALSE}
+
+```
+
+# Import the data
+
+```{r, message=FALSE}
+
+```
+
+# Data tidying
+
+We can see a couple of things in the data that can be improved:
+
+1. Capitalise the fist column name
+
+3. Set the Species column as a factor
+
+4. Change the species factor levels from "0" to Dojofish. 
+*Hint*: use the `fct_recode` function.
+
+4. In the previous analysis on this dataset 
+(`Simple linear regression session`), we performed a log-transformation on the 
+response variable `Surv_time` to meet the normality and homoscedasticity 
+assumptions of the linear model. Here, we will immediately work with 
+log-transformed survival times; store these in the new  variable `log2Surv_time`
+and remove the non-transformed values.
+
+5. Subset the data to only retain **dojofish** (species "0").
+
+```{r}
+
+```
+
+# Data exploration
+
+Prior to the analysis, we should explore our data. To start our data 
+exploration, we will make use of the `ggpairs` function of the
+`GGally` R package. This function will generate a visualization containing
+multiple panels, which display (1) univariate plots of the different variables
+in our dataset, (2) bivariate plots and (3) correlation coefficients between 
+the different variables.
+
+```{r}
+
+```
+
+# Analysis with interaction and main effect for weight
+
+## Model specification
+
+$$
+y_i=\beta_0+\beta_d x_d + \beta_g x_g +\beta_{d:g} x_d x_g+ \epsilon_i,
+$$
+
+Can you interpret the different model parameters?
+
+## Assess model assumptions
+
+## Inference
+
+Use the model to test the parameters of interest.
+
+## Interpretation of model parameters
+
+On the transformed and the original scale.
+
+## Assessing the dose effect
+
+The effect of dose is now parameterized by two model parameters ($\beta_d$ 
+and $\beta_{d:g}$). We first evaluate an *omnibus* hypotheses that there is
+no effect of dose, i.e., no main effect nor an interaction effect. We can test
+this with an F-test that compares a *full* model (1) containing a main effect 
+for dose, a main effect for weight and an interaction between dose and weight
+with a model (2) that only contains a main effect for weight (i.e. no effect
+for dose).
+
+```{r, eval = FALSE}
+# we already have made the full model (above)
+... # fit model that only contains a main effect for weight (no effect for dose)
+... # perform the F-test between the two models
+```
+
+## Assessing the interaction between dose and weight
+
+Now, we will test if there is a significant interaction effect between dose 
+and weight. Since we only have one interaction term in this model, this can
+be achieved in several equivalent ways:
+
+1. The `summary` function
+2. An F-test comparing models with and without the interaction effect
+3. An ANOVA table with type III sum of squares  
+
+```{r}
+
+```
+
+## Conclusion
+
+On the transformed and the original scale.
+
+

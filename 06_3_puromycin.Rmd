@@ -1,0 +1,111 @@
+---
+title: "Exercise 6.1: Linear regression on puromycin data"
+author: "Lieven Clement & Alexandre Segers"
+date: "statOmics, Ghent University (https://statomics.github.io)"
+output:
+  html_document:
+    code_download: yes
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+    highlight: tango
+    number_sections: yes
+---
+
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+
+# Puromycin dataset
+
+Data on the velocity of an enzymatic reaction were obtained by Treloar (1974).  
+The number of counts per minute of radioactive product from the reaction was 
+measured as a function of substrate concentration in parts per million (ppm) and
+from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min). The experiment was conducted once with the enzyme treated 
+with Puromycin, and once with the enzyme untreated.
+
+# Goal
+
+Assess if there is an association between the substrate concentration and rate 
+for the **treated** enzyme. 
+
+Import libraries
+
+```{r, message=FALSE, warning=FALSE}
+
+```
+
+# Import data
+
+In contrast to the other datasets we have worked with so far, this dataset is
+not available through a URL link. In stead, the data is directly available from
+an R package that was pre-installed in your R working environment. As such, we
+can simply do
+
+```{r}
+data(Puromycin)
+```
+
+and an object called `Puromycin` is immediately available in your working 
+environment.
+
+# Data wrangling
+
+For this exercise, we only want to assess if there is an association between 
+the substrate concentration and rate for the **treated** enzyme. As such, we 
+should filter the data so that we are left with only the treated enzymes.
+
+```{r}
+
+```
+
+# Data exploration
+
+Make a visualization that allows for exploring if there is a linear relationship
+between the substrate concentration and enzyme's rate.
+
+```{r, eval=FALSE}
+Puromycin %>%
+  ggplot(...) + # select which elements of the dataset we need to visualize
+  ... # use a relevant plotting geometry
+  stat_smooth(...) + # draw a smooth line through the data cloud
+  stat_smooth(...) # draw a straight (linear regression) line through the data cloud
+  ... # you can add some extra elements like axis labels, title, ...
+```
+
+Does the relationship look linear? Can you think of any other steps that we 
+might take to assess this relationship?
+
+```{r}
+
+
+
+
+```
+
+Now may we assume a linear relationship between the substrate concentration and 
+the enzyme's rate?
+
+# Linear regression
+
+## Formulate the research question
+
+## Check the assumptions
+
+## Interpret the model parameters of the linear model
+
+## Interpret the results, both for the intercept as well as for the slope
+
+## Write a conclusion that answers the research hypothesis.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

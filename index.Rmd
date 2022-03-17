@@ -1,0 +1,157 @@
+---
+title: PSLS21 - Practical Statistics for the Life Sciences 2021
+output:
+    html_document:
+      theme: default
+      code_download: false
+      toc: false
+      toc_float: false
+      number_sections: false
+---
+
+```{r setup, include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+***
+
+
+```{r out.width='80%',fig.asp=.8, fig.align='center',echo=FALSE}
+if ("pi"%in%ls()) rm("pi")
+kopvoeter<-function(x,y,angle=0,l=.2,cex.dot=.5,pch=19,col="black")
+{
+angle=angle/180*pi
+points(x,y,cex=cex.dot,pch=pch,col=col)
+lines(c(x,x+l*cos(-pi/2+angle)),c(y,y+l*sin(-pi/2+angle)),col=col)
+lines(c(x+l/2*cos(-pi/2+angle),x+l/2*cos(-pi/2+angle)+l/4*cos(angle)),c(y+l/2*sin(-pi/2+angle),y+l/2*sin(-pi/2+angle)+l/4*sin(angle)),col=col)
+lines(c(x+l/2*cos(-pi/2+angle),x+l/2*cos(-pi/2+angle)+l/4*cos(pi+angle)),c(y+l/2*sin(-pi/2+angle),y+l/2*sin(-pi/2+angle)+l/4*sin(pi+angle)),col=col)
+lines(c(x+l*cos(-pi/2+angle),x+l*cos(-pi/2+angle)+l/2*cos(-pi/2+pi/4+angle)),c(y+l*sin(-pi/2+angle),y+l*sin(-pi/2+angle)+l/2*sin(-pi/2+pi/4+angle)),col=col)
+lines(c(x+l*cos(-pi/2+angle),x+l*cos(-pi/2+angle)+l/2*cos(-pi/2-pi/4+angle)),c(y+l*sin(-pi/2+angle),y+l*sin(-pi/2+angle)+l/2*sin(-pi/2-pi/4+angle)),col=col)
+}
+
+par(mar=c(0,0,0,0),mai=c(0,0,0,0))
+plot(0,0,xlab="",ylab="",xlim=c(0,10),ylim=c(0,10),col=0,xaxt="none",yaxt="none",axes=FALSE)
+rect(0,6,10,10,border="red",lwd=2)
+text(.5,8,"population",srt=90,col="red",cex=2)
+symbols (3, 8, circles=1.5, col="red",add=TRUE,fg="red",inches=FALSE,lwd=2)
+set.seed(330)
+grid=seq(0,1.3,.01)
+
+for (i in 1:50)
+{
+	angle1=runif(n=1,min=0,max=360)
+	angle2=runif(n=1,min=0,max=360)
+	radius=sample(grid,prob=grid^2*pi/sum(grid^2*pi),size=1)
+	kopvoeter(3+radius*cos(angle1/180*pi),8+radius*sin(angle1/180*pi),angle=angle2)
+}
+text(7.5,8,"Cholesterol in population",col="red",cex=1.2)
+
+rect(0,0,10,4,border="blue",lwd=2)
+text(.5,2,"sample",srt=90,col="blue",cex=2)
+symbols (3, 2, circles=1.5, col="red",add=TRUE,fg="blue",inches=FALSE,lwd=2)
+for (i in 0:2)
+	for (j in 0:4)
+{
+
+	kopvoeter(2.1+j*(3.9-2.1)/4,1.1+i)
+}
+text(7.5,2,"Cholesterol in sample",col="blue",cex=1.2)
+
+arrows(3,5.9,3,4.1,col="black",lwd=3)
+arrows(7,4.1,7,5.9,col="black",lwd=3)
+text(1.5,5,"EXP. DESIGN (1)",col="black",cex=1.2)
+text(8.5,5,"ESTIMATION &\nINFERENCE (3)",col="black",cex=1.2)
+text(7.5,.5,"DATA EXPLORATION &\nDESCRIPTIVE STATISTICS (2)",col="black",cex=1.2)
+```
+
+
+## Course Description
+
+This intermediate level course is one of our Foundations courses. It covers essential statistical concepts and methods for extracting insights from empirical data in the life sciences. The course positions applied statistics, starting from important aspects of experimental design and data exploration. We then move into statistical modeling and data analysis. We will focus on the link between linear regression and analysis of variance. Together, these methods contribute to the study of General Linear Models. The course also introduces the basics of non-parametric testing, and addresses categorical data analysis and logistic regression.
+
+The concepts and methods are exclusively introduced via case-studies in the life sciences. For every study we elaborate on a concrete research question and then provide a study design, which is followed by data exploration. Next, we will focus on how to model the data and elaborate on the link between model parameters and the subject matter research question.
+
+---
+
+### Learning objectives
+
+The case studies will enable the participants to build self-confidence in
+understanding, reading and communicating on data and data analysis
+selecting appropriate statistical methods and software tools for analysing different types of data
+interpreting the result of a statistical data analysis in terms of subject matter research questions and reporting them appropriately.
+
+There is a strong emphasis in reproducible research by extensively using R/Rmarkdown scripts. This approach will enable the participants to weave statistical analyses, code, results and interpretation in webpages and PDF documents so that their entire data analysis workflow is transparent and reproducible. The course materials are designed in R/Rmarkdown, kickstarting the course participants into developing their own scripts.
+
+---
+
+### Practical Statistics for the Life Sciences
+
+#### Software
+
+- The learning materials are developed for [R](https://www.r-project.org/) version 4.1.0 or later. We also recommend to also install the latest version of [RStudio](https://www.rstudio.com/products/rstudio/download/).
+
+- To install all requirements, please copy and paste this lines of code in your R console.
+
+```
+source("https://raw.githubusercontent.com/GTPB/PSLS21/master/install.R")
+```
+
+- To get familiar with most important concepts in working with R and Rmarkdown, you may download the respective cheat sheets:
+
+    - [Base R](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)
+    - [Rmarkdown](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+    - [Other](https://www.rstudio.com/resources/cheatsheets/)
+
+- All data can be downloaded locally through
+[data](assets/data.zip)
+
+
+
+#### Learning materials
+
+1. [Introduction](./01-intro.html)
+2. [Concepts](./02-concepts.html)
+3. [Experimental Design](./03-experimentalDesign.html)
+    
+
+4. [Data Exploration](./04-dataExploration.html)
+
+    - [Exercises](./04_exercises.html)
+
+5. Statistical Inference
+
+    - [5.1. Statistical Inference](./05-statisticalInference.html)
+    - [5.2. Two sample t-test](./05-statisticalInference-twosampleT.html)
+    - [Exercises](./05_exercises.html)
+
+6. [Linear Regression](./06-linearRegression.html)
+
+    - [Exercises](./06_exercises.html)
+
+7. [Analysis of Variance](./07-Anova.html)
+
+    - [Exercises](./07_exercises.html)
+
+8. Multiple Regression: 
+
+    - [Multiple Regression](./08-MultipleRegression.html)
+    - [Factorial Designs](./08-MultipleRegression-SpecificDesigns.html)
+    - [Experimental Design II: Power and Replication](./08-experimentalDesignII.html)
+    - [Experimental Design III: Blocking](./08-experimentalDesignIII.html)
+    - [Exercises](./08_exercises.html)
+
+9. Nonparametric Statistics:
+    
+    - [9.1 Nonparametric Statistics: Wilcoxon-Mann-Whitney test](./09-NonparametericStatistics-WilcoxonMannWithney.html)
+    - [9.2 Nonparametric Statistics: Kruskal Wallis test](./09-NonparametericStatistics-KruskalWallis.html)
+    - [Exercises](./049_exercises.html)
+    
+10. [Categorical Data Analysis](./10-categoricalDataAnalysis.html)
+
+
+---
+
+#### Instructors
+
+ - [Lieven Clement](./instructors.html)
+ - [Jeroen Gilis](./instructors.html)

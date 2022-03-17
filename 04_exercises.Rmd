@@ -1,0 +1,93 @@
+---
+title: "Exercises on chapter 4: Data exploration"
+author: "Lieven Clement and Jeroen Gilis"
+date: "statOmics, Ghent University (https://statomics.github.io)"
+output:
+    html_document:
+      code_download: true    
+      theme: cosmo
+      toc: true
+      toc_float: true
+      highlight: tango
+      number_sections: true
+---
+
+In the first day of the "Practical Statistics for the Life Sciences (2021)" 
+course, we will have four exercises on data exploration, based on different 
+datasets:
+
+
+# The NHANES dataset:
+
+The National Health and Nutrition Examination Survey (NHANES) contains data 
+that has been collected since 1960. For this tutorial, we will make use of the 
+data that was collected  between 2009 and  2012, for 10.000 U.S. civilians. 
+The dataset contains a large number of physical, demographic, nutritional and 
+life-style-related parameters.
+
+Getting familiar with the dataset will always be the first step in a data 
+analysis pipeline. In this tutorial, you will learn the key principles of data 
+exploration in R, including data import, tidying, wrangling and visualisation. 
+
+- Preliminary:[Preliminary](./extra1_preliminary_tidyverse.html)
+- Exercise: [Exercise1](./04_1_NHANES.html)
+- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/NHANES.csv
+
+---
+
+# The armpit dataset:
+
+Smelly armpits are not caused by sweat, itself. The smell is caused by specific 
+micro-organisms belonging to the group of Corynebacterium spp. that metabolise 
+sweat. Another group of abundant bacteria are the Staphylococcus spp., which do
+not metabolise sweat in smelly compounds.
+
+The CMET-group at Ghent University does research on transplanting the armpit 
+microbiome to help people with smelly armpits. To test the effect of 
+transplanting the microbiome, they conducted an experiment on two groups 
+of volunteers: one group was treated with a placebo, while the other had a 
+microbiome transplant. The goal was to assess whether a microbial transplant can affect the relative abundance of Staphylococcus spp. in the microbiome of the armpit.
+
+In this exercise, you will use your acquired skills from the first exercise to 
+explore the armpit dataset all by yourself!
+
+- Exercise: [Exercise2](./04_2_armpit.html)
+- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv
+- Solution: [Solution2](./04_2_armpit_sol.html)
+
+---
+
+# The captopril dataset:
+
+The captopril dataset holds information on a small experiment with 15 patients 
+that have increased blood pressure values. More specifically, for each patient 
+we will have four values; one value for systolic blood pressure and one for 
+diastolyic, both before and after treating the patient with a drug named 
+captopril.
+
+In this tutorial on data exploration, you will learn how to deal with data from 
+paired experimental designs.
+
+- Exercise: [Exercise3](./04_3_captopril.html)
+- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt
+- Solution: [Solution3](./04_3_captopril_sol.html)
+
+---
+
+# The FEV dataset:
+
+The FEV, which is an acronym for forced expiratory volume, is a measure of how 
+much air a person can exhale (in liters)  during  a forced breath. In this 
+dataset, the FEV of 606 children, between the ages of 6 and 17, were measured. 
+The dataset also provides additional information on these children: 
+their `age`, their `height`, their `gender` and, most importantly, whether the 
+child is a smoker or a non-smoker. The goal of this experiment was to find out 
+if smoking has an effect on the FEV of children.
+
+In this tutorial, you will learn about the importance of confounders in 
+real-life datasets.
+
+- Exercise: [Exercise4](./04_4_FEV.html)
+- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/fev.txt
+- Solution: [Solution4](./04_4_FV_sol.html)
+

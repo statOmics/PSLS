@@ -1,0 +1,331 @@
+---
+title: "Exercise 8.5: Blocking on the rat diet dataset - solution"   
+author: "Lieven Clement and Jeroen Gilis"
+date: "statOmics, Ghent University (https://statomics.github.io)"  
+output:
+    html_document:
+      code_download: true    
+      theme: cosmo
+      toc: true
+      toc_float: true
+      highlight: tango
+      number_sections: true
+---
+
+# Background 
+
+Researchers are studying the impact of protein sources and protein levels in 
+the diet on the weight of rats. They feed the rats with diets of beef, cereal 
+and pork and use a low and high protein level for each diet type. 
+The researchers can include 60 rats in the experiment. Prior to the experiment,
+the rats were divided in 10 homogeneous groups of 6 rats based on 
+characteristics such as initial weight, appetite, etc.
+
+Within each group a rat is randomly assigned to a diet. The rats are fed during 
+a month and the weight gain in grams is recorded for each rat. 
+
+The researchers want to assess the effect of the type of diet and the protein 
+level on the weight of the rats. 
+
+In this exercise we will perform the data exploration using all diets, but, 
+to keep the data analysis simple we will only assess the beef and cereal diets.
+
+# Experimental design 
+
+- There are three explanatory variables in the experiment: the factor diet type
+with two levels (beef and cereal), factor protein level with levels 
+(low and high) and a group blocking factor with 10 levels.
+
+- There are 6 treatments: beef-high, cereal-high, pork-high, beef-low, 
+cereal-low, pork-low protein. 
+
+- The rats are the experimental and observational units. 
+
+- The weight gain is the response variable. 
+
+- The experiment is a randomized complete block (RCB) design
+
+Load libraries
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+# Data import
+
+```{r}
+diet <- read.table("https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt",
+                   header=TRUE)
+head(diet)
+```
+
+# Tidy data
+
+```{r}
+diet <- diet %>%
+  mutate(block = as.factor(block),
+         protSource = as.factor(protSource),
+         protLevel = as.factor(protLevel)) %>%
+  mutate(protLevel = fct_relevel(protLevel, "l"))
+```
+
+# Data exploration
+
+- Boxplot of the weight gain against protein source, protein level with coloring according to block
+
+```{r}
+diet %>% 
+  ggplot(aes(x=protLevel, y=weightGain)) + 
+    scale_fill_brewer(palette="RdGy") +
+    theme_bw() +
+    geom_boxplot(outlier.shape=NA) + 
+    geom_jitter(aes(color=block)) +
+    ggtitle("Weight gain dependence on protein source") +
+    ylab("Weigth gain (g)") + 
+    #stat_summary(fun = mean, geom="point", shape=5, size=3, color="black", fill="black") +
+    facet_wrap(.~protSource)
+```
+
+- Lineplot of the weight gain against protein source, protein level with coloring and grouping according to block
+
+```{r}
+diet %>% 
+  ggplot(aes(x=protSource:protLevel, y=weightGain)) + 
+    scale_fill_brewer(palette="RdGy") +
+    theme_bw() +
+    geom_line(aes(group=block, color=block)) +
+    geom_point(aes(color=block))+
+    ggtitle("Weight gain dependence on protein source") +
+    ylab("Weigth gain (g)") 
+    #stat_summary(fun = mean, geom="point", shape=5, size=3, color="black", fill="black")
+```
+
+- An increase in the weight of the rats seems to depend on the protein source
+received in the diet.
+
+- The increase in the weight of the rats seems to depend on the level of protein
+received in the diet
+
+- There also seems to be an interaction effect between the protein level and the
+protein source on the gain in weight of the rats. For the beef and the pork 
+diets the effect of high protein levels in the data seems to be much stronger
+than in the cereal diet.
+
+- There is also a strong effect of the block. Blocking implies a randomisation 
+restriction, hence, we will have to include the block effect anyway. 
+
+# Filter the data to only use the beef and cereal diet
+
+```{r}
+diet.bc <- diet %>% filter(protSource != "p")
+```
+
+# Multivariate linear regression analysis
+
+## Assumptions 
+
+List assumptions:
+
+1. The observations are independent 
+2. Linearity between the response and predictor variable
+3. The residuals of the model must be normally distributed
+4. Homoscedasticity of the data
+
+The first assumption is met if we correct for block in the model because the 
+rats were randomized to the treatment within block. The other three assumptions 
+can be assessed by fitting the linear model and calling the `plot()` function 
+as follows.
+
+```{r}
+lm1 <- lm(weightGain ~ block + protSource*protLevel, data=diet.bc)
+plot(lm1)
+```
+
+All assumptions are met for this dataset.
+
+## Hypothesis testing
+
+We here fit a linear model with a blocking factor for `block` and main and 
+interaction effects for protein source and protein level.
+
+```{r}
+summary(lm1)
+```
+
+## Interpretation of the regression parameters
+
+```{r}
+library(ExploreModelMatrix)
+ExploreModelMatrix::VisualizeDesign(diet.bc, ~ block + protSource * protLevel)$plotlist
+```
+
+There are 3 levels for protein source, 2 levels for protein level and 10 levels
+for the blocking variable. We will have one reference level for each respective 
+variable: beef, low, block 1. So we need 2, 1 and 9 dummy variables to introduce 
+the factors protein source, protein level and block in the linear model, 
+respectively.
+
+Hence, we can write down the linear model as follows:
+
+$y_i=\beta_0+\beta_cx_{i,c} +\beta_hx_{i,h}+\beta_{ch}x_{i,c}x_{i,h}+\beta_{b2}x_{i,b2}+\ldots+\beta_{b10}x_{i,b10}+\epsilon_{i}$
+
+with:
+$y_i$ the observed weight gain for rat i, 
+$x_{i,h}$ a dummy variable which is 1 if rat i receives a high protein diet 
+and is 0 otherwise,  
+$x_{i,c}$ a dummy variable which is 1 if rat i receives a cereal diet 
+and is 0 otherwise,  
+$x_{i,bk}$ is a dummy variable which is 1 if rat i belongs to block $bk$ 
+and is 0 otherwise, with $k \in 2,\ldots, 10$, 
+and $\epsilon_i$ an error term which is normally distributed with mean 0 and 
+variance $\sigma^2$, i.e. $\epsilon_i \sim N(0,\sigma^2)$.
+
+- Rats that are assigned to block $k$ and receive a beef based low protein diet have
+	a covariate pattern $x_{i,h}=0$, $x_{i,c}=0$, $x_{i,bm}=0$ with $m\neq k$ and $x_{i,bk}=1$. 
+	Their mean weight gain is thus equal to $\mu_{l,b,bk}=\beta_0+\beta_{bk}$
+
+- Rats that are assigned to block $k$ and receive a beef based high protein diet have
+	a covariate pattern $x_{i,h}=1$, $x_{i,c}=0$, $x_{i,bm}=0$ with $m\neq k$ and $x_{i,bk}=1$. 
+	Their mean weight gain is thus equal to $\mu_{h,b,bk}=\beta_0+\beta_h+\beta_{bk}$
+
+- Rats that are assigned to block $k$ and receive a cereal based low protein diet have
+	a covariate pattern $x_{i,h}=0$, $x_{i,c}=1$, $x_{i,bm}=0$ with $m\neq k$ and $x_{i,bk}=1$. 
+	Their mean weight gain is thus equal to $\mu_{h,c,bk}=\beta_0+\beta_c+\beta_{bk}$
+
+- Rats that are assigned to block $k$ and receive a cereal based heigh protein diet have
+	a covariate pattern $x_{i,h}=1$, $x_{i,c}=1$ $x_{i,bm}=0$ with $m\neq k$ and $x_{i,bk}=1$. 
+	Their mean weight gain is thus equal to $\mu_{h,c,bk}=\beta_0+\beta_h+\beta_c+\beta_{ch}+\beta_{bk}$
+
+We can now relate this to the output of the `lm` function:
+
+- The intercept $\beta_0$ is thus the average weight gain in the low beef 
+diet for rats in block 1.
+
+- The parameter $\beta_c$: the average weight gain difference between cereal-low and 
+beef-low diet is `r lm1$coef["protSourcec"]`g.
+
+- The parameter $\beta_h$: the average weight gain difference between beef-high and 
+beef-Low diet is `r lm1$coef["protLevelh"]`g.
+
+- The parameter $\beta_{ch}$ is the difference in the average weight gain difference 
+due to the high protein level as compared to the low protein level for cereal diets 
+as compared to the weight gain difference that occurs due to the protein level
+in the reference class (here beef diet). Here this is negative, 
+i.e. `r lm1$coef["protSourcec:protLevelh"]`g, thus the weight gain 
+for the cereal protein source increases on average less between high and 
+low protein diets than in beef based diets.
+
+## Testing the overall (combined) effect of diet
+
+Because there are multiple factors with different levels in the model, 
+we can first assess the effect of the diet (protein Level, protein source 
+and the interaction) by using anova. With this test we will assess the null
+hypothesis that the average weight gain in each treatment is equal: i.e. $H_0: \mu_{b,l}=\mu_{b,h}=\mu_{c,h}=\mu_{c,l}$ versus 
+the alternative hyptohesis $H_1:$ that at least two treatment means are 
+different. 
+
+```{r}
+lm0 <- lm(weightGain ~ block, data=diet.bc)
+anova(lm0, lm1)
+```
+
+We can conclude that there is an very significant effect of the diet type 
+(protein source and/or protein level and/or protein source-protein level 
+interaction) on the weight gain of rats (p = `r format(anova(lm0, lm1)$"Pr(>F)"[2],digits =1)`).
+
+## Assessing the interaction effect between protein source and protein level
+
+```{r, message=FALSE, warning=FALSE}
+library(car)
+summary(lm1)
+Anova(lm1,type="III")
+```
+
+There is a very significant interaction between the protein source and 
+the protein level. This indicates that the average weight increase due to 
+the protein level differs according to the protein source. 
+Hence, we cannot assess the effect of the protein source and/or protein level 
+independently because there effects of the protein source vary according to 
+the protein level.
+
+## Assessing specific contrasts
+
+Imagine that we are interested in assessing if there is an effect of
+ 
+1. protein source in the low protein diets 
+	- $\mu_{c,l}-\mu_{b,l} = \beta_c$
+
+
+2. protein source in high protein diets 
+	- $\mu_{c,h}-\mu_{b,h}=\beta_c+\beta_{ch}$
+
+3. protein level for beef diets ($\mu_{b,h}-\mu_{b,l}=\beta_h$), and
+cereal diets  ($\mu_{c,h}-\mu_{c,l}=\beta_h+\beta_{ch}$) 
+
+4. if the effect of the protein level differs between
+	- beef and cereal  $(\mu_{c,h}-\mu_{c,l}) - (\mu_{b,h}-\mu_{b,l})=\beta_{ch}$
+
+These effects of interest are so-called 
+**contrasts, i.e. linear combinations of the parameters**.
+
+We can define the contrasts and assess the significance of the contrasts with 
+the code below. The contrasts are given as input in the form of symbolic
+descriptions to the `linfct` argument of the `glht` function.
+
+```{r,message=FALSE, warning=FALSE}
+library(multcomp)
+set.seed(75468) # to get reproducible results (small effect if removed)
+lm1MultComp <- glht(
+    model = lm1,
+    linfct = c("protSourcec = 0",
+               "protSourcec + protSourcec:protLevelh = 0",
+               "protLevelh = 0",
+               "protLevelh +  protSourcec:protLevelh = 0",
+               "protSourcec:protLevelh = 0")
+)
+```
+
+```{r}
+summary(lm1MultComp)
+```
+
+```{r}
+confint(lm1MultComp)
+plot(lm1MultComp)
+```
+
+Note that the p-values and the confidence intervals are automatically corrected 
+for multiple testing.
+
+# Conclusion
+
+- There is an extremely significant effect of the type of protein diet on the 
+weight gain of rats  (p<<1e-3).
+
+- The average weight gain does not vary significantly according to protein 
+source in the diets with low protein levels (p = `r format(summary(lm1MultComp)$test$pvalues[names(summary(lm1MultComp)$test$tstat)=="protSourcec"],digits=2)`). 
+
+- The weight gain in the cereal diet at high protein concentration is on 
+average `r confint(lm1MultComp)$confint["protSourcec + protSourcec:protLevelh",1] %>% abs %>% round(.,1)`g lower than in the high protein beef diet (95% CI [`r confint(lm1MultComp)$confint["protSourcec + protSourcec:protLevelh",-1] %>% abs %>% round(.,1) %>% sort`]) and the difference is 
+very significant (p = format(summary(lm1MultComp)$test$pvalues[names(summary(lm1MultComp)$test$tstat)=="protSourcec + protSourcec:protLevelh"],digits=1)). 
+
+- We also discovered an extremely significant difference in weight gain 
+according to the protein level for beef based diets (p<<0.001).  
+The weight gain on average increases with `r round(confint(lm1MultComp)$confint["protLevelh",1],1)`g in the high protein 
+level as compared to the low protein beef diet 
+(95%CI [`r round(confint(lm1MultComp)$confint["protLevelh",-1],1)`]). 
+The protein level effect is not significant
+for the cereal diet (`r format(summary(lm1MultComp)$test$pvalues[names(summary(lm1MultComp)$test$tstat)=="protLevelh + protSourcec:protLevelh"],digits=2)`). 
+
+- Finally there is a significant interaction between protein level and protein source (p = `r format(summary(lm1MultComp)$test$pvalues[names(summary(lm1MultComp)$test$tstat)=="protSourcec:protLevelh"],digits=2)`), i.e. the increase in weight gain due to protein level in beef
+based diets was `r confint(lm1MultComp)$confint["protSourcec:protLevelh",1] %>% abs %>% round(.,1)`g than that in the cerial diet (95% CI [`r confint(lm1MultComp)$confint["protSourcec:protLevelh",-1] %>% abs %>% round(.,1) %>% sort`]). 
+
+All reported p-values and confidence intervals were corrected for multiple 
+testing
+
+
+
+
+
+
+

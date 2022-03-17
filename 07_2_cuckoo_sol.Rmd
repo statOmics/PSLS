@@ -1,0 +1,259 @@
+---
+title: "Exercise 7.2: ANOVA on the cuckoo dataset - solution"   
+author: "Lieven Clement and Jeroen Gilis"
+date: "statOmics, Ghent University (https://statomics.github.io)"  
+output:
+    html_document:
+      code_download: true    
+      theme: cosmo
+      toc: true
+      toc_float: true
+      highlight: tango
+      number_sections: true
+---
+
+# Cuckoo dataset
+
+The common cuckoo does not build its own nest: it prefers
+to lay its eggs in another birds' nest. It is known, since 1892,
+that the type of cuckoo bird eggs are different between different
+locations. In a study from 1940, it was shown that cuckoos return
+to the same nesting area each year, and that they always pick
+the same bird species to be a "foster parent" for their eggs.
+
+Over the years, this has lead to the development of geographically
+determined subspecies of cuckoos. These subspecies have evolved in
+such a way that their eggs look as similar as possible as those
+of their foster parents.
+
+The cuckoo dataset contains information on 120 Cuckoo eggs,
+obtained from randomly selected "foster" nests.
+For these eggs, researchers have measured the `length` (in mm)
+and established the `type` (species) of foster parent.
+The type column is coded as follows:
+
+- `type=1`: Meadow pipit
+- `type=2`: Tree pipit
+- `type=3`: Dunnock
+- `type=4`: European robin
+- `type=5`: White wagtail
+- `type=6`: Eurasian wren
+
+# Goal
+
+The researchers want totest if the type of foster parent
+has an effect on the average length of the cuckoo eggs.
+
+In theory, they want to study this for all six species.
+Previously, we looked at a single pairwise comparison
+between the European robin and the Eurasian wren with a
+t-test. Here, we will analyse all types simultaneously
+with ANOVA.
+
+Load the required libraries
+
+```{r, message=FALSE}
+library(tidyverse)
+```
+
+## Import the data
+
+```{r, message=FALSE}
+Cuckoo <- read_tsv("https://raw.githubusercontent.com/statOmics/PSLS21/data/Cuckoo.txt")
+head(Cuckoo)
+```
+
+# Data tidying
+
+It seems that the `tpye` column is a `double` rather than a `factor`. 
+Let's fix this:
+
+```{r}
+Cuckoo <- Cuckoo %>%
+  mutate(type = as.factor(type)) %>%
+  mutate(type = recode(type, 
+           "1" = "meadow", 
+           "2" = "tree", 
+           "3" = "dunnock",  
+           "4" = "robin", 
+           "5" = "wagtail", 
+           "6" = "wren"))
+```
+
+
+# Data exploration
+
+How many birds do we have for each type?
+
+```{r}
+Cuckoo %>%
+  count(type)
+```
+
+Visualize the data
+
+```{r}
+Cuckoo %>%
+  ggplot(aes(x=type,y=length,fill=type)) +
+    theme_bw() +
+    scale_fill_brewer(palette="RdGy") +
+    geom_boxplot() +
+    geom_jitter(width = 0.2) +
+    ggtitle("Boxplot of the length of eggs per type") +
+    ylab("length (mm)") + 
+    stat_summary(fun=mean, geom="point", shape=5, size=3, color="black", fill="black")
+```
+
+# ANOVA
+
+To study if the observed differences in average egg length 
+between the different foster bird types are significant, we may perform 
+an ANOVA.
+
+## Formulate null and alternative hypothesis
+
+The null hypothesis of ANOVA states that:
+$H0$: The mean egg length is equal between the different bird types.
+
+The alternative hypothesis of ANOVA states that:
+$HA$: The mean egg length for at least one bird type is different 
+from the mean egg length in at least one other bird type.
+
+## Parameter estimation 
+
+```{r}
+mod1 <- lm(length~type, Cuckoo)
+```
+
+## Check assumptions
+
+Before we may proceed with the analysis, we must make sure that all
+assumptions for ANOVA are met. ANOVA has three assumptions:
+
+1. The observations are independent of each other (in all groups)
+2. The data (length) must be normally distributed (in all groups)
+3. The variability within all groups is similar
+
+The first assumption is met, as we may assume that there are no
+specific patterns of correlation between the randomly selected nests.
+
+To check the normality assumption, we will use QQ plots.
+
+```{r}
+plot(mod1, which = 2)
+```
+
+```{r}
+Cuckoo %>% 
+  ggplot(aes(sample=length)) +
+  geom_qq() +
+  geom_qq_line() + 
+  facet_grid(~type)
+```
+
+There seem to be no clear deviations from normality.
+
+The third assumption of equal variances seems to be met based on the
+visualization with the boxplots (see above).
+
+As such, we may proceed with the ANOVA analysis.
+
+
+### Simulate to train your skills in assessing assumptions 
+
+```{r}
+set.seed(1031)
+sigma <- mod1 %>% sigma 
+dataHlp <- Cuckoo
+
+simModels <- list()
+plotList <- list()
+plotListQQ1 <- list() 
+
+par(mfrow=c(3,3))
+for (i in 1:9)
+{
+  nobs <- Cuckoo %>% nrow
+  dataHlp$ySim <- mod1$fit + rnorm(nobs, sd = sigma)
+  simModels[[i]] <- lm(ySim~type, dataHlp)
+  plot(simModels[[i]], which = 2)
+  plotList[[i]] <- dataHlp %>%  
+    ggplot(aes(type,ySim)) + 
+    geom_boxplot(outlier.shape = NA) +
+    geom_jitter()
+  plotListQQ1[[i]] <- dataHlp %>%  
+    filter(type == "meadow")  %>% 
+    ggplot(aes(sample = ySim)) + 
+    geom_qq() +
+    geom_qq_line() + 
+    xlab("QQ for meadow")
+}
+
+do.call(gridExtra::grid.arrange, plotList)
+do.call(gridExtra::grid.arrange, plotListQQ1)
+```
+
+The most deviating QQ-plot of the residuals in the nine simulation runs: 
+```{r}
+par(mfrow=c(1,1))
+plot(simModels[[8]], which = 2)
+```
+
+
+## ANOVA model
+
+```{r}
+mod1_anova <- anova(mod1)
+mod1_anova
+```
+
+The p-value of the ANOVA analysis is extremely significant
+(p-value < 0.001), 
+so we reject the null hypothesis that the mean 
+egg length is equal between the different bird types.
+We can say that the mean egg length is significantly different
+between at least two bird types on the 5% significance level.
+
+Based on this analysis, we do not yet know between which particular
+bird types there is a significant difference. To study this, we will
+perform the Tuckey post-hoc analysis.
+
+## Post-hoc analysis
+
+We will perform a post-hoc analysis, to look at the difference 
+in egg length between each pairwise comparison of bird types.
+Importantly, with this strategy, the p-values will be correctly
+adjusted for multiple testing.
+
+The null hypothesis for each pairwise test is that there is no
+difference in the mean egg length between both bird types.
+
+The alternative hypothesis for each pairwise test states that there
+is indeed a difference in the mean egg length between both bird types.
+
+We will also calculate the confidence interval on the mean differences.
+
+```{r,message=FALSE}
+library(multcomp, quietly = TRUE)
+mcp <- glht(mod1, linfct = mcp(type = "Tukey"))
+summary(mcp)
+confint(mcp)
+```
+
+## Conclusion
+
+There association between the mean length of a cuckoo's egg and the foster bird species is an extremely significant (p << 0.001).
+
+The mean length of cuckoo's eggs in nests of the Eurasian
+wern are smaller as compared to those from all other bird
+species in the study:
+
+- the meadow pipit (adjusted p-value = `r summary(mcp)$test$pvalues[names(summary(mcp)$test$tstat) == "wren - meadow"] %>% format(digits=1)`, mean difference = `r round(confint(mcp)$confint["wren - meadow",1],1)`mm, 95% CI [`r round(confint(mcp)$confint["wren - meadow",-1],1)`])
+- the tree pipit (adjusted p-value = `r summary(mcp)$test$pvalues[names(summary(mcp)$test$tstat) == "wren - tree"] %>% format(digits=1)`, mean difference = `r round(confint(mcp)$confint["wren - tree",1],1)`mm, 95% CI [`r round(confint(mcp)$confint["wren - tree",-1],1)`])
+- the dunnock (adjusted p-value = `r summary(mcp)$test$pvalues[names(summary(mcp)$test$tstat) == "wren - dunnock"] %>% format(digits=1)`, mean difference = `r round(confint(mcp)$confint["wren - dunnock",1],1)`mm, 95% CI [`r round(confint(mcp)$confint["wren - dunnock",-1],1)`])
+- the European robin (adjusted p-value = `r summary(mcp)$test$pvalues[names(summary(mcp)$test$tstat) == "wren - robin"] %>% format(digits=1)`, mean difference = `r round(confint(mcp)$confint["wren - robin",1],1)`mm, 95% CI [`r round(confint(mcp)$confint["wren - robin",-1],1)`])
+- the white wagtail (adjusted p-value = `r summary(mcp)$test$pvalues[names(summary(mcp)$test$tstat) == "wren - wagtail"] %>% format(digits=1)`, mean difference = `r round(confint(mcp)$confint["wren - wagtail",1],1)`mm, 95% CI [`r round(confint(mcp)$confint["wren - wagtail",-1],1)`])
+
+The mean length of the cuckoo bird's eggs for all other pairwise comparisons between foster bird species are not statistically significantly different at the 5% level.
+
+

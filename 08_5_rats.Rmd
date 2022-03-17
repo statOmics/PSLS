@@ -1,0 +1,169 @@
+---
+title: "Exercise 8.5: Blocking on the rat diet dataset"   
+author: "Lieven Clement and Jeroen Gilis"
+date: "statOmics, Ghent University (https://statomics.github.io)"  
+output:
+    html_document:
+      code_download: true    
+      theme: cosmo
+      toc: true
+      toc_float: true
+      highlight: tango
+      number_sections: true
+---
+
+# Background 
+
+Researchers are studying the impact of protein sources and protein levels in 
+the diet on the weight of rats. They feed the rats with diets of beef, cereal 
+and pork and use a low and high protein level for each diet type. 
+The researchers can include 60 rats in the experiment. Prior to the experiment,
+the rats were divided in 10 homogeneous groups of 6 rats based on 
+characteristics such as initial weight, appetite, etc.
+
+Within each group a rat is randomly assigned to a diet. The rats are fed during 
+a month and the weight gain in grams is recorded for each rat. 
+
+The researchers want to assess the effect of the type of diet and the protein 
+level on the weight of the rats. 
+
+In this exercise we will perform the data exploration using all diets, but, 
+to keep the data analysis simple we will only assess the beef and cereal diets.
+
+# Experimental design 
+
+- There are three explanatory variables in the experiment: the factor diet type
+with two levels (beef and cereal), factor protein level with levels 
+(low and high) and a group blocking factor with 10 levels.
+
+- There are 6 treatments: beef-high, cereal-high, pork-high, beef-low, 
+cereal-low, pork-low protein. 
+
+- The rats are the experimental and observational units. 
+
+- The weight gain is the response variable. 
+
+- The experiment is a randomized complete block (RCB) design
+
+Load libraries
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+# Data import
+
+```{r}
+diet <- read.table("https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt",
+                   header=TRUE)
+head(diet)
+```
+
+# Tidy data
+
+```{r}
+diet <- diet %>%
+  mutate(block = as.factor(block),
+         protSource = as.factor(protSource),
+         protLevel = as.factor(protLevel)) %>%
+  mutate(protLevel = fct_relevel(protLevel, "l"))
+```
+
+# Data exploration
+
+- Boxplot of the weight gain against protein source, protein level with coloring according to block
+
+```{r}
+
+```
+
+- Lineplot of the weight gain against protein source, protein level with coloring and grouping according to block
+
+```{r}
+
+```
+
+- Interpret the plots
+
+# Data filtering
+
+Filter the data to only use the beef and cereal diet.
+
+```{r}
+
+```
+
+# Multivariate linear regression analysis
+
+## Model specification
+
+Based  on the data exploration, propose a sensible regression model to analyse
+the data.
+
+## Assumptions 
+
+Check the assumptions of the linear regression model
+
+## Hypothesis testing
+
+Use the `summary` function to get an initial test for the parameters in the 
+model.
+
+## Interpretation of the regression parameters
+
+To facilitate the interpretation of the different parameters in our regression
+model, we can make use of the `VisualizeDesign` function of the 
+`ExploreModelMatrix` R package. The first argument of this function is the name
+of our target dataset, the second argument is a model formula, which in this
+case is specified as a `~` followed by the explanatory variables in our model.
+
+```{r, eval = FALSE}
+library(ExploreModelMatrix)
+ExploreModelMatrix::VisualizeDesign(..., ~ ...)$plotlist
+```
+
+After seeing this, again think about the meaning of the parameters in our model.
+
+## Testing the overall (omnibus) effect of diet
+
+By comparing a model containing diet effects to a model that does not have
+diet effects, using anova.
+
+```{r}
+
+```
+
+## Assessing the interaction effect between protein source and protein level
+
+
+```{r}
+
+```
+
+
+## Assessing specific contrasts
+
+Imagine that we are interested in assessing if there is an effect of
+ 
+1. protein source in the low protein diets
+
+2. protein source in high protein diets 
+
+3. protein level for beef diets, 
+
+4.  protein level for cereal diets, 
+
+5. if the effect of the protein level differs between beef and cereal 
+
+Step 1: translate these research questions into parameters of the model (or
+combinations of multiple parameters).
+
+Step 2: Assess the significance of the contrasts using the `multcomp` package. 
+The contrasts are given as input in the form of symbolic
+descriptions to the `linfct` argument of the `glht` function.
+
+# Conclusion
+
+Formulate a conclusion for the different research hypotheses.
+
+

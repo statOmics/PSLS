@@ -1,0 +1,70 @@
+---
+title: "8.4. Multiple Regression: KPNA2 example"
+author: "Lieven Clement"
+date: "statOmics, Ghent University (https://statomics.github.io)"
+output:
+    html_document:
+      code_download: true    
+      theme: cosmo
+      toc: true
+      toc_float: true
+      highlight: tango
+      number_sections: true
+---
+
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+
+# Background
+
+Background: Histologic grade in breast cancer provides clinically important 
+prognostic information. Researchers examined whether histologic grade was 
+associated with gene expression profiles of breast cancers and whether such 
+profiles could be used to improve histologic grading. In this tutorial we 
+will assess the association between histologic grade and the expression of 
+the KPNA2 gene that is known to be associated with poor breast cancer prognosis.
+The patients, however, do not only differ in the histologic grade, 
+but also on their lymph node status. The lymph nodes were not affected (0) 
+or surgically removed (1).
+
+# Import data
+
+```{r}
+
+```
+
+# Data wrangling
+
+Transform the variable grade and node to a factor.
+
+```{r}
+
+```
+
+# Data exploration
+
+Histologic grade and lymph node status can be associated with the KPNA2 gene 
+expression. Moreover, it is also possible that the differential expression 
+associated with histological grade is different in patients that have 
+unaffected lymph nodes and patients for which the lymph nodes had to be removed.
+
+Make a relevant plot that contains information on KPNA2 expression and both
+explanatory variables grade and node.
+
+```{r}
+
+```
+
+What does the plot suggest?
+
+# Linear regression 
+
+1. Specify the model, interpret each model parameter in the model.
+
+2. Formulate the relevant research questions 
+
+3. Translate them in a null and alternative hyptheses.  
+
+4. Perform the hypothesis tests  and calculate the confidence intervals. 
+
+# Formulate your conclusions in terms of the research question
+
