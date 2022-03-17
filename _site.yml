@@ -1,26 +1,62 @@
-name: "my-website"
+name: "PSLS - Practical Statistics for the Life Sciences"
 navbar:
-  title: "My Website"
+  title: "PSLS"
   left:
     - icon: fa-home
       href: index.html
-    - text: "About"
-      href: about.html
     - text: "Lectures"
       icon: fa-chalkboard-teacher
       menu:
-        - text: "Example"
-          href: example.html
+        - text: "1. Introduction"
+          href: 01-intro.html
+        - text: "2. Concepts"
+          href: 02-concepts.html
+        - text: "3. Experimental Design I"
+          href: 03-experimentalDesign.html
+        - text: "4. Data Exploration"
+          href: 04-dataExploration.html
+        - text: "5.1 Statistical Inference 1"
+          href: 05-statisticalInference.html
+        - text: "5.2 Statistical Inference 2"
+          href: 05-statisticalInference-twosampleT.html
+        - text: "6. Linear Regression"
+          href: 06-linearRegression.html
+        - text: "7. Analysis of Variance"
+          href: 07-Anova.html
+        - text: "8. Multiple Regression"
+          href: 08-MultipleRegression.html
+        - text: "8.2 Multiple Regression: Factorial Designs"
+          href: 08-MultipleRegression-SpecificDesigns.html
+        - text: "8.3. Experimental Design II"
+          href: 08-experimentalDesignII.html
+        - text: "8.4. Experimental Design II"
+          href: 08-experimentalDesignIII.html
+        - text: "9.1. Nonparametric Statistics 1"
+          href: 09-NonparametericStatistics-WilcoxonMannWithney.html
+        - text: "9.2. Nonparametric Statistics 2"
+          href: 09-NonparametericStatistics-KruskalWallis.html
+        - text: "10. Categorical Data Analysis"
+          href: 10-categoricalDataAnalysis.html
+
     - text: "Labs"
       icon: fa-laptop
       menu:
-      - text: "Lab 1"
-        href:
-      - text: "Lab 2"
-        href:
+      - text: "4. Data Exploration"
+        href: 04_exercises.html
+      - text: "5. Statistical inference"
+        href: 05_exercises.html
+      - text: "6. Simple linear regression"
+        href: 06_exercises.html
+      - text: "7. ANOVA"
+        href: 07_exercises.html
+      - text: "8. Multiple linear regression"
+        href: 08_exercises.html
+      - text: "9. Non-parametric statistics"
+        href: 09_exercises.html
+
   right:
     - icon: fab fa-github
-      href: https://github.com/statOmics/Rmd-website
+      href: https://github.com/statOmics/PSLS
     - text: "statOmics"
       href: http://statomics.github.io/
 output:
@@ -37,4 +73,4 @@ output:
         after_body: footer.html
       css: style.css
 new_session: true
-exclude: ["renv.lock"]
+exclude: ["renv.lock", "update_install_R.R", "install.R"]
