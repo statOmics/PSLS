@@ -1,12 +1,5 @@
 ---
 title: PSLS21 - Practical Statistics for the Life Sciences 2021
-output:
-    html_document:
-      theme: default
-      code_download: false
-      toc: false
-      toc_float: false
-      number_sections: false
 ---
 
 ```{r setup, include=FALSE, cache=FALSE}

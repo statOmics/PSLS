@@ -2,14 +2,6 @@
 title: "Exeercise 6.2: Linear regression on the FEV dataset - solution"
 author: "Lieven Clement and Jeroen Gilis"
 date: "statOmics, Ghent University (https://statomics.github.io)"
-output:
-    html_document:
-      code_download: true
-      theme: cosmo
-      toc: true
-      toc_float: true
-      highlight: tango
-      number_sections: true
 ---
 
 As an exercise on linear regression, we will analyse the FEV dataset.

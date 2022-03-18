@@ -2,14 +2,6 @@
 title: "Exercise 8.6: Blocking on the rat diet dataset - solution"
 author: "Lieven Clement and Jeroen Gilis"
 date: "statOmics, Ghent University (https://statomics.github.io)"
-output:
-    html_document:
-      code_download: true
-      theme: cosmo
-      toc: true
-      toc_float: true
-      highlight: tango
-      number_sections: true
 ---
 
 # Background

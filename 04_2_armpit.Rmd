@@ -2,14 +2,6 @@
 title: "Exercise 4.2: Exploring the armpit dataset"
 author: "Lieven Clement and Jeroen Gilis"
 date: "statOmics, Ghent University (https://statomics.github.io)"
-output:
-    html_document:
-      code_download: true
-      theme: cosmo
-      toc: true
-      toc_float: true
-      highlight: tango
-      number_sections: true
 ---
 
 In this exercise, we will explore the "smelly armpit" dataset.

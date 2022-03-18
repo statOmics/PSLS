@@ -2,14 +2,6 @@
 title: "Exercises on chapter 7: ANOVA"
 author: "Lieven Clement and Jeroen Gilis"
 date: "statOmics, Ghent University (https://statomics.github.io)"
-output:
-    html_document:
-      code_download: true
-      theme: cosmo
-      toc: true
-      toc_float: true
-      highlight: tango
-      number_sections: true
 ---
 
 On the third day of the "Practical Statistics for the Life Sciences (2021)"
