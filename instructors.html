@@ -17,7 +17,7 @@
 <script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -30,6 +30,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <script src="site_libs/navigation-1.1/sourceembed.js"></script>
@@ -226,6 +229,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -233,6 +299,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -393,7 +469,7 @@ $(document).ready(function () {
 <p>Affiliation: Department of Applied Mathematics, Computer Science and Statistics, Ghent University, Ghent, BE</p>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiSW5zdHJ1Y3RvcnMiCmF1dGhvcjogIkxpZXZlbiBDbGVtZW50IgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgpvdXRwdXQ6CiAgICBodG1sX2RvY3VtZW50OgogICAgICB0aGVtZTogY29zbW8KICAgICAgdG9jOiBmYWxzZQogICAgICB0b2NfZmxvYXQ6IGZhbHNlCiAgICAgIGhpZ2hsaWdodDogdGFuZ28KICAgICAgbnVtYmVyX3NlY3Rpb25zOiBmYWxzZQotLS0KCiMjIyBMaWV2ZW4gQ2xlbWVudAoKYGBge3IgZWNobz1GQUxTRSxvdXQud2lkdGg9IjE3JSIsb3V0LmV4dHJhPSdzdHlsZT0iZmxvYXQ6bGVmdDsgcGFkZGluZzoxMHB4Iid9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKCIuL2ZpZ3VyZXMvbGlldmVuLmpwZyIpCmBgYAoKTGlldmVuIENsZW1lbnQgaXMgYW4gQXNzb2NpYXRlIFByb2Zlc3NvciBvZiBTdGF0aXN0aWNhbCBHZW5vbWljcyBhdCBHaGVudCBVbml2ZXJzaXR5LCB3aGVyZSBoZSBsZWFkcyB0aGUgW3N0YXRPbWljc10oaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvLykgR3JvdXAuIEhlIGlzIGFuIGV4cGVydCBpbiBkZXZlbG9waW5nIHN0YXRpc3RpY2FsIG1ldGhvZHMgYW5kIG9wZW4gc291cmNlIHRvb2xzIGZvciBkaWZmZXJlbnRpYWwgb21pY3MgZGF0YSBhbmFseXNpcy4gSGlzIHJlc2VhcmNoIGVmZm9ydHMgcmVzdWx0ZWQgaW4gbnVtZXJvdXMgcHVibGljYXRpb25zIG9uIG5vdmVsIG1ldGhvZHMgYW5kIHRvb2xzIGZvciwgYW5kIGFwcGxpZWQgcmVzZWFyY2ggaW4gb21pY3MgZGF0YSBhbmFseXNpcy4gSGlzIGxhYiBpcyBidWlsdCBhcm91bmQgdHdvIHN0cmF0ZWdpYyByZXNlYXJjaCBwaWxsYXJzIGVhY2ggY29ubmVjdGVkIHRvIGFuIG9taWNzIGRvbWFpbjogKHNpbmdsZSBjZWxsKSB0cmFuc2NyaXB0b21pY3MgYW5kIHByb3Rlb21pY3MgYW5kIGhlIGhhcyBhIHN0cm9uZyBpbnRlcmVzdCBpbiBsZXZlcmFnaW5nIGhpcyBleHBlcnRpc2UgdG8gdHJhbnNsYXRpb25hbCByZXNlYXJjaC4gSGUgYWxzbyBzZXJ2ZXMgYXMgYSBtZW1iZXIgb2YgdGhlIGNvcmUgdGVhbSB0aGF0IGVzdGFibGlzaGVkIGEgbmV3IE1hc3RlciBvZiBTY2llbmNlIGluIEJpb2luZm9ybWF0aWNzIGF0IEdoZW50IFVuaXZlcnNpdHkgYW5kIGFzIGEgYm9hcmQgbWVtYmVyIG9mIHRoZSBCZWxnaWFuIFByb3Rlb21pY3MgQXNzb2NpYXRpb24uCgpBZmZpbGlhdGlvbjogRGVwYXJ0bWVudCBvZiBBcHBsaWVkIE1hdGhlbWF0aWNzLCBDb21wdXRlciBTY2llbmNlIGFuZCBTdGF0aXN0aWNzLCBHaGVudCBVbml2ZXJzaXR5LCBHaGVudCwgQkUKClwKXAoKIyMjIEplcm9lbiBHaWxpcwoKYGBge3IgZWNobz1GQUxTRSxvdXQud2lkdGg9IjE3JSIsb3V0LmV4dHJhPSdzdHlsZT0iZmxvYXQ6bGVmdDsgcGFkZGluZzoxMHB4Iid9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKCIuL2ZpZ3VyZXMvamVyb2VuLnBuZyIpCmBgYAoKSmVyb2VuIEdpbGlzIGlzIGEgUGhEIHN0dWRlbnQgaW4gdGhlIFtzdGF0T21pY3NdKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pby8pIEdyb3VwIGF0IEdoZW50IFVuaXZlcnNpdHksIGhlYWRlZCBieSBwcm9mLiBMaWV2ZW4gQ2xlbWVudC4gQWZ0ZXIgY29tcGxldGluZyBhIGJhY2hlbG9yJ3MgYW5kIG1hc3RlcidzIGRlZ3JlZSBpbiBiaW9jaGVtaXN0cnkgYW5kIGJpb3RlY2hub2xvZ3kgYXQgS1UgTGV1dmVuLCBoZSBvYnRhaW5lZCBhbiBhZGRpdGlvbmFsIG1hc3RlcidzIGRlZ3JlZSBpbiBiaW9pbmZvcm1hdGljcyBhdCBHaGVudCBVbml2ZXJzaXR5LiBEdXJpbmcgaGlzIG1hc3RlciB0aGVzaXMgYXQgdGhlIFtzdGF0T21pY3NdKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pby8pIGdyb3VwLCBoZSBoYXMgd29ya2VkIG9uIGRldmVsb3Bpbmcgbm92ZWwsIHNjYWxhYmxlIHRvb2xzIGZvciBzdHVkeWluZyBkaWZmZXJlbnRpYWwgZXhwcmVzc2lvbiBpbiBzaW5nbGUtY2VsbCB0cmFuc2NyaXB0b21pY3MgYXBwbGljYXRpb25zLiBKZXJvZW4gaXMgY3VycmVudGx5IGNvbnRpbnVpbmcgaGlzIHJlc2VhcmNoIGFzIGEgUGhEIHN0dWRlbnQgaW4gdGhlIGdyb3VwLgoKQWZmaWxpYXRpb246IERlcGFydG1lbnQgb2YgQXBwbGllZCBNYXRoZW1hdGljcywgQ29tcHV0ZXIgU2NpZW5jZSBhbmQgU3RhdGlzdGljcywgR2hlbnQgVW5pdmVyc2l0eSwgR2hlbnQsIEJFCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiSW5zdHJ1Y3RvcnMiCmF1dGhvcjogIkxpZXZlbiBDbGVtZW50IgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgpvdXRwdXQ6CiAgICBodG1sX2RvY3VtZW50OgogICAgICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UKLS0tCgojIyMgTGlldmVuIENsZW1lbnQKCmBgYHtyIGVjaG89RkFMU0Usb3V0LndpZHRoPSIxNyUiLG91dC5leHRyYT0nc3R5bGU9ImZsb2F0OmxlZnQ7IHBhZGRpbmc6MTBweCInfQprbml0cjo6aW5jbHVkZV9ncmFwaGljcygiLi9maWd1cmVzL2xpZXZlbi5qcGciKQpgYGAKCkxpZXZlbiBDbGVtZW50IGlzIGFuIEFzc29jaWF0ZSBQcm9mZXNzb3Igb2YgU3RhdGlzdGljYWwgR2Vub21pY3MgYXQgR2hlbnQgVW5pdmVyc2l0eSwgd2hlcmUgaGUgbGVhZHMgdGhlIFtzdGF0T21pY3NdKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pby8pIEdyb3VwLiBIZSBpcyBhbiBleHBlcnQgaW4gZGV2ZWxvcGluZyBzdGF0aXN0aWNhbCBtZXRob2RzIGFuZCBvcGVuIHNvdXJjZSB0b29scyBmb3IgZGlmZmVyZW50aWFsIG9taWNzIGRhdGEgYW5hbHlzaXMuIEhpcyByZXNlYXJjaCBlZmZvcnRzIHJlc3VsdGVkIGluIG51bWVyb3VzIHB1YmxpY2F0aW9ucyBvbiBub3ZlbCBtZXRob2RzIGFuZCB0b29scyBmb3IsIGFuZCBhcHBsaWVkIHJlc2VhcmNoIGluIG9taWNzIGRhdGEgYW5hbHlzaXMuIEhpcyBsYWIgaXMgYnVpbHQgYXJvdW5kIHR3byBzdHJhdGVnaWMgcmVzZWFyY2ggcGlsbGFycyBlYWNoIGNvbm5lY3RlZCB0byBhbiBvbWljcyBkb21haW46IChzaW5nbGUgY2VsbCkgdHJhbnNjcmlwdG9taWNzIGFuZCBwcm90ZW9taWNzIGFuZCBoZSBoYXMgYSBzdHJvbmcgaW50ZXJlc3QgaW4gbGV2ZXJhZ2luZyBoaXMgZXhwZXJ0aXNlIHRvIHRyYW5zbGF0aW9uYWwgcmVzZWFyY2guIEhlIGFsc28gc2VydmVzIGFzIGEgbWVtYmVyIG9mIHRoZSBjb3JlIHRlYW0gdGhhdCBlc3RhYmxpc2hlZCBhIG5ldyBNYXN0ZXIgb2YgU2NpZW5jZSBpbiBCaW9pbmZvcm1hdGljcyBhdCBHaGVudCBVbml2ZXJzaXR5IGFuZCBhcyBhIGJvYXJkIG1lbWJlciBvZiB0aGUgQmVsZ2lhbiBQcm90ZW9taWNzIEFzc29jaWF0aW9uLgoKQWZmaWxpYXRpb246IERlcGFydG1lbnQgb2YgQXBwbGllZCBNYXRoZW1hdGljcywgQ29tcHV0ZXIgU2NpZW5jZSBhbmQgU3RhdGlzdGljcywgR2hlbnQgVW5pdmVyc2l0eSwgR2hlbnQsIEJFCgpcClwKCiMjIyBKZXJvZW4gR2lsaXMKCmBgYHtyIGVjaG89RkFMU0Usb3V0LndpZHRoPSIxNyUiLG91dC5leHRyYT0nc3R5bGU9ImZsb2F0OmxlZnQ7IHBhZGRpbmc6MTBweCInfQprbml0cjo6aW5jbHVkZV9ncmFwaGljcygiLi9maWd1cmVzL2plcm9lbi5wbmciKQpgYGAKCkplcm9lbiBHaWxpcyBpcyBhIFBoRCBzdHVkZW50IGluIHRoZSBbc3RhdE9taWNzXShodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8vKSBHcm91cCBhdCBHaGVudCBVbml2ZXJzaXR5LCBoZWFkZWQgYnkgcHJvZi4gTGlldmVuIENsZW1lbnQuIEFmdGVyIGNvbXBsZXRpbmcgYSBiYWNoZWxvcidzIGFuZCBtYXN0ZXIncyBkZWdyZWUgaW4gYmlvY2hlbWlzdHJ5IGFuZCBiaW90ZWNobm9sb2d5IGF0IEtVIExldXZlbiwgaGUgb2J0YWluZWQgYW4gYWRkaXRpb25hbCBtYXN0ZXIncyBkZWdyZWUgaW4gYmlvaW5mb3JtYXRpY3MgYXQgR2hlbnQgVW5pdmVyc2l0eS4gRHVyaW5nIGhpcyBtYXN0ZXIgdGhlc2lzIGF0IHRoZSBbc3RhdE9taWNzXShodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8vKSBncm91cCwgaGUgaGFzIHdvcmtlZCBvbiBkZXZlbG9waW5nIG5vdmVsLCBzY2FsYWJsZSB0b29scyBmb3Igc3R1ZHlpbmcgZGlmZmVyZW50aWFsIGV4cHJlc3Npb24gaW4gc2luZ2xlLWNlbGwgdHJhbnNjcmlwdG9taWNzIGFwcGxpY2F0aW9ucy4gSmVyb2VuIGlzIGN1cnJlbnRseSBjb250aW51aW5nIGhpcyByZXNlYXJjaCBhcyBhIFBoRCBzdHVkZW50IGluIHRoZSBncm91cC4KCkFmZmlsaWF0aW9uOiBEZXBhcnRtZW50IG9mIEFwcGxpZWQgTWF0aGVtYXRpY3MsIENvbXB1dGVyIFNjaWVuY2UgYW5kIFN0YXRpc3RpY3MsIEdoZW50IFVuaXZlcnNpdHksIEdoZW50LCBCRQo=</div>
 <div class="footer">
     <hr>
     This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
@@ -401,6 +477,8 @@ $(document).ready(function () {
 </div>
 
 
+</div>
+</div>
 
 </div>
 
@@ -439,6 +517,35 @@ $(document).ready(function () {
 });
 </script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
