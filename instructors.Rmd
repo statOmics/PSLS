@@ -2,6 +2,9 @@
 title: "Instructors"
 author: "Lieven Clement"
 date: "statOmics, Ghent University (https://statomics.github.io)"
+output:
+    html_document:
+        number_sections: false
 ---
 
 ### Lieven Clement
