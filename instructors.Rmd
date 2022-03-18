@@ -20,12 +20,14 @@ Affiliation: Department of Applied Mathematics, Computer Science and Statistics,
 \
 \
 
-### Jeroen Gilis
+### Milan Malfait
 
 ```{r echo=FALSE,out.width="17%",out.extra='style="float:left; padding:10px"'}
-knitr::include_graphics("./figures/jeroen.png")
+knitr::include_graphics("./figures/milan.jpg")
 ```
 
-Jeroen Gilis is a PhD student in the [statOmics](https://statomics.github.io/) Group at Ghent University, headed by prof. Lieven Clement. After completing a bachelor's and master's degree in biochemistry and biotechnology at KU Leuven, he obtained an additional master's degree in bioinformatics at Ghent University. During his master thesis at the [statOmics](https://statomics.github.io/) group, he has worked on developing novel, scalable tools for studying differential expression in single-cell transcriptomics applications. Jeroen is currently continuing his research as a PhD student in the group.
+Milan Malfait is a PhD student in the [statOmics](https://statomics.github.io/) Group at Ghent University, headed by prof. Lieven Clement. He has a background in bioengineering and bioinformatics and is currently pursuing a PhD in statistical data analysis in collaboration with Janssen Pharmaceutica. His main research topic is to develop robust and scalable statistical methods for differential expression analysis with single-cell transcriptomics data.
+
+<br/>
 
 Affiliation: Department of Applied Mathematics, Computer Science and Statistics, Ghent University, Ghent, BE
