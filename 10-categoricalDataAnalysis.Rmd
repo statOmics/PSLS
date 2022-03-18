@@ -383,7 +383,9 @@ knitr::kable(hamsterTot,booktabs = TRUE)
 ```
 
 ---
+
 ### Absolute risk difference (ARD)
+
 - $\pi_1=P[\text{agressive male } \vert \text{hostile}]$
 - $\hat \pi_1=(e+f)/n$, with $n=e+f+g+h$.
 
