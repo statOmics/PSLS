@@ -446,7 +446,7 @@ text(85,dnorm(128,100,15),expression(sigma))
 
 - If you want help you can always type:
 
-```{r}
+```{r, eval=FALSE}
 ?pnorm
 ```
 
