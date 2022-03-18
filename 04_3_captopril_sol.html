@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement and Jeroen Gilis" />
+
+
+<title>Exercise 4.3: Exploring the captopril dataset</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Exercise 4.3: Exploring the captopril dataset</h1>
+<h4 class="author">Lieven Clement and Jeroen Gilis</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<div id="the-captopril-dataset" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> The captopril dataset</h1>
+<p>The <code>captopril dataset</code> holds information on a small experiment with 15 patients that have increased blood pressure values. More specifically, for each patient we will have four values; one value for systolic blood pressure and one for diastolyic, both before and after treating the patient with a drug named captopril.</p>
+</div>
+<div id="import-the-data" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Import the data</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt&quot;</span>)</span></code></pre></div>
+<pre><code>## Rows: 15 Columns: 5
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## dbl (5): id, SBPb, DBPb, SBPa, DBPa
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(captopril)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["SBPb"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["DBPb"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["SBPa"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["DBPa"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"210","3":"130","4":"201","5":"125"},{"1":"2","2":"169","3":"122","4":"165","5":"121"},{"1":"3","2":"187","3":"124","4":"166","5":"121"},{"1":"4","2":"160","3":"104","4":"157","5":"106"},{"1":"5","2":"167","3":"112","4":"147","5":"101"},{"1":"6","2":"176","3":"101","4":"145","5":"85"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p><strong>Why is this dataset not tidy?</strong></p>
+</div>
+<div id="data-visualization" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Data visualization</h1>
+<p>Let’s say we now first want to visualize the data. One possibility to easily visualize the four types of blood pressure values is by adopting the <code>gather</code> function from tidyverse. It will reshape the dataframe, such that we have have a single variable <code>type</code>, which points at one of the four blood pressure types, and <code>bp</code>, which points at the actual value for each type for each patient.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type,bp,<span class="sc">-</span>id)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["id"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["type"],"name":[2],"type":["chr"],"align":["left"]},{"label":["bp"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"SBPb","3":"210"},{"1":"2","2":"SBPb","3":"169"},{"1":"3","2":"SBPb","3":"187"},{"1":"4","2":"SBPb","3":"160"},{"1":"5","2":"SBPb","3":"167"},{"1":"6","2":"SBPb","3":"176"},{"1":"7","2":"SBPb","3":"185"},{"1":"8","2":"SBPb","3":"206"},{"1":"9","2":"SBPb","3":"173"},{"1":"10","2":"SBPb","3":"146"},{"1":"11","2":"SBPb","3":"174"},{"1":"12","2":"SBPb","3":"201"},{"1":"13","2":"SBPb","3":"198"},{"1":"14","2":"SBPb","3":"148"},{"1":"15","2":"SBPb","3":"154"},{"1":"1","2":"DBPb","3":"130"},{"1":"2","2":"DBPb","3":"122"},{"1":"3","2":"DBPb","3":"124"},{"1":"4","2":"DBPb","3":"104"},{"1":"5","2":"DBPb","3":"112"},{"1":"6","2":"DBPb","3":"101"},{"1":"7","2":"DBPb","3":"121"},{"1":"8","2":"DBPb","3":"124"},{"1":"9","2":"DBPb","3":"115"},{"1":"10","2":"DBPb","3":"102"},{"1":"11","2":"DBPb","3":"98"},{"1":"12","2":"DBPb","3":"119"},{"1":"13","2":"DBPb","3":"106"},{"1":"14","2":"DBPb","3":"107"},{"1":"15","2":"DBPb","3":"100"},{"1":"1","2":"SBPa","3":"201"},{"1":"2","2":"SBPa","3":"165"},{"1":"3","2":"SBPa","3":"166"},{"1":"4","2":"SBPa","3":"157"},{"1":"5","2":"SBPa","3":"147"},{"1":"6","2":"SBPa","3":"145"},{"1":"7","2":"SBPa","3":"168"},{"1":"8","2":"SBPa","3":"180"},{"1":"9","2":"SBPa","3":"147"},{"1":"10","2":"SBPa","3":"136"},{"1":"11","2":"SBPa","3":"151"},{"1":"12","2":"SBPa","3":"168"},{"1":"13","2":"SBPa","3":"179"},{"1":"14","2":"SBPa","3":"129"},{"1":"15","2":"SBPa","3":"131"},{"1":"1","2":"DBPa","3":"125"},{"1":"2","2":"DBPa","3":"121"},{"1":"3","2":"DBPa","3":"121"},{"1":"4","2":"DBPa","3":"106"},{"1":"5","2":"DBPa","3":"101"},{"1":"6","2":"DBPa","3":"85"},{"1":"7","2":"DBPa","3":"98"},{"1":"8","2":"DBPa","3":"105"},{"1":"9","2":"DBPa","3":"103"},{"1":"10","2":"DBPa","3":"98"},{"1":"11","2":"DBPa","3":"90"},{"1":"12","2":"DBPa","3":"98"},{"1":"13","2":"DBPa","3":"110"},{"1":"14","2":"DBPa","3":"103"},{"1":"15","2":"DBPa","3":"82"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div id="barplot" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Barplot</h2>
+<p>Not all visualization types will be equally informative. Let us first make a barplot of the data. A barplot is a plot that you will commonly find in scientific publication The code for generating such a barplot is provided below:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type,bp,<span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  Rmisc<span class="sc">::</span><span class="fu">summarySE</span>(<span class="at">measurevar=</span><span class="st">&quot;bp&quot;</span>,<span class="at">groupvars=</span><span class="st">&quot;type&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>type,<span class="at">y=</span>bp,<span class="at">fill=</span>type)) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;RdGy&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>bp<span class="sc">-</span>se, <span class="at">ymax=</span>bp<span class="sc">+</span>se),<span class="at">width=</span>.<span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">&quot;Barplot of different blood pressure measures&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot;blood pressure (mmHg)&quot;</span>)</span></code></pre></div>
+<p><img src="04_3_captopril_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>A barplot, however, is not very informative. The height of the bars only provides us with information of the mean blood pressure. However, we don’t see the actual underlying values, so we for instance don’t have any information on the spread of the data. It is usually more informative to represent to underlying values as <em>raw</em> as possible. Note that it is possible to add the raw data on the barplot, but we still would not see any measures of the spread, such as the interquartile range.</p>
+<p><strong>Based on this critisism, can you think of a better</strong> <strong>visualization strategy for the captopril data?</strong></p>
+<p><strong>Add your proposed visualization strategy here</strong></p>
+</div>
+<div id="boxplot" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Boxplot</h2>
+<p>It is usually more informative to represent to underlying values as <em>raw</em> as possible. Boxplots are ideal for this!</p>
+<p>Note that it in theory it is possible to add the raw data on the barplot, but we still would not see any measures of the spread, such as the interquartile range.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type,bp,<span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>type,<span class="at">y=</span>bp,<span class="at">fill=</span>type)) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;RdGy&quot;</span>) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape=</span><span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">&quot;Boxplot of different blood pressure measures&quot;</span>) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot;blood pressure (mmHg)&quot;</span>) <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">fun.y=</span>mean, <span class="at">geom=</span><span class="st">&quot;point&quot;</span>, <span class="at">shape=</span><span class="dv">5</span>, <span class="at">size=</span><span class="dv">3</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>, <span class="at">fill=</span><span class="st">&quot;black&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: `fun.y` is deprecated. Use `fun` instead.</code></pre>
+<p><img src="04_3_captopril_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>With the boxplot, we get a lot of useful information. We immediately see multiple features of the spread of the data, such as the median, the 25% and 75% quantiles and outliers. Since we only have 15 raw values (patients), we can easily add them to the plot without getting messy.</p>
+<p>In terms of interpretation, we can see that the median systolic and diastolic blood pressure values are lower after treatment with captopril than before. If we want to have visual inference on the mean values (cfr. class on t-test), we can add them to the plot <code>stat_summary</code> function.</p>
+</div>
+<div id="scatterplot" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Scatterplot</h2>
+<p>An important feature of this dataset is that it contains paired data; for each patient, we have blood pressure values (systolic and diastolic) before and after treatment with captopril.</p>
+<p>We can visualize this as follows;</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type,bp,<span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;SBPa&quot;</span>,<span class="st">&quot;SBPb&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>id,<span class="at">y=</span>bp,<span class="at">color=</span>type)) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;red&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div>
+<p><img src="04_3_captopril_sol_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Or, alternatively, by creating a <code>line plot</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type,bp,<span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;SBPa&quot;</span>,<span class="st">&quot;SBPb&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>type,<span class="at">y=</span>bp)) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">group=</span>id)) <span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code></pre></div>
+<p><img src="04_3_captopril_sol_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>We see that for all patients, the systolic blood pressure is lower after captopril treatment than before.</p>
+<p>Note that we could not see this from the boxplot, directly;</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type,bp,<span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(type<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;SBPa&quot;</span>,<span class="st">&quot;SBPb&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>type,<span class="at">y=</span>bp,<span class="at">fill=</span>type)) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;RdGy&quot;</span>) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape=</span><span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">&quot;Boxplot of blood pressure measures before and after treatment&quot;</span>) <span class="sc">+</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot;blood pressure (mmHg)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_summary</span>(<span class="at">fun=</span>mean, <span class="at">geom=</span><span class="st">&quot;point&quot;</span>, <span class="at">shape=</span><span class="dv">5</span>, <span class="at">size=</span><span class="dv">3</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>, <span class="at">fill=</span><span class="st">&quot;black&quot;</span>)</span></code></pre></div>
+<p><img src="04_3_captopril_sol_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>A typical next step is to perform a test to find out whether the mean systolic blood pressure value after captopril treatment is <em>significantly</em> different from the mean systolic blood pressure value before treatment.</p>
+<p>Analagously, we may subtract the <code>after</code> measurement from the <code>before</code> measurement, and test if the difference between the two sets of values is significantly different from zero.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bp_diff =</span> SBPa<span class="sc">-</span>SBPb) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(bp_diff) <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="st">&quot;&quot;</span>,<span class="at">y=</span>bp_diff)) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape=</span><span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Boxplot of the difference in blood pressure&quot;</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;blood pressure difference (mmHg)&quot;</span>) <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">fun.y=</span>mean, <span class="at">geom=</span><span class="st">&quot;point&quot;</span>, <span class="at">shape=</span><span class="dv">5</span>, <span class="at">size=</span><span class="dv">3</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>, <span class="at">fill=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">40</span>,<span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color=</span><span class="st">&quot;red&quot;</span>) <span class="do">## adds horizontal line to plot</span></span></code></pre></div>
+<pre><code>## Warning: `fun.y` is deprecated. Use `fun` instead.</code></pre>
+<p><img src="04_3_captopril_sol_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>The mean difference is lower than zero. It seems that on average the captopril treatment has lowered the blood pressure by about 20 mmHg. Tomorrow, we will show how we can test if this reduction is significantly different from 0 mmHg.</p>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgNC4zOiBFeHBsb3JpbmcgdGhlIGNhcHRvcHJpbCBkYXRhc2V0IgphdXRob3I6ICJMaWV2ZW4gQ2xlbWVudCBhbmQgSmVyb2VuIEdpbGlzIgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgpvdXRwdXQ6CiAgICBodG1sX2RvY3VtZW50OgogICAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICAgIHRoZW1lOiBjb3NtbwogICAgICB0b2M6IHRydWUKICAgICAgdG9jX2Zsb2F0OiB0cnVlCiAgICAgIGhpZ2hsaWdodDogdGFuZ28KICAgICAgbnVtYmVyX3NlY3Rpb25zOiB0cnVlCi0tLQoKIyBUaGUgY2FwdG9wcmlsIGRhdGFzZXQKClRoZSBgY2FwdG9wcmlsIGRhdGFzZXRgIGhvbGRzIGluZm9ybWF0aW9uIG9uIGEgc21hbGwgZXhwZXJpbWVudCB3aXRoCjE1IHBhdGllbnRzIHRoYXQgaGF2ZSBpbmNyZWFzZWQgYmxvb2QgcHJlc3N1cmUgdmFsdWVzLgpNb3JlIHNwZWNpZmljYWxseSwgZm9yIGVhY2ggcGF0aWVudCB3ZSB3aWxsIGhhdmUgZm91ciB2YWx1ZXM7Cm9uZSB2YWx1ZSBmb3Igc3lzdG9saWMgYmxvb2QgcHJlc3N1cmUgYW5kIG9uZSBmb3IgZGlhc3RvbHlpYywKYm90aCBiZWZvcmUgYW5kIGFmdGVyIHRyZWF0aW5nIHRoZSBwYXRpZW50IHdpdGggYSBkcnVnIG5hbWVkIGNhcHRvcHJpbC4KCiMgSW1wb3J0IHRoZSBkYXRhCgpgYGB7ciwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkocmVhZHIpCmxpYnJhcnkoZ2dwbG90MikKYGBgCgpgYGB7cn0KY2FwdG9wcmlsIDwtIHJlYWRfY3N2KCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL2NhcHRvcHJpbC50eHQiKQpgYGAKCmBgYHtyfQpoZWFkKGNhcHRvcHJpbCkKYGBgCgoqKldoeSBpcyB0aGlzIGRhdGFzZXQgbm90IHRpZHk/KioKCiMgRGF0YSB2aXN1YWxpemF0aW9uCgpMZXQncyBzYXkgd2Ugbm93IGZpcnN0IHdhbnQgdG8gdmlzdWFsaXplIHRoZSBkYXRhLgpPbmUgcG9zc2liaWxpdHkgdG8gZWFzaWx5IHZpc3VhbGl6ZSB0aGUgZm91ciB0eXBlcwpvZiBibG9vZCBwcmVzc3VyZSB2YWx1ZXMgaXMgYnkgYWRvcHRpbmcgdGhlIGBnYXRoZXJgCmZ1bmN0aW9uIGZyb20gdGlkeXZlcnNlLiBJdCB3aWxsIHJlc2hhcGUgdGhlIGRhdGFmcmFtZSwKc3VjaCB0aGF0IHdlIGhhdmUgaGF2ZSBhIHNpbmdsZSB2YXJpYWJsZSBgdHlwZWAsIHdoaWNoCnBvaW50cyBhdCBvbmUgb2YgdGhlIGZvdXIgYmxvb2QgcHJlc3N1cmUgdHlwZXMsIGFuZCBgYnBgLAp3aGljaCBwb2ludHMgYXQgdGhlIGFjdHVhbCB2YWx1ZSBmb3IgZWFjaCB0eXBlCmZvciBlYWNoIHBhdGllbnQuCgpgYGB7cn0KY2FwdG9wcmlsICU+JQogIGdhdGhlcih0eXBlLGJwLC1pZCkKYGBgCgojIyBCYXJwbG90CgpOb3QgYWxsIHZpc3VhbGl6YXRpb24gdHlwZXMgd2lsbCBiZSBlcXVhbGx5IGluZm9ybWF0aXZlLgpMZXQgdXMgZmlyc3QgbWFrZSBhIGJhcnBsb3Qgb2YgdGhlIGRhdGEuIEEgYmFycGxvdCBpcyBhIHBsb3QgdGhhdCB5b3Ugd2lsbApjb21tb25seSBmaW5kIGluIHNjaWVudGlmaWMgcHVibGljYXRpb24gVGhlIGNvZGUgZm9yIGdlbmVyYXRpbmcgc3VjaCBhIGJhcnBsb3QKaXMgcHJvdmlkZWQgYmVsb3c6CgpgYGB7cn0KY2FwdG9wcmlsICU+JQogIGdhdGhlcih0eXBlLGJwLC1pZCkgJT4lCiAgUm1pc2M6OnN1bW1hcnlTRShtZWFzdXJldmFyPSJicCIsZ3JvdXB2YXJzPSJ0eXBlIikgJT4lCiAgZ2dwbG90KGFlcyh4PXR5cGUseT1icCxmaWxsPXR5cGUpKSArCiAgICBzY2FsZV9maWxsX2JyZXdlcihwYWxldHRlPSJSZEd5IikgKwogICAgdGhlbWVfYncoKSArCiAgICBnZW9tX2JhcihzdGF0PSJpZGVudGl0eSIpICsKICAgIGdlb21fZXJyb3JiYXIoYWVzKHltaW49YnAtc2UsIHltYXg9YnArc2UpLHdpZHRoPS4yKSArCiAgICBnZ3RpdGxlKCJCYXJwbG90IG9mIGRpZmZlcmVudCBibG9vZCBwcmVzc3VyZSBtZWFzdXJlcyIpICsKICAgIHlsYWIoImJsb29kIHByZXNzdXJlIChtbUhnKSIpCmBgYAoKQSBiYXJwbG90LCBob3dldmVyLCBpcyBub3QgdmVyeSBpbmZvcm1hdGl2ZS4gVGhlIGhlaWdodCBvZiB0aGUKYmFycyBvbmx5IHByb3ZpZGVzIHVzIHdpdGggaW5mb3JtYXRpb24gb2YgdGhlIG1lYW4gYmxvb2QgcHJlc3N1cmUuCkhvd2V2ZXIsIHdlIGRvbid0IHNlZSB0aGUgYWN0dWFsIHVuZGVybHlpbmcgdmFsdWVzLCBzbyB3ZSBmb3IKaW5zdGFuY2UgZG9uJ3QgaGF2ZSBhbnkgaW5mb3JtYXRpb24gb24gdGhlIHNwcmVhZCBvZiB0aGUgZGF0YS4KSXQgaXMgdXN1YWxseSBtb3JlIGluZm9ybWF0aXZlIHRvIHJlcHJlc2VudCB0byB1bmRlcmx5aW5nCnZhbHVlcyBhcyBfcmF3XyBhcyBwb3NzaWJsZS4gTm90ZSB0aGF0IGl0IGlzIHBvc3NpYmxlIHRvIGFkZCB0aGUKcmF3IGRhdGEgb24gdGhlIGJhcnBsb3QsIGJ1dCB3ZSBzdGlsbCB3b3VsZCBub3Qgc2VlIGFueSBtZWFzdXJlcwpvZiB0aGUgc3ByZWFkLCBzdWNoIGFzIHRoZSBpbnRlcnF1YXJ0aWxlIHJhbmdlLgoKKipCYXNlZCBvbiB0aGlzIGNyaXRpc2lzbSwgY2FuIHlvdSB0aGluayBvZiBhIGJldHRlcioqCioqdmlzdWFsaXphdGlvbiBzdHJhdGVneSBmb3IgdGhlIGNhcHRvcHJpbCBkYXRhPyoqCgoqKkFkZCB5b3VyIHByb3Bvc2VkIHZpc3VhbGl6YXRpb24gc3RyYXRlZ3kgaGVyZSoqCgojIyBCb3hwbG90CgpJdCBpcyB1c3VhbGx5IG1vcmUgaW5mb3JtYXRpdmUgdG8gcmVwcmVzZW50IHRvIHVuZGVybHlpbmcKdmFsdWVzIGFzIF9yYXdfIGFzIHBvc3NpYmxlLiBCb3hwbG90cyBhcmUgaWRlYWwgZm9yIHRoaXMhCgpOb3RlIHRoYXQgaXQgaW4gdGhlb3J5IGl0IGlzIHBvc3NpYmxlIHRvIGFkZCB0aGUgcmF3IGRhdGEgb24KdGhlIGJhcnBsb3QsIGJ1dCB3ZSBzdGlsbCB3b3VsZCBub3Qgc2VlIGFueSBtZWFzdXJlcyBvZiB0aGUKc3ByZWFkLCBzdWNoIGFzIHRoZSBpbnRlcnF1YXJ0aWxlIHJhbmdlLgoKYGBge3J9CmNhcHRvcHJpbCAlPiUKICBnYXRoZXIodHlwZSxicCwtaWQpICU+JQogIGdncGxvdChhZXMoeD10eXBlLHk9YnAsZmlsbD10eXBlKSkgKwogICAgc2NhbGVfZmlsbF9icmV3ZXIocGFsZXR0ZT0iUmRHeSIpICsKICAgIHRoZW1lX2J3KCkgKwogICAgZ2VvbV9ib3hwbG90KG91dGxpZXIuc2hhcGU9TkEpICsKICAgIGdlb21faml0dGVyKHdpZHRoID0gMC4yKSArCiAgICBnZ3RpdGxlKCJCb3hwbG90IG9mIGRpZmZlcmVudCBibG9vZCBwcmVzc3VyZSBtZWFzdXJlcyIpICsKICAgIHlsYWIoImJsb29kIHByZXNzdXJlIChtbUhnKSIpICsgc3RhdF9zdW1tYXJ5KGZ1bi55PW1lYW4sIGdlb209InBvaW50Iiwgc2hhcGU9NSwgc2l6ZT0zLCBjb2xvcj0iYmxhY2siLCBmaWxsPSJibGFjayIpCmBgYAoKV2l0aCB0aGUgYm94cGxvdCwgd2UgZ2V0IGEgbG90IG9mIHVzZWZ1bCBpbmZvcm1hdGlvbi4KV2UgaW1tZWRpYXRlbHkgc2VlIG11bHRpcGxlIGZlYXR1cmVzIG9mIHRoZSBzcHJlYWQgb2YKdGhlIGRhdGEsIHN1Y2ggYXMgdGhlIG1lZGlhbiwgdGhlIDI1JSBhbmQgNzUlIHF1YW50aWxlcwphbmQgb3V0bGllcnMuIFNpbmNlIHdlIG9ubHkgaGF2ZSAxNSByYXcgdmFsdWVzIChwYXRpZW50cyksCndlIGNhbiBlYXNpbHkgYWRkIHRoZW0gdG8gdGhlIHBsb3Qgd2l0aG91dCBnZXR0aW5nIG1lc3N5LgoKSW4gdGVybXMgb2YgaW50ZXJwcmV0YXRpb24sIHdlIGNhbiBzZWUgdGhhdCB0aGUgbWVkaWFuCnN5c3RvbGljIGFuZCBkaWFzdG9saWMgYmxvb2QgcHJlc3N1cmUgdmFsdWVzIGFyZSBsb3dlcgphZnRlciB0cmVhdG1lbnQgd2l0aCBjYXB0b3ByaWwgdGhhbiBiZWZvcmUuIElmIHdlIHdhbnQgdG8KaGF2ZSB2aXN1YWwgaW5mZXJlbmNlIG9uIHRoZSBtZWFuIHZhbHVlcyAoY2ZyLiBjbGFzcyBvbiB0LXRlc3QpLAp3ZSBjYW4gYWRkIHRoZW0gdG8gdGhlIHBsb3QgYHN0YXRfc3VtbWFyeWAgZnVuY3Rpb24uCgojIyBTY2F0dGVycGxvdAoKQW4gaW1wb3J0YW50IGZlYXR1cmUgb2YgdGhpcyBkYXRhc2V0IGlzIHRoYXQgaXQgY29udGFpbnMKcGFpcmVkIGRhdGE7IGZvciBlYWNoIHBhdGllbnQsIHdlIGhhdmUgYmxvb2QgcHJlc3N1cmUgdmFsdWVzCihzeXN0b2xpYyBhbmQgZGlhc3RvbGljKSBiZWZvcmUgYW5kIGFmdGVyIHRyZWF0bWVudCB3aXRoCmNhcHRvcHJpbC4KCldlIGNhbiB2aXN1YWxpemUgdGhpcyBhcyBmb2xsb3dzOwoKYGBge3J9CmNhcHRvcHJpbCAlPiUKICBnYXRoZXIodHlwZSxicCwtaWQpICU+JQogIGZpbHRlcih0eXBlJWluJWMoIlNCUGEiLCJTQlBiIikpICU+JQogIGdncGxvdChhZXMoeD1pZCx5PWJwLGNvbG9yPXR5cGUpKSArCiAgICBnZW9tX3BvaW50KHNpemU9MikgKwogICAgc2NhbGVfY29sb3JfbWFudWFsKHZhbHVlcyA9IGMoImJsdWUiLCJyZWQiKSkgKwogICAgdGhlbWVfYncoKQpgYGAKCk9yLCBhbHRlcm5hdGl2ZWx5LCBieSBjcmVhdGluZyBhIGBsaW5lIHBsb3RgOgoKYGBge3J9CmNhcHRvcHJpbCAlPiUKICBnYXRoZXIodHlwZSxicCwtaWQpICU+JQogIGZpbHRlcih0eXBlJWluJWMoIlNCUGEiLCJTQlBiIikpICU+JQogIGdncGxvdChhZXMoeD10eXBlLHk9YnApKSArCiAgICBnZW9tX2xpbmUoYWVzKGdyb3VwPWlkKSkgKwogICAgdGhlbWVfYncoKQpgYGAKCldlIHNlZSB0aGF0IGZvciBhbGwgcGF0aWVudHMsIHRoZSBzeXN0b2xpYyBibG9vZApwcmVzc3VyZSBpcyBsb3dlciBhZnRlciBjYXB0b3ByaWwgdHJlYXRtZW50IHRoYW4gYmVmb3JlLgoKTm90ZSB0aGF0IHdlIGNvdWxkIG5vdCBzZWUgdGhpcyBmcm9tIHRoZSBib3hwbG90LCBkaXJlY3RseTsKCmBgYHtyfQpjYXB0b3ByaWwgJT4lCiAgZ2F0aGVyKHR5cGUsYnAsLWlkKSAlPiUKICAgIGZpbHRlcih0eXBlJWluJWMoIlNCUGEiLCJTQlBiIikpICU+JQogICAgZ2dwbG90KGFlcyh4PXR5cGUseT1icCxmaWxsPXR5cGUpKSArCiAgICBzY2FsZV9maWxsX2JyZXdlcihwYWxldHRlPSJSZEd5IikgKwogICAgdGhlbWVfYncoKSArCiAgICBnZW9tX2JveHBsb3Qob3V0bGllci5zaGFwZT1OQSkgKwogICAgZ2VvbV9qaXR0ZXIod2lkdGggPSAwLjIpICsKICAgIGdndGl0bGUoIkJveHBsb3Qgb2YgYmxvb2QgcHJlc3N1cmUgbWVhc3VyZXMgYmVmb3JlIGFuZCBhZnRlciB0cmVhdG1lbnQiKSArCiAgICB5bGFiKCJibG9vZCBwcmVzc3VyZSAobW1IZykiKSArCiAgICBzdGF0X3N1bW1hcnkoZnVuPW1lYW4sIGdlb209InBvaW50Iiwgc2hhcGU9NSwgc2l6ZT0zLCBjb2xvcj0iYmxhY2siLCBmaWxsPSJibGFjayIpCmBgYAoKQSB0eXBpY2FsIG5leHQgc3RlcCBpcyB0byBwZXJmb3JtIGEgdGVzdCB0byBmaW5kIG91dAp3aGV0aGVyIHRoZSBtZWFuIHN5c3RvbGljIGJsb29kIHByZXNzdXJlIHZhbHVlIGFmdGVyCmNhcHRvcHJpbCB0cmVhdG1lbnQgaXMgX3NpZ25pZmljYW50bHlfIGRpZmZlcmVudCBmcm9tCnRoZSBtZWFuIHN5c3RvbGljIGJsb29kIHByZXNzdXJlIHZhbHVlIGJlZm9yZSB0cmVhdG1lbnQuCgpBbmFsYWdvdXNseSwgd2UgbWF5IHN1YnRyYWN0IHRoZSBgYWZ0ZXJgIG1lYXN1cmVtZW50IGZyb20gdGhlCmBiZWZvcmVgIG1lYXN1cmVtZW50LCBhbmQgdGVzdCBpZiB0aGUgZGlmZmVyZW5jZSBiZXR3ZWVuIHRoZQp0d28gc2V0cyBvZiB2YWx1ZXMgaXMgc2lnbmlmaWNhbnRseSBkaWZmZXJlbnQgZnJvbSB6ZXJvLgoKYGBge3J9CmNhcHRvcHJpbCAlPiUKICBtdXRhdGUoYnBfZGlmZiA9IFNCUGEtU0JQYikgJT4lCiAgc2VsZWN0KGJwX2RpZmYpICU+JQogIGdncGxvdChhZXMoeD0iIix5PWJwX2RpZmYpKSArCiAgZ2VvbV9ib3hwbG90KG91dGxpZXIuc2hhcGU9TkEpICsKICBnZW9tX2ppdHRlcih3aWR0aCA9IDAuMikgKwogIGdndGl0bGUoIkJveHBsb3Qgb2YgdGhlIGRpZmZlcmVuY2UgaW4gYmxvb2QgcHJlc3N1cmUiKSArCiAgeWxhYigiYmxvb2QgcHJlc3N1cmUgZGlmZmVyZW5jZSAobW1IZykiKSArIHN0YXRfc3VtbWFyeShmdW4ueT1tZWFuLCBnZW9tPSJwb2ludCIsIHNoYXBlPTUsIHNpemU9MywgY29sb3I9ImJsYWNrIiwgZmlsbD0iYmxhY2siKSArCiAgdGhlbWVfYncoKSsKICB5bGltKC00MCwxMCkgKwogIGdlb21faGxpbmUoeWludGVyY2VwdCA9IDAsIGNvbG9yPSJyZWQiKSAjIyBhZGRzIGhvcml6b250YWwgbGluZSB0byBwbG90CmBgYAoKVGhlIG1lYW4gZGlmZmVyZW5jZSBpcyBsb3dlciB0aGFuIHplcm8uIEl0IHNlZW1zIHRoYXQgb24gYXZlcmFnZSB0aGUgY2FwdG9wcmlsCnRyZWF0bWVudCBoYXMgbG93ZXJlZCB0aGUgYmxvb2QgcHJlc3N1cmUgYnkgYWJvdXQgMjAgbW1IZy4gVG9tb3Jyb3csIHdlIHdpbGwKc2hvdyBob3cgd2UgY2FuIHRlc3QgaWYgdGhpcyByZWR1Y3Rpb24gaXMgc2lnbmlmaWNhbnRseSBkaWZmZXJlbnQgZnJvbSAwIG1tSGcuCg==</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("04_3_captopril_sol.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

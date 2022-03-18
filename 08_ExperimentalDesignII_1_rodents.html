@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement &amp; Alexandre Segers" />
+
+
+<title>Experimental Design II: replication and power exercise 1</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Experimental Design II: replication and power exercise 1</h1>
+<h4 class="author">Lieven Clement &amp; Alexandre Segers</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.3.5     ✔ purrr   0.3.4
+## ✔ tibble  3.1.6     ✔ dplyr   1.0.8
+## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
+## ✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<div id="power" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Power</h1>
+<p>The power of a test is defined as:</p>
+<p><span class="math display">\[P(p &lt;
+\alpha | H_1)\]</span> This is the probability to reject the nulhypothesis at the significance level <span class="math inline">\(\alpha\)</span> given that the alternative hypothesis is true.</p>
+<p>The power depends on:</p>
+<ul>
+<li>the real effect size in the population <span class="math inline">\(\mathbf{L}^T\boldsymbol{\beta}\)</span>.</li>
+<li>the number of observations: SE and df.</li>
+<li>Choice of designpoints</li>
+<li>Choice of significance-level <span class="math inline">\(\alpha\)</span>.</li>
+</ul>
+<p>We will evaluate the power using simulation.</p>
+</div>
+<div id="rodents" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Rodents</h1>
+<p>A biologist examined the effect of a fungal infection on the eating behavior of rodents. Infected apples were offered to a group of eight rodents, and sterile apples were offered to a group of 4 rodents. The amount of grams of apples consumed per kg body weight are given in the dataset below.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>rodents <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">weight =</span> <span class="fu">c</span>(<span class="dv">11</span>,<span class="dv">33</span>,<span class="dv">48</span>,<span class="dv">34</span>,<span class="dv">112</span>,<span class="dv">369</span>,<span class="dv">64</span>,<span class="dv">44</span>,<span class="dv">177</span>,<span class="dv">80</span>,<span class="dv">141</span>,<span class="dv">332</span>),</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">group =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;treat&quot;</span>,<span class="dv">8</span>), <span class="fu">rep</span>(<span class="st">&quot;ctrl&quot;</span>,<span class="dv">4</span>))))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>rodents</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["weight"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["group"],"name":[2],"type":["fct"],"align":["left"]}],"data":[{"1":"11","2":"treat"},{"1":"33","2":"treat"},{"1":"48","2":"treat"},{"1":"34","2":"treat"},{"1":"112","2":"treat"},{"1":"369","2":"treat"},{"1":"64","2":"treat"},{"1":"44","2":"treat"},{"1":"177","2":"ctrl"},{"1":"80","2":"ctrl"},{"1":"141","2":"ctrl"},{"1":"332","2":"ctrl"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div id="data-exploration" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Data exploration</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>rodents <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>group,<span class="at">y=</span>weight)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>()</span></code></pre></div>
+<p><img src="08_ExperimentalDesignII_1_rodents_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>rodents <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> weight)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> group)</span></code></pre></div>
+<p><img src="08_ExperimentalDesignII_1_rodents_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<p>In the data exploration we do not have enough data to evaluate the assumptions.</p>
+<p>Suppose that the assumptions are valid and that standard deviation in the population would be equal to the ones you observed in the experiment.</p>
+<ol style="list-style-type: decimal">
+<li>What is the power of the experiment if the effect size and standard deviation in the population would be equal to the ones you observed in the experiment</li>
+<li>What would the power by if number of rodents would balanced in both groups</li>
+<li>How many observations would you need to pick up the treatment effect with a power of 90%?</li>
+<li>How many observations would you need to pick up the treatment effect of 60 g/kg with a power of 90%?</li>
+</ol>
+</div>
+</div>
+<div id="analysis" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Analysis</h1>
+<p>We will model the data using a linear model with one dummy variable.</p>
+<p><span class="math display">\[
+y_i = \beta_0 + \beta_1 x_{t,i} +
+\epsilon_i
+\]</span> with <span class="math inline">\(x_{p,i} = 0\)</span> if the rodent is subjected the control treatment with sterile apples and <span class="math inline">\(x_{t,i} = 1\)</span> if rodent receives the treatment with infected apples.</p>
+<ul>
+<li>Estimated effect size?</li>
+</ul>
+<p>The average difference in relative abundance of Staphylococcus of patients of the transplant and the placebo group.</p>
+<p><span class="math display">\[
+\hat \beta_1 = \bar y_t - \bar y_c
+\]</span></p>
+<ul>
+<li><span class="math inline">\(H_0\)</span>: rodents eat consume on average the same amount of apples per kg body weight when they are fed with sterile or with infected apples.</li>
+<li><span class="math inline">\(H_1\)</span>: the average amount of apples in g/kg body weight is different when rodents are fed with sterile then as when they are fed with infected apples.</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> group, rodents)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = weight ~ group, data = rodents)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -102.500  -55.625  -41.438    1.531  279.625 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)   182.50      57.03   3.200  0.00949 **
+## grouptreat    -93.12      69.85  -1.333  0.21204   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 114.1 on 10 degrees of freedom
+## Multiple R-squared:  0.1509, Adjusted R-squared:  0.06601 
+## F-statistic: 1.777 on 1 and 10 DF,  p-value: 0.212</code></pre>
+<p>With the current study and when we assume that the assumptions of the model hold, we conclude that the amount of apples that rodents on average consume does not differ significantly between the group that was fed with sterile apples and the group that was fed with infected apples.</p>
+</div>
+<div id="power-analyses" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Power analyses</h1>
+<div id="question-1" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Question 1</h2>
+<p>What is the power of the experiment if the effect size and standard deviation in the population would be equal to the ones you observed in the experiment?</p>
+</div>
+<div id="simulation-function" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Simulation function</h2>
+<p>We provide you with a function to simulate data similar to that of our experiment under our model assumptions.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>simFast <span class="ot">&lt;-</span> <span class="cf">function</span>(form, data, betas, sd, contrasts, <span class="at">alpha =</span> .<span class="dv">05</span>, <span class="at">nSim =</span> <span class="dv">10000</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    ySim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">nrow</span>(data)<span class="sc">*</span>nSim,<span class="at">sd=</span>sd)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dim</span>(ySim) <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="fu">nrow</span>(data),nSim)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    design <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(form, data)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    ySim <span class="ot">&lt;-</span> ySim <span class="sc">+</span> <span class="fu">c</span>(design <span class="sc">%*%</span>betas)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    ySim <span class="ot">&lt;-</span> <span class="fu">t</span>(ySim)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="do">### Fitting</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    fitAll <span class="ot">&lt;-</span> limma<span class="sc">::</span><span class="fu">lmFit</span>(ySim,design)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="do">### Inference</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    varUnscaled <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">t</span>(contrasts)<span class="sc">%*%</span>fitAll<span class="sc">$</span>cov.coefficients<span class="sc">%*%</span>contrasts)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    contrasts <span class="ot">&lt;-</span> fitAll<span class="sc">$</span>coefficients <span class="sc">%*%</span>contrasts</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    seContrasts <span class="ot">&lt;-</span> varUnscaled<span class="sc">^</span>.<span class="dv">5</span><span class="sc">*</span>fitAll<span class="sc">$</span>sigma</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    tstats <span class="ot">&lt;-</span> contrasts<span class="sc">/</span>seContrasts</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    pvals <span class="ot">&lt;-</span> <span class="fu">pt</span>(<span class="fu">abs</span>(tstats),fitAll<span class="sc">$</span>df.residual,<span class="at">lower.tail =</span> <span class="cn">FALSE</span>)<span class="sc">*</span><span class="dv">2</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">mean</span>(pvals <span class="sc">&lt;</span> alpha))</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Without going into the full code details, this function allows us to simulate data similar to that of our experiment under our model assumptions, given the following inputs:</p>
+<ul>
+<li><code>form</code>: model formula for the experiment we want to simulate</li>
+<li><code>data</code>: the target dataset on which we want to base our simulations on</li>
+<li><code>betas</code>: the linear regression coefficients for the target dataset</li>
+<li><code>sd</code>: the residual standard errors from the linear regression model fit on the target dataset</li>
+<li><code>contrasts</code>: comparison of interest, i.e. which (combination of) model parameters we would like to assess</li>
+<li><code>alpha</code>: alpha-level at which to conduct the hypothesis testing</li>
+<li><code>nSim</code>: number of datasets we would like to simulate</li>
+</ul>
+<p>To simulate new data based on our target dataset <code>ç</code>, we will need to fill in all the arguments to the <code>simFast</code> function.</p>
+<p><strong>Hint: for the betas and sd, we will need to fit a linear model first!</strong></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>power1 <span class="ot">&lt;-</span> <span class="fu">simFast</span>(<span class="at">form =</span> ...,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> ...,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">betas =</span> ...,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sd =</span> ...,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">contrasts =</span> ...,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alpha =</span> ...,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">nSim =</span> ...)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>power1</span></code></pre></div>
+<p>Interpret the outcome.</p>
+</div>
+<div id="question-2" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Question 2</h2>
+<p>What would the power by if number of rodents would balanced in both groups? Again, we simulate a large number of new experiments. Adjust one more more of the inputs to the <code>simFast</code> to allow for addressing this question.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>power2 <span class="ot">&lt;-</span> <span class="fu">simFast</span>(<span class="at">form =</span> ...,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> ...,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">betas =</span> ...,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sd =</span> ...,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">contrasts =</span> ...,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alpha =</span> ...,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">nSim =</span> ...)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>power2</span></code></pre></div>
+</div>
+<div id="question-3" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Question 3</h2>
+<p>How many observations would you need to pick up the treatment effect with a power of 90%?</p>
+<p>This will require us to establish a relationship between sample size and power. In turn, this will require us to perform a “parameter sweep” over different values of sample size and compute the power for each of them.</p>
+</div>
+<div id="question-4" class="section level2" number="4.5">
+<h2><span class="header-section-number">4.5</span> Question 4</h2>
+<p>Suppose that we would like to pick up an effect size of <span class="math inline">\(\beta_1 = 60 g/kg\)</span>. How many samples would be required in each group to obtain a power of 90%?</p>
+<p>Note, that</p>
+<ul>
+<li>we do a two-sided test so the sign of the effect size is arbitrary.</li>
+<li>the intercept in the power analysis is also arbitrary so we could also set it at 0.</li>
+</ul>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhwZXJpbWVudGFsIERlc2lnbiBJSTogcmVwbGljYXRpb24gYW5kIHBvd2VyIGV4ZXJjaXNlIDEiCmF1dGhvcjogIkxpZXZlbiBDbGVtZW50ICYgQWxleGFuZHJlIFNlZ2VycyIKZGF0ZTogInN0YXRPbWljcywgR2hlbnQgVW5pdmVyc2l0eSAoaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICBjb2RlX2Rvd25sb2FkOiB5ZXMKICAgIHRoZW1lOiBjb3NtbwogICAgdG9jOiB5ZXMKICAgIHRvY19mbG9hdDogeWVzCiAgICBoaWdobGlnaHQ6IHRhbmdvCiAgICBudW1iZXJfc2VjdGlvbnM6IHllcwotLS0KCgo8YSByZWw9ImxpY2Vuc2UiIGhyZWY9Imh0dHBzOi8vY3JlYXRpdmVjb21tb25zLm9yZy9saWNlbnNlcy9ieS1uYy1zYS80LjAiPjxpbWcgYWx0PSJDcmVhdGl2ZSBDb21tb25zIExpY2Vuc2UiIHN0eWxlPSJib3JkZXItd2lkdGg6MCIgc3JjPSJodHRwczovL2kuY3JlYXRpdmVjb21tb25zLm9yZy9sL2J5LW5jLXNhLzQuMC84OHgzMS5wbmciIC8+PC9hPgoKYGBge3J9CmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKCiMgUG93ZXIKClRoZSBwb3dlciBvZiBhIHRlc3QgaXMgZGVmaW5lZCBhczoKCiQkUChwIDwKXGFscGhhIHwgSF8xKSQkClRoaXMgaXMgdGhlIHByb2JhYmlsaXR5IHRvIHJlamVjdCB0aGUgbnVsaHlwb3RoZXNpcyBhdCB0aGUgc2lnbmlmaWNhbmNlIGxldmVsICRcYWxwaGEkIGdpdmVuIHRoYXQgdGhlIGFsdGVybmF0aXZlIGh5cG90aGVzaXMgaXMgdHJ1ZS4KClRoZSBwb3dlciBkZXBlbmRzIG9uOgoKLSB0aGUgcmVhbCBlZmZlY3Qgc2l6ZSBpbiB0aGUgcG9wdWxhdGlvbiAkXG1hdGhiZntMfV5UXGJvbGRzeW1ib2x7XGJldGF9JC4KLSB0aGUgbnVtYmVyIG9mIG9ic2VydmF0aW9uczogU0UgYW5kIGRmLgotIENob2ljZSBvZiBkZXNpZ25wb2ludHMKLSBDaG9pY2Ugb2Ygc2lnbmlmaWNhbmNlLWxldmVsICRcYWxwaGEkLgoKV2Ugd2lsbCBldmFsdWF0ZSB0aGUgcG93ZXIgdXNpbmcgc2ltdWxhdGlvbi4KCiMgUm9kZW50cwoKQSBiaW9sb2dpc3QgZXhhbWluZWQgdGhlIGVmZmVjdCBvZiBhIGZ1bmdhbCBpbmZlY3Rpb24gb24gdGhlIGVhdGluZyBiZWhhdmlvciBvZiByb2RlbnRzLgpJbmZlY3RlZCBhcHBsZXMgd2VyZSBvZmZlcmVkIHRvIGEgZ3JvdXAgb2YgZWlnaHQgcm9kZW50cywgYW5kIHN0ZXJpbGUgYXBwbGVzIHdlcmUgb2ZmZXJlZCB0byBhIGdyb3VwIG9mIDQgcm9kZW50cy4gVGhlIGFtb3VudCBvZiBncmFtcyBvZiBhcHBsZXMgY29uc3VtZWQgcGVyIGtnIGJvZHkgd2VpZ2h0IGFyZSBnaXZlbiBpbiB0aGUgZGF0YXNldCBiZWxvdy4KCmBgYHtyfQpyb2RlbnRzIDwtIGRhdGEuZnJhbWUod2VpZ2h0ID0gYygxMSwzMyw0OCwzNCwxMTIsMzY5LDY0LDQ0LDE3Nyw4MCwxNDEsMzMyKSwKICAgICAgICAgICAgICAgICAgICAgIGdyb3VwID0gYXMuZmFjdG9yKGMocmVwKCJ0cmVhdCIsOCksIHJlcCgiY3RybCIsNCkpKSkKcm9kZW50cwpgYGAKCgojIyBEYXRhIGV4cGxvcmF0aW9uCgpgYGB7cn0Kcm9kZW50cyAlPiUKICBnZ3Bsb3QoYWVzKHg9Z3JvdXAseT13ZWlnaHQpKSArCiAgZ2VvbV9ib3hwbG90KG91dGxpZXIuc2hhcGUgPSBOQSkgKwogIGdlb21faml0dGVyKCkKCnJvZGVudHMgJT4lCiAgZ2dwbG90KGFlcyhzYW1wbGUgPSB3ZWlnaHQpKSArCiAgZ2VvbV9xcSgpICsKICBnZW9tX3FxX2xpbmUoKSArCiAgZmFjZXRfd3JhcCh+IGdyb3VwKQpgYGAKCkluIHRoZSBkYXRhIGV4cGxvcmF0aW9uIHdlIGRvIG5vdCBoYXZlIGVub3VnaCBkYXRhIHRvIGV2YWx1YXRlIHRoZSBhc3N1bXB0aW9ucy4KClN1cHBvc2UgdGhhdCB0aGUgYXNzdW1wdGlvbnMgYXJlIHZhbGlkIGFuZCB0aGF0IHN0YW5kYXJkIGRldmlhdGlvbiBpbiB0aGUgcG9wdWxhdGlvbiB3b3VsZCBiZSBlcXVhbCB0byB0aGUgb25lcyB5b3Ugb2JzZXJ2ZWQgaW4gdGhlIGV4cGVyaW1lbnQuCgoxLiBXaGF0IGlzIHRoZSBwb3dlciBvZiB0aGUgZXhwZXJpbWVudCBpZiB0aGUgZWZmZWN0IHNpemUgYW5kIHN0YW5kYXJkIGRldmlhdGlvbiBpbiB0aGUgcG9wdWxhdGlvbiB3b3VsZCBiZSBlcXVhbCB0byB0aGUgb25lcyB5b3Ugb2JzZXJ2ZWQgaW4gdGhlIGV4cGVyaW1lbnQKMi4gV2hhdCB3b3VsZCB0aGUgcG93ZXIgYnkgaWYgbnVtYmVyIG9mIHJvZGVudHMgd291bGQgIGJhbGFuY2VkIGluIGJvdGggZ3JvdXBzCjMuIEhvdyBtYW55IG9ic2VydmF0aW9ucyB3b3VsZCB5b3UgbmVlZCB0byBwaWNrIHVwIHRoZSB0cmVhdG1lbnQgZWZmZWN0IHdpdGggYSBwb3dlciBvZiA5MCU/CjQuIEhvdyBtYW55IG9ic2VydmF0aW9ucyB3b3VsZCB5b3UgbmVlZCB0byBwaWNrIHVwIHRoZSB0cmVhdG1lbnQgZWZmZWN0IG9mIDYwIGcva2cgd2l0aCBhIHBvd2VyIG9mIDkwJT8KCiMgQW5hbHlzaXMKCldlIHdpbGwgbW9kZWwgdGhlIGRhdGEgdXNpbmcgYSBsaW5lYXIgbW9kZWwgd2l0aCBvbmUgZHVtbXkgdmFyaWFibGUuCgokJAp5X2kgPSBcYmV0YV8wICsgXGJldGFfMSB4X3t0LGl9ICsKXGVwc2lsb25faQokJAp3aXRoICR4X3twLGl9ID0gMCQgaWYgdGhlIHJvZGVudCBpcyBzdWJqZWN0ZWQgdGhlIGNvbnRyb2wgdHJlYXRtZW50IHdpdGggc3RlcmlsZSBhcHBsZXMgYW5kICR4X3t0LGl9ID0gMSQgaWYgcm9kZW50IHJlY2VpdmVzIHRoZSB0cmVhdG1lbnQgd2l0aCBpbmZlY3RlZCBhcHBsZXMuCgotIEVzdGltYXRlZCBlZmZlY3Qgc2l6ZT8KClRoZSBhdmVyYWdlIGRpZmZlcmVuY2UgaW4gcmVsYXRpdmUgYWJ1bmRhbmNlIG9mIFN0YXBoeWxvY29jY3VzIG9mIHBhdGllbnRzCm9mIHRoZSB0cmFuc3BsYW50IGFuZCB0aGUgcGxhY2VibyBncm91cC4KCiQkClxoYXQgXGJldGFfMSA9IFxiYXIgeV90IC0gXGJhciB5X2MKJCQKCi0gJEhfMCQ6IHJvZGVudHMgZWF0IGNvbnN1bWUgb24gYXZlcmFnZSB0aGUgc2FtZSBhbW91bnQgb2YgYXBwbGVzIHBlciBrZyBib2R5IHdlaWdodCB3aGVuIHRoZXkgYXJlIGZlZCB3aXRoIHN0ZXJpbGUgb3Igd2l0aCBpbmZlY3RlZCBhcHBsZXMuCi0gJEhfMSQ6IHRoZSBhdmVyYWdlIGFtb3VudCBvZiBhcHBsZXMgaW4gZy9rZyBib2R5IHdlaWdodCBpcyBkaWZmZXJlbnQgd2hlbiByb2RlbnRzIGFyZSBmZWQgd2l0aCBzdGVyaWxlIHRoZW4gYXMgd2hlbiB0aGV5IGFyZSBmZWQgd2l0aCBpbmZlY3RlZCBhcHBsZXMuCgpgYGB7cn0KbG0xIDwtIGxtKHdlaWdodCB+IGdyb3VwLCByb2RlbnRzKQpzdW1tYXJ5KGxtMSkKYGBgCgpXaXRoIHRoZSBjdXJyZW50IHN0dWR5IGFuZCB3aGVuIHdlIGFzc3VtZSB0aGF0IHRoZSBhc3N1bXB0aW9ucyBvZiB0aGUgbW9kZWwgaG9sZCwgd2UgY29uY2x1ZGUgdGhhdCB0aGUgYW1vdW50IG9mIGFwcGxlcyB0aGF0IHJvZGVudHMgb24gYXZlcmFnZSBjb25zdW1lIGRvZXMgbm90IGRpZmZlciBzaWduaWZpY2FudGx5IGJldHdlZW4gdGhlIGdyb3VwIHRoYXQgd2FzIGZlZCB3aXRoIHN0ZXJpbGUgYXBwbGVzIGFuZCB0aGUgZ3JvdXAgdGhhdCB3YXMgZmVkIHdpdGggaW5mZWN0ZWQgYXBwbGVzLgoKIyBQb3dlciBhbmFseXNlcwoKIyMgUXVlc3Rpb24gMQoKV2hhdCBpcyB0aGUgcG93ZXIgb2YgdGhlIGV4cGVyaW1lbnQgaWYgdGhlIGVmZmVjdCBzaXplIGFuZCBzdGFuZGFyZCBkZXZpYXRpb24KaW4gdGhlIHBvcHVsYXRpb24gd291bGQgYmUgZXF1YWwgdG8gdGhlIG9uZXMgeW91IG9ic2VydmVkIGluIHRoZSBleHBlcmltZW50PwoKIyMgU2ltdWxhdGlvbiBmdW5jdGlvbgoKV2UgcHJvdmlkZSB5b3Ugd2l0aCBhIGZ1bmN0aW9uIHRvIHNpbXVsYXRlIGRhdGEgc2ltaWxhciB0byB0aGF0IG9mIG91cgpleHBlcmltZW50IHVuZGVyIG91ciBtb2RlbCBhc3N1bXB0aW9ucy4KCmBgYHtyfQpzaW1GYXN0IDwtIGZ1bmN0aW9uKGZvcm0sIGRhdGEsIGJldGFzLCBzZCwgY29udHJhc3RzLCBhbHBoYSA9IC4wNSwgblNpbSA9IDEwMDAwKQp7CiAgICB5U2ltIDwtIHJub3JtKG5yb3coZGF0YSkqblNpbSxzZD1zZCkKICAgIGRpbSh5U2ltKSA8LWMobnJvdyhkYXRhKSxuU2ltKQogICAgZGVzaWduIDwtIG1vZGVsLm1hdHJpeChmb3JtLCBkYXRhKQogICAgeVNpbSA8LSB5U2ltICsgYyhkZXNpZ24gJSolYmV0YXMpCiAgICB5U2ltIDwtIHQoeVNpbSkKCiAgICAjIyMgRml0dGluZwogICAgZml0QWxsIDwtIGxpbW1hOjpsbUZpdCh5U2ltLGRlc2lnbikKCiAgICAjIyMgSW5mZXJlbmNlCiAgICB2YXJVbnNjYWxlZCA8LSBjKHQoY29udHJhc3RzKSUqJWZpdEFsbCRjb3YuY29lZmZpY2llbnRzJSolY29udHJhc3RzKQogICAgY29udHJhc3RzIDwtIGZpdEFsbCRjb2VmZmljaWVudHMgJSolY29udHJhc3RzCiAgICBzZUNvbnRyYXN0cyA8LSB2YXJVbnNjYWxlZF4uNSpmaXRBbGwkc2lnbWEKICAgIHRzdGF0cyA8LSBjb250cmFzdHMvc2VDb250cmFzdHMKICAgIHB2YWxzIDwtIHB0KGFicyh0c3RhdHMpLGZpdEFsbCRkZi5yZXNpZHVhbCxsb3dlci50YWlsID0gRkFMU0UpKjIKICAgIHJldHVybihtZWFuKHB2YWxzIDwgYWxwaGEpKQp9CmBgYAoKV2l0aG91dCBnb2luZyBpbnRvIHRoZSBmdWxsIGNvZGUgZGV0YWlscywgdGhpcyBmdW5jdGlvbiBhbGxvd3MgdXMgdG8gc2ltdWxhdGUKZGF0YSBzaW1pbGFyIHRvIHRoYXQgb2Ygb3VyIGV4cGVyaW1lbnQgdW5kZXIgb3VyIG1vZGVsIGFzc3VtcHRpb25zLCBnaXZlbiB0aGUKZm9sbG93aW5nIGlucHV0czoKCi0gYGZvcm1gOiBtb2RlbCBmb3JtdWxhIGZvciB0aGUgZXhwZXJpbWVudCB3ZSB3YW50IHRvIHNpbXVsYXRlCi0gYGRhdGFgOiB0aGUgdGFyZ2V0IGRhdGFzZXQgb24gd2hpY2ggd2Ugd2FudCB0byBiYXNlIG91ciBzaW11bGF0aW9ucyBvbgotIGBiZXRhc2A6IHRoZSBsaW5lYXIgcmVncmVzc2lvbiBjb2VmZmljaWVudHMgZm9yIHRoZSB0YXJnZXQgZGF0YXNldAotIGBzZGA6IHRoZSByZXNpZHVhbCBzdGFuZGFyZCBlcnJvcnMgZnJvbSB0aGUgbGluZWFyIHJlZ3Jlc3Npb24gbW9kZWwgZml0IG9uCnRoZSB0YXJnZXQgZGF0YXNldAotIGBjb250cmFzdHNgOiBjb21wYXJpc29uIG9mIGludGVyZXN0LCBpLmUuIHdoaWNoIChjb21iaW5hdGlvbiBvZikgbW9kZWwKcGFyYW1ldGVycyB3ZSB3b3VsZCBsaWtlIHRvIGFzc2VzcwotIGBhbHBoYWA6IGFscGhhLWxldmVsIGF0IHdoaWNoIHRvIGNvbmR1Y3QgdGhlIGh5cG90aGVzaXMgdGVzdGluZwotIGBuU2ltYDogbnVtYmVyIG9mIGRhdGFzZXRzIHdlIHdvdWxkIGxpa2UgdG8gc2ltdWxhdGUKClRvIHNpbXVsYXRlIG5ldyBkYXRhIGJhc2VkIG9uIG91ciB0YXJnZXQgZGF0YXNldCBgw6dgLCB3ZSB3aWxsIG5lZWQgdG8KZmlsbCBpbiBhbGwgdGhlIGFyZ3VtZW50cyB0byB0aGUgYHNpbUZhc3RgIGZ1bmN0aW9uLgoKKipIaW50OiBmb3IgdGhlIGJldGFzIGFuZCBzZCwgd2Ugd2lsbCBuZWVkIHRvIGZpdCBhIGxpbmVhciBtb2RlbCBmaXJzdCEqKgoKYGBge3IsIGV2YWw9RkFMU0V9CnBvd2VyMSA8LSBzaW1GYXN0KGZvcm0gPSAuLi4sCiAgICAgICAgICAgICAgICAgIGRhdGEgPSAuLi4sCiAgICAgICAgICAgICAgICAgIGJldGFzID0gLi4uLAogICAgICAgICAgICAgICAgICBzZCA9IC4uLiwKICAgICAgICAgICAgICAgICAgY29udHJhc3RzID0gLi4uLAogICAgICAgICAgICAgICAgICBhbHBoYSA9IC4uLiwKICAgICAgICAgICAgICAgICAgblNpbSA9IC4uLikKcG93ZXIxCmBgYAoKSW50ZXJwcmV0IHRoZSBvdXRjb21lLgoKIyMgUXVlc3Rpb24gMgoKV2hhdCB3b3VsZCB0aGUgcG93ZXIgYnkgaWYgbnVtYmVyIG9mIHJvZGVudHMgd291bGQgIGJhbGFuY2VkIGluIGJvdGggZ3JvdXBzPwpBZ2Fpbiwgd2Ugc2ltdWxhdGUgYSBsYXJnZSBudW1iZXIgb2YgbmV3IGV4cGVyaW1lbnRzLiBBZGp1c3Qgb25lIG1vcmUgbW9yZQpvZiB0aGUgaW5wdXRzIHRvIHRoZSBgc2ltRmFzdGAgdG8gYWxsb3cgZm9yIGFkZHJlc3NpbmcgdGhpcyBxdWVzdGlvbi4KCmBgYHtyLCBldmFsPUZBTFNFfQpwb3dlcjIgPC0gc2ltRmFzdChmb3JtID0gLi4uLAogICAgICAgICAgICAgICAgICBkYXRhID0gLi4uLAogICAgICAgICAgICAgICAgICBiZXRhcyA9IC4uLiwKICAgICAgICAgICAgICAgICAgc2QgPSAuLi4sCiAgICAgICAgICAgICAgICAgIGNvbnRyYXN0cyA9IC4uLiwKICAgICAgICAgICAgICAgICAgYWxwaGEgPSAuLi4sCiAgICAgICAgICAgICAgICAgIG5TaW0gPSAuLi4pCnBvd2VyMgpgYGAKCiMjIFF1ZXN0aW9uIDMKCkhvdyBtYW55IG9ic2VydmF0aW9ucyB3b3VsZCB5b3UgbmVlZCB0byBwaWNrIHVwIHRoZSB0cmVhdG1lbnQgZWZmZWN0IHdpdGgKYSBwb3dlciBvZiA5MCU/CgpUaGlzIHdpbGwgcmVxdWlyZSB1cyB0byBlc3RhYmxpc2ggYSByZWxhdGlvbnNoaXAgYmV0d2VlbiBzYW1wbGUgc2l6ZSBhbmQgcG93ZXIuCkluIHR1cm4sIHRoaXMgd2lsbCByZXF1aXJlIHVzIHRvIHBlcmZvcm0gYSAicGFyYW1ldGVyIHN3ZWVwIiBvdmVyIGRpZmZlcmVudAp2YWx1ZXMgb2Ygc2FtcGxlIHNpemUgYW5kIGNvbXB1dGUgdGhlIHBvd2VyIGZvciBlYWNoIG9mIHRoZW0uCgpgYGB7cn0KCmBgYAoKIyMgUXVlc3Rpb24gNAoKU3VwcG9zZSB0aGF0IHdlIHdvdWxkIGxpa2UgdG8gcGljayB1cCBhbiBlZmZlY3Qgc2l6ZSBvZiAkXGJldGFfMSA9IDYwIGcva2ckLgpIb3cgbWFueSBzYW1wbGVzIHdvdWxkIGJlIHJlcXVpcmVkIGluIGVhY2ggZ3JvdXAgdG8gb2J0YWluIGEgcG93ZXIgb2YgOTAlPwoKTm90ZSwgdGhhdAoKLSB3ZSBkbyBhIHR3by1zaWRlZCB0ZXN0IHNvIHRoZSBzaWduIG9mIHRoZSBlZmZlY3Qgc2l6ZSBpcyBhcmJpdHJhcnkuCi0gdGhlIGludGVyY2VwdCBpbiB0aGUgcG93ZXIgYW5hbHlzaXMgaXMgYWxzbyBhcmJpdHJhcnkgc28gd2UgY291bGQgYWxzbyBzZXQgaXQgYXQgMC4KCmBgYHtyfQoKYGBgCg==</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("08_ExperimentalDesignII_1_rodents.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

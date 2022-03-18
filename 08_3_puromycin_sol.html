@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement &amp; Jeroen Gilis" />
+
+
+<title>8.3. Multiple regression with interaction: puromycin example - solution</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">8.3. Multiple regression with interaction: puromycin example - solution</h1>
+<h4 class="author">Lieven Clement &amp; Jeroen Gilis</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<div id="puromycin-data" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Puromycin data</h1>
+<p>Data on the velocity of an enzymatic reaction were obtained by Treloar (1974). The number of counts per minute of radioactive product from the reaction was measured as a function of substrate concentration in parts per million (ppm) and from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min). The experiment was conducted once with the enzyme treated with Puromycin, and once with the enzyme untreated.</p>
+<p>Assess if there is an association between the substrate concentration and rate <strong>for both the treated and untreated enzymes.</strong></p>
+</div>
+<div id="import-data" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Import data</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Puromycin)</span></code></pre></div>
+</div>
+<div id="data-wrangling" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Data wrangling</h1>
+<p>For a clearer interpretation of the model parameters later on, we will make the untreated state enzymes the reference category.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Puromycin <span class="ot">&lt;-</span> Puromycin <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">state =</span><span class="fu">fct_relevel</span>(state,<span class="fu">c</span>(<span class="st">&quot;untreated&quot;</span>,<span class="st">&quot;treated&quot;</span>)))</span></code></pre></div>
+<div id="data-exploration" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Data Exploration</h2>
+<p>First, we visualize the association between the concentration and the enzyme rate, for both of the enzyme states.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Puromycin  <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>conc,<span class="at">y=</span>rate)) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method =</span> <span class="st">&quot;loess&quot;</span>,<span class="at">col=</span><span class="st">&quot;red&quot;</span>) <span class="sc">+</span> <span class="co"># fit een kromme door de punten (rode lijn)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">&#39;lm&#39;</span>,<span class="at">col=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span> <span class="co"># fit een rechte door de punten aan de hand van de kleinstekwadratenmethode</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Reaction rate (counts/min)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Substrate concentratie (ppm)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>state)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="08_3_puromycin_sol_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>The plot shows that there is a relation between the velocity and the concentration, however, the relation does not seem to be linear.</p>
+<p>We will assess the impact of log-transforming the concentration. Because the concentration is measured in ppm we will log<span class="math inline">\(_{10}\)</span> transform the data.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Puromycin  <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>conc <span class="sc">%&gt;%</span> log10,<span class="at">y=</span>rate)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method =</span> <span class="st">&quot;loess&quot;</span>,<span class="at">col=</span><span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">&#39;lm&#39;</span>,<span class="at">col=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Reaction Rate (counts/min)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;log10(Substrate concentration) (log10 ppm)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>state)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="08_3_puromycin_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>The relation between the velocity and the log<span class="math inline">\(_{10}\)</span> transformed concentration seems to be linear.</p>
+</div>
+</div>
+<div id="linear-regression" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Linear regression</h1>
+<p>We will fit the following model to the data</p>
+<p><span class="math inline">\(Y_i = \beta_0 + \beta_c x_c+ \beta_s x_s +\beta_{c:s}x_{c}x_{s} + \epsilon_i\)</span></p>
+<p>with</p>
+<ul>
+<li><p><span class="math inline">\(Y_i\)</span> the reaction rate,</p></li>
+<li><p><span class="math inline">\(\beta_0\)</span> the intercept,</p></li>
+<li><p><span class="math inline">\(\beta_{c}\)</span> the main effect for log10 concentration,</p></li>
+<li><p><span class="math inline">\(x_c\)</span> the log10 concentration,</p></li>
+<li><p><span class="math inline">\(\beta_{p}\)</span> the main effect for treatment ,</p></li>
+<li><p><span class="math inline">\(x_s\)</span> a dummy variable for “state” that is 0 if the enzymes that are untreated and 1 if the enzymes are treated with Puromycin,</p></li>
+<li><p><span class="math inline">\(\beta_{c:s}\)</span> the interaction effect between concentration and treatment state,</p></li>
+<li><p><span class="math inline">\(\epsilon_i\)</span> i.i.d. normally distributed with mean 0 and variance <span class="math inline">\(\sigma^2\)</span>.</p></li>
+</ul>
+<p>Note, that we write the substrate concentration with a small letter because the predictor is not random. The researchers have chosen the substrate concentrations in the design phase and it is thus no random variable.</p>
+<p>The model implies two different regression lines</p>
+<ul>
+<li>no treatment (<span class="math inline">\(x_s = 0\)</span>) <span class="math display">\[
+Y_i = \beta_0 + \beta_c x_c + \epsilon
+\]</span></li>
+<li>treatment (x_s = 1)</li>
+</ul>
+<p><span class="math display">\[
+Y_i = (\beta_0 + \beta_s)  + (\beta_c+\beta_{c:s}) x_c + \epsilon
+\]</span></p>
+<p>So the main effect for treatment has the interpretation as the change in intercept between treated and untreated samples.</p>
+<p>The interaction term has the interpretation as the change in slope between treated and untreated samples.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Puromycin <span class="ot">&lt;-</span>Puromycin <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log10conc =</span> conc <span class="sc">%&gt;%</span> log10)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(rate <span class="sc">~</span> log10conc <span class="sc">*</span> state, Puromycin)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = rate ~ log10conc * state, data = Puromycin)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -17.018  -6.381  -1.005   7.616  13.323 
+## 
+## Coefficients:
+##                        Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)             164.588      5.153  31.938  &lt; 2e-16 ***
+## log10conc                62.129      5.020  12.375 1.54e-10 ***
+## statetreated             44.606      6.811   6.549 2.85e-06 ***
+## log10conc:statetreated   23.321      6.763   3.448  0.00269 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 9.151 on 19 degrees of freedom
+## Multiple R-squared:  0.968,  Adjusted R-squared:  0.9629 
+## F-statistic: 191.3 on 3 and 19 DF,  p-value: 2.267e-14</code></pre>
+<p>Before we perform inference we will first assess the assumptions</p>
+<div id="assumptions" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Assumptions</h2>
+<ol style="list-style-type: decimal">
+<li>Independence</li>
+<li>Linearity</li>
+<li>Normal distribution of the residuals</li>
+<li>Homoscedasticity</li>
+</ol>
+<p>We assume that the experiment was well designed and that the different reactions that were use in the experiment are independent.</p>
+</div>
+<div id="linearity" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Linearity</h2>
+<p>We assess linearity in a residual analysis</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod1, <span class="at">which=</span><span class="dv">1</span>)</span></code></pre></div>
+<p><img src="08_3_puromycin_sol_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>The assumption of linearity is met.</p>
+<div id="normality" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Normality</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod1,<span class="at">which=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="08_3_puromycin_sol_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>The QQ-plot does not show large deviations from normality.</p>
+</div>
+<div id="homoscedasticity-equality-of-the-variance" class="section level3" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Homoscedasticity: equality of the variance</h3>
+<p>We can again use the residual plot for assessing this assumption or the plot were we plot the square root of the standardized residuals in function of the fit.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod1, <span class="at">which=</span><span class="dv">3</span>)</span></code></pre></div>
+<p><img src="08_3_puromycin_sol_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>We see that the spread of the majority of the residuals is more or less similar. As such, we may assume homoscedasticity of the data.</p>
+</div>
+</div>
+<div id="inference" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Inference</h2>
+<div id="hypotheses" class="section level3" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> hypotheses</h3>
+<p>We first do an omnibus test to assess is there is an effect of the log10 concentration on the velocity.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>mod0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(rate <span class="sc">~</span> state, <span class="at">data =</span> Puromycin)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod0,mod1)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Res.Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["RSS"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Sum of Sq"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"21","2":"44201.098","3":"NA","4":"NA","5":"NA","6":"NA","_rn_":"1"},{"1":"19","2":"1591.245","3":"2","4":"42609.85","5":"254.3879","6":"1.927032e-14","_rn_":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Next, we assess the interaction.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mod1)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sum Sq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"41613.9154","2":"1","3":"496.88400","4":"4.396702e-15","_rn_":"log10conc"},{"1":"3622.8453","2":"1","3":"43.25798","4":"2.694833e-06","_rn_":"state"},{"1":"995.9377","2":"1","3":"11.89183","4":"2.692345e-03","_rn_":"log10conc:state"},{"1":"1591.2454","2":"19","3":"NA","4":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We cannot remove the interaction of the model.</p>
+<p>Hence, we cannot study the effect of the concentration without accounting for the treatment and have to assess following research questions.</p>
+<ol style="list-style-type: decimal">
+<li>the association between velocity and the concentration is significant in the untreated group</li>
+</ol>
+<p><span class="math display">\[
+H_0: \beta_c = 0 \text{ vs } H_1: \beta_c \neq 0
+\]</span></p>
+<ol start="2" style="list-style-type: decimal">
+<li>the association between velocity and the concentration is significant in the treated group</li>
+</ol>
+<p>$$</p>
+<p>H_0: <em>c + </em>{c:s}= 0  H_1: <em>c + </em>{c:s} $$</p>
+<ol start="3" style="list-style-type: decimal">
+<li>the association between velocity and the concentration is different between treated and untreated group</li>
+</ol>
+<p><span class="math display">\[
+H_0: \beta_{c:s}= 0\text{ vs }H_1: \beta_{c:s}\neq 0
+\]</span></p>
+<p>We can assess all these hypotheses using multcomp while correcting for multiple testing.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span></code></pre></div>
+<pre><code>## Loading required package: mvtnorm</code></pre>
+<pre><code>## Loading required package: survival</code></pre>
+<pre><code>## Loading required package: TH.data</code></pre>
+<pre><code>## Loading required package: MASS</code></pre>
+<pre><code>## 
+## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select</code></pre>
+<pre><code>## 
+## Attaching package: &#39;TH.data&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:MASS&#39;:
+## 
+##     geyser</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>mcp1 <span class="ot">&lt;-</span> <span class="fu">glht</span>(mod1, <span class="at">linfct =</span> <span class="fu">c</span>(<span class="st">&quot;log10conc = 0&quot;</span>, <span class="st">&quot;log10conc + log10conc:statetreated = 0&quot;</span>, <span class="st">&quot;log10conc:statetreated = 0&quot;</span>))</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mcp1)</span></code></pre></div>
+<pre><code>## 
+##   Simultaneous Tests for General Linear Hypotheses
+## 
+## Fit: lm(formula = rate ~ log10conc * state, data = Puromycin)
+## 
+## Linear Hypotheses:
+##                                         Estimate Std. Error t value Pr(&gt;|t|)
+## log10conc == 0                            62.129      5.020  12.375  &lt; 0.001
+## log10conc + log10conc:statetreated == 0   85.450      4.531  18.858  &lt; 0.001
+## log10conc:statetreated == 0               23.321      6.763   3.448  0.00665
+##                                            
+## log10conc == 0                          ***
+## log10conc + log10conc:statetreated == 0 ***
+## log10conc:statetreated == 0             ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## (Adjusted p values reported -- single-step method)</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(mcp1)</span></code></pre></div>
+<pre><code>## 
+##   Simultaneous Confidence Intervals
+## 
+## Fit: lm(formula = rate ~ log10conc * state, data = Puromycin)
+## 
+## Quantile = 2.5076
+## 95% family-wise confidence level
+##  
+## 
+## Linear Hypotheses:
+##                                         Estimate lwr     upr    
+## log10conc == 0                          62.1285  49.5392 74.7178
+## log10conc + log10conc:statetreated == 0 85.4499  74.0875 96.8123
+## log10conc:statetreated == 0             23.3214   6.3628 40.2800</code></pre>
+</div>
+<div id="conclusion" class="section level3" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> Conclusion</h3>
+<p>There is an extremely significant effect of the substrate concentration on the reaction rate (p&lt;&lt;0.001). The effect of the substrate concentration on the reaction rate is extremely significant for reactions catalysed with untreated enzymes. A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average 62.1 counts/min higher (95% CI [49.5, 74.7] counts/min) (p &lt;&lt; 0.001). The effect of the substrate concentration on the reaction rate is extremely significant for reactions catalysed puromycin treated enzymes (p &lt;&lt; 0.001). A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average 85.4 counts/min higher (95% CI [74.1, 96.8] counts/min). The effect of the substrate concentration on the reaction rate is very significantly higher for reactions catalysed with Puromycin treated enzymes than when catalysed with non-treated enzymes (p = 0.007). A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average 23.3 counts/min higher for reactions that are catalysed with Puromycin treated enzymes than with untreated enzymes (95% CI [6.3, 40.3] counts/min).</p>
+</div>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiOC4zLiBNdWx0aXBsZSByZWdyZXNzaW9uIHdpdGggaW50ZXJhY3Rpb246IHB1cm9teWNpbiBleGFtcGxlIC0gc29sdXRpb24iCmF1dGhvcjogIkxpZXZlbiBDbGVtZW50ICYgSmVyb2VuIEdpbGlzIgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIGNvZGVfZG93bmxvYWQ6IHllcwogICAgdGhlbWU6IGNvc21vCiAgICB0b2M6IHllcwogICAgdG9jX2Zsb2F0OiB5ZXMKICAgIGhpZ2hsaWdodDogdGFuZ28KICAgIG51bWJlcl9zZWN0aW9uczogeWVzCi0tLQoKPGEgcmVsPSJsaWNlbnNlIiBocmVmPSJodHRwczovL2NyZWF0aXZlY29tbW9ucy5vcmcvbGljZW5zZXMvYnktbmMtc2EvNC4wIj48aW1nIGFsdD0iQ3JlYXRpdmUgQ29tbW9ucyBMaWNlbnNlIiBzdHlsZT0iYm9yZGVyLXdpZHRoOjAiIHNyYz0iaHR0cHM6Ly9pLmNyZWF0aXZlY29tbW9ucy5vcmcvbC9ieS1uYy1zYS80LjAvODh4MzEucG5nIiAvPjwvYT4KCmBgYHtyLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKYGBgCgojIFB1cm9teWNpbiBkYXRhCgpEYXRhIG9uIHRoZSB2ZWxvY2l0eSBvZiBhbiBlbnp5bWF0aWMgcmVhY3Rpb24gd2VyZSBvYnRhaW5lZCBieSBUcmVsb2FyICgxOTc0KS4KVGhlIG51bWJlciBvZiBjb3VudHMgcGVyIG1pbnV0ZSBvZiByYWRpb2FjdGl2ZSBwcm9kdWN0IGZyb20gdGhlIHJlYWN0aW9uIHdhcwptZWFzdXJlZCBhcyBhIGZ1bmN0aW9uIG9mIHN1YnN0cmF0ZSBjb25jZW50cmF0aW9uIGluIHBhcnRzIHBlciBtaWxsaW9uIChwcG0pIGFuZApmcm9tIHRoZXNlIGNvdW50cyB0aGUgaW5pdGlhbCByYXRlIChvciB2ZWxvY2l0eSkgb2YgdGhlIHJlYWN0aW9uIHdhcyBjYWxjdWxhdGVkIChjb3VudHMvbWluL21pbikuIFRoZSBleHBlcmltZW50IHdhcyBjb25kdWN0ZWQgb25jZSB3aXRoIHRoZSBlbnp5bWUgdHJlYXRlZAp3aXRoIFB1cm9teWNpbiwgYW5kIG9uY2Ugd2l0aCB0aGUgZW56eW1lIHVudHJlYXRlZC4KCkFzc2VzcyBpZiB0aGVyZSBpcyBhbiBhc3NvY2lhdGlvbiBiZXR3ZWVuIHRoZSBzdWJzdHJhdGUgY29uY2VudHJhdGlvbiBhbmQgcmF0ZQoqKmZvciBib3RoIHRoZSB0cmVhdGVkIGFuZCB1bnRyZWF0ZWQgZW56eW1lcy4qKgoKIyBJbXBvcnQgZGF0YQoKYGBge3J9CmRhdGEoUHVyb215Y2luKQpgYGAKCiMgRGF0YSB3cmFuZ2xpbmcKCkZvciBhIGNsZWFyZXIgaW50ZXJwcmV0YXRpb24gb2YgdGhlIG1vZGVsIHBhcmFtZXRlcnMgbGF0ZXIgb24sIHdlIHdpbGwgbWFrZQp0aGUgdW50cmVhdGVkIHN0YXRlIGVuenltZXMgdGhlIHJlZmVyZW5jZSBjYXRlZ29yeS4KCmBgYHtyfQpQdXJvbXljaW4gPC0gUHVyb215Y2luICU+JQogICAgbXV0YXRlKHN0YXRlID1mY3RfcmVsZXZlbChzdGF0ZSxjKCJ1bnRyZWF0ZWQiLCJ0cmVhdGVkIikpKQpgYGAKCiMjIERhdGEgRXhwbG9yYXRpb24KCkZpcnN0LCB3ZSB2aXN1YWxpemUgdGhlIGFzc29jaWF0aW9uIGJldHdlZW4gdGhlIGNvbmNlbnRyYXRpb24gYW5kIHRoZSBlbnp5bWUKcmF0ZSwgZm9yIGJvdGggb2YgdGhlIGVuenltZSBzdGF0ZXMuCgpgYGB7cn0KUHVyb215Y2luICAlPiUKICBnZ3Bsb3QoYWVzKHg9Y29uYyx5PXJhdGUpKSArCiAgZ2VvbV9wb2ludCgpICsKICBzdGF0X3Ntb290aChtZXRob2QgPSAibG9lc3MiLGNvbD0icmVkIikgKyAjIGZpdCBlZW4ga3JvbW1lIGRvb3IgZGUgcHVudGVuIChyb2RlIGxpam4pCiAgc3RhdF9zbW9vdGgobWV0aG9kPSdsbScsY29sPSJibGFjayIpICsgIyBmaXQgZWVuIHJlY2h0ZSBkb29yIGRlIHB1bnRlbiBhYW4gZGUgaGFuZCB2YW4gZGUga2xlaW5zdGVrd2FkcmF0ZW5tZXRob2RlCiAgeWxhYigiUmVhY3Rpb24gcmF0ZSAoY291bnRzL21pbikiKSArCiAgeGxhYigiU3Vic3RyYXRlIGNvbmNlbnRyYXRpZSAocHBtKSIpICsKICBmYWNldF9ncmlkKH5zdGF0ZSkKYGBgCgpUaGUgcGxvdCBzaG93cyB0aGF0IHRoZXJlIGlzIGEgcmVsYXRpb24gYmV0d2VlbiB0aGUgdmVsb2NpdHkgYW5kIHRoZQpjb25jZW50cmF0aW9uLCBob3dldmVyLCB0aGUgcmVsYXRpb24gZG9lcyBub3Qgc2VlbSB0byBiZSBsaW5lYXIuCgpXZSB3aWxsIGFzc2VzcyB0aGUgaW1wYWN0IG9mIGxvZy10cmFuc2Zvcm1pbmcgdGhlIGNvbmNlbnRyYXRpb24uIEJlY2F1c2UgdGhlCmNvbmNlbnRyYXRpb24gaXMgbWVhc3VyZWQgaW4gcHBtIHdlIHdpbGwgbG9nJF97MTB9JCB0cmFuc2Zvcm0gdGhlIGRhdGEuCgpgYGB7cn0KUHVyb215Y2luICAlPiUKICBnZ3Bsb3QoYWVzKHg9Y29uYyAlPiUgbG9nMTAseT1yYXRlKSkgKwogIGdlb21fcG9pbnQoKSArCiAgc3RhdF9zbW9vdGgobWV0aG9kID0gImxvZXNzIixjb2w9InJlZCIpICsKICBzdGF0X3Ntb290aChtZXRob2Q9J2xtJyxjb2w9ImJsYWNrIikgKwogIHlsYWIoIlJlYWN0aW9uIFJhdGUgKGNvdW50cy9taW4pIikgKwogIHhsYWIoImxvZzEwKFN1YnN0cmF0ZSBjb25jZW50cmF0aW9uKSAobG9nMTAgcHBtKSIpICsKICBmYWNldF9ncmlkKH5zdGF0ZSkKYGBgCgpUaGUgcmVsYXRpb24gYmV0d2VlbiB0aGUgdmVsb2NpdHkgYW5kIHRoZSBsb2ckX3sxMH0kIHRyYW5zZm9ybWVkIGNvbmNlbnRyYXRpb24Kc2VlbXMgdG8gYmUgbGluZWFyLgoKIyBMaW5lYXIgcmVncmVzc2lvbgoKV2Ugd2lsbCBmaXQgdGhlIGZvbGxvd2luZyBtb2RlbCB0byB0aGUgZGF0YQoKJFlfaSA9IFxiZXRhXzAgKyBcYmV0YV9jIHhfYysgXGJldGFfcyB4X3MgK1xiZXRhX3tjOnN9eF97Y314X3tzfSArIFxlcHNpbG9uX2kkCgp3aXRoCgotICRZX2kkIHRoZSByZWFjdGlvbiByYXRlLAoKLSAkXGJldGFfMCQgdGhlIGludGVyY2VwdCwKCi0gJFxiZXRhX3tjfSQgdGhlIG1haW4gZWZmZWN0IGZvciBsb2cxMCBjb25jZW50cmF0aW9uLAoKLSAkeF9jJCB0aGUgbG9nMTAgY29uY2VudHJhdGlvbiwKCi0gJFxiZXRhX3twfSQgdGhlIG1haW4gZWZmZWN0IGZvciB0cmVhdG1lbnQgLAoKLSAkeF9zJCBhIGR1bW15IHZhcmlhYmxlIGZvciAic3RhdGUiIHRoYXQgaXMgMCBpZiB0aGUgZW56eW1lcyB0aGF0IGFyZSB1bnRyZWF0ZWQgYW5kIDEgaWYKdGhlIGVuenltZXMgYXJlIHRyZWF0ZWQgd2l0aCBQdXJvbXljaW4sCgotICRcYmV0YV97YzpzfSQgdGhlIGludGVyYWN0aW9uIGVmZmVjdCBiZXR3ZWVuIGNvbmNlbnRyYXRpb24gYW5kIHRyZWF0bWVudCBzdGF0ZSwKCi0gJFxlcHNpbG9uX2kkIGkuaS5kLiBub3JtYWxseSBkaXN0cmlidXRlZCB3aXRoIG1lYW4gMCBhbmQgdmFyaWFuY2UgJFxzaWdtYV4yJC4KCk5vdGUsIHRoYXQgd2Ugd3JpdGUgdGhlIHN1YnN0cmF0ZSBjb25jZW50cmF0aW9uIHdpdGggYSBzbWFsbCBsZXR0ZXIgYmVjYXVzZQp0aGUgcHJlZGljdG9yIGlzIG5vdCByYW5kb20uIFRoZSByZXNlYXJjaGVycyBoYXZlIGNob3NlbiB0aGUgc3Vic3RyYXRlCmNvbmNlbnRyYXRpb25zIGluIHRoZSBkZXNpZ24gcGhhc2UgYW5kIGl0IGlzIHRodXMgbm8gcmFuZG9tIHZhcmlhYmxlLgoKVGhlIG1vZGVsIGltcGxpZXMgdHdvIGRpZmZlcmVudCByZWdyZXNzaW9uIGxpbmVzCgotIG5vIHRyZWF0bWVudCAoJHhfcyA9IDAkKQokJApZX2kgPSBcYmV0YV8wICsgXGJldGFfYyB4X2MgKyBcZXBzaWxvbgokJAotIHRyZWF0bWVudCAoeF9zID0gMSkKCiQkCllfaSA9IChcYmV0YV8wICsgXGJldGFfcykgICsgKFxiZXRhX2MrXGJldGFfe2M6c30pIHhfYyArIFxlcHNpbG9uCiQkCgpTbyB0aGUgbWFpbiBlZmZlY3QgZm9yIHRyZWF0bWVudCBoYXMgdGhlIGludGVycHJldGF0aW9uIGFzIHRoZSBjaGFuZ2UgaW4gaW50ZXJjZXB0IGJldHdlZW4gdHJlYXRlZCBhbmQgdW50cmVhdGVkIHNhbXBsZXMuCgpUaGUgaW50ZXJhY3Rpb24gdGVybSBoYXMgdGhlIGludGVycHJldGF0aW9uIGFzIHRoZSBjaGFuZ2UgaW4gc2xvcGUgYmV0d2VlbiB0cmVhdGVkIGFuZCB1bnRyZWF0ZWQgc2FtcGxlcy4KCmBgYHtyfQpQdXJvbXljaW4gPC1QdXJvbXljaW4gJT4lCiAgbXV0YXRlKGxvZzEwY29uYyA9IGNvbmMgJT4lIGxvZzEwKQptb2QxIDwtIGxtKHJhdGUgfiBsb2cxMGNvbmMgKiBzdGF0ZSwgUHVyb215Y2luKQpzdW1tYXJ5KG1vZDEpCmBgYAoKQmVmb3JlIHdlIHBlcmZvcm0gaW5mZXJlbmNlIHdlIHdpbGwgZmlyc3QgYXNzZXNzIHRoZSBhc3N1bXB0aW9ucwoKIyMgQXNzdW1wdGlvbnMKCjEuIEluZGVwZW5kZW5jZQoyLiBMaW5lYXJpdHkKMy4gTm9ybWFsIGRpc3RyaWJ1dGlvbiBvZiB0aGUgcmVzaWR1YWxzCjQuIEhvbW9zY2VkYXN0aWNpdHkKCldlIGFzc3VtZSB0aGF0IHRoZSBleHBlcmltZW50IHdhcyB3ZWxsIGRlc2lnbmVkIGFuZCB0aGF0IHRoZSBkaWZmZXJlbnQgcmVhY3Rpb25zIHRoYXQgd2VyZSB1c2UgaW4gdGhlIGV4cGVyaW1lbnQgYXJlIGluZGVwZW5kZW50LgoKIyMgTGluZWFyaXR5CgpXZSBhc3Nlc3MgbGluZWFyaXR5IGluIGEgcmVzaWR1YWwgYW5hbHlzaXMKCmBgYHtyfQpwbG90KG1vZDEsIHdoaWNoPTEpCmBgYAoKVGhlIGFzc3VtcHRpb24gb2YgbGluZWFyaXR5IGlzIG1ldC4KCiMjIyBOb3JtYWxpdHkKCmBgYHtyfQpwbG90KG1vZDEsd2hpY2g9MikKYGBgCgpUaGUgUVEtcGxvdCBkb2VzIG5vdCBzaG93IGxhcmdlIGRldmlhdGlvbnMgZnJvbSBub3JtYWxpdHkuCgojIyMgSG9tb3NjZWRhc3RpY2l0eTogZXF1YWxpdHkgb2YgdGhlIHZhcmlhbmNlCgpXZSBjYW4gYWdhaW4gdXNlIHRoZSByZXNpZHVhbCBwbG90IGZvciBhc3Nlc3NpbmcgdGhpcyBhc3N1bXB0aW9uIG9yIHRoZSBwbG90CndlcmUgd2UgcGxvdCB0aGUgc3F1YXJlIHJvb3Qgb2YgdGhlIHN0YW5kYXJkaXplZCByZXNpZHVhbHMgaW4gZnVuY3Rpb24gb2YKdGhlIGZpdC4KCmBgYHtyfQpwbG90KG1vZDEsIHdoaWNoPTMpCmBgYAoKV2Ugc2VlIHRoYXQgdGhlIHNwcmVhZCBvZiB0aGUgbWFqb3JpdHkgb2YgdGhlIHJlc2lkdWFscyBpcyBtb3JlIG9yIGxlc3Mgc2ltaWxhci4KQXMgc3VjaCwgd2UgbWF5IGFzc3VtZSBob21vc2NlZGFzdGljaXR5IG9mIHRoZSBkYXRhLgoKIyMgSW5mZXJlbmNlCgojIyMgaHlwb3RoZXNlcwoKV2UgZmlyc3QgZG8gYW4gb21uaWJ1cyB0ZXN0IHRvIGFzc2VzcyBpcyB0aGVyZSBpcyBhbiBlZmZlY3Qgb2YgdGhlIGxvZzEwIGNvbmNlbnRyYXRpb24gb24gdGhlIHZlbG9jaXR5LgoKYGBge3J9Cm1vZDAgPC0gbG0ocmF0ZSB+IHN0YXRlLCBkYXRhID0gUHVyb215Y2luKQphbm92YShtb2QwLG1vZDEpCmBgYAoKTmV4dCwgd2UgYXNzZXNzIHRoZSBpbnRlcmFjdGlvbi4KCmBgYHtyfQpjYXI6OkFub3ZhKG1vZDEpCmBgYAoKV2UgY2Fubm90IHJlbW92ZSB0aGUgaW50ZXJhY3Rpb24gb2YgdGhlIG1vZGVsLgoKSGVuY2UsIHdlIGNhbm5vdCBzdHVkeSB0aGUgZWZmZWN0IG9mIHRoZSBjb25jZW50cmF0aW9uIHdpdGhvdXQgYWNjb3VudGluZyBmb3IgdGhlIHRyZWF0bWVudCBhbmQgaGF2ZSB0byBhc3Nlc3MgZm9sbG93aW5nIHJlc2VhcmNoIHF1ZXN0aW9ucy4KCjEuIHRoZSBhc3NvY2lhdGlvbiBiZXR3ZWVuIHZlbG9jaXR5IGFuZCB0aGUgY29uY2VudHJhdGlvbiBpcyBzaWduaWZpY2FudCBpbiB0aGUgdW50cmVhdGVkIGdyb3VwCgokJApIXzA6IFxiZXRhX2MgPSAwIFx0ZXh0eyB2cyB9IEhfMTogXGJldGFfYyBcbmVxIDAKJCQKCjIuIHRoZSBhc3NvY2lhdGlvbiBiZXR3ZWVuIHZlbG9jaXR5IGFuZCB0aGUgY29uY2VudHJhdGlvbiBpcyBzaWduaWZpY2FudCBpbiB0aGUgdHJlYXRlZCBncm91cAoKJCQKCkhfMDogXGJldGFfYyArIFxiZXRhX3tjOnN9PSAwIFx0ZXh0IHsgdnMgfSBIXzE6IFxiZXRhX2MgKyBcYmV0YV97YzpzfVxuZXEgMAokJAoKMy4gdGhlIGFzc29jaWF0aW9uIGJldHdlZW4gdmVsb2NpdHkgYW5kIHRoZSBjb25jZW50cmF0aW9uIGlzIGRpZmZlcmVudCBiZXR3ZWVuIHRyZWF0ZWQgYW5kIHVudHJlYXRlZCBncm91cAoKJCQKSF8wOiBcYmV0YV97YzpzfT0gMFx0ZXh0eyB2cyB9SF8xOiBcYmV0YV97YzpzfVxuZXEgMAokJAoKV2UgY2FuIGFzc2VzcyBhbGwgdGhlc2UgaHlwb3RoZXNlcyB1c2luZyBtdWx0Y29tcCB3aGlsZSBjb3JyZWN0aW5nIGZvciBtdWx0aXBsZSB0ZXN0aW5nLgoKYGBge3J9CmxpYnJhcnkobXVsdGNvbXApCm1jcDEgPC0gZ2xodChtb2QxLCBsaW5mY3QgPSBjKCJsb2cxMGNvbmMgPSAwIiwgImxvZzEwY29uYyArIGxvZzEwY29uYzpzdGF0ZXRyZWF0ZWQgPSAwIiwgImxvZzEwY29uYzpzdGF0ZXRyZWF0ZWQgPSAwIikpCnN1bW1hcnkobWNwMSkKY29uZmludChtY3AxKQpgYGAKCgojIyMgQ29uY2x1c2lvbgoKVGhlcmUgaXMgYW4gZXh0cmVtZWx5IHNpZ25pZmljYW50IGVmZmVjdCBvZiB0aGUgc3Vic3RyYXRlIGNvbmNlbnRyYXRpb24gb24gdGhlIHJlYWN0aW9uIHJhdGUgKHA8PDAuMDAxKS4KVGhlIGVmZmVjdCBvZiB0aGUgc3Vic3RyYXRlIGNvbmNlbnRyYXRpb24gb24gdGhlIHJlYWN0aW9uIHJhdGUgaXMgZXh0cmVtZWx5IHNpZ25pZmljYW50IGZvciByZWFjdGlvbnMgY2F0YWx5c2VkIHdpdGggdW50cmVhdGVkIGVuenltZXMuIEEgcmVhY3Rpb24gYXQgYSBzdWJzdHJhdGUgY29uY2VudHJhdGlvbiB0aGF0IGlzIDEwIHRpbWVzIGhpZ2hlciB3aWxsIGhhdmUgYSByZWFjdGlvbiBzcGVlZCB0aGF0IGlzIG9uIGF2ZXJhZ2UgIGByIHJvdW5kKGNvbmZpbnQobWNwMSkkY29uZmludFsxLDFdLDEpYCBjb3VudHMvbWluIGhpZ2hlciAoOTUlIENJIFtgciByb3VuZChjb25maW50KG1jcDEpJGNvbmZpbnRbMSwtMV0sMSlgXSBjb3VudHMvbWluKSAocCA8PCAwLjAwMSkuClRoZSBlZmZlY3Qgb2YgdGhlIHN1YnN0cmF0ZSBjb25jZW50cmF0aW9uIG9uIHRoZSByZWFjdGlvbiByYXRlIGlzIGV4dHJlbWVseSBzaWduaWZpY2FudCBmb3IgcmVhY3Rpb25zIGNhdGFseXNlZCBwdXJvbXljaW4gdHJlYXRlZCBlbnp5bWVzICAocCA8PCAwLjAwMSkuIEEgcmVhY3Rpb24gYXQgYSBzdWJzdHJhdGUgY29uY2VudHJhdGlvbiB0aGF0IGlzIDEwIHRpbWVzIGhpZ2hlciB3aWxsIGhhdmUgYSByZWFjdGlvbiBzcGVlZCB0aGF0IGlzIG9uIGF2ZXJhZ2UgIGByIHJvdW5kKGNvbmZpbnQobWNwMSkkY29uZmludFsyLDFdLDEpYCBjb3VudHMvbWluIGhpZ2hlciAoOTUlIENJIFtgciByb3VuZChjb25maW50KG1jcDEpJGNvbmZpbnRbMiwtMV0sMSlgXSBjb3VudHMvbWluKS4KVGhlIGVmZmVjdCBvZiB0aGUgc3Vic3RyYXRlIGNvbmNlbnRyYXRpb24gb24gdGhlIHJlYWN0aW9uIHJhdGUgaXMgdmVyeSBzaWduaWZpY2FudGx5IGhpZ2hlciBmb3IgcmVhY3Rpb25zIGNhdGFseXNlZCB3aXRoIFB1cm9teWNpbiB0cmVhdGVkIGVuenltZXMgdGhhbiB3aGVuIGNhdGFseXNlZCB3aXRoIG5vbi10cmVhdGVkIGVuenltZXMgIChwID0gYHIgcm91bmQoc3VtbWFyeShtY3AxKSR0ZXN0JHB2YWx1ZVszXSwzKWApLiBBIHJlYWN0aW9uIGF0IGEgc3Vic3RyYXRlIGNvbmNlbnRyYXRpb24gdGhhdCBpcyAxMCB0aW1lcyBoaWdoZXIgd2lsbCBoYXZlIGEgcmVhY3Rpb24gc3BlZWQgdGhhdCBpcyBvbiBhdmVyYWdlIGByIHJvdW5kKGNvbmZpbnQobWNwMSkkY29uZmludFszLDFdLDEpYCBjb3VudHMvbWluIGhpZ2hlciBmb3IgcmVhY3Rpb25zIHRoYXQgYXJlIGNhdGFseXNlZCB3aXRoIFB1cm9teWNpbiB0cmVhdGVkIGVuenltZXMgdGhhbiB3aXRoIHVudHJlYXRlZCBlbnp5bWVzICg5NSUgQ0kgW2ByIHJvdW5kKGNvbmZpbnQobWNwMSkkY29uZmludFszLC0xXSwxKWBdIGNvdW50cy9taW4pLgo=</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("08_3_puromycin_sol.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

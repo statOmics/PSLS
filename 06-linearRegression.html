@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement" />
+
+
+<title>6. Simple linear regression</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">6. Simple linear regression</h1>
+<h4 class="author">Lieven Clement</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
+<div id="breast-cancer-dataset" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Breast cancer dataset</h1>
+<ul>
+<li><p>Subset of study <a href="https://doi.org/10.1093/jnci/djj052" class="uri">https://doi.org/10.1093/jnci/djj052</a></p></li>
+<li><p>32 breast cancer patients with estrogen recepter positieve tumor that had tamoxifen chemotherapy. Variabels:</p>
+<ul>
+<li>grade: histological grade of tumor (grade 1 vs 3),</li>
+<li>node: lymph node status (0: not affected, 1: lymph nodes affected and removed),</li>
+<li>size: tumor size in cm,</li>
+<li>ESR1 and S100A8 gene expression in tumor biopsy (microarray technology)</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>brca <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/GTPB/PSLS20/master/data/breastcancer.csv&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>brca</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["sample_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["filename"],"name":[2],"type":["chr"],"align":["left"]},{"label":["treatment"],"name":[3],"type":["chr"],"align":["left"]},{"label":["er"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["grade"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["node"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["size"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["age"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["ESR1"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["S100A8"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"OXFT_209","2":"gsm65344.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"1","7":"2.5","8":"66","9":"1939.1990","10":"207.19682"},{"1":"OXFT_1769","2":"gsm65345.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"1","7":"3.5","8":"86","9":"2751.9521","10":"36.98611"},{"1":"OXFT_2093","2":"gsm65347.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"1","7":"2.2","8":"74","9":"379.1951","10":"2364.18306"},{"1":"OXFT_1770","2":"gsm65348.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"1","7":"1.7","8":"69","9":"2531.7473","10":"23.61504"},{"1":"OXFT_1342","2":"gsm65350.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"0","7":"2.5","8":"62","9":"141.0508","10":"3218.74109"},{"1":"OXFT_2338","2":"gsm65352.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"1","7":"1.4","8":"63","9":"1495.4213","10":"107.56868"},{"1":"OXFT_2341","2":"gsm65353.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"1","7":"3.3","8":"76","9":"3405.7294","10":"13.99662"},{"1":"OXFT_1902","2":"gsm65354.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"0","7":"2.4","8":"61","9":"2812.8034","10":"68.38262"},{"1":"OXFT_1982","2":"gsm65355.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"0","7":"1.7","8":"62","9":"949.9327","10":"74.18828"},{"1":"OXFT_5210","2":"gsm65356.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"0","7":"3.5","8":"65","9":"1052.9142","10":"182.32133"},{"1":"OXFT_2027","2":"gsm65357.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"0","7":"1.4","8":"63","9":"1838.7705","10":"27.51279"},{"1":"OXFT_1133","2":"gsm65358.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"0","7":"2.0","8":"70","9":"3707.8010","10":"26.70991"},{"1":"OXFT_1441","2":"gsm65359.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"0","7":"3.2","8":"78","9":"2240.4095","10":"26.28934"},{"1":"OXFT_1432","2":"gsm65360.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"0","7":"2.0","8":"71","9":"2698.5507","10":"56.30524"},{"1":"OXFT_1125","2":"gsm65361.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"0","7":"1.6","8":"68","9":"2459.7793","10":"14.17095"},{"1":"OXFT_1070","2":"gsm65362.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"0","7":"0.2","8":"45","9":"689.2472","10":"282.68343"},{"1":"OXFT_700","2":"gsm65363.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"0","7":"3.5","8":"57","9":"2625.8917","10":"18.67950"},{"1":"OXFT_742","2":"gsm65364.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"1","7":"1.7","8":"67","9":"1665.5595","10":"18.11686"},{"1":"OXFT_738","2":"gsm65365.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"1","7":"1.8","8":"74","9":"3336.0416","10":"26.00373"},{"1":"OXFT_669","2":"gsm65366.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"0","7":"4.0","8":"60","9":"3057.5784","10":"22.59829"},{"1":"OXFT_3597","2":"gsm65367.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"0","7":"1.1","8":"60","9":"164.2995","10":"6225.02863"},{"1":"OXFT_638","2":"gsm65368.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"1","7":"2.3","8":"63","9":"2909.6771","10":"78.53095"},{"1":"OXFT_2188","2":"gsm65369.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"0","7":"3.3","8":"69","9":"1925.8788","10":"82.15699"},{"1":"OXFT_2069","2":"gsm65370.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"1","7":"2.3","8":"66","9":"1864.3941","10":"65.50852"},{"1":"OXFT_596","2":"gsm65371.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"0","7":"3.0","8":"66","9":"3037.2311","10":"21.68372"},{"1":"OXFT_619","2":"gsm65372.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"0","7":"1.9","8":"49","9":"1449.9249","10":"27.11254"},{"1":"OXFT_680","2":"gsm65373.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"1","7":"4.5","8":"61","9":"3967.2038","10":"26.73890"},{"1":"OXFT_443","2":"gsm65374.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"0","7":"2.1","8":"45","9":"396.0846","10":"219.23261"},{"1":"OXFT_1579","2":"gsm65376.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"0","7":"2.0","8":"40","9":"976.9015","10":"116.66995"},{"1":"OXFT_4904","2":"gsm65377.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"1","7":"5.0","8":"69","9":"2036.9399","10":"102.14641"},{"1":"OXFT_511","2":"gsm65378.cel.gz","3":"tamoxifen","4":"1","5":"3","6":"1","7":"5.5","8":"64","9":"1004.3520","10":"294.16364"},{"1":"OXFT_736","2":"gsm65379.cel.gz","3":"tamoxifen","4":"1","5":"1","6":"0","7":"1.4","8":"48","9":"2163.5382","10":"45.28436"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<ul>
+<li>For didactical reasons we first remove 3 outliers in the S100A8 expression data.</li>
+<li>Later in the lecture we will show how to properly deal with all data.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>brca <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="st">&quot;&quot;</span>,<span class="at">y=</span>S100A8)) <span class="sc">+</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_boxplot</span>()</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<hr />
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>brcaSubset<span class="ot">&lt;-</span>brca <span class="sc">%&gt;%</span> <span class="fu">filter</span>(S100A8<span class="sc">&lt;</span><span class="dv">2000</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>brcaSubset[,<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)] <span class="sc">%&gt;%</span> <span class="fu">ggpairs</span>()</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<div id="association-between-esr1-and-s100a8-expressie" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Association between ESR1 and S100A8 expressie</h2>
+<ul>
+<li><p>ESR1 in <span class="math inline">\(\pm\)</span> 75% of breast cancer tumors.</p>
+<ul>
+<li>Expression of ER gene positive for treatment: tumor responds to hormone therapy</li>
+<li>Tamoxifen interacts with ER and modulates gene expression.</li>
+</ul></li>
+<li><p>Proteins of S100 family often dysregulated in cancer</p>
+<ul>
+<li>S100A8 expressie represses immune systeem in tumor en creates an environment of inflamation that promotes tumor growth.</li>
+</ul></li>
+<li><p>Assess association between ESR1 and S100A8 expression.</p></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>pipe dataset to ggplot</li>
+<li>select data <code>ggplot(aes(x=ESR1,y=S100A8))</code></li>
+<li>add points <code>geom_point()</code></li>
+<li>add smooth line <code>geom_smooth()</code></li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>brcaSubset <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>ESR1,<span class="at">y=</span>S100A8)) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>()</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="lineair-regression" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Lineair Regression</h1>
+<ul>
+<li><p>Statistical method to assess association between two variables <span class="math inline">\((X_i, Y_i)\)</span>, measured on each subject <span class="math inline">\(i = 1, ..., n\)</span>.</p></li>
+<li><p>Gene expression example</p>
+<ul>
+<li>Response Y : S100A8 expression</li>
+<li>Predictor X: ESR1 expression</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>brcaSubset <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>ESR1,<span class="at">y=</span>S100A8)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se=</span><span class="cn">FALSE</span>,<span class="at">col=</span><span class="st">&quot;grey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;lm&quot;</span>,<span class="at">se=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="model" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Model</h2>
+<ul>
+<li>For fixed <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span> does not necessarly has the same value</li>
+</ul>
+<p><span class="math display">\[\text{observation = signal + noise}\]</span></p>
+<p><span class="math display">\[Y_i=g(X_i)+\epsilon_i\]</span> - We define <span class="math inline">\(g(x)\)</span> als the expected outcome for subjects with <span class="math inline">\(X_i=x\)</span></p>
+<p><span class="math display">\[E[Y_i|X_i=x]=g(x)\]</span></p>
+<p>Hence, <span class="math inline">\(\epsilon_i\)</span> is on average 0 for subjects with same <span class="math inline">\(X_i\)</span>: <span class="math display">\[E[\epsilon_i|X_i]=0\]</span></p>
+</div>
+<div id="lineair-regression-1" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Lineair regression</h2>
+<ul>
+<li>To obtain <em>accurate</em> and <em>interpretable</em> results one often choose <span class="math inline">\(g(x)\)</span> to be a linear function with unknown parameter.</li>
+</ul>
+<p><span class="math display">\[E(Y|X=x)=\beta_0 + \beta_1 x\]</span></p>
+<p>unknown  <span class="math inline">\(\beta_0\)</span> and  <span class="math inline">\(\beta_1\)</span>.</p>
+<ul>
+<li><p>Lineair model imposes an <em>assumption</em> on the distribution of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, which can be invalid.</p></li>
+<li><p><em>Efficient data-analysis</em>: because it uses all observations to learn on the expected outcome for <span class="math inline">\(X=x\)</span>.</p></li>
+</ul>
+</div>
+<div id="use" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Use</h2>
+<ul>
+<li><p><em>Prediction</em>: when <span class="math inline">\(Y\)</span> is unknown but <span class="math inline">\(X\)</span> is known we can predict <span class="math inline">\(Y\)</span> using <span class="math display">\[E(Y|X=x)=\beta_0 + \beta_1 x\]</span></p></li>
+<li><p><em>Association</em>: biological relation between variable <span class="math inline">\(X\)</span> and response <span class="math inline">\(Y\)</span></p></li>
+<li><p><em>Intercept:</em> <span class="math inline">\(E(Y|X=0)=\beta_0\)</span> </p></li>
+<li><p><em>Slope</em>: <span class="math display">\[\begin{eqnarray*}
+E(Y|X=x+\delta)-E(Y|X=x)&amp;=&amp;\beta_0 + \beta_1 (x+\delta) -\beta_0-\beta_1 x\\
+&amp;=&amp; \beta_1\delta
+\end{eqnarray*}\]</span></p></li>
+</ul>
+<p><span class="math inline">\(\beta_1=\)</span> difference in mean outcome for subjects that differ in one unit of the predictor <span class="math inline">\(X\)</span>.</p>
+</div>
+</div>
+<div id="parameter-estimation" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Parameter estimation</h1>
+<ul>
+<li>Least squares</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>brcaSubset <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>ESR1,<span class="at">y=</span>S100A8)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se=</span><span class="cn">FALSE</span>,<span class="at">col=</span><span class="st">&quot;grey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;lm&quot;</span>,<span class="at">se=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li><p>Parameters <span class="math inline">\(\beta_0\)</span> en <span class="math inline">\(\beta_1\)</span> are unknown.</p></li>
+<li><p>Estimate them using sample</p></li>
+<li><p>Best fitting line</p>
+<ul>
+<li>Point on regression line for a given <span class="math inline">\(x_i\)</span>: <span class="math inline">\((x_i, \beta_0 + \beta_1 x_i)\)</span> as close as possible <span class="math inline">\((x_i, y_i)\)</span></li>
+<li>Choose <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> so that the sum between predicted and observed points becomes as small as possible.</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[SSE=\sum_{i=1}^n (y_i-\beta_0-\beta_1 x_i)^2=\sum_{i=1}^n e_i^2\]</span></p>
+<p>with residuals <span class="math inline">\(e_i\)</span> the vertical distances from the observations to the fitted regression line</p>
+<div id="estimators-that-minimise-sse" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Estimators that minimise SSE</h2>
+<p><span class="math display">\[\hat{\beta_1}= \frac{\sum\limits_{i=1}^n (y_i-\bar y)(x_i-\bar x)}{\sum\limits_{i=1}^n (x_i-\bar x_i)^2}=\frac{\mbox{cor}(x,y)s_y}{s_x} \]</span></p>
+<p><span class="math display">\[\hat{\beta_0}=\bar y - \hat{\beta}_1 \bar x \]</span></p>
+<p>Note, that the slope of the least squares fit is proportional to the correlation between the response and the predictor.</p>
+<p>Fitted model allows to:</p>
+<ul>
+<li><p>predict the response for subjects with a given value <span class="math inline">\(x\)</span> for the predictor: <span class="math display">\[\text{E} [ Y | X = x]=\hat{\beta}_0+\hat{\beta}_1x\]</span></p></li>
+<li><p>Assess how the mean response differs between two groups of subjects that differ <span class="math inline">\(\delta\)</span> units in the predictor:</p></li>
+</ul>
+<p><span class="math display">\[\text{E}\left[Y|X=x+\delta\right]-\text{E}\left[Y|X=x\right]= \hat{\beta}_1\delta\]</span></p>
+<div id="breast-cancer-example" class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Breast cancer example</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(S100A8<span class="sc">~</span>ESR1,brcaSubset)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div>
+<pre><code>
+Call:
+lm(formula = S100A8 ~ ESR1, data = brcaSubset)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-95.43 -34.81  -6.79  34.23 145.21 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 208.47145   28.57207   7.296 7.56e-08 ***
+ESR1         -0.05926    0.01212  -4.891 4.08e-05 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 59.91 on 27 degrees of freedom
+Multiple R-squared:  0.4698,    Adjusted R-squared:  0.4502 
+F-statistic: 23.93 on 1 and 27 DF,  p-value: 4.078e-05</code></pre>
+<p><span class="math display">\[E(Y|X=x)=208.47-0.059 x\]</span></p>
+<ul>
+<li><p>Expected S100A8 expression is on average 59 units lower for patients with ESR1 expression level that is 1000 units higher</p></li>
+<li><p>Expected S100A8 expression level for patients with an ESR1 expression level of 2000: <span class="math display">\[208.47-0.059\times 2000=89.94\]</span></p></li>
+<li><p>Expected S100A8 expression level for patients with an ESR1 expression level of 4000: <span class="math display">\[208.47-0.059\times 4000=-28.58\]</span></p></li>
+<li><p>Be careful when you extrapolate! (We can only assess the assumption of linearity within the range of the data).</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="statistical-inference" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Statistical inference</h1>
+<p>To draw conclusions based on the regression model <span class="math display">\[E(Y|X)=\beta_0+\beta_1 X\]</span> we need to know</p>
+<ul>
+<li><p>How the least squares parameter estimators vary from sample to sample, and</p></li>
+<li><p>how they deviate under the null hypothesis that there is no association between predictor and response</p></li>
+<li><p>Requires a statistical model</p></li>
+<li><p>Model the distribution of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> explicitly: f_{Y|X}(y)</p></li>
+</ul>
+<div id="modelling-distribution-of-y" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Modelling distribution of Y?</h2>
+<ol style="list-style-type: decimal">
+<li>Besides <em>Linearity</em> we need additional assumptions!</li>
+<li><em>Independence</em>: Observations <span class="math inline">\((X_1,Y_1), ..., (X_n,Y_n)\)</span> are made for n independent subjects (is required to estimate the variance)</li>
+<li><em>Homoscedasticity</em> or <em>equal variances</em>: observations vary with equal mean around the regression line
+<ul>
+<li>Residuals <span class="math inline">\(\epsilon_i\)</span> have equal variance for each <span class="math inline">\(X_i=x\)</span></li>
+<li><span class="math inline">\(\text{var}(Y\vert X=x) = \sigma^2\)</span> for each <span class="math inline">\(X=x\)</span></li>
+<li><span class="math inline">\(\sigma\)</span> is referred to as the <em>residual standard deviation</em></li>
+</ul></li>
+<li><em>Normality</em>: the residuals <span class="math inline">\(\epsilon_i\)</span> are normally distributed</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/RegModel3.png" style="width:100.0%" /></p>
+<ul>
+<li><p>Given 2, 3 and 4 <span class="math display">\[\epsilon_i \text{ i.i.d.} N(0,\sigma^2).\]</span></p></li>
+<li><p>Together with 1 this implies: <span class="math display">\[Y_i\vert X_i\sim N(\beta_0+\beta_1 X_i,\sigma^2),\]</span></p></li>
+<li><p>We can show that given these assumption <span class="math display">\[\sigma^2_{\hat{\beta}_0}=\frac{\sum\limits_{i=1}^n X^2_i}{\sum\limits_{i=1}^n (X_i-\bar X)^2} \times\frac{\sigma^2}{n} \text{ en } \sigma^2_{\hat{\beta}_1}=\frac{\sigma^2}{\sum\limits_{i=1}^n (X_i-\bar X)^2}\]</span></p></li>
+<li><p>and the parameter estimators are also normally distributed <span class="math display">\[\hat\beta_0 \sim N\left(\beta_0,\sigma^2_{\hat \beta_0}\right) \text{ en } \hat\beta_1 \sim N\left(\beta_1,\sigma^2_{\hat \beta_1}\right)\]</span></p></li>
+</ul>
+</div>
+<div id="high-spread-of-x-improves-the-precision" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> High spread of <span class="math inline">\(X\)</span> improves the precision</h2>
+<p><span class="math display">\[\sigma^2_{\hat{\beta}_1}=\frac{\sigma^2}{\sum\limits_{i=1}^n (X_i-\bar X)^2}\]</span></p>
+<p><img src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/spread.png" style="width:100.0%" /></p>
+<ul>
+<li>Conditional variance (<span class="math inline">\(\sigma^2\)</span>) is unknown</li>
+<li>Estimate using <em>mean squared error</em> (MSE) <span class="math display">\[\hat\sigma^2=MSE=\frac{\sum\limits_{i=1}^n \left(y_i-\hat\beta_0-\hat\beta_1\times x_i\right)^2}{n-2}=\frac{\sum\limits_{i=1}^n e^2_i}{n-2}.\]</span></li>
+<li>This estimator is based on independence (assumption 2) and equality of the variance (assumption 3).</li>
+<li>Devide by <span class="math inline">\(n-2\)</span></li>
+</ul>
+<p>Upon the estimation of <span class="math inline">\(\sigma^2\)</span> we obtain following standard errors:</p>
+<p><span class="math display">\[\text{SE}_{\hat{\beta}_0}=\hat\sigma_{\hat{\beta}_0}=\sqrt{\frac{\sum\limits_{i=1}^n X^2_i}{\sum\limits_{i=1}^n (X_i-\bar X)^2} \times\frac{\text{MSE}}{n}} \text{ en } \text{SE}_{\hat{\beta}_1}=\hat\sigma_{\hat{\beta}_1}=\sqrt{\frac{\text{MSE}}{\sum\limits_{i=1}^n (X_i-\bar X)^2}}\]</span></p>
+<ul>
+<li><p>Again we can construct tests and confidence intervals using <span class="math display">\[T=\frac{\hat{\beta}_k-\beta_k}{SE(\hat{\beta}_k)} \text{ with } k=1,2.\]</span></p></li>
+<li><p>If all assumptions are valid <span class="math inline">\(T\)</span> follows t-verdeling with n-2 degrees of freedom. </p></li>
+<li><p>If no normality, but independence, linearity, equality of mean and large dataset <span class="math display">\[\rightarrow \text{Central Limit theorem}\]</span></p></li>
+</ul>
+<div id="breast-cancer-example-1" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Breast cancer example</h3>
+<ul>
+<li><p>Negative association between S100A8 and ESR1 gene expression.</p></li>
+<li><p>Generalize effect in sample to population using the confidence interval on the mean: <span class="math display">\[[\hat\beta_1 - t_{n-2,\alpha/2} \text{SE}_{\hat\beta_1},\hat\beta_1 + t_{n-2,\alpha/2} \text{SE}_{\hat\beta_1}]\]</span>.</p></li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(lm1)</span></code></pre></div>
+<pre><code>                   2.5 %       97.5 %
+(Intercept) 149.84639096 267.09649989
+ESR1         -0.08412397  -0.03440378</code></pre>
+<ul>
+<li>Negative association is significant on 5% significance level.</li>
+</ul>
+</div>
+</div>
+<div id="hypothesis-test" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Hypothesis test</h2>
+<ul>
+<li><p>Translate the research question to assess the association between the S100A8 and ESR1 gene expression to parameters in the model.</p></li>
+<li><p>Under the null hypothesis of the absence of an association in the expression of both genes: <span class="math display">\[H_0: \beta_1=0\]</span></p></li>
+<li><p>Under the alternative hypothesis, there is an association between the expression of both genes : <span class="math display">\[H_1: \beta_1\neq0\]</span> </p></li>
+<li><p>Test statistic <span class="math display">\[T=\frac{\hat{\beta}_1-0}{SE(\hat{\beta}_k)}\]</span> </p></li>
+<li><p>Under <span class="math inline">\(H_0\)</span> the statistics follows a t-distribution with n-2 degrees of freedom.</p></li>
+</ul>
+<div id="brca-dataset" class="section level3" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> BRCA dataset</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div>
+<pre><code>
+Call:
+lm(formula = S100A8 ~ ESR1, data = brcaSubset)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-95.43 -34.81  -6.79  34.23 145.21 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 208.47145   28.57207   7.296 7.56e-08 ***
+ESR1         -0.05926    0.01212  -4.891 4.08e-05 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 59.91 on 27 degrees of freedom
+Multiple R-squared:  0.4698,    Adjusted R-squared:  0.4502 
+F-statistic: 23.93 on 1 and 27 DF,  p-value: 4.078e-05</code></pre>
+<ul>
+<li>The association between the S100A8 and ESR1 expression is extremely significant (p&lt;&lt;0.001).</li>
+<li>But, we first have to check all assumptions!</li>
+<li>Otherwise the conclusions based on the statistical test and the CI can be incorrect.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="assess-assumptions" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Assess assumptions</h1>
+<ul>
+<li>Independence: design</li>
+<li>Linearity: inference is useless if the association is not linear</li>
+<li>Homoscedasticity: inference/p-value is incorrect if data are heteroscedastic</li>
+<li>Normality: inference/p-value is incorrect if data are not normally distributed in small samples</li>
+</ul>
+<div id="linearity" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Linearity</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>brcaSubset <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>ESR1,<span class="at">y=</span>S100A8)) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se=</span><span class="cn">FALSE</span>,<span class="at">col=</span><span class="st">&quot;grey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;lm&quot;</span>,<span class="at">se=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="residual-analysis" class="section level3" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Residual analysis</h3>
+<ul>
+<li>Assumption of linearity is typically assessed using <em>residual plot</em>. (Especially if the lineair model has multiple covariates, later chapters)</li>
+<li>predictor of predictions <span class="math inline">\(\hat\beta_0+\hat\beta_1 x\)</span> on <span class="math inline">\(X\)</span>-axis</li>
+<li><em>residuals</em> on <span class="math inline">\(Y\)</span>-as <span class="math display">\[e_i=y_i-\hat{g}(x_i)=y_i-\hat\beta_0-\hat\beta_1\times x_i,\]</span></li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm1)</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-11-1.png" width="672" /><img src="06-linearRegression_files/figure-html/unnamed-chunk-11-2.png" width="672" /><img src="06-linearRegression_files/figure-html/unnamed-chunk-11-3.png" width="672" /><img src="06-linearRegression_files/figure-html/unnamed-chunk-11-4.png" width="672" /></p>
+</div>
+</div>
+<div id="homoscedasticity-equal-variances" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Homoscedasticity (equal variances)</h2>
+<ul>
+<li><p>Residuals and squared residuals cary information on the residual variability</p></li>
+<li><p>Association with predictors <span class="math inline">\(\rightarrow\)</span> indication of heteroscedasticity.</p></li>
+<li><p>Scatterplot of <span class="math inline">\(e_i\)</span> vs <span class="math inline">\(x_i\)</span> or predictions <span class="math inline">\(\hat \beta_0+ \hat \beta_1 x_i\)</span>.</p></li>
+<li><p>Scatterplot van standardized residual versus <span class="math inline">\(x_i\)</span> or predictions.</p></li>
+</ul>
+</div>
+<div id="normality" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Normality</h2>
+<ul>
+<li><p>If the sample size is large the estimators are normally distributed even if the observations are not normally distributed: central limit theorem</p></li>
+<li><p>How many observations? <span class="math inline">\(\rightarrow\)</span> depends on shape and magnitude of deviations</p></li>
+<li><p>Assumption: Data are Normally distributed conditional on X: <span class="math display">\[Y_i\vert X_i\sim N(\beta_0+\beta_1X_i,\sigma^2)\]</span></p></li>
+<li><p>QQ-plot of response Y is misleading and useless: distribution of <span class="math inline">\(Y_i\)</span> are different because they have a different conditional mean!</p></li>
+<li><p>QQ-plot of the residuals <span class="math inline">\(e_i\)</span></p></li>
+</ul>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm1,<span class="at">which=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+</div>
+<div id="invalid-assumptions" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Invalid assumptions</h1>
+<ul>
+<li><p>Transformation of predictor does not change distribution of Y for given X:</p>
+<ul>
+<li>not useful to obtain homoscedasticity or Normal distribution</li>
+<li>useful for linearity when normality and homoscedasticity are valid</li>
+<li>Often inclusion of higher order terms: <span class="math inline">\(X^2\)</span>, <span class="math inline">\(X^3\)</span>, … <span class="math display">\[Y_i=\beta_0+\beta_1X_i+\beta_2X_i^2+ ... + \epsilon_i\]</span></li>
+</ul></li>
+<li><p>Transformation of response Y can be useful to obtain normality and homoscedasticity</p></li>
+<li><p><span class="math inline">\(\sqrt(Y)\)</span>, <span class="math inline">\(\log(Y)\)</span>, 1/Y, …</p></li>
+</ul>
+<div id="breast-cancer-example-2" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Breast cancer example</h2>
+<p>Problems with</p>
+<ul>
+<li>heteroscedasticity</li>
+<li>possibly deviations from normality (skewed to the right)</li>
+<li>negative concentration predictions are theoretically impossible</li>
+<li>non-linearity</li>
+</ul>
+<p>This is often the case for concentration and intensity measurements</p>
+<ul>
+<li>These are often log-normal distributed (normal distribution upon log-transformatie)</li>
+<li>We also observed a kind of exponential relation with the smoother</li>
+<li>In gene expression literature often <span class="math inline">\(\log_2\)</span> transformation is adopted</li>
+<li>gene-expression on log scale: differences on log scale are fold changes on original scale!</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>brca <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>ESR1,<span class="at">y=</span>S100A8)) <span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>()</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>brca <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>ESR1<span class="sc">%&gt;%</span>log2,<span class="at">y=</span>S100A8<span class="sc">%&gt;%</span>log2)) <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>()</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>lm2<span class="ot">&lt;-</span><span class="fu">lm</span>(S100A8<span class="sc">%&gt;%</span>log2 <span class="sc">~</span> ESR1 <span class="sc">%&gt;%</span> log2, brca)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm2)</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-16-1.png" width="672" /><img src="06-linearRegression_files/figure-html/unnamed-chunk-16-2.png" width="672" /><img src="06-linearRegression_files/figure-html/unnamed-chunk-16-3.png" width="672" /><img src="06-linearRegression_files/figure-html/unnamed-chunk-16-4.png" width="672" /></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm2)</span></code></pre></div>
+<pre><code>
+Call:
+lm(formula = S100A8 %&gt;% log2 ~ ESR1 %&gt;% log2, data = brca)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.94279 -0.66537  0.08124  0.68468  1.92714 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     23.401      1.603   14.60 3.57e-15 ***
+ESR1 %&gt;% log2   -1.615      0.150  -10.76 8.07e-12 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 1.026 on 30 degrees of freedom
+Multiple R-squared:  0.7942,    Adjusted R-squared:  0.7874 
+F-statistic: 115.8 on 1 and 30 DF,  p-value: 8.07e-12</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(lm2)</span></code></pre></div>
+<pre><code>                  2.5 %    97.5 %
+(Intercept)   20.128645 26.674023
+ESR1 %&gt;% log2 -1.921047 -1.308185</code></pre>
+<div id="interpretation-1" class="section level3" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Interpretation 1</h3>
+<p>A patient with an ESR1 expression that is one unit on <span class="math inline">\(\log_2\)</span> scale higher than that of another patient on average has a <span class="math inline">\(\log_2\)</span> expression for S100A8 that is 1.61 units lower (95% CI [-1.92,-1.31]).</p>
+<p><span class="math display">\[\log_2 \hat\mu_1=23.401  -1.615 \times \text{logESR}_1,\text{ } \log_2 \hat\mu_2=23.401  -1.615 \times \text{logESR}_2 \]</span> <span class="math display">\[\log_2 \hat\mu_2-\log_2 \hat\mu_1=  -1.615 (\log_2 \text{ESR}_2-\log_2 \text{ESR}_1) = -1.615 \times 1 = -1.615\]</span></p>
+</div>
+<div id="interpretation-2" class="section level3" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Interpretation 2</h3>
+<p>Model on log-scale: upon back-transformation we obtain geometric means</p>
+<p><span class="math display">\[\begin{eqnarray*}
+\sum\limits_{i=1}^n \frac{\log x_i}{n}&amp;=&amp;\frac{\log x_1 + \ldots + \log x_n}{n}\\\\
+&amp;\stackrel{(1)}{=}&amp;\frac{\log(x_1 \times \ldots \times x_n)}{n}=\frac{\log\left(\prod\limits_{i=1}^n x_i\right)}{n}\\\\
+&amp;\stackrel{(2)}{=}&amp;\log \left(\sqrt[\leftroot{-1}\uproot{2}\scriptstyle n]{\prod\limits_{i=1}^n x_i}\right)
+\end{eqnarray*}\]</span></p>
+<ul>
+<li>Population mean <span class="math inline">\(\mu\)</span> is estimated as a geometric mean</li>
+<li>Logarithmic transformation is monotone: we can backtransform confidence intervals on log-scale!</li>
+</ul>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^</span>lm2<span class="sc">$</span>coef[<span class="dv">2</span>]</span></code></pre></div>
+<pre><code>ESR1 %&gt;% log2 
+    0.3265519 </code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^-</span>lm2<span class="sc">$</span>coef[<span class="dv">2</span>]</span></code></pre></div>
+<pre><code>ESR1 %&gt;% log2 
+       3.0623 </code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^-</span><span class="fu">confint</span>(lm2)[<span class="dv">2</span>,]</span></code></pre></div>
+<pre><code>   2.5 %   97.5 % 
+3.786977 2.476298 </code></pre>
+<p>A patient with an ESR1 expression that is 2 times the expression of that of another patient will on average have an S100A8 expression that is 3.06 times lower (95% CI [2.48,3.79]).</p>
+<p><span class="math display">\[\log_2 \hat\mu_1=23.401  -1.615 \times \text{logESR}_1,\text{ } \log_2 \hat\mu_2=23.401  -1.615 \times \text{logESR}_2 \]</span> <span class="math display">\[\log_2 \hat\mu_2-\log_2 \hat\mu_1=  -1.615 (\log_2 \text{ESR}_2-\log_2 \text{ESR}_1) \]</span> <span class="math display">\[\log_2 \left[\frac{\hat\mu_2}{\hat\mu_1}\right]=  -1.615 \log_2\left[\frac{ \text{ESR}_2}{\text{ESR}_1}\right] \]</span> <span class="math display">\[\frac{\hat\mu_2}{\hat\mu_1}=\left[\frac{ \text{ESR}_2}{\text{ESR}_1}\right]^{-1.615}=2^ {-1.615} =0.326\]</span> or <span class="math display">\[\frac{\hat\mu_1}{\hat\mu_2}=2^{1.615} =3.06\]</span></p>
+</div>
+<div id="interpretation-3" class="section level3" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> Interpretation 3</h3>
+<p>A patient with an ESR1 expression that is 1% higher than that of another patient will on average have an expression-level for S100A8 gen that is approximately -1.61% lower (95% CI [-1.92,-1.31])%.</p>
+<p><span class="math display">\[\log_2 \hat\mu_1=23.401  -1.615 \times \text{logESR}_1,\text{ } \log_2 \hat\mu_2=23.401  -1.615 \times \text{logESR}_2 \]</span> <span class="math display">\[\log_2 \hat\mu_2-\hat\log_2 \mu_1=  -1.615 (\log_2 \text{ESR}_2-\log_2 \text{ESR}_1) \]</span> <span class="math display">\[\log_2 \left[\frac{\hat\mu_2}{\hat\mu_1}\right]=  -1.615 \log_2\left[\frac{ \text{ESR}_2}{\text{ESR}_1}\right] \]</span> <span class="math display">\[\frac{\hat\mu_2}{\hat\mu_1}=\left[\frac{ \text{ESR}_2}{\text{ESR}_1}\right]^{-1.615}=1.01^ {-1.615} =0.984 \approx -1.6\%\]</span></p>
+<p>This is valid for low to moderate values of <span class="math inline">\(\beta_1\)</span>: <span class="math display">\[-10&lt;\beta_1&lt;10 \rightarrow 1.01^{\beta_1} -1 \approx \frac{\beta_1}{100}.\]</span></p>
+</div>
+</div>
+<div id="inference-on-the-mean-outcome" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Inference on the mean outcome</h2>
+<ul>
+<li>A regression model can also be used for prediction</li>
+<li>Inference on average outcome for a given value of <span class="math inline">\(X=x\)</span>, i.e. <span class="math display">\[\hat{g}(x)= \hat{\beta}_0 + \hat{\beta}_1 x\]</span></li>
+<li><span class="math inline">\(\hat{g}(x)\)</span> is an estimator of the conditional mean <span class="math inline">\(E[Y\vert X=x]\)</span></li>
+<li>Parameter estimators are Normally distributed and unbiased <span class="math inline">\(\rightarrow\)</span> estimator <span class="math inline">\(\hat{g}(x)\)</span> is also Normally distributed and unbiased.</li>
+</ul>
+<p><span class="math display">\[\text{SE}_{\hat{g}(x)}=\sqrt{MSE\left\{\frac{1}{n}+\frac{(x-\bar X)^2}{\sum\limits_{i=1}^n (X_i-\bar X)^2}\right\}}.\]</span></p>
+<p><span class="math display">\[T=\frac{\hat{g}(x)-g(x)}{SE_{\hat{g}(x)}}\sim t_{n-2}\]</span></p>
+<ul>
+<li>Mean response and confidence intervals for the mean response in R via de <code>predict(.)</code> functie.</li>
+<li><code>newdata</code> argument: predictor values (x-values) at which we want to calculate the mean response</li>
+<li><code>interval="confidence"</code> argument to obtain CI.</li>
+<li>Without newdata argument we perform predictions for all predictor values in the dataset used to fit the model.</li>
+</ul>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="dv">140</span><span class="sc">:</span><span class="dv">4000</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">predict</span>(lm2,<span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">ESR1=</span>grid), <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(g)</span></code></pre></div>
+<pre><code>       fit      lwr      upr
+1 11.89028 10.76082 13.01974
+2 11.87370 10.74721 13.00019
+3 11.85724 10.73370 12.98078
+4 11.84089 10.72028 12.96151
+5 11.82466 10.70696 12.94237
+6 11.80854 10.69372 12.92336</code></pre>
+<p>Note, that we do not have to transform the new data that we specified for the ESR1 expression because we fitted the model with a call to the <code>lm</code> function and specified the transformation within the lm formula using the pipe command!</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>brca <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>ESR1<span class="sc">%&gt;%</span>log2,<span class="at">y=</span>S100A8<span class="sc">%&gt;%</span>log2)) <span class="sc">+</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+</div>
+<div id="back-transformation" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Back-transformation</h2>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>newdata<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="fu">cbind</span>(grid,<span class="dv">2</span><span class="sc">^</span>g))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>brca <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>ESR1,<span class="at">y=</span>S100A8)) <span class="sc">+</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>grid,<span class="at">y=</span>fit),newdata) <span class="sc">+</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>grid,<span class="at">y=</span>lwr),newdata,<span class="at">color=</span><span class="st">&quot;grey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>grid,<span class="at">y=</span>upr),newdata,<span class="at">color=</span><span class="st">&quot;grey&quot;</span>)</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+</div>
+</div>
+<div id="prediction-intervals" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Prediction-intervals</h1>
+<ul>
+<li><p>We can also make a prediction for the location of a new observation that would be collected in a new experiment for a patient with a particular value for their ESR1 expression</p></li>
+<li><p>It is important to notice that this experiment still has to be conducted. So we want to predict the non-observed individual expression value for a novel patient.</p></li>
+<li><p>For a novel independent observation <span class="math inline">\(Y^*\)</span> <span class="math display">\[
+Y^* = g(x) + \epsilon^*
+\]</span> with <span class="math inline">\(\epsilon^*\sim N(0,\sigma^2)\)</span> and <span class="math inline">\(\epsilon^*\)</span> independent of the observations in the sample <span class="math inline">\(Y_1,\ldots, Y_n\)</span>.</p></li>
+<li><p>We predict a new log-S100A8 for a patient with a known log2-ESR1 expression level x <span class="math display">\[
+\hat{y}(x)=\hat{\beta}_0+\hat{\beta}_1 \times x
+\]</span></p></li>
+<li><p>The estimated mean outcome and prediction for a new observation are equal.</p></li>
+<li><p>But, their sample distributions are different!</p>
+<ul>
+<li>Uncertainty on the estimated mean outcome <span class="math inline">\(\leftarrow\)</span> uncertainty on estimated model parameters <span class="math inline">\(\hat\beta_0\)</span> en <span class="math inline">\(\hat\beta_1\)</span>.</li>
+<li>Uncertainty on new observation $ <span class="math inline">\(\leftarrow\)</span> <em>uncertainty on estimated mean</em> and <em>additional uncertainty</em> because the new observation will deviate around the mean!</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[\text{SE}_{\hat{Y}(x)}=\sqrt{\hat\sigma^2+\hat\sigma^2_{\hat{g}(x)}}=\sqrt{MSE\left\{1+\frac{1}{n}+\frac{(x-\bar X)^2}{\sum\limits_{i=1}^n (X_i-\bar X)^2}\right\}}.\]</span></p>
+<p><span class="math display">\[\frac{\hat{Y}(x)-Y}{\text{SE}_{\hat{Y}(x)}}\sim t_{n-2}\]</span></p>
+<ul>
+<li>Note, that a <strong>prediction-interval</strong> (PI) is an improved version of a reference-interval when the model parameters are unknown: Uncertainty on model parameters + t-distribution.</li>
+</ul>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(lm2,<span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">ESR1=</span>grid), <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(p)</span></code></pre></div>
+<pre><code>       fit      lwr      upr
+1 11.89028 9.510524 14.27004
+2 11.87370 9.495354 14.25205
+3 11.85724 9.480288 14.23419
+4 11.84089 9.465324 14.21646
+5 11.82466 9.450461 14.19886
+6 11.80854 9.435698 14.18138</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>preddata<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="fu">cbind</span>(<span class="at">grid=</span>grid<span class="sc">%&gt;%</span>log2,p))</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>brca <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>ESR1<span class="sc">%&gt;%</span>log2,<span class="at">y=</span>S100A8<span class="sc">%&gt;%</span>log2)) <span class="sc">+</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;lm&quot;</span>) <span class="sc">+</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>     <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>grid,<span class="at">y=</span>lwr),preddata,<span class="at">color=</span><span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>grid,<span class="at">y=</span>upr),preddata,<span class="at">color=</span><span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>preddata<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="fu">cbind</span>(grid,<span class="dv">2</span><span class="sc">^</span>p))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>brca <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>ESR1,<span class="at">y=</span>S100A8)) <span class="sc">+</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>grid,<span class="at">y=</span>fit),newdata) <span class="sc">+</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>grid,<span class="at">y=</span>lwr),newdata,<span class="at">color=</span><span class="st">&quot;grey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>grid,<span class="at">y=</span>upr),newdata,<span class="at">color=</span><span class="st">&quot;grey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>grid,<span class="at">y=</span>lwr),preddata,<span class="at">color=</span><span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>grid,<span class="at">y=</span>upr),preddata,<span class="at">color=</span><span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<div id="nhanes-example" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> NHANES example</h2>
+<ul>
+<li><p>Replace reference interval for cholesterol level from chapter 2 by prediction-interval.</p></li>
+<li><p>Reference interval</p></li>
+</ul>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(NHANES)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>fem <span class="ot">&lt;-</span> NHANES <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Gender<span class="sc">==</span><span class="st">&quot;female&quot;</span><span class="sc">&amp;!</span><span class="fu">is.na</span>(DirectChol))</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(fem<span class="sc">$</span>DirectChol<span class="sc">%&gt;%</span>log<span class="sc">%&gt;%</span>mean <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="sc">*</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>) <span class="sc">*</span> (fem<span class="sc">$</span>DirectChol<span class="sc">%&gt;%</span>log<span class="sc">%&gt;%</span>sd))</span></code></pre></div>
+<pre><code>[1] 0.8361311 2.4397130</code></pre>
+<ul>
+<li>prediction interval</li>
+</ul>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>lmChol <span class="ot">&lt;-</span> <span class="fu">lm</span>(DirectChol <span class="sc">%&gt;%</span> log2<span class="sc">~</span><span class="dv">1</span>,<span class="at">data=</span>fem)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>predInt <span class="ot">&lt;-</span> <span class="fu">predict</span>(lmChol,<span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>,<span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">noPred=</span><span class="dv">1</span>))</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="dv">2</span><span class="sc">^</span>predInt,<span class="dv">2</span>)</span></code></pre></div>
+<pre><code>   fit  lwr  upr
+1 1.43 0.84 2.44</code></pre>
+<p>Note, that the prediction interval is almost similar to the reference interval for the large sample. Indeed we could estimate the parameters very precise.</p>
+<p>We will do the same thing for the small sample size of 10 patients.</p>
+<ul>
+<li>Reference interval</li>
+</ul>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>fem10<span class="ot">&lt;-</span> NHANES <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Gender<span class="sc">==</span><span class="st">&quot;female&quot;</span><span class="sc">&amp;!</span><span class="fu">is.na</span>(DirectChol)) <span class="sc">%&gt;%</span> <span class="fu">sample_n</span>(<span class="at">size=</span><span class="dv">10</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^</span>(fem10<span class="sc">$</span>DirectChol<span class="sc">%&gt;%</span>log2<span class="sc">%&gt;%</span>mean <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>)<span class="sc">*</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>) <span class="sc">*</span> (fem10<span class="sc">$</span>DirectChol<span class="sc">%&gt;%</span>log2<span class="sc">%&gt;%</span>sd))</span></code></pre></div>
+<pre><code>[1] 0.8976012 2.2571645</code></pre>
+<ul>
+<li>Prediction interval</li>
+</ul>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>lmChol10 <span class="ot">&lt;-</span> <span class="fu">lm</span>(DirectChol <span class="sc">%&gt;%</span> log2<span class="sc">~</span><span class="dv">1</span>,<span class="at">data=</span>fem10)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>predInt10 <span class="ot">&lt;-</span> <span class="fu">predict</span>(lmChol10,<span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>,<span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">noPred=</span><span class="dv">1</span>))</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="dv">2</span><span class="sc">^</span>predInt10,<span class="dv">2</span>)</span></code></pre></div>
+<pre><code>   fit  lwr  upr
+1 1.42 0.81 2.49</code></pre>
+<ul>
+<li><p>Note, that the PI now captures uncertainty in parameter estimators (mean and standard error). And that the interval becomes much wider! This is particularly important here for the upper limit because we back-transformed the data!</p></li>
+<li><p>The interval is almost as wide as the one based on the large sample.</p></li>
+<li><p>In small samples it is very important to account for this additional uncertainty.</p></li>
+</ul>
+</div>
+</div>
+<div id="sum-of-squares-and-anova-table" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Sum of squares and Anova-table</h1>
+<p>##Total sum of squares <span class="math display">\[\text{SSTot} = \sum_{i=1}^n (Y_i-\bar{Y})^2.\]</span></p>
+<ul>
+<li><p>SStot can be used to estimate the variance of the <strong>marginal distribution</strong> of the response.</p></li>
+<li><p>In this chapter we focused on the <strong>conditional distribution</strong> <span class="math inline">\(f(Y\vert X=x)\)</span>.</p></li>
+<li><p>We known that MSE is a good estimate of the variance of the conditional distribution of <span class="math inline">\(Y\vert X=x\)</span>.</p></li>
+</ul>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-29-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<div id="sum-of-squares-of-the-regression-ssr" class="section level2" number="8.1">
+<h2><span class="header-section-number">8.1</span> Sum of squares of the regression SSR</h2>
+<p><span class="math display">\[\text{SSR} = \sum_{i=1}^n (\hat{Y}_i - \bar{Y})^2 = \sum_{i=1}^n (\hat{g}(x_i) - \bar{Y})^2.\]</span></p>
+<ul>
+<li><p>Is a measure for the deviation of the predictions on the regression line and the marginal mean of the response.</p></li>
+<li><p>Another interpretation: difference between two models</p>
+<ul>
+<li>Estimated model <span class="math inline">\(\hat{g}(x)=\hat\beta_0+\hat\beta_1x\)</span></li>
+<li>Estimated model without predictor (only intercept): <span class="math inline">\(g(x)=\beta_0\)</span> <span class="math inline">\(\rightarrow\)</span> <span class="math inline">\(\beta_0\)</span> will be equal to <span class="math inline">\(\bar{Y}\)</span>.</li>
+</ul></li>
+<li><p>SSR measures the size of the effect of the predictor</p></li>
+</ul>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-30-1.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="sum-of-squares-of-the-error" class="section level2" number="8.2">
+<h2><span class="header-section-number">8.2</span> Sum of Squares of the Error</h2>
+<p><span class="math display">\[ \text{SSE} = \sum_{i=1}^n (Y_i-\hat{Y}_i )^2 = \sum_{i=1}^n \left\{Y_i-\hat{g}\left(x_i\right)\right\}^2.\]</span></p>
+<ul>
+<li><p>The smaller SSE the better the fit.</p></li>
+<li><p>Least squares method!</p></li>
+</ul>
+<hr />
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-31-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>We can show that SST can be decomposed in <span class="math display">\[\begin{eqnarray*}
+  \text{SSTot}
+    &amp;=&amp;  \sum_{i=1}^n (Y_i-\bar{Y})^2 \\
+    &amp;=&amp;  \sum_{i=1}^n (Y_i-\hat{Y}_i+\hat{Y}_i-\bar{Y})^2 \\
+    &amp;=&amp;  \sum_{i=1}^n (Y_i-\hat{Y}_i)^2+\sum_{i=1}^n(\hat{Y}_i-\bar{Y})^2 \\
+    &amp;=&amp;  \text{SSE }+\text{SSR}
+  \end{eqnarray*}\]</span></p>
+<ul>
+<li>Total variability in the data (SSTot) is partially explained by the predictor (SSR).</li>
+<li>Variability that we cannot explain with the regression model is the residual variability (SSE).</li>
+</ul>
+</div>
+<div id="determination-coefficient" class="section level2" number="8.3">
+<h2><span class="header-section-number">8.3</span> Determination coefficient</h2>
+<p><span class="math display">\[ R^2 = 1-\frac{\text{SSE}}{\text{SSTot}}=\frac{\text{SSR}}{\text{SSTot}}.\]</span></p>
+<ul>
+<li><p><em>Fraction of total variability of the sample outcomes explained by the model</em>.</p></li>
+<li><p>Large <span class="math inline">\(R^2\)</span> indicates that the model has the potential to make good predictions (small SSE).</p></li>
+<li><p>Not very indicative for p-value of the test <span class="math inline">\(H_0:\beta_1=0\)</span> vs <span class="math inline">\(H_1:\beta_1\neq0\)</span>.</p>
+<ul>
+<li>p-value is largely determined by SSE and sample size <span class="math inline">\(n\)</span>, but not by SSTot.</li>
+<li><span class="math inline">\(R^2\)</span> is determined by SSE and SSTot but not by sample size <span class="math inline">\(n\)</span>.</li>
+</ul></li>
+<li><p>Model with low <span class="math inline">\(R^2\)</span> is still useful to study associations as long as the association is modelled correctly!</p></li>
+</ul>
+<div id="breast-cancer-example-3" class="section level3" number="8.3.1">
+<h3><span class="header-section-number">8.3.1</span> Breast cancer example</h3>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm2)</span></code></pre></div>
+<pre><code>
+Call:
+lm(formula = S100A8 %&gt;% log2 ~ ESR1 %&gt;% log2, data = brca)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.94279 -0.66537  0.08124  0.68468  1.92714 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     23.401      1.603   14.60 3.57e-15 ***
+ESR1 %&gt;% log2   -1.615      0.150  -10.76 8.07e-12 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 1.026 on 30 degrees of freedom
+Multiple R-squared:  0.7942,    Adjusted R-squared:  0.7874 
+F-statistic: 115.8 on 1 and 30 DF,  p-value: 8.07e-12</code></pre>
+</div>
+</div>
+<div id="f-test-in-simple-linear-model" class="section level2" number="8.4">
+<h2><span class="header-section-number">8.4</span> F-Test in simple linear model</h2>
+<ul>
+<li>Sum of squares are the bases for <span class="math inline">\(F\)</span>-tests <span class="math display">\[  F  = \frac{\text{MSR}}{\text{MSE}}\]</span></li>
+</ul>
+<p>with <span class="math inline">\(\text{MSR} = \frac{\text{SSR}}{1} \text{ and } \text{MSE} = \frac{\text{SSE}}{n-2}.\)</span></p>
+<ul>
+<li><p>MSR mean sum of squares of the regression,</p></li>
+<li><p>denominators 1 en <span class="math inline">\(n-2\)</span> are the degrees of freedom of SSR and SSE.</p></li>
+<li><p>Under <span class="math inline">\(H_0: \beta_1=0\)</span> <span class="math display">\[H_0:F = \frac{\text{MSR}}{\text{MSE}} \sim F_{1,n-2},\]</span></p></li>
+<li><p>F-test is always two-sided! <span class="math inline">\(H_1:\beta_1\neq 0\)</span> <span class="math display">\[  p = P_0\left[F\geq f\right]=1-F_F(f;1,n-2)\]</span></p></li>
+</ul>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm2)</span></code></pre></div>
+<pre><code>
+Call:
+lm(formula = S100A8 %&gt;% log2 ~ ESR1 %&gt;% log2, data = brca)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.94279 -0.66537  0.08124  0.68468  1.92714 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     23.401      1.603   14.60 3.57e-15 ***
+ESR1 %&gt;% log2   -1.615      0.150  -10.76 8.07e-12 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 1.026 on 30 degrees of freedom
+Multiple R-squared:  0.7942,    Adjusted R-squared:  0.7874 
+F-statistic: 115.8 on 1 and 30 DF,  p-value: 8.07e-12</code></pre>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+</div>
+<div id="anova-table" class="section level2" number="8.5">
+<h2><span class="header-section-number">8.5</span> Anova Table</h2>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Df</th>
+<th>Sum Sq</th>
+<th>Mean Sq</th>
+<th>F value</th>
+<th>Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Regression</td>
+<td>degrees of freedom SSR</td>
+<td>SSR</td>
+<td>MSR</td>
+<td>f-statistic</td>
+<td>p-value</td>
+</tr>
+<tr class="even">
+<td>Error</td>
+<td>degrees of freedom SSE</td>
+<td>SSE</td>
+<td>MSE</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(lm2)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["int"],"align":["right"]},{"label":["Sum Sq"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Mean Sq"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"121.81364","3":"121.813644","4":"115.7978","5":"8.070269e-12","_rn_":"ESR1 %>% log2"},{"1":"30","2":"31.55854","3":"1.051951","4":"NA","5":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<div id="dummy-variables" class="section level1" number="9">
+<h1><span class="header-section-number">9</span> Dummy variables</h1>
+<ul>
+<li><p>Linear regression model can also be used to compare two group means.</p></li>
+<li><p>brca: difference in average age between patients with unaffected and affected lymph nodes.</p></li>
+<li><p>Define dummy variabele <span class="math display">\[x_i = \left\{ \begin{array}{ll}
+1 &amp; \text{affected lymph nodes} \\
+0 &amp; \text{unaffected lymph nodes} \end{array}\right.\]</span></p></li>
+<li><p>group with <span class="math inline">\(x_i=0\)</span> is referred to as the <strong>reference group</strong>.</p></li>
+<li><p>Regression model remains unaltered, <span class="math display">\[Y_i = \beta_0 + \beta_1 x_i +\epsilon_i\]</span> with <span class="math inline">\(\epsilon_i \text{ iid } N(0,\sigma^2)\)</span></p></li>
+</ul>
+<p>Because <span class="math inline">\(x_i\)</span> only can take two values, we can study the regression model for each value of <span class="math inline">\(x_i\)</span> separately: <span class="math display">\[ \begin{array}{lcll}
+   Y_i &amp;=&amp; \beta_0 +\epsilon_i &amp;\text{unaffected lymph nodes} (x_i=0) \\
+   Y_i &amp;=&amp; \beta_0 + \beta_1 +\epsilon_i &amp;\text{ affected lymph nodes} (x_i=1) .
+ \end{array}\]</span> So <span class="math display">\[\begin{eqnarray*}
+   E\left[Y_i\mid x_i=0\right] &amp;=&amp; \beta_0 \\
+   E\left[Y_i\mid x_i=1\right] &amp;=&amp; \beta_0 + \beta_1,
+\end{eqnarray*}\]</span></p>
+<p>Hence, the interpretation of <span class="math inline">\(\beta_1\)</span>: <span class="math display">\[   \beta_1 = E\left[Y_i\mid x_i=1\right]-E\left[Y_i\mid x_i=0\right]\]</span></p>
+<p><span class="math inline">\(\beta_1\)</span> is the average age difference between patients with affected and patients with unaffected lymph nodes (reference group).</p>
+<p>With notation <span class="math inline">\(\mu_0= E\left[Y_i\mid x_i=0\right]\)</span> and <span class="math inline">\(\mu_1= E\left[Y_i\mid x_i=1\right]\)</span> this becomes <span class="math display">\[\beta_1 = \mu_1-\mu_0.\]</span></p>
+<p>We can show that <span class="math display">\[\begin{array}{ccll}
+ \hat\beta_0
+   &amp;=&amp; \bar{Y}_1&amp;\text{ (sample mean of reference group)} \\
+ \hat\beta_1
+   &amp;=&amp; \bar{Y}_2-\bar{Y}_1&amp;\text{(estimator of effect size)} \\
+ \text{MSE}
+   &amp;=&amp; S_p^2 .
+\end{array}\]</span></p>
+<p>Tests <span class="math inline">\(H_0:\beta_1=0\)</span> vs. <span class="math inline">\(H_1:\beta_1\neq0\)</span> can be used to assess the null hypothesis of the two-sample <span class="math inline">\(t\)</span>-test, <span class="math inline">\(H_0:\mu_1=\mu_2\)</span> vs <span class="math inline">\(H_1:\mu_1\neq\mu_2\)</span>.</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>brca<span class="sc">$</span>node <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(brca<span class="sc">$</span>node)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(age<span class="sc">~</span>node,brca,<span class="at">var.equal=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>
+    Two Sample t-test
+
+data:  age by node
+t = -2.7988, df = 30, p-value = 0.008879
+alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+95 percent confidence interval:
+ -15.791307  -2.467802
+sample estimates:
+mean in group 0 mean in group 1 
+       59.94737        69.07692 </code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>lm3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(age<span class="sc">~</span>node,brca)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm3)</span></code></pre></div>
+<pre><code>
+Call:
+lm(formula = age ~ node, data = brca)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-19.9474  -5.3269   0.0526   5.3026  18.0526 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   59.947      2.079  28.834  &lt; 2e-16 ***
+node1          9.130      3.262   2.799  0.00888 ** 
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 9.063 on 30 degrees of freedom
+Multiple R-squared:  0.207, Adjusted R-squared:  0.1806 
+F-statistic: 7.833 on 1 and 30 DF,  p-value: 0.008879</code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm3)</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-38-1.png" width="672" /><img src="06-linearRegression_files/figure-html/unnamed-chunk-38-2.png" width="672" /><img src="06-linearRegression_files/figure-html/unnamed-chunk-38-3.png" width="672" /><img src="06-linearRegression_files/figure-html/unnamed-chunk-38-4.png" width="672" /></p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>brca <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>node<span class="sc">%&gt;%</span>as.factor,<span class="at">y=</span>age)) <span class="sc">+</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>))</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">354</span>)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>) <span class="fu">plot</span>(<span class="fu">rnorm</span>(<span class="dv">32</span>)<span class="sc">~</span>node,brca,<span class="at">ylab=</span><span class="st">&quot;iid N(0,1)&quot;</span>)</span></code></pre></div>
+<p><img src="06-linearRegression_files/figure-html/unnamed-chunk-40-1.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="observational-study" class="section level1" number="10">
+<h1><span class="header-section-number">10</span> Observational study</h1>
+<ul>
+<li><p>We cannot conclude that age causes a higher risk for affected lymph nodes.</p></li>
+<li><p>Possibly <strong>confounding</strong>: no randomisation <span class="math inline">\(\rightarrow\)</span> groups of patients with affected and unaffected lymph nodes. They can also differ in other characteristics.</p></li>
+<li><p>We can only conclude that there is an association between lymph node status and age.</p></li>
+<li><p>However, the association does not have to be causal!</p></li>
+<li><p>Note, that this is also the case for the linear model for <span class="math inline">\(\log_2\)</span>-S100A8-expression.</p>
+<ul>
+<li>Because we were not able to fix the ESR1-expression experimentally we cannot conclude that a higher ESR1-expression causes a decrease in the S100A8-expression.</li>
+<li>We can only conclude that there is a negative association.</li>
+<li>To assess the impact of a gene on other gene typically knockout mutants are used in the lab.</li>
+</ul></li>
+</ul>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiNi4gU2ltcGxlIGxpbmVhciByZWdyZXNzaW9uIgphdXRob3I6ICJMaWV2ZW4gQ2xlbWVudCIKZGF0ZTogInN0YXRPbWljcywgR2hlbnQgVW5pdmVyc2l0eSAoaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSIKb3V0cHV0OgogICAgaHRtbF9kb2N1bWVudDoKICAgICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgICB0aGVtZTogY29zbW8KICAgICAgdG9jOiB0cnVlCiAgICAgIHRvY19mbG9hdDogdHJ1ZQogICAgICBoaWdobGlnaHQ6IHRhbmdvCiAgICAgIG51bWJlcl9zZWN0aW9uczogdHJ1ZQotLS0KCjxhIHJlbD0ibGljZW5zZSIgaHJlZj0iaHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMCI+PGltZyBhbHQ9IkNyZWF0aXZlIENvbW1vbnMgTGljZW5zZSIgc3R5bGU9ImJvcmRlci13aWR0aDowIiBzcmM9Imh0dHBzOi8vaS5jcmVhdGl2ZWNvbW1vbnMub3JnL2wvYnktbmMtc2EvNC4wLzg4eDMxLnBuZyIgLz48L2E+CgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGluY2x1ZGUgPSBUUlVFLCBjb21tZW50ID0gTkEsIGVjaG8gPSBUUlVFLAogICAgICAgICAgICAgICAgICAgICAgbWVzc2FnZSA9IEZBTFNFLCB3YXJuaW5nID0gRkFMU0UpCmxpYnJhcnkoUm1pc2MpCmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKCgojIEJyZWFzdCBjYW5jZXIgZGF0YXNldAoKCi0gU3Vic2V0IG9mIHN0dWR5IGh0dHBzOi8vZG9pLm9yZy8xMC4xMDkzL2puY2kvZGpqMDUyCgotIDMyIGJyZWFzdCBjYW5jZXIgcGF0aWVudHMgd2l0aCBlc3Ryb2dlbiByZWNlcHRlciBwb3NpdGlldmUgdHVtb3IgdGhhdCBoYWQgdGFtb3hpZmVuIGNoZW1vdGhlcmFweS4gVmFyaWFiZWxzOgoKICAgIC0gZ3JhZGU6IGhpc3RvbG9naWNhbCBncmFkZSBvZiB0dW1vciAoZ3JhZGUgMSB2cyAzKSwKICAgIC0gbm9kZTogbHltcGggbm9kZSBzdGF0dXMgICgwOiBub3QgYWZmZWN0ZWQsIDE6IGx5bXBoIG5vZGVzIGFmZmVjdGVkIGFuZCByZW1vdmVkKSwKICAgIC0gc2l6ZTogdHVtb3Igc2l6ZSBpbiBjbSwKICAgIC0gRVNSMSBhbmQgUzEwMEE4IGdlbmUgZXhwcmVzc2lvbiBpbiB0dW1vciBiaW9wc3kgKG1pY3JvYXJyYXkgdGVjaG5vbG9neSkKCgpgYGB7cn0KYnJjYSA8LSByZWFkX2NzdigiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0dUUEIvUFNMUzIwL21hc3Rlci9kYXRhL2JyZWFzdGNhbmNlci5jc3YiKQpicmNhCmBgYAoKLSBGb3IgZGlkYWN0aWNhbCByZWFzb25zIHdlIGZpcnN0IHJlbW92ZSAzIG91dGxpZXJzIGluIHRoZSBTMTAwQTggZXhwcmVzc2lvbiBkYXRhLgotIExhdGVyIGluIHRoZSBsZWN0dXJlIHdlIHdpbGwgc2hvdyBob3cgdG8gcHJvcGVybHkgZGVhbCB3aXRoIGFsbCBkYXRhLgoKCmBgYHtyIG91dC53aWR0aD0nNzAlJywgZmlnLmFsaWduPSdjZW50ZXInLHdhcm5pbmdzPUZBTFNFfQpicmNhICU+JSBnZ3Bsb3QoYWVzKHg9IiIseT1TMTAwQTgpKSArCmdlb21fYm94cGxvdCgpCmBgYAoKLS0tCgpgYGB7cn0KbGlicmFyeShHR2FsbHkpCmJyY2FTdWJzZXQ8LWJyY2EgJT4lIGZpbHRlcihTMTAwQTg8MjAwMCkKYnJjYVN1YnNldFssLSgxOjQpXSAlPiUgZ2dwYWlycygpCmBgYAoKIyMgQXNzb2NpYXRpb24gYmV0d2VlbiBFU1IxIGFuZCBTMTAwQTggZXhwcmVzc2llCgotIEVTUjEgaW4gJFxwbSQgNzUlIG9mIGJyZWFzdCBjYW5jZXIgdHVtb3JzLgoKICAgIC0gRXhwcmVzc2lvbiBvZiBFUiBnZW5lIHBvc2l0aXZlIGZvciB0cmVhdG1lbnQ6IHR1bW9yIHJlc3BvbmRzIHRvIGhvcm1vbmUgdGhlcmFweQogICAgLSBUYW1veGlmZW4gaW50ZXJhY3RzIHdpdGggRVIgYW5kIG1vZHVsYXRlcyBnZW5lIGV4cHJlc3Npb24uCgotIFByb3RlaW5zIG9mIFMxMDAgZmFtaWx5IG9mdGVuIGR5c3JlZ3VsYXRlZCBpbiBjYW5jZXIKCiAgICAtIFMxMDBBOCBleHByZXNzaWUgcmVwcmVzc2VzIGltbXVuZSBzeXN0ZWVtIGluIHR1bW9yIGVuIGNyZWF0ZXMgYW4gZW52aXJvbm1lbnQgb2YgaW5mbGFtYXRpb24gdGhhdCBwcm9tb3RlcyB0dW1vciBncm93dGguCgotIEFzc2VzcyBhc3NvY2lhdGlvbiBiZXR3ZWVuIEVTUjEgYW5kIFMxMDBBOCBleHByZXNzaW9uLgoKMS4gcGlwZSBkYXRhc2V0IHRvIGdncGxvdAoyLiBzZWxlY3QgZGF0YSBgZ2dwbG90KGFlcyh4PUVTUjEseT1TMTAwQTgpKWAKMy4gYWRkIHBvaW50cyBgZ2VvbV9wb2ludCgpYAo0LiBhZGQgc21vb3RoIGxpbmUgYGdlb21fc21vb3RoKClgCgpgYGB7ciBmaWcuYWxpZ249J2NlbnRlcid9CmJyY2FTdWJzZXQgJT4lCiAgZ2dwbG90KGFlcyh4PUVTUjEseT1TMTAwQTgpKSArCiAgZ2VvbV9wb2ludCgpICsKICBnZW9tX3Ntb290aCgpCmBgYAoKIyBMaW5lYWlyIFJlZ3Jlc3Npb24KCi0gU3RhdGlzdGljYWwgbWV0aG9kIHRvIGFzc2VzcyBhc3NvY2lhdGlvbiBiZXR3ZWVuIHR3byB2YXJpYWJsZXMgJChYX2ksIFlfaSkkLCBtZWFzdXJlZCBvbiBlYWNoIHN1YmplY3QgJGkgPSAxLCAuLi4sIG4kLgoKLSBHZW5lIGV4cHJlc3Npb24gZXhhbXBsZQoKICAgIC0gUmVzcG9uc2UgWSA6IFMxMDBBOCBleHByZXNzaW9uCiAgICAtIFByZWRpY3RvciBYOiBFU1IxIGV4cHJlc3Npb24KCmBgYHtyIGZpZy5hbGlnbj0nY2VudGVyJ30KYnJjYVN1YnNldCAlPiUKICBnZ3Bsb3QoYWVzKHg9RVNSMSx5PVMxMDBBOCkpICsKICBnZW9tX3BvaW50KCkgKwogIGdlb21fc21vb3RoKHNlPUZBTFNFLGNvbD0iZ3JleSIpICsKICBnZW9tX3Ntb290aChtZXRob2Q9ImxtIixzZT1GQUxTRSkKYGBgCgojIyBNb2RlbAoKLSBGb3IgZml4ZWQgJFgkLCAkWSQgZG9lcyBub3QgbmVjZXNzYXJseSBoYXMgdGhlIHNhbWUgdmFsdWUKCiQkXHRleHR7b2JzZXJ2YXRpb24gPSBzaWduYWwgKyBub2lzZX0kJAoKJCRZX2k9ZyhYX2kpK1xlcHNpbG9uX2kkJAotIFdlIGRlZmluZSAkZyh4KSQgYWxzIHRoZSBleHBlY3RlZCBvdXRjb21lIGZvciBzdWJqZWN0cyB3aXRoICRYX2k9eCQKCiQkRVtZX2l8WF9pPXhdPWcoeCkkJAoKSGVuY2UsICRcZXBzaWxvbl9pJCBpcyBvbiBhdmVyYWdlIDAgZm9yIHN1YmplY3RzIHdpdGggc2FtZSAgJFhfaSQ6CiQkRVtcZXBzaWxvbl9pfFhfaV09MCQkCgojIyBMaW5lYWlyIHJlZ3Jlc3Npb24KCi0gVG8gb2J0YWluICphY2N1cmF0ZSogYW5kICppbnRlcnByZXRhYmxlKiByZXN1bHRzIG9uZSBvZnRlbiBjaG9vc2UgJGcoeCkkIHRvIGJlIGEgbGluZWFyIGZ1bmN0aW9uIHdpdGggdW5rbm93biBwYXJhbWV0ZXIuCgokJEUoWXxYPXgpPVxiZXRhXzAgKyBcYmV0YV8xIHgkJAoKdW5rbm93biBcYWxlcnR7aW50ZXJjZXB0fSAkXGJldGFfMCQgYW5kClxhbGVydHtzbG9wZX0gJFxiZXRhXzEkLgoKLSBMaW5lYWlyIG1vZGVsIGltcG9zZXMgYW4gKmFzc3VtcHRpb24qIG9uIHRoZSBkaXN0cmlidXRpb24gb2YgJFgkIGFuZCAkWSQsIHdoaWNoIGNhbiBiZSBpbnZhbGlkLgoKLSAqRWZmaWNpZW50IGRhdGEtYW5hbHlzaXMqOiBiZWNhdXNlIGl0IHVzZXMgYWxsIG9ic2VydmF0aW9ucyB0byBsZWFybiBvbiB0aGUgZXhwZWN0ZWQgb3V0Y29tZSBmb3IgJFg9eCQuCgoKIyMgVXNlCgotICpQcmVkaWN0aW9uKjogd2hlbiAkWSQgaXMgdW5rbm93biBidXQgJFgkIGlzIGtub3duIHdlIGNhbiBwcmVkaWN0ICRZJCB1c2luZwpcW0UoWXxYPXgpPVxiZXRhXzAgKyBcYmV0YV8xIHhcXQoKLSAqQXNzb2NpYXRpb24qOiBiaW9sb2dpY2FsIHJlbGF0aW9uIGJldHdlZW4gdmFyaWFibGUgJFgkIGFuZCByZXNwb25zZSAkWSQKLSAqSW50ZXJjZXB0OiogJEUoWXxYPTApPVxiZXRhXzAkClx2c3BhY2V7MTBwdH0KLSAqU2xvcGUqOgpcYmVnaW57ZXFuYXJyYXkqfQpFKFl8WD14K1xkZWx0YSktRShZfFg9eCkmPSZcYmV0YV8wICsgXGJldGFfMSAoeCtcZGVsdGEpIC1cYmV0YV8wLVxiZXRhXzEgeFxcCiY9JiBcYmV0YV8xXGRlbHRhClxlbmR7ZXFuYXJyYXkqfQoKJFxiZXRhXzE9JCBkaWZmZXJlbmNlIGluIG1lYW4gb3V0Y29tZSBmb3Igc3ViamVjdHMgdGhhdCBkaWZmZXIgaW4gb25lIHVuaXQgb2YgdGhlIHByZWRpY3RvciAgJFgkLgoKIyBQYXJhbWV0ZXIgZXN0aW1hdGlvbgoKLSBMZWFzdCBzcXVhcmVzCgpgYGB7ciBmaWcuYWxpZ249J2NlbnRlcid9CmJyY2FTdWJzZXQgJT4lCiAgZ2dwbG90KGFlcyh4PUVTUjEseT1TMTAwQTgpKSArCiAgZ2VvbV9wb2ludCgpICsKICBnZW9tX3Ntb290aChzZT1GQUxTRSxjb2w9ImdyZXkiKSArCiAgZ2VvbV9zbW9vdGgobWV0aG9kPSJsbSIsc2U9RkFMU0UpCmBgYAoKLSBQYXJhbWV0ZXJzICRcYmV0YV8wJCBlbiAkXGJldGFfMSQgYXJlIHVua25vd24uCgotIEVzdGltYXRlIHRoZW0gdXNpbmcgc2FtcGxlCgotIEJlc3QgZml0dGluZyBsaW5lCgogICAgLSBQb2ludCBvbiByZWdyZXNzaW9uIGxpbmUgZm9yIGEgZ2l2ZW4gJHhfaSQ6ICQoeF9pLCBcYmV0YV8wICsgXGJldGFfMSB4X2kpJCBhcyBjbG9zZSBhcyBwb3NzaWJsZSAkKHhfaSwgeV9pKSQKICAgIC0gQ2hvb3NlICRcYmV0YV8wJCBhbmQgJFxiZXRhXzEkIHNvIHRoYXQgdGhlIHN1bSBiZXR3ZWVuIHByZWRpY3RlZCBhbmQgb2JzZXJ2ZWQgcG9pbnRzIGJlY29tZXMgYXMgc21hbGwgYXMgcG9zc2libGUuCgokJFNTRT1cc3VtX3tpPTF9Xm4gKHlfaS1cYmV0YV8wLVxiZXRhXzEgeF9pKV4yPVxzdW1fe2k9MX1ebiBlX2leMiQkCgp3aXRoIHJlc2lkdWFscyAkZV9pJCB0aGUgdmVydGljYWwgZGlzdGFuY2VzIGZyb20gdGhlIG9ic2VydmF0aW9ucyB0byB0aGUgZml0dGVkIHJlZ3Jlc3Npb24gbGluZQoKIyMgRXN0aW1hdG9ycyB0aGF0IG1pbmltaXNlIFNTRQoKJCRcaGF0e1xiZXRhXzF9PSBcZnJhY3tcc3VtXGxpbWl0c197aT0xfV5uICh5X2ktXGJhciB5KSh4X2ktXGJhciB4KX17XHN1bVxsaW1pdHNfe2k9MX1ebiAoeF9pLVxiYXIgeF9pKV4yfT1cZnJhY3tcbWJveHtjb3J9KHgseSlzX3l9e3NfeH0gJCQKCiQkXGhhdHtcYmV0YV8wfT1cYmFyIHkgLSBcaGF0e1xiZXRhfV8xIFxiYXIgeCAkJAoKTm90ZSwgdGhhdCB0aGUgc2xvcGUgb2YgdGhlIGxlYXN0IHNxdWFyZXMgZml0IGlzIHByb3BvcnRpb25hbCB0byB0aGUgY29ycmVsYXRpb24gYmV0d2VlbiB0aGUgcmVzcG9uc2UgYW5kIHRoZSBwcmVkaWN0b3IuCgpGaXR0ZWQgbW9kZWwgYWxsb3dzIHRvOgoKICAtIHByZWRpY3QgdGhlIHJlc3BvbnNlIGZvciBzdWJqZWN0cyB3aXRoIGEgZ2l2ZW4gdmFsdWUgJHgkIGZvciB0aGUgcHJlZGljdG9yOgokJFx0ZXh0e0V9IFsgWSB8IFggPSB4XT1caGF0e1xiZXRhfV8wK1xoYXR7XGJldGF9XzF4JCQKCiAgLSBBc3Nlc3MgaG93IHRoZSBtZWFuIHJlc3BvbnNlIGRpZmZlcnMgYmV0d2VlbiB0d28gZ3JvdXBzIG9mIHN1YmplY3RzIHRoYXQgZGlmZmVyICRcZGVsdGEkIHVuaXRzIGluIHRoZSBwcmVkaWN0b3I6CgokJFx0ZXh0e0V9XGxlZnRbWXxYPXgrXGRlbHRhXHJpZ2h0XS1cdGV4dHtFfVxsZWZ0W1l8WD14XHJpZ2h0XT0gXGhhdHtcYmV0YX1fMVxkZWx0YSQkCgojIyMgQnJlYXN0IGNhbmNlciBleGFtcGxlCgpgYGB7cn0KbG0xIDwtIGxtKFMxMDBBOH5FU1IxLGJyY2FTdWJzZXQpCnN1bW1hcnkobG0xKQpgYGAKClxbRShZfFg9eCk9YHIgcm91bmQobG0xJGNvZWZbMV0sMilgLWByIGFicyhyb3VuZChsbTEkY29lZlsyXSwzKSlgIHhcXQoKLSBFeHBlY3RlZCBTMTAwQTggZXhwcmVzc2lvbiBpcyBvbiBhdmVyYWdlICBgciBhYnMocm91bmQobG0xJGNvZWZbMl0sMykqMTAwMClgIHVuaXRzIGxvd2VyIGZvciBwYXRpZW50cyB3aXRoIEVTUjEgZXhwcmVzc2lvbiBsZXZlbCB0aGF0IGlzIDEwMDAgdW5pdHMgaGlnaGVyCgotIEV4cGVjdGVkIFMxMDBBOCBleHByZXNzaW9uIGxldmVsIGZvciBwYXRpZW50cyB3aXRoIGFuIEVTUjEgZXhwcmVzc2lvbiBsZXZlbCBvZiAyMDAwOgpcW2ByIHJvdW5kKGxtMSRjb2VmWzFdLDIpYC1gciBhYnMocm91bmQobG0xJGNvZWZbMl0sMykpYFx0aW1lcyAyMDAwPWByIHJvdW5kKGxtMSRjb2VmWzFdK2xtMSRjb2VmWzJdKjIwMDAsMilgXF0KCi0gRXhwZWN0ZWQgUzEwMEE4IGV4cHJlc3Npb24gbGV2ZWwgZm9yIHBhdGllbnRzIHdpdGggYW4gRVNSMSBleHByZXNzaW9uIGxldmVsIG9mIDQwMDA6ClxbYHIgcm91bmQobG0xJGNvZWZbMV0sMilgLWByIGFicyhyb3VuZChsbTEkY29lZlsyXSwzKSlgXHRpbWVzIDQwMDA9YHIgcm91bmQobG0xJGNvZWZbMV0rbG0xJGNvZWZbMl0qNDAwMCwyKWBcXQotIEJlIGNhcmVmdWwgd2hlbiB5b3UgZXh0cmFwb2xhdGUhIChXZSBjYW4gb25seSBhc3Nlc3MgdGhlIGFzc3VtcHRpb24gb2YgbGluZWFyaXR5IHdpdGhpbiB0aGUgcmFuZ2Ugb2YgdGhlIGRhdGEpLgoKIyBTdGF0aXN0aWNhbCBpbmZlcmVuY2UKClRvIGRyYXcgY29uY2x1c2lvbnMgYmFzZWQgb24gdGhlIHJlZ3Jlc3Npb24gbW9kZWwKXFtFKFl8WCk9XGJldGFfMCtcYmV0YV8xIFhcXQp3ZSBuZWVkIHRvIGtub3cKCi0gSG93IHRoZSBsZWFzdCBzcXVhcmVzIHBhcmFtZXRlciBlc3RpbWF0b3JzIHZhcnkgZnJvbSBzYW1wbGUgdG8gc2FtcGxlLCBhbmQKLSBob3cgdGhleSBkZXZpYXRlIHVuZGVyIHRoZSBudWxsIGh5cG90aGVzaXMgdGhhdCB0aGVyZSBpcyBubyBhc3NvY2lhdGlvbiBiZXR3ZWVuIHByZWRpY3RvciBhbmQgcmVzcG9uc2UKLSBSZXF1aXJlcyBhIHN0YXRpc3RpY2FsIG1vZGVsCgotIE1vZGVsIHRoZSBkaXN0cmlidXRpb24gb2YgJFkkIGdpdmVuICRYJCBleHBsaWNpdGx5OiBmX3tZfFh9KHkpCgojIyBNb2RlbGxpbmcgZGlzdHJpYnV0aW9uIG9mIFk/CgoxLiBCZXNpZGVzICpMaW5lYXJpdHkqIHdlIG5lZWQgYWRkaXRpb25hbCBhc3N1bXB0aW9ucyEKMi4gKkluZGVwZW5kZW5jZSo6IE9ic2VydmF0aW9ucyAkKFhfMSxZXzEpLCAuLi4sICAoWF9uLFlfbikkIGFyZSBtYWRlIGZvciBuIGluZGVwZW5kZW50IHN1YmplY3RzIChpcyByZXF1aXJlZCB0byBlc3RpbWF0ZSB0aGUgdmFyaWFuY2UpCjMuICpIb21vc2NlZGFzdGljaXR5KiBvciAqZXF1YWwgdmFyaWFuY2VzKjogb2JzZXJ2YXRpb25zIHZhcnkgd2l0aCBlcXVhbCBtZWFuIGFyb3VuZCB0aGUgcmVncmVzc2lvbiBsaW5lCiAgICAtIFJlc2lkdWFscyAkXGVwc2lsb25faSQgaGF2ZSBlcXVhbCB2YXJpYW5jZSBmb3IgZWFjaCAkWF9pPXgkCiAgICAtICRcdGV4dHt2YXJ9KFlcdmVydCBYPXgpID0gXHNpZ21hXjIkIGZvciBlYWNoICRYPXgkCiAgICAtICRcc2lnbWEkIGlzIHJlZmVycmVkIHRvIGFzIHRoZSAqcmVzaWR1YWwgc3RhbmRhcmQgZGV2aWF0aW9uKgo0LiAqTm9ybWFsaXR5KjogdGhlIHJlc2lkdWFscyAkXGVwc2lsb25faSQgYXJlIG5vcm1hbGx5IGRpc3RyaWJ1dGVkCgohW10oaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0dUUEIvUFNMUzIwL2doLXBhZ2VzL2Fzc2V0cy9maWdzL1JlZ01vZGVsMy5wbmcpe3dpZHRoPTEwMCV9CgoKLSBHaXZlbiAyLCAzIGFuZCA0CiQkXGVwc2lsb25faSBcdGV4dHsgaS5pLmQufSBOKDAsXHNpZ21hXjIpLiQkCi0gVG9nZXRoZXIgd2l0aCAxIHRoaXMgaW1wbGllczoKJCRZX2lcdmVydCBYX2lcc2ltIE4oXGJldGFfMCtcYmV0YV8xIFhfaSxcc2lnbWFeMiksJCQKCi0gV2UgY2FuIHNob3cgdGhhdCBnaXZlbiB0aGVzZSBhc3N1bXB0aW9uCiQkXHNpZ21hXjJfe1xoYXR7XGJldGF9XzB9PVxmcmFje1xzdW1cbGltaXRzX3tpPTF9Xm4gWF4yX2l9e1xzdW1cbGltaXRzX3tpPTF9Xm4gKFhfaS1cYmFyIFgpXjJ9IFx0aW1lc1xmcmFje1xzaWdtYV4yfXtufSBcdGV4dHsgZW4gfSBcc2lnbWFeMl97XGhhdHtcYmV0YX1fMX09XGZyYWN7XHNpZ21hXjJ9e1xzdW1cbGltaXRzX3tpPTF9Xm4gKFhfaS1cYmFyIFgpXjJ9JCQKLSBhbmQgdGhlIHBhcmFtZXRlciBlc3RpbWF0b3JzIGFyZSBhbHNvIG5vcm1hbGx5IGRpc3RyaWJ1dGVkCiQkXGhhdFxiZXRhXzAgXHNpbSBOXGxlZnQoXGJldGFfMCxcc2lnbWFeMl97XGhhdCBcYmV0YV8wfVxyaWdodCkgXHRleHR7IGVuIH0gXGhhdFxiZXRhXzEgXHNpbSBOXGxlZnQoXGJldGFfMSxcc2lnbWFeMl97XGhhdCBcYmV0YV8xfVxyaWdodCkkJAoKIyMgSGlnaCBzcHJlYWQgb2YgJFgkIGltcHJvdmVzIHRoZSBwcmVjaXNpb24KCiQkXHNpZ21hXjJfe1xoYXR7XGJldGF9XzF9PVxmcmFje1xzaWdtYV4yfXtcc3VtXGxpbWl0c197aT0xfV5uIChYX2ktXGJhciBYKV4yfSQkCgohW10oaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0dUUEIvUFNMUzIwL2doLXBhZ2VzL2Fzc2V0cy9maWdzL3NwcmVhZC5wbmcpeyB3aWR0aD0xMDAlIH0KCi0gQ29uZGl0aW9uYWwgdmFyaWFuY2UgKCRcc2lnbWFeMiQpIGlzIHVua25vd24KLSBFc3RpbWF0ZSB1c2luZyAqbWVhbiBzcXVhcmVkIGVycm9yKiAoTVNFKQokJFxoYXRcc2lnbWFeMj1NU0U9XGZyYWN7XHN1bVxsaW1pdHNfe2k9MX1ebiBcbGVmdCh5X2ktXGhhdFxiZXRhXzAtXGhhdFxiZXRhXzFcdGltZXMgeF9pXHJpZ2h0KV4yfXtuLTJ9PVxmcmFje1xzdW1cbGltaXRzX3tpPTF9Xm4gZV4yX2l9e24tMn0uJCQKLSBUaGlzIGVzdGltYXRvciBpcyBiYXNlZCBvbiBpbmRlcGVuZGVuY2UgKGFzc3VtcHRpb24gMikgYW5kIGVxdWFsaXR5IG9mIHRoZSB2YXJpYW5jZSAoYXNzdW1wdGlvbiAzKS4KLSBEZXZpZGUgYnkgJG4tMiQKClVwb24gdGhlIGVzdGltYXRpb24gb2YgJFxzaWdtYV4yJCB3ZSBvYnRhaW4gZm9sbG93aW5nIHN0YW5kYXJkIGVycm9yczoKCiQkXHRleHR7U0V9X3tcaGF0e1xiZXRhfV8wfT1caGF0XHNpZ21hX3tcaGF0e1xiZXRhfV8wfT1cc3FydHtcZnJhY3tcc3VtXGxpbWl0c197aT0xfV5uIFheMl9pfXtcc3VtXGxpbWl0c197aT0xfV5uIChYX2ktXGJhciBYKV4yfSBcdGltZXNcZnJhY3tcdGV4dHtNU0V9fXtufX0gXHRleHR7IGVuIH0gXHRleHR7U0V9X3tcaGF0e1xiZXRhfV8xfT1caGF0XHNpZ21hX3tcaGF0e1xiZXRhfV8xfT1cc3FydHtcZnJhY3tcdGV4dHtNU0V9fXtcc3VtXGxpbWl0c197aT0xfV5uIChYX2ktXGJhciBYKV4yfX0kJAoKLSBBZ2FpbiB3ZSBjYW4gY29uc3RydWN0IHRlc3RzIGFuZCBjb25maWRlbmNlIGludGVydmFscyB1c2luZwokJFQ9XGZyYWN7XGhhdHtcYmV0YX1fay1cYmV0YV9rfXtTRShcaGF0e1xiZXRhfV9rKX0gXHRleHR7IHdpdGggfSBrPTEsMi4kJAoKLSBJZiBhbGwgYXNzdW1wdGlvbnMgYXJlIHZhbGlkICRUJCBmb2xsb3dzIHQtdmVyZGVsaW5nIHdpdGggbi0yIGRlZ3JlZXMgb2YgZnJlZWRvbS4KXHZzcGFjZXsxNXB0fQotIElmIG5vIG5vcm1hbGl0eSwgYnV0IGluZGVwZW5kZW5jZSwgbGluZWFyaXR5LCBlcXVhbGl0eSBvZiBtZWFuIGFuZCBsYXJnZSBkYXRhc2V0ClxbXHJpZ2h0YXJyb3cgXHRleHR7Q2VudHJhbCBMaW1pdCB0aGVvcmVtfVxdCgoKIyMjIEJyZWFzdCBjYW5jZXIgZXhhbXBsZQoKLSBOZWdhdGl2ZSBhc3NvY2lhdGlvbiBiZXR3ZWVuIFMxMDBBOCBhbmQgRVNSMSBnZW5lIGV4cHJlc3Npb24uCgotIEdlbmVyYWxpemUgZWZmZWN0IGluIHNhbXBsZSB0byBwb3B1bGF0aW9uIHVzaW5nIHRoZSBjb25maWRlbmNlIGludGVydmFsIG9uIHRoZSBtZWFuOgokJFtcaGF0XGJldGFfMSAtIHRfe24tMixcYWxwaGEvMn0gXHRleHR7U0V9X3tcaGF0XGJldGFfMX0sXGhhdFxiZXRhXzEgKyB0X3tuLTIsXGFscGhhLzJ9IFx0ZXh0e1NFfV97XGhhdFxiZXRhXzF9XSQkLgoKYGBge3J9CmNvbmZpbnQobG0xKQpgYGAKCi0gTmVnYXRpdmUgYXNzb2NpYXRpb24gaXMgc2lnbmlmaWNhbnQgb24gNSUgc2lnbmlmaWNhbmNlIGxldmVsLgoKCiMjIEh5cG90aGVzaXMgdGVzdAoKLSBUcmFuc2xhdGUgdGhlIHJlc2VhcmNoIHF1ZXN0aW9uIHRvIGFzc2VzcyB0aGUgYXNzb2NpYXRpb24gYmV0d2VlbiB0aGUgUzEwMEE4IGFuZCBFU1IxIGdlbmUgZXhwcmVzc2lvbiB0byBwYXJhbWV0ZXJzIGluIHRoZSBtb2RlbC4KCi0gVW5kZXIgdGhlIG51bGwgaHlwb3RoZXNpcyBvZiB0aGUgYWJzZW5jZSBvZiBhbiBhc3NvY2lhdGlvbiBpbiB0aGUgZXhwcmVzc2lvbiBvZiBib3RoIGdlbmVzOgokJEhfMDogXGJldGFfMT0wJCQKCi0gVW5kZXIgdGhlIGFsdGVybmF0aXZlIGh5cG90aGVzaXMsIHRoZXJlIGlzIGFuIGFzc29jaWF0aW9uIGJldHdlZW4gdGhlIGV4cHJlc3Npb24gb2YgYm90aCBnZW5lcyA6CiQkSF8xOiBcYmV0YV8xXG5lcTAkJApcdnNwYWNlezE1cHR9Ci0gVGVzdCBzdGF0aXN0aWMKJCRUPVxmcmFje1xoYXR7XGJldGF9XzEtMH17U0UoXGhhdHtcYmV0YX1fayl9JCQKXHZzcGFjZXsxNXB0fQotIFVuZGVyICRIXzAkIHRoZSBzdGF0aXN0aWNzIGZvbGxvd3MgYSB0LWRpc3RyaWJ1dGlvbiB3aXRoIG4tMiBkZWdyZWVzIG9mIGZyZWVkb20uCgojIyMgQlJDQSBkYXRhc2V0CgpgYGB7cn0Kc3VtbWFyeShsbTEpCmBgYAoKCi0gVGhlIGFzc29jaWF0aW9uIGJldHdlZW4gdGhlIFMxMDBBOCBhbmQgRVNSMSBleHByZXNzaW9uIGlzIGV4dHJlbWVseSBzaWduaWZpY2FudCAgKHA8PDAuMDAxKS4KLSBCdXQsIHdlIGZpcnN0IGhhdmUgdG8gY2hlY2sgYWxsIGFzc3VtcHRpb25zIQotIE90aGVyd2lzZSB0aGUgY29uY2x1c2lvbnMgYmFzZWQgb24gdGhlIHN0YXRpc3RpY2FsIHRlc3QgYW5kIHRoZSBDSSBjYW4gYmUgaW5jb3JyZWN0LgoKIyBBc3Nlc3MgYXNzdW1wdGlvbnMKCi0gSW5kZXBlbmRlbmNlOiBkZXNpZ24KLSBMaW5lYXJpdHk6IGluZmVyZW5jZSBpcyB1c2VsZXNzIGlmIHRoZSBhc3NvY2lhdGlvbiBpcyBub3QgbGluZWFyCi0gSG9tb3NjZWRhc3RpY2l0eTogaW5mZXJlbmNlL3AtdmFsdWUgaXMgaW5jb3JyZWN0IGlmIGRhdGEgYXJlIGhldGVyb3NjZWRhc3RpYwotIE5vcm1hbGl0eTogaW5mZXJlbmNlL3AtdmFsdWUgaXMgaW5jb3JyZWN0IGlmIGRhdGEgYXJlIG5vdCBub3JtYWxseSBkaXN0cmlidXRlZCBpbiBzbWFsbCBzYW1wbGVzCgoKIyMgTGluZWFyaXR5CgpgYGB7ciBmaWcuYWxpZ249J2NlbnRlcid9CmJyY2FTdWJzZXQgJT4lCiAgZ2dwbG90KGFlcyh4PUVTUjEseT1TMTAwQTgpKSArCiAgZ2VvbV9wb2ludCgpICsKICBnZW9tX3Ntb290aChzZT1GQUxTRSxjb2w9ImdyZXkiKSArCiAgZ2VvbV9zbW9vdGgobWV0aG9kPSJsbSIsc2U9RkFMU0UpCmBgYAoKCiMjIyBSZXNpZHVhbCBhbmFseXNpcwoKLSBBc3N1bXB0aW9uIG9mIGxpbmVhcml0eSBpcyB0eXBpY2FsbHkgYXNzZXNzZWQgdXNpbmcgKnJlc2lkdWFsIHBsb3QqLiAoRXNwZWNpYWxseSBpZiB0aGUgbGluZWFpciBtb2RlbCBoYXMgbXVsdGlwbGUgY292YXJpYXRlcywgbGF0ZXIgY2hhcHRlcnMpCi0gcHJlZGljdG9yIG9mIHByZWRpY3Rpb25zICRcaGF0XGJldGFfMCtcaGF0XGJldGFfMSB4JCBvbiAkWCQtYXhpcwotICpyZXNpZHVhbHMqIG9uICRZJC1hcwokJGVfaT15X2ktXGhhdHtnfSh4X2kpPXlfaS1caGF0XGJldGFfMC1caGF0XGJldGFfMVx0aW1lcyB4X2ksJCQKCmBgYHtyfQpwbG90KGxtMSkKYGBgCgojIyBIb21vc2NlZGFzdGljaXR5IChlcXVhbCB2YXJpYW5jZXMpCgotIFJlc2lkdWFscyBhbmQgc3F1YXJlZCByZXNpZHVhbHMgY2FyeSBpbmZvcm1hdGlvbiBvbiB0aGUgcmVzaWR1YWwgdmFyaWFiaWxpdHkKCi0gQXNzb2NpYXRpb24gd2l0aCBwcmVkaWN0b3JzICRccmlnaHRhcnJvdyQgaW5kaWNhdGlvbiBvZiBoZXRlcm9zY2VkYXN0aWNpdHkuCi0gU2NhdHRlcnBsb3Qgb2YgJGVfaSQgdnMgJHhfaSQgb3IgcHJlZGljdGlvbnMgJFxoYXQgXGJldGFfMCsgXGhhdCBcYmV0YV8xIHhfaSQuCi0gU2NhdHRlcnBsb3QgdmFuIHN0YW5kYXJkaXplZCByZXNpZHVhbCB2ZXJzdXMgJHhfaSQgb3IgcHJlZGljdGlvbnMuCgojIyBOb3JtYWxpdHkKCi0gSWYgdGhlIHNhbXBsZSBzaXplIGlzIGxhcmdlIHRoZSBlc3RpbWF0b3JzIGFyZSBub3JtYWxseSBkaXN0cmlidXRlZCBldmVuIGlmIHRoZSBvYnNlcnZhdGlvbnMgYXJlIG5vdCBub3JtYWxseSBkaXN0cmlidXRlZDogY2VudHJhbCBsaW1pdCB0aGVvcmVtCi0gSG93IG1hbnkgb2JzZXJ2YXRpb25zPyAkXHJpZ2h0YXJyb3ckIGRlcGVuZHMgb24gc2hhcGUgYW5kIG1hZ25pdHVkZSBvZiBkZXZpYXRpb25zCi0gQXNzdW1wdGlvbjogRGF0YSBhcmUgTm9ybWFsbHkgZGlzdHJpYnV0ZWQgY29uZGl0aW9uYWwgb24gWDoKJCRZX2lcdmVydCBYX2lcc2ltIE4oXGJldGFfMCtcYmV0YV8xWF9pLFxzaWdtYV4yKSQkCi0gUVEtcGxvdCBvZiByZXNwb25zZSBZIGlzIG1pc2xlYWRpbmcgYW5kIHVzZWxlc3M6IGRpc3RyaWJ1dGlvbiBvZiAkWV9pJCBhcmUgZGlmZmVyZW50IGJlY2F1c2UgdGhleSBoYXZlIGEgZGlmZmVyZW50IGNvbmRpdGlvbmFsIG1lYW4hCgotIFFRLXBsb3Qgb2YgdGhlIHJlc2lkdWFscyAkZV9pJAoKYGBge3IgZWNobz1GQUxTRX0Kc2V0LnNlZWQ9MjAwCnBhcihtZnJvdz1jKDEsMykpCng9cmVwKDE6MTAsZWFjaD0yMCkKeT14K3Jub3JtKGxlbmd0aCh4KSkKYm94cGxvdCh5fngpCnFxbm9ybSh5LCBtYWluPSJPcmlnaW5hbCBvYnNlcnZhdGlvbnMiKQpxcWxpbmUoeSkKbG1IPC1sbSh5fngpCnBsb3QobG1ILHdoaWNoPTIsbWFpbj0iUmVzaWR1YWxzIikKYGBgCgoKYGBge3J9CnBsb3QobG0xLHdoaWNoPTIpCmBgYAoKCiMgSW52YWxpZCBhc3N1bXB0aW9ucwoKLSBUcmFuc2Zvcm1hdGlvbiBvZiBwcmVkaWN0b3IgZG9lcyBub3QgY2hhbmdlIGRpc3RyaWJ1dGlvbiBvZiBZIGZvciBnaXZlbiBYOgoKICAgIC0gbm90IHVzZWZ1bCB0byBvYnRhaW4gaG9tb3NjZWRhc3RpY2l0eSBvciBOb3JtYWwgZGlzdHJpYnV0aW9uCiAgICAtIHVzZWZ1bCBmb3IgbGluZWFyaXR5IHdoZW4gbm9ybWFsaXR5IGFuZCBob21vc2NlZGFzdGljaXR5IGFyZSB2YWxpZAogICAgLSBPZnRlbiBpbmNsdXNpb24gb2YgaGlnaGVyIG9yZGVyIHRlcm1zOiAkWF4yJCwgJFheMyQsIC4uLgogICAgJCRZX2k9XGJldGFfMCtcYmV0YV8xWF9pK1xiZXRhXzJYX2leMisgLi4uICsgXGVwc2lsb25faSQkCgoKLSBUcmFuc2Zvcm1hdGlvbiBvZiByZXNwb25zZSBZIGNhbiBiZSB1c2VmdWwgdG8gb2J0YWluIG5vcm1hbGl0eSBhbmQgaG9tb3NjZWRhc3RpY2l0eQoKLSAgJFxzcXJ0KFkpJCwgJFxsb2coWSkkLCAxL1ksIC4uLgoKCiMjIEJyZWFzdCBjYW5jZXIgZXhhbXBsZQoKUHJvYmxlbXMgd2l0aAoKLSBoZXRlcm9zY2VkYXN0aWNpdHkKLSBwb3NzaWJseSBkZXZpYXRpb25zIGZyb20gbm9ybWFsaXR5IChza2V3ZWQgdG8gdGhlIHJpZ2h0KQotIG5lZ2F0aXZlIGNvbmNlbnRyYXRpb24gcHJlZGljdGlvbnMgYXJlIHRoZW9yZXRpY2FsbHkgaW1wb3NzaWJsZQotIG5vbi1saW5lYXJpdHkKClRoaXMgaXMgb2Z0ZW4gdGhlIGNhc2UgZm9yIGNvbmNlbnRyYXRpb24gYW5kIGludGVuc2l0eSBtZWFzdXJlbWVudHMKCi0gVGhlc2UgYXJlIG9mdGVuIGxvZy1ub3JtYWwgZGlzdHJpYnV0ZWQgKG5vcm1hbCBkaXN0cmlidXRpb24gdXBvbiBsb2ctdHJhbnNmb3JtYXRpZSkKLSBXZSBhbHNvIG9ic2VydmVkIGEga2luZCBvZiBleHBvbmVudGlhbCByZWxhdGlvbiB3aXRoIHRoZSBzbW9vdGhlcgotIEluIGdlbmUgZXhwcmVzc2lvbiBsaXRlcmF0dXJlIG9mdGVuICRcbG9nXzIkIHRyYW5zZm9ybWF0aW9uIGlzIGFkb3B0ZWQKLSBnZW5lLWV4cHJlc3Npb24gb24gbG9nIHNjYWxlOiBkaWZmZXJlbmNlcyBvbiBsb2cgc2NhbGUgYXJlIGZvbGQgY2hhbmdlcyBvbiBvcmlnaW5hbCBzY2FsZSEKCgpgYGB7cn0KYnJjYSAlPiUgZ2dwbG90KGFlcyh4PUVTUjEseT1TMTAwQTgpKSArCiAgZ2VvbV9wb2ludCgpICsKICBnZW9tX3Ntb290aCgpCmBgYAoKYGBge3J9CmJyY2EgJT4lIGdncGxvdChhZXMoeD1FU1IxJT4lbG9nMix5PVMxMDBBOCU+JWxvZzIpKSArCiAgZ2VvbV9wb2ludCgpICsKICBnZW9tX3Ntb290aCgpCmBgYAoKYGBge3J9CmxtMjwtbG0oUzEwMEE4JT4lbG9nMiB+IEVTUjEgJT4lIGxvZzIsIGJyY2EpCnBsb3QobG0yKQpzdW1tYXJ5KGxtMikKYGBgCgoKYGBge3J9CmNvbmZpbnQobG0yKQpgYGAKCgojIyMgSW50ZXJwcmV0YXRpb24gMQoKQSBwYXRpZW50IHdpdGggYW4gRVNSMSBleHByZXNzaW9uIHRoYXQgaXMgb25lIHVuaXQgb24gJFxsb2dfMiQgc2NhbGUgaGlnaGVyIHRoYW4gdGhhdCBvZiBhbm90aGVyIHBhdGllbnQgb24gYXZlcmFnZSBoYXMgYSAkXGxvZ18yJCBleHByZXNzaW9uIGZvciBTMTAwQTggdGhhdCBpcyBgciBhYnMocm91bmQobG0yJGNvZWZbMl0sMikpYCB1bml0cyBsb3dlciAoOTUlIENJIFtgciBwYXN0ZShyb3VuZChjb25maW50KGxtMilbMixdLDIpLGNvbGxhcHNlPSIsIilgXSkuCgokJFxsb2dfMiBcaGF0XG11XzE9MjMuNDAxICAtMS42MTUgXHRpbWVzIFx0ZXh0e2xvZ0VTUn1fMSxcdGV4dHsgfSBcbG9nXzIgXGhhdFxtdV8yPTIzLjQwMSAgLTEuNjE1IFx0aW1lcyBcdGV4dHtsb2dFU1J9XzIgJCQKJCRcbG9nXzIgXGhhdFxtdV8yLVxsb2dfMiBcaGF0XG11XzE9ICAtMS42MTUgKFxsb2dfMiBcdGV4dHtFU1J9XzItXGxvZ18yIFx0ZXh0e0VTUn1fMSkgPSAtMS42MTUgXHRpbWVzIDEgPSAtMS42MTUkJAoKIyMjIEludGVycHJldGF0aW9uIDIKCk1vZGVsIG9uIGxvZy1zY2FsZTogdXBvbiBiYWNrLXRyYW5zZm9ybWF0aW9uIHdlIG9idGFpbiBnZW9tZXRyaWMgbWVhbnMKClxiZWdpbntlcW5hcnJheSp9ClxzdW1cbGltaXRzX3tpPTF9Xm4gXGZyYWN7XGxvZyB4X2l9e259Jj0mXGZyYWN7XGxvZyB4XzEgKyBcbGRvdHMgKyBcbG9nIHhfbn17bn1cXFxcCiZcc3RhY2tyZWx7KDEpfXs9fSZcZnJhY3tcbG9nKHhfMSBcdGltZXMgXGxkb3RzIFx0aW1lcyB4X24pfXtufT1cZnJhY3tcbG9nXGxlZnQoXHByb2RcbGltaXRzX3tpPTF9Xm4geF9pXHJpZ2h0KX17bn1cXFxcCiZcc3RhY2tyZWx7KDIpfXs9fSZcbG9nIFxsZWZ0KFxzcXJ0W1xsZWZ0cm9vdHstMX1cdXByb290ezJ9XHNjcmlwdHN0eWxlIG5de1xwcm9kXGxpbWl0c197aT0xfV5uIHhfaX1ccmlnaHQpClxlbmR7ZXFuYXJyYXkqfQoKLSBQb3B1bGF0aW9uIG1lYW4gJFxtdSQgaXMgZXN0aW1hdGVkIGFzIGEgZ2VvbWV0cmljIG1lYW4KLSBMb2dhcml0aG1pYyB0cmFuc2Zvcm1hdGlvbiBpcyBtb25vdG9uZTogd2UgY2FuIGJhY2t0cmFuc2Zvcm0gY29uZmlkZW5jZSBpbnRlcnZhbHMgb24gbG9nLXNjYWxlIQoKCmBgYHtyfQoyXmxtMiRjb2VmWzJdCjJeLWxtMiRjb2VmWzJdCjJeLWNvbmZpbnQobG0yKVsyLF0KYGBgCgpBIHBhdGllbnQgd2l0aCBhbiBFU1IxIGV4cHJlc3Npb24gdGhhdCBpcyAyIHRpbWVzIHRoZSBleHByZXNzaW9uIG9mIHRoYXQgb2YgYW5vdGhlciBwYXRpZW50IHdpbGwgb24gYXZlcmFnZSBoYXZlIGFuICBTMTAwQTggZXhwcmVzc2lvbiB0aGF0IGlzIGByIHJvdW5kKDJeLWxtMiRjb2VmWzJdCiwyKWAgdGltZXMgbG93ZXIgKDk1XCUgQ0kgW2ByIHBhc3RlKHNvcnQocm91bmQoMl4tY29uZmludChsbTIpWzIsXSwyKSksY29sbGFwc2U9IiwiKWBdKS4KCgokJFxsb2dfMiBcaGF0XG11XzE9MjMuNDAxICAtMS42MTUgXHRpbWVzIFx0ZXh0e2xvZ0VTUn1fMSxcdGV4dHsgfSBcbG9nXzIgXGhhdFxtdV8yPTIzLjQwMSAgLTEuNjE1IFx0aW1lcyBcdGV4dHtsb2dFU1J9XzIgJCQKJCRcbG9nXzIgXGhhdFxtdV8yLVxsb2dfMiBcaGF0XG11XzE9ICAtMS42MTUgKFxsb2dfMiBcdGV4dHtFU1J9XzItXGxvZ18yIFx0ZXh0e0VTUn1fMSkgJCQKJCRcbG9nXzIgXGxlZnRbXGZyYWN7XGhhdFxtdV8yfXtcaGF0XG11XzF9XHJpZ2h0XT0gIC0xLjYxNSBcbG9nXzJcbGVmdFtcZnJhY3sgXHRleHR7RVNSfV8yfXtcdGV4dHtFU1J9XzF9XHJpZ2h0XSAkJAokJFxmcmFje1xoYXRcbXVfMn17XGhhdFxtdV8xfT1cbGVmdFtcZnJhY3sgXHRleHR7RVNSfV8yfXtcdGV4dHtFU1J9XzF9XHJpZ2h0XV57LTEuNjE1fT0yXiB7LTEuNjE1fSA9MC4zMjYkJApvcgokJFxmcmFje1xoYXRcbXVfMX17XGhhdFxtdV8yfT0yXnsxLjYxNX0gPTMuMDYkJAoKCiMjIyBJbnRlcnByZXRhdGlvbiAzCgpBIHBhdGllbnQgd2l0aCBhbiBFU1IxIGV4cHJlc3Npb24gdGhhdCBpcyAxXCUgaGlnaGVyIHRoYW4gdGhhdCBvZiBhbm90aGVyIHBhdGllbnQgd2lsbCBvbiBhdmVyYWdlIGhhdmUgIGFuIGV4cHJlc3Npb24tbGV2ZWwgZm9yIFMxMDBBOCBnZW4gIHRoYXQgaXMgYXBwcm94aW1hdGVseSBgciByb3VuZChsbTIkY29lZlsyXSwyKWAlIGxvd2VyICg5NVwlIENJIFtgciBwYXN0ZShyb3VuZChjb25maW50KGxtMilbMixdLDIpLGNvbGxhcHNlPSIsIilgXSklLgoKJCRcbG9nXzIgXGhhdFxtdV8xPTIzLjQwMSAgLTEuNjE1IFx0aW1lcyBcdGV4dHtsb2dFU1J9XzEsXHRleHR7IH0gXGxvZ18yIFxoYXRcbXVfMj0yMy40MDEgIC0xLjYxNSBcdGltZXMgXHRleHR7bG9nRVNSfV8yICQkCiQkXGxvZ18yIFxoYXRcbXVfMi1caGF0XGxvZ18yIFxtdV8xPSAgLTEuNjE1IChcbG9nXzIgXHRleHR7RVNSfV8yLVxsb2dfMiBcdGV4dHtFU1J9XzEpICQkCiQkXGxvZ18yIFxsZWZ0W1xmcmFje1xoYXRcbXVfMn17XGhhdFxtdV8xfVxyaWdodF09ICAtMS42MTUgXGxvZ18yXGxlZnRbXGZyYWN7IFx0ZXh0e0VTUn1fMn17XHRleHR7RVNSfV8xfVxyaWdodF0gJCQKJCRcZnJhY3tcaGF0XG11XzJ9e1xoYXRcbXVfMX09XGxlZnRbXGZyYWN7IFx0ZXh0e0VTUn1fMn17XHRleHR7RVNSfV8xfVxyaWdodF1eey0xLjYxNX09MS4wMV4gey0xLjYxNX0gPTAuOTg0IFxhcHByb3ggLTEuNlwlJCQKClRoaXMgaXMgdmFsaWQgZm9yIGxvdyB0byBtb2RlcmF0ZSB2YWx1ZXMgb2YgJFxiZXRhXzEkOgokJC0xMDxcYmV0YV8xPDEwIFxyaWdodGFycm93IDEuMDFee1xiZXRhXzF9IC0xIFxhcHByb3ggXGZyYWN7XGJldGFfMX17MTAwfS4kJAoKCiMjIEluZmVyZW5jZSBvbiB0aGUgbWVhbiBvdXRjb21lCgotIEEgcmVncmVzc2lvbiBtb2RlbCBjYW4gYWxzbyBiZSB1c2VkIGZvciBwcmVkaWN0aW9uCi0gSW5mZXJlbmNlIG9uIGF2ZXJhZ2Ugb3V0Y29tZSBmb3IgYSBnaXZlbiB2YWx1ZSBvZiAkWD14JCwgaS5lLgokJFxoYXR7Z30oeCk9IFxoYXR7XGJldGF9XzAgKyBcaGF0e1xiZXRhfV8xIHgkJAotICRcaGF0e2d9KHgpJCBpcyBhbiBlc3RpbWF0b3Igb2YgdGhlIGNvbmRpdGlvbmFsIG1lYW4gJEVbWVx2ZXJ0IFg9eF0kCi0gUGFyYW1ldGVyIGVzdGltYXRvcnMgYXJlIE5vcm1hbGx5IGRpc3RyaWJ1dGVkIGFuZCB1bmJpYXNlZCAkXHJpZ2h0YXJyb3ckIGVzdGltYXRvciAkXGhhdHtnfSh4KSQgaXMgYWxzbyBOb3JtYWxseSBkaXN0cmlidXRlZCBhbmQgdW5iaWFzZWQuCgokJFx0ZXh0e1NFfV97XGhhdHtnfSh4KX09XHNxcnR7TVNFXGxlZnRce1xmcmFjezF9e259K1xmcmFjeyh4LVxiYXIgWCleMn17XHN1bVxsaW1pdHNfe2k9MX1ebiAoWF9pLVxiYXIgWCleMn1ccmlnaHRcfX0uJCQKCiQkVD1cZnJhY3tcaGF0e2d9KHgpLWcoeCl9e1NFX3tcaGF0e2d9KHgpfX1cc2ltIHRfe24tMn0kJAoKLSBNZWFuIHJlc3BvbnNlIGFuZCBjb25maWRlbmNlIGludGVydmFscyBmb3IgdGhlIG1lYW4gcmVzcG9uc2UgaW4gUiB2aWEgZGUgYHByZWRpY3QoLilgIGZ1bmN0aWUuCi0gYG5ld2RhdGFgIGFyZ3VtZW50OiBwcmVkaWN0b3IgdmFsdWVzICh4LXZhbHVlcykgYXQgd2hpY2ggd2Ugd2FudCB0byBjYWxjdWxhdGUgdGhlIG1lYW4gcmVzcG9uc2UKLSBgaW50ZXJ2YWw9ImNvbmZpZGVuY2UiYCBhcmd1bWVudCB0byBvYnRhaW4gQ0kuCi0gV2l0aG91dCBuZXdkYXRhIGFyZ3VtZW50IHdlIHBlcmZvcm0gcHJlZGljdGlvbnMgZm9yIGFsbCBwcmVkaWN0b3IgdmFsdWVzIGluIHRoZSBkYXRhc2V0IHVzZWQgdG8gZml0IHRoZSBtb2RlbC4KCmBgYHtyfQpncmlkIDwtIDE0MDo0MDAwCmcgPC0gcHJlZGljdChsbTIsbmV3ZGF0YT1kYXRhLmZyYW1lKEVTUjE9Z3JpZCksIGludGVydmFsPSJjb25maWRlbmNlIikKaGVhZChnKQpgYGAKCk5vdGUsIHRoYXQgd2UgZG8gbm90IGhhdmUgdG8gdHJhbnNmb3JtIHRoZSBuZXcgZGF0YSB0aGF0IHdlIHNwZWNpZmllZCBmb3IgdGhlIEVTUjEgZXhwcmVzc2lvbiBiZWNhdXNlIHdlIGZpdHRlZCB0aGUgbW9kZWwgd2l0aCBhIGNhbGwgdG8gdGhlIGBsbWAgZnVuY3Rpb24gYW5kIHNwZWNpZmllZCB0aGUgdHJhbnNmb3JtYXRpb24gd2l0aGluIHRoZSBsbSBmb3JtdWxhIHVzaW5nIHRoZSBwaXBlIGNvbW1hbmQhCgpgYGB7cn0KYnJjYSAlPiUgZ2dwbG90KGFlcyh4PUVTUjElPiVsb2cyLHk9UzEwMEE4JT4lbG9nMikpICsKICBnZW9tX3BvaW50KCkgKwogIGdlb21fc21vb3RoKG1ldGhvZD0ibG0iKQpgYGAKCiMjIEJhY2stdHJhbnNmb3JtYXRpb24KYGBge3J9Cm5ld2RhdGE8LWRhdGEuZnJhbWUoY2JpbmQoZ3JpZCwyXmcpKQpicmNhICU+JSBnZ3Bsb3QoYWVzKHg9RVNSMSx5PVMxMDBBOCkpICsKICBnZW9tX3BvaW50KCkgKwogIGdlb21fbGluZShhZXMoeD1ncmlkLHk9Zml0KSxuZXdkYXRhKSArCiAgZ2VvbV9saW5lKGFlcyh4PWdyaWQseT1sd3IpLG5ld2RhdGEsY29sb3I9ImdyZXkiKSArCiAgZ2VvbV9saW5lKGFlcyh4PWdyaWQseT11cHIpLG5ld2RhdGEsY29sb3I9ImdyZXkiKQpgYGAKCiMgUHJlZGljdGlvbi1pbnRlcnZhbHMKCi0gV2UgY2FuIGFsc28gbWFrZSBhIHByZWRpY3Rpb24gZm9yIHRoZSBsb2NhdGlvbiBvZiBhIG5ldyBvYnNlcnZhdGlvbiB0aGF0IHdvdWxkIGJlIGNvbGxlY3RlZCBpbiBhIG5ldyBleHBlcmltZW50IGZvciBhIHBhdGllbnQgd2l0aCBhIHBhcnRpY3VsYXIgdmFsdWUgZm9yIHRoZWlyIEVTUjEgZXhwcmVzc2lvbgoKLSBJdCBpcyBpbXBvcnRhbnQgdG8gbm90aWNlIHRoYXQgdGhpcyBleHBlcmltZW50IHN0aWxsIGhhcyB0byBiZSBjb25kdWN0ZWQuIFNvIHdlIHdhbnQgdG8gcHJlZGljdCB0aGUgbm9uLW9ic2VydmVkIGluZGl2aWR1YWwgZXhwcmVzc2lvbiB2YWx1ZSBmb3IgYSBub3ZlbCBwYXRpZW50LgoKLSBGb3IgYSBub3ZlbCBpbmRlcGVuZGVudCBvYnNlcnZhdGlvbiAkWV4qJAokJAogIFleKiA9IGcoeCkgKyBcZXBzaWxvbl4qCiQkCndpdGggJFxlcHNpbG9uXipcc2ltIE4oMCxcc2lnbWFeMikkIGFuZCAkXGVwc2lsb25eKiQgaW5kZXBlbmRlbnQgb2YgdGhlIG9ic2VydmF0aW9ucyBpbiB0aGUgc2FtcGxlICRZXzEsXGxkb3RzLCBZX24kLgoKLSBXZSBwcmVkaWN0IGEgbmV3IGxvZy1TMTAwQTggZm9yIGEgcGF0aWVudCB3aXRoIGEga25vd24gbG9nMi1FU1IxIGV4cHJlc3Npb24gbGV2ZWwgeApcWwogIFxoYXR7eX0oeCk9XGhhdHtcYmV0YX1fMCtcaGF0e1xiZXRhfV8xIFx0aW1lcyB4ClxdCgotIFRoZSBlc3RpbWF0ZWQgbWVhbiBvdXRjb21lIGFuZCBwcmVkaWN0aW9uIGZvciBhIG5ldyBvYnNlcnZhdGlvbiBhcmUgZXF1YWwuCgotIEJ1dCwgdGhlaXIgc2FtcGxlIGRpc3RyaWJ1dGlvbnMgYXJlIGRpZmZlcmVudCEKCiAgICAtIFVuY2VydGFpbnR5IG9uIHRoZSBlc3RpbWF0ZWQgbWVhbiBvdXRjb21lICAkXGxlZnRhcnJvdyQgdW5jZXJ0YWludHkgb24gZXN0aW1hdGVkIG1vZGVsIHBhcmFtZXRlcnMgJFxoYXRcYmV0YV8wJCBlbiAkXGhhdFxiZXRhXzEkLgogICAgLSBVbmNlcnRhaW50eSBvbiBuZXcgb2JzZXJ2YXRpb24gJCAkXGxlZnRhcnJvdyQgKnVuY2VydGFpbnR5IG9uIGVzdGltYXRlZCBtZWFuKiBhbmQgICphZGRpdGlvbmFsIHVuY2VydGFpbnR5KiBiZWNhdXNlIHRoZSBuZXcgb2JzZXJ2YXRpb24gd2lsbCBkZXZpYXRlIGFyb3VuZCB0aGUgbWVhbiEKCgokJFx0ZXh0e1NFfV97XGhhdHtZfSh4KX09XHNxcnR7XGhhdFxzaWdtYV4yK1xoYXRcc2lnbWFeMl97XGhhdHtnfSh4KX19PVxzcXJ0e01TRVxsZWZ0XHsxK1xmcmFjezF9e259K1xmcmFjeyh4LVxiYXIgWCleMn17XHN1bVxsaW1pdHNfe2k9MX1ebiAoWF9pLVxiYXIgWCleMn1ccmlnaHRcfX0uJCQKCiQkXGZyYWN7XGhhdHtZfSh4KS1ZfXtcdGV4dHtTRX1fe1xoYXR7WX0oeCl9fVxzaW0gdF97bi0yfSQkCgotIE5vdGUsIHRoYXQgYSAqKnByZWRpY3Rpb24taW50ZXJ2YWwqKiAoUEkpIGlzIGFuIGltcHJvdmVkIHZlcnNpb24gb2YgYSByZWZlcmVuY2UtaW50ZXJ2YWwgd2hlbiB0aGUgbW9kZWwgcGFyYW1ldGVycyBhcmUgdW5rbm93bjogVW5jZXJ0YWludHkgb24gbW9kZWwgcGFyYW1ldGVycyArICB0LWRpc3RyaWJ1dGlvbi4KCgpgYGB7cn0KcCA8LSBwcmVkaWN0KGxtMixuZXdkYXRhPWRhdGEuZnJhbWUoRVNSMT1ncmlkKSwgaW50ZXJ2YWw9InByZWRpY3Rpb24iKQpoZWFkKHApCmBgYAoKYGBge3J9CnByZWRkYXRhPC1kYXRhLmZyYW1lKGNiaW5kKGdyaWQ9Z3JpZCU+JWxvZzIscCkpCmJyY2EgJT4lIGdncGxvdChhZXMoeD1FU1IxJT4lbG9nMix5PVMxMDBBOCU+JWxvZzIpKSArCiAgZ2VvbV9wb2ludCgpICsKICBnZW9tX3Ntb290aChtZXRob2Q9ImxtIikgKwogICAgIGdlb21fbGluZShhZXMoeD1ncmlkLHk9bHdyKSxwcmVkZGF0YSxjb2xvcj0iYmx1ZSIpICsKICBnZW9tX2xpbmUoYWVzKHg9Z3JpZCx5PXVwcikscHJlZGRhdGEsY29sb3I9ImJsdWUiKQpgYGAKCmBgYHtyfQpwcmVkZGF0YTwtZGF0YS5mcmFtZShjYmluZChncmlkLDJecCkpCmJyY2EgJT4lIGdncGxvdChhZXMoeD1FU1IxLHk9UzEwMEE4KSkgKwogIGdlb21fcG9pbnQoKSArCiAgZ2VvbV9saW5lKGFlcyh4PWdyaWQseT1maXQpLG5ld2RhdGEpICsKICBnZW9tX2xpbmUoYWVzKHg9Z3JpZCx5PWx3ciksbmV3ZGF0YSxjb2xvcj0iZ3JleSIpICsKICBnZW9tX2xpbmUoYWVzKHg9Z3JpZCx5PXVwciksbmV3ZGF0YSxjb2xvcj0iZ3JleSIpICsKICAgIGdlb21fbGluZShhZXMoeD1ncmlkLHk9bHdyKSxwcmVkZGF0YSxjb2xvcj0iYmx1ZSIpICsKICBnZW9tX2xpbmUoYWVzKHg9Z3JpZCx5PXVwcikscHJlZGRhdGEsY29sb3I9ImJsdWUiKQpgYGAKCgojIyBOSEFORVMgZXhhbXBsZQoKCi0gUmVwbGFjZSByZWZlcmVuY2UgaW50ZXJ2YWwgZm9yIGNob2xlc3Rlcm9sIGxldmVsIGZyb20gY2hhcHRlciAyIGJ5IHByZWRpY3Rpb24taW50ZXJ2YWwuCgotIFJlZmVyZW5jZSBpbnRlcnZhbAoKYGBge3J9CmxpYnJhcnkoTkhBTkVTKQpmZW0gPC0gTkhBTkVTICU+JSBmaWx0ZXIoR2VuZGVyPT0iZmVtYWxlIiYhaXMubmEoRGlyZWN0Q2hvbCkpCgpleHAoZmVtJERpcmVjdENob2wlPiVsb2clPiVtZWFuICsgYygtMSwxKSogcW5vcm0oMC45NzUpICogKGZlbSREaXJlY3RDaG9sJT4lbG9nJT4lc2QpKQpgYGAKCi0gcHJlZGljdGlvbiBpbnRlcnZhbAoKYGBge3J9CmxtQ2hvbCA8LSBsbShEaXJlY3RDaG9sICU+JSBsb2cyfjEsZGF0YT1mZW0pCnByZWRJbnQgPC0gcHJlZGljdChsbUNob2wsaW50ZXJ2YWw9InByZWRpY3Rpb24iLG5ld2RhdGE9ZGF0YS5mcmFtZShub1ByZWQ9MSkpCnJvdW5kKDJecHJlZEludCwyKQpgYGAKCgpOb3RlLCB0aGF0IHRoZSBwcmVkaWN0aW9uIGludGVydmFsIGlzIGFsbW9zdCBzaW1pbGFyIHRvIHRoZSByZWZlcmVuY2UgaW50ZXJ2YWwgZm9yIHRoZSBsYXJnZSBzYW1wbGUuIEluZGVlZCB3ZSBjb3VsZCBlc3RpbWF0ZSB0aGUgcGFyYW1ldGVycyB2ZXJ5IHByZWNpc2UuCgpXZSB3aWxsIGRvIHRoZSBzYW1lIHRoaW5nIGZvciB0aGUgc21hbGwgc2FtcGxlIHNpemUgb2YgMTAgcGF0aWVudHMuCgotIFJlZmVyZW5jZSBpbnRlcnZhbAoKYGBge3J9CnNldC5zZWVkKDEpCmZlbTEwPC0gTkhBTkVTICU+JSBmaWx0ZXIoR2VuZGVyPT0iZmVtYWxlIiYhaXMubmEoRGlyZWN0Q2hvbCkpICU+JSBzYW1wbGVfbihzaXplPTEwKQoKMl4oZmVtMTAkRGlyZWN0Q2hvbCU+JWxvZzIlPiVtZWFuICsgYygtMSwxKSogcW5vcm0oMC45NzUpICogKGZlbTEwJERpcmVjdENob2wlPiVsb2cyJT4lc2QpKQpgYGAKCi0gUHJlZGljdGlvbiBpbnRlcnZhbAoKYGBge3J9CmxtQ2hvbDEwIDwtIGxtKERpcmVjdENob2wgJT4lIGxvZzJ+MSxkYXRhPWZlbTEwKQpwcmVkSW50MTAgPC0gcHJlZGljdChsbUNob2wxMCxpbnRlcnZhbD0icHJlZGljdGlvbiIsbmV3ZGF0YT1kYXRhLmZyYW1lKG5vUHJlZD0xKSkKcm91bmQoMl5wcmVkSW50MTAsMikKYGBgCgotIE5vdGUsIHRoYXQgdGhlIFBJIG5vdyBjYXB0dXJlcyB1bmNlcnRhaW50eSBpbiBwYXJhbWV0ZXIgZXN0aW1hdG9ycyAobWVhbiBhbmQgc3RhbmRhcmQgZXJyb3IpLgpBbmQgdGhhdCB0aGUgaW50ZXJ2YWwgYmVjb21lcyBtdWNoIHdpZGVyISBUaGlzIGlzIHBhcnRpY3VsYXJseSBpbXBvcnRhbnQgaGVyZSBmb3IgdGhlIHVwcGVyIGxpbWl0IGJlY2F1c2Ugd2UgYmFjay10cmFuc2Zvcm1lZCB0aGUgZGF0YSEKCi0gVGhlIGludGVydmFsIGlzIGFsbW9zdCBhcyB3aWRlIGFzIHRoZSBvbmUgYmFzZWQgb24gdGhlIGxhcmdlIHNhbXBsZS4KCi0gSW4gc21hbGwgc2FtcGxlcyBpdCBpcyB2ZXJ5IGltcG9ydGFudCB0byBhY2NvdW50IGZvciB0aGlzIGFkZGl0aW9uYWwgdW5jZXJ0YWludHkuCgoKIyBTdW0gb2Ygc3F1YXJlcyBhbmQgQW5vdmEtdGFibGUKIyNUb3RhbCBzdW0gb2Ygc3F1YXJlcwokJFx0ZXh0e1NTVG90fSA9IFxzdW1fe2k9MX1ebiAoWV9pLVxiYXJ7WX0pXjIuJCQKCi0gU1N0b3QgY2FuIGJlIHVzZWQgdG8gZXN0aW1hdGUgdGhlIHZhcmlhbmNlIG9mIHRoZSAqKm1hcmdpbmFsIGRpc3RyaWJ1dGlvbioqIG9mIHRoZSByZXNwb25zZS4KCi0gSW4gdGhpcyBjaGFwdGVyIHdlIGZvY3VzZWQgb24gdGhlICoqY29uZGl0aW9uYWwgZGlzdHJpYnV0aW9uKiogJGYoWVx2ZXJ0IFg9eCkkLgoKLSBXZSBrbm93biB0aGF0IE1TRSBpcyBhIGdvb2QgZXN0aW1hdGUgb2YgdGhlIHZhcmlhbmNlIG9mIHRoZSBjb25kaXRpb25hbCBkaXN0cmlidXRpb24gb2YgICRZXHZlcnQgWD14JC4KCgpgYGB7ciBvdXQud2lkdGg9JzEwMCUnLCBmaWcuYXNwPS44LCBmaWcuYWxpZ249J2NlbnRlcicsIGVjaG89RkFMU0V9CmJyY2EkbG9nMkVTUjE8LWxvZzIoYnJjYSRFU1IxKQpicmNhJGxvZzJTMTAwQTg8LWxvZzIoYnJjYSRTMTAwQTgpCnBsb3QobG9nMlMxMDBBOH5sb2cyRVNSMSxkYXRhPWJyY2EseGxhYj0iRVNSMSBleHByZXNzaWUgKGxvZzIpIix5bGFiPSJTMTAwQTggZXhwcmVzc2llIChsb2cyKSIsY2V4LmF4aXM9MS41LGNleC5tYWluPTEuNSxjZXgubGFiPTEuNSxjb2w9NCkKYWJsaW5lKGg9bWVhbihicmNhJGxvZzJTMTAwQTgpKQpmb3IgKGkgaW4gMTpsZW5ndGgoYnJjYSRsb2cyUzEwMEE4KSkgbGluZXMocmVwKGJyY2EkbG9nMkVTUjFbaV0sMiksYyhtZWFuKGJyY2EkbG9nMlMxMDBBOCksYnJjYSRsb2cyUzEwMEE4W2ldKSxsdHk9Mixjb2w9NCkKYGBgCgojIyBTdW0gb2Ygc3F1YXJlcyBvZiB0aGUgcmVncmVzc2lvbiBTU1IKCiQkXHRleHR7U1NSfSA9IFxzdW1fe2k9MX1ebiAoXGhhdHtZfV9pIC0gXGJhcntZfSleMiA9IFxzdW1fe2k9MX1ebiAoXGhhdHtnfSh4X2kpIC0gXGJhcntZfSleMi4kJAoKLSBJcyBhIG1lYXN1cmUgZm9yIHRoZSBkZXZpYXRpb24gb2YgdGhlIHByZWRpY3Rpb25zIG9uIHRoZSByZWdyZXNzaW9uIGxpbmUgYW5kIHRoZSBtYXJnaW5hbCBtZWFuIG9mIHRoZSByZXNwb25zZS4KCi0gQW5vdGhlciBpbnRlcnByZXRhdGlvbjogZGlmZmVyZW5jZSBiZXR3ZWVuIHR3byBtb2RlbHMKCiAgICAtIEVzdGltYXRlZCBtb2RlbCAkXGhhdHtnfSh4KT1caGF0XGJldGFfMCtcaGF0XGJldGFfMXgkCiAgICAtIEVzdGltYXRlZCBtb2RlbCB3aXRob3V0IHByZWRpY3RvciAob25seSBpbnRlcmNlcHQpOiAkZyh4KT1cYmV0YV8wJCAkXHJpZ2h0YXJyb3ckICRcYmV0YV8wJCB3aWxsIGJlIGVxdWFsIHRvICRcYmFye1l9JC4KCi0gU1NSIG1lYXN1cmVzIHRoZSBzaXplIG9mIHRoZSBlZmZlY3Qgb2YgdGhlIHByZWRpY3RvcgoKYGBge3Igb3V0LndpZHRoPScxMDAlJywgZmlnLmFzcD0uOCwgZmlnLmFsaWduPSdjZW50ZXInLGVjaG89RkFMU0V9CnBsb3QobG9nMlMxMDBBOH5sb2cyRVNSMSxicmNhLHhsYWI9IkVTUjEgZXhwcmVzc2llIChsb2cyKSIseWxhYj0iUzEwMEE4IGV4cHJlc3NpZSAobG9nMikiLGNleC5heGlzPTEuNSxjZXgubWFpbj0xLjUsY2V4LmxhYj0xLjUpCmFibGluZShoPW1lYW4oYnJjYSRsb2cyUzEwMEE4KSkKYWJsaW5lKGxtMixjb2w9MikKcG9pbnRzKGJyY2EkbG9nMkVTUjEsbG0yJGZpdHRlZCxwY2g9Mixjb2w9MikKZm9yIChpIGluIDE6bGVuZ3RoKGJyY2EkbG9nMlMxMDBBOCkpIGxpbmVzKHJlcChicmNhJGxvZzJFU1IxW2ldLDIpLGMobWVhbihicmNhJGxvZzJTMTAwQTgpLGxtMiRmaXR0ZWRbaV0pLGx0eT0yLGNvbD0yKQpgYGAKCgojIyBTdW0gb2YgU3F1YXJlcyBvZiB0aGUgRXJyb3IKCiQkIFx0ZXh0e1NTRX0gPSBcc3VtX3tpPTF9Xm4gKFlfaS1caGF0e1l9X2kgKV4yID0gXHN1bV97aT0xfV5uIFxsZWZ0XHtZX2ktXGhhdHtnfVxsZWZ0KHhfaVxyaWdodClccmlnaHRcfV4yLiQkCgotIFRoZSBzbWFsbGVyIFNTRSB0aGUgYmV0dGVyIHRoZSBmaXQuCgoKLSBMZWFzdCBzcXVhcmVzIG1ldGhvZCEKCi0tLQoKYGBge3Igb3V0LndpZHRoPScxMDAlJywgZmlnLmFzcD0uOCwgZmlnLmFsaWduPSdjZW50ZXInLGVjaG89RkFMU0V9CnBsb3QobG9nMlMxMDBBOH5sb2cyRVNSMSxicmNhLHhsYWI9IkVTUjEgZXhwcmVzc2llIChsb2cyKSIseWxhYj0iUzEwMEE4IGV4cHJlc3NpZSAobG9nMikiLGNleC5heGlzPTEuNSxjZXgubWFpbj0xLjUsY2V4LmxhYj0xLjUpCmFibGluZShsbTIsY29sPTIpCnBvaW50cyhicmNhJGxvZzJFU1IxLGxtMiRmaXR0ZWQscGNoPTIsY29sPTIpCmZvciAoaSBpbiAxOmxlbmd0aChicmNhJGxvZzJTMTAwQTgpKSBsaW5lcyhyZXAoYnJjYSRsb2cyRVNSMVtpXSwyKSxjKGJyY2EkbG9nMlMxMDBBOFtpXSxsbTIkZml0dGVkW2ldKSxsdHk9MikKYGBgCgpXZSBjYW4gc2hvdyB0aGF0IFNTVCBjYW4gYmUgZGVjb21wb3NlZCBpbgpcYmVnaW57ZXFuYXJyYXkqfQogIFx0ZXh0e1NTVG90fQogICAgJj0mICBcc3VtX3tpPTF9Xm4gKFlfaS1cYmFye1l9KV4yIFxcCiAgICAmPSYgIFxzdW1fe2k9MX1ebiAoWV9pLVxoYXR7WX1faStcaGF0e1l9X2ktXGJhcntZfSleMiBcXAogICAgJj0mICBcc3VtX3tpPTF9Xm4gKFlfaS1caGF0e1l9X2kpXjIrXHN1bV97aT0xfV5uKFxoYXR7WX1faS1cYmFye1l9KV4yIFxcCiAgICAmPSYgIFx0ZXh0e1NTRSB9K1x0ZXh0e1NTUn0KICBcZW5ke2VxbmFycmF5Kn0KCi0gIFRvdGFsIHZhcmlhYmlsaXR5IGluIHRoZSBkYXRhIChTU1RvdCkgaXMgcGFydGlhbGx5IGV4cGxhaW5lZCBieSB0aGUgcHJlZGljdG9yIChTU1IpLgotIFZhcmlhYmlsaXR5IHRoYXQgd2UgY2Fubm90IGV4cGxhaW4gd2l0aCB0aGUgcmVncmVzc2lvbiBtb2RlbCBpcyB0aGUgcmVzaWR1YWwgdmFyaWFiaWxpdHkgKFNTRSkuCgoKIyMgRGV0ZXJtaW5hdGlvbiBjb2VmZmljaWVudAoKJCQgUl4yID0gMS1cZnJhY3tcdGV4dHtTU0V9fXtcdGV4dHtTU1RvdH19PVxmcmFje1x0ZXh0e1NTUn19e1x0ZXh0e1NTVG90fX0uJCQKCi0gKkZyYWN0aW9uIG9mIHRvdGFsIHZhcmlhYmlsaXR5IG9mIHRoZSBzYW1wbGUgb3V0Y29tZXMgZXhwbGFpbmVkIGJ5IHRoZSBtb2RlbCouCgotIExhcmdlICRSXjIkIGluZGljYXRlcyB0aGF0IHRoZSBtb2RlbCBoYXMgdGhlIHBvdGVudGlhbCB0byBtYWtlIGdvb2QgcHJlZGljdGlvbnMgIChzbWFsbCBTU0UpLgoKLSBOb3QgdmVyeSBpbmRpY2F0aXZlIGZvciBwLXZhbHVlIG9mIHRoZSB0ZXN0ICRIXzA6XGJldGFfMT0wJCB2cyAkSF8xOlxiZXRhXzFcbmVxMCQuCgogIC0gcC12YWx1ZSBpcyBsYXJnZWx5IGRldGVybWluZWQgYnkgU1NFIGFuZCBzYW1wbGUgc2l6ZSAkbiQsIGJ1dCBub3QgYnkgU1NUb3QuCiAgLSAkUl4yJCBpcyBkZXRlcm1pbmVkIGJ5IFNTRSBhbmQgU1NUb3QgYnV0IG5vdCBieSBzYW1wbGUgc2l6ZSAkbiQuCi0gTW9kZWwgd2l0aCBsb3cgJFJeMiQgaXMgc3RpbGwgdXNlZnVsIHRvIHN0dWR5IGFzc29jaWF0aW9ucyBhcyBsb25nIGFzIHRoZSBhc3NvY2lhdGlvbiBpcyBtb2RlbGxlZCBjb3JyZWN0bHkhCgojIyMgQnJlYXN0IGNhbmNlciBleGFtcGxlCgpgYGB7cn0Kc3VtbWFyeShsbTIpCmBgYAoKIyMgRi1UZXN0IGluIHNpbXBsZSBsaW5lYXIgbW9kZWwKCi0gU3VtIG9mIHNxdWFyZXMgYXJlIHRoZSBiYXNlcyBmb3IgJEYkLXRlc3RzCiQkICBGICA9IFxmcmFje1x0ZXh0e01TUn19e1x0ZXh0e01TRX19JCQKCndpdGggICRcdGV4dHtNU1J9ID0gXGZyYWN7XHRleHR7U1NSfX17MX0gXHRleHR7IGFuZCB9IFx0ZXh0e01TRX0gPSBcZnJhY3tcdGV4dHtTU0V9fXtuLTJ9LiQKCi0gTVNSIG1lYW4gc3VtIG9mIHNxdWFyZXMgb2YgdGhlIHJlZ3Jlc3Npb24sCgotIGRlbm9taW5hdG9ycyAxIGVuICRuLTIkIGFyZSB0aGUgZGVncmVlcyBvZiBmcmVlZG9tIG9mIFNTUiBhbmQgU1NFLgoKLSBVbmRlciAkSF8wOiBcYmV0YV8xPTAkCiQkSF8wOkYgPSBcZnJhY3tcdGV4dHtNU1J9fXtcdGV4dHtNU0V9fSBcc2ltIEZfezEsbi0yfSwkJAotIEYtdGVzdCBpcyBhbHdheXMgdHdvLXNpZGVkISAkSF8xOlxiZXRhXzFcbmVxIDAkCiQkICBwID0gUF8wXGxlZnRbRlxnZXEgZlxyaWdodF09MS1GX0YoZjsxLG4tMikkJAoKCmBgYHtyfQpzdW1tYXJ5KGxtMikKYGBgCgoKYGBge3IsIGVjaG89RkFMU0V9CmdyaWQ8LXNlcSgwLDEwLC4xKQpwbG90KGdyaWQsZGYoZ3JpZCwxLDMwKSx0eXBlPSJsIix4bGFiPSJGIix5bGFiPSJEZW5zaXR5IixtYWluPSJGLWRpc3RyaWJ1dGlvbiB3aXRoIDEgZGYgaW4gdGhlIG5vbWluYXRvciBhbmQgMzAgaW4gdGhlIGRlbm9taW5hdG9yIixjZXgubWFpbj0xLjUsY2V4LmF4aXM9MS41LGNleC5sYWI9MS41KQpgYGAKCgojIyBBbm92YSBUYWJsZQoKCnwgfERmfFN1bSBTcXxNZWFuIFNxfEYgdmFsdWV8UHIoPkYpfAp8LS0tfC0tLXwtLS18LS0tfC0tLXwtLS18CnxSZWdyZXNzaW9ufGRlZ3JlZXMgb2YgZnJlZWRvbSBTU1J8U1NSfE1TUnxmLXN0YXRpc3RpY3xwLXZhbHVlfAp8RXJyb3J8ZGVncmVlcyBvZiBmcmVlZG9tIFNTRXxTU0V8TVNFfCB8IHwKCmBgYHtyfQphbm92YShsbTIpCmBgYAoKCiMgRHVtbXkgdmFyaWFibGVzCgotIExpbmVhciByZWdyZXNzaW9uIG1vZGVsICBjYW4gYWxzbyBiZSB1c2VkIHRvIGNvbXBhcmUgdHdvIGdyb3VwIG1lYW5zLgotIGJyY2E6IGRpZmZlcmVuY2UgaW4gYXZlcmFnZSBhZ2UgYmV0d2VlbiBwYXRpZW50cyB3aXRoIHVuYWZmZWN0ZWQgYW5kIGFmZmVjdGVkIGx5bXBoIG5vZGVzLgoKLSBEZWZpbmUgZHVtbXkgdmFyaWFiZWxlCiQkeF9pID0gXGxlZnRceyBcYmVnaW57YXJyYXl9e2xsfQoxICYgXHRleHR7YWZmZWN0ZWQgbHltcGggbm9kZXN9IFxcCjAgJiBcdGV4dHt1bmFmZmVjdGVkIGx5bXBoIG5vZGVzfSBcZW5ke2FycmF5fVxyaWdodC4kJAoKLSBncm91cCB3aXRoICR4X2k9MCQgaXMgcmVmZXJyZWQgdG8gYXMgdGhlICAqKnJlZmVyZW5jZSBncm91cCoqLgoKLSBSZWdyZXNzaW9uIG1vZGVsIHJlbWFpbnMgdW5hbHRlcmVkLAokJFlfaSA9IFxiZXRhXzAgKyBcYmV0YV8xIHhfaSArXGVwc2lsb25faSQkCndpdGggJFxlcHNpbG9uX2kgXHRleHR7IGlpZCB9IE4oMCxcc2lnbWFeMikkCgoKQmVjYXVzZSAkeF9pJCBvbmx5IGNhbiB0YWtlIHR3byB2YWx1ZXMsIHdlIGNhbiBzdHVkeSB0aGUgcmVncmVzc2lvbiBtb2RlbCBmb3IgZWFjaCB2YWx1ZSBvZiAgJHhfaSQgc2VwYXJhdGVseToKJCQgXGJlZ2lue2FycmF5fXtsY2xsfQogICBZX2kgJj0mIFxiZXRhXzAgK1xlcHNpbG9uX2kgJlx0ZXh0e3VuYWZmZWN0ZWQgbHltcGggbm9kZXN9ICh4X2k9MCkgXFwKICAgWV9pICY9JiBcYmV0YV8wICsgXGJldGFfMSArXGVwc2lsb25faSAmXHRleHR7IGFmZmVjdGVkIGx5bXBoIG5vZGVzfSAoeF9pPTEpIC4KIFxlbmR7YXJyYXl9JCQKU28KIFxiZWdpbntlcW5hcnJheSp9CiAgIEVcbGVmdFtZX2lcbWlkIHhfaT0wXHJpZ2h0XSAmPSYgXGJldGFfMCBcXAogICBFXGxlZnRbWV9pXG1pZCB4X2k9MVxyaWdodF0gJj0mIFxiZXRhXzAgKyBcYmV0YV8xLApcZW5ke2VxbmFycmF5Kn0KCiBIZW5jZSwgdGhlIGludGVycHJldGF0aW9uIG9mICRcYmV0YV8xJDoKJCQgICBcYmV0YV8xID0gRVxsZWZ0W1lfaVxtaWQgeF9pPTFccmlnaHRdLUVcbGVmdFtZX2lcbWlkIHhfaT0wXHJpZ2h0XSQkCgokXGJldGFfMSQgaXMgdGhlIGF2ZXJhZ2UgYWdlIGRpZmZlcmVuY2UgYmV0d2VlbiBwYXRpZW50cyB3aXRoIGFmZmVjdGVkIGFuZCBwYXRpZW50cyB3aXRoIHVuYWZmZWN0ZWQgbHltcGggbm9kZXMgKHJlZmVyZW5jZSBncm91cCkuCgpXaXRoIG5vdGF0aW9uICRcbXVfMD0gRVxsZWZ0W1lfaVxtaWQgeF9pPTBccmlnaHRdJCBhbmQgJFxtdV8xPSBFXGxlZnRbWV9pXG1pZCB4X2k9MVxyaWdodF0kIHRoaXMgYmVjb21lcwokJFxiZXRhXzEgPSBcbXVfMS1cbXVfMC4kJAoKV2UgY2FuIHNob3cgdGhhdAokJFxiZWdpbnthcnJheX17Y2NsbH0KIFxoYXRcYmV0YV8wCiAgICY9JiBcYmFye1l9XzEmXHRleHR7IChzYW1wbGUgbWVhbiBvZiByZWZlcmVuY2UgZ3JvdXApfSBcXAogXGhhdFxiZXRhXzEKICAgJj0mIFxiYXJ7WX1fMi1cYmFye1l9XzEmXHRleHR7KGVzdGltYXRvciBvZiBlZmZlY3Qgc2l6ZSl9IFxcCiBcdGV4dHtNU0V9CiAgICY9JiBTX3BeMiAuClxlbmR7YXJyYXl9JCQKClRlc3RzICRIXzA6XGJldGFfMT0wJCB2cy4gICRIXzE6XGJldGFfMVxuZXEwJCBjYW4gYmUgdXNlZCB0byBhc3Nlc3MgdGhlIG51bGwgaHlwb3RoZXNpcyBvZiB0aGUgIHR3by1zYW1wbGUgJHQkLXRlc3QsICRIXzA6XG11XzE9XG11XzIkIHZzICRIXzE6XG11XzFcbmVxXG11XzIkLgoKCmBgYHtyfQpicmNhJG5vZGUgPC0gYXMuZmFjdG9yKGJyY2Ekbm9kZSkKdC50ZXN0KGFnZX5ub2RlLGJyY2EsdmFyLmVxdWFsPVRSVUUpCmBgYAoKYGBge3J9CmxtMyA8LSBsbShhZ2V+bm9kZSxicmNhKQpzdW1tYXJ5KGxtMykKYGBgCgpgYGB7cn0KcGxvdChsbTMpCmBgYAoKCgpgYGB7cn0KYnJjYSAlPiUgZ2dwbG90KGFlcyh4PW5vZGUlPiVhcy5mYWN0b3IseT1hZ2UpKSArCiAgZ2VvbV9ib3hwbG90KCkKYGBgCgoKYGBge3Igb3V0LndpZHRoPScxMDAlJywgZmlnLmFzcD0uOCwgZmlnLmFsaWduPSdjZW50ZXInfQpwYXIobWZyb3c9YygzLDMpKQpzZXQuc2VlZCgzNTQpCmZvcihpIGluIDE6OSkgcGxvdChybm9ybSgzMil+bm9kZSxicmNhLHlsYWI9ImlpZCBOKDAsMSkiKQpgYGAKCgojIE9ic2VydmF0aW9uYWwgc3R1ZHkKCi0gV2UgY2Fubm90IGNvbmNsdWRlIHRoYXQgYWdlIGNhdXNlcyBhIGhpZ2hlciByaXNrIGZvciBhZmZlY3RlZCBseW1waCBub2Rlcy4KLSBQb3NzaWJseSAqKmNvbmZvdW5kaW5nKio6IG5vIHJhbmRvbWlzYXRpb24gJFxyaWdodGFycm93JCBncm91cHMgb2YgcGF0aWVudHMgd2l0aCBhZmZlY3RlZCBhbmQgdW5hZmZlY3RlZCBseW1waCBub2Rlcy4gVGhleSBjYW4gYWxzbyBkaWZmZXIgaW4gb3RoZXIgY2hhcmFjdGVyaXN0aWNzLgoKLSBXZSBjYW4gb25seSBjb25jbHVkZSB0aGF0IHRoZXJlIGlzIGFuIGFzc29jaWF0aW9uIGJldHdlZW4gbHltcGggbm9kZSBzdGF0dXMgYW5kIGFnZS4KCi0gSG93ZXZlciwgdGhlIGFzc29jaWF0aW9uIGRvZXMgbm90IGhhdmUgdG8gYmUgY2F1c2FsIQoKCi0gTm90ZSwgdGhhdCB0aGlzIGlzIGFsc28gdGhlIGNhc2UgZm9yIHRoZSBsaW5lYXIgbW9kZWwgZm9yICRcbG9nXzIkLVMxMDBBOC1leHByZXNzaW9uLgoKICAgIC0gQmVjYXVzZSB3ZSB3ZXJlIG5vdCBhYmxlIHRvIGZpeCB0aGUgIEVTUjEtZXhwcmVzc2lvbiBleHBlcmltZW50YWxseSB3ZSBjYW5ub3QgY29uY2x1ZGUgdGhhdCBhIGhpZ2hlciBFU1IxLWV4cHJlc3Npb24gY2F1c2VzIGEgZGVjcmVhc2UgaW4gdGhlIFMxMDBBOC1leHByZXNzaW9uLgogICAgLSBXZSBjYW4gb25seSBjb25jbHVkZSB0aGF0IHRoZXJlIGlzIGEgbmVnYXRpdmUgYXNzb2NpYXRpb24uCiAgICAtIFRvIGFzc2VzcyB0aGUgaW1wYWN0IG9mIGEgZ2VuZSBvbiBvdGhlciBnZW5lIHR5cGljYWxseSBrbm9ja291dCBtdXRhbnRzIGFyZSB1c2VkIGluIHRoZSBsYWIuCg==</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("06-linearRegression.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

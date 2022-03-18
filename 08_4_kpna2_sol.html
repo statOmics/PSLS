@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement" />
+
+
+<title>8.4. Multiple Regression: KPNA2 example - solution</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">8.4. Multiple Regression: KPNA2 example - solution</h1>
+<h4 class="author">Lieven Clement</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
+<div id="background" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Background</h1>
+<p>Histologic grade in breast cancer provides clinically important prognostic information. Researchers examined whether histologic grade was associated with gene expression profiles of breast cancers and whether such profiles could be used to improve histologic grading. In this tutorial we will assess the association between histologic grade and the expression of the KPNA2 gene that is known to be associated with poor BC prognosis. The patients, however, do not only differ in the histologic grade, but also on their lymph node status. The lymph nodes were not affected (0) or surgically removed (1).</p>
+<p>Load libraries</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+</div>
+<div id="data-analysis" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Data analysis</h1>
+<div id="import-kpna2-data-in-r" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Import KPNA2 data in R</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>kpna2 <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt&quot;</span>,<span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>kpna2</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["grade"],"name":[1],"type":["int"],"align":["right"]},{"label":["node"],"name":[2],"type":["int"],"align":["right"]},{"label":["gene"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"3","2":"1","3":"367.8179"},{"1":"3","2":"1","3":"590.3576"},{"1":"1","2":"1","3":"346.6583"},{"1":"1","2":"1","3":"258.4455"},{"1":"1","2":"0","3":"153.8416"},{"1":"3","2":"0","3":"643.6799"},{"1":"3","2":"1","3":"817.8558"},{"1":"1","2":"1","3":"329.4113"},{"1":"3","2":"0","3":"746.4951"},{"1":"3","2":"0","3":"380.0940"},{"1":"1","2":"0","3":"205.2980"},{"1":"3","2":"0","3":"703.5070"},{"1":"1","2":"0","3":"223.5533"},{"1":"1","2":"0","3":"186.6673"},{"1":"1","2":"0","3":"165.5948"},{"1":"3","2":"1","3":"439.0382"},{"1":"1","2":"1","3":"252.0597"},{"1":"3","2":"0","3":"495.8720"},{"1":"1","2":"1","3":"286.7907"},{"1":"3","2":"1","3":"552.1972"},{"1":"1","2":"1","3":"233.5769"},{"1":"3","2":"0","3":"521.4048"},{"1":"3","2":"1","3":"474.2651"},{"1":"1","2":"0","3":"148.1059"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="transform-the-variable-grade-and-node-to-a-factor" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Transform the variable grade and node to a factor</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>kpna2<span class="sc">$</span>grade <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(kpna2<span class="sc">$</span>grade)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>kpna2<span class="sc">$</span>node <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(kpna2<span class="sc">$</span>node)</span></code></pre></div>
+</div>
+<div id="data-exploration" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Data exploration</h2>
+<p>Histologic grade and lymph node status can be associated with the kpna2 gene expression. Moreover, it is also possible that the differential expression associated with histological grade is different in patients that have unaffected lymph nodes and patients for which the lymph nodes had to be removed.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>kpna2 <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>node<span class="sc">:</span>grade,<span class="at">y=</span>gene,<span class="at">fill=</span>node<span class="sc">:</span>grade)) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>()</span></code></pre></div>
+<p><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>The plot suggests</p>
+<ul>
+<li>An effect of the histological grade</li>
+<li>An effect of node status</li>
+<li>The differential expression associated to grade seems to differ according to the lymph node status (interaction)</li>
+<li>Mean variance relation?</li>
+</ul>
+</div>
+<div id="model" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Model</h2>
+<p>Histologic grade and lymph node status can be associated with the kpna2 gene expression. Moreover, it is also possible that the differential expression associated with histological grade is different in patients that have unaffected lymph nodes and patients for which the lymph nodes had to be removed. Hence, we will have to model the gene expression by using main effects for grade, node and a grade x node interaction.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Model with main effects for histological grade and node and grade x node interaction</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(gene<span class="sc">~</span>grade<span class="sc">*</span>node,<span class="at">data=</span>kpna2)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit)</span></code></pre></div>
+<p><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-5-2.png" width="672" /><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-5-3.png" width="672" /><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-5-4.png" width="672" /></p>
+<p>The variance seems to increase with the mean. The QQ-plot of the residuals shows deviations from normality or some outliers.</p>
+<p>We will first log transform the data.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(gene <span class="sc">%&gt;%</span> log2<span class="sc">~</span>grade<span class="sc">*</span>node,<span class="at">data=</span>kpna2)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit)</span></code></pre></div>
+<p><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-6-2.png" width="672" /><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-6-3.png" width="672" /><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-6-4.png" width="672" /></p>
+<ul>
+<li>The variance is now more or less equal for every treatment x node combination.</li>
+<li>The QQ-plot of the residuals shows no deviations from normality.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(fit,<span class="at">type=</span><span class="st">&quot;III&quot;</span>)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sum Sq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"335.6676323","2":"1","3":"3351.610907","4":"9.530118e-24","_rn_":"(Intercept)"},{"1":"8.3420526","2":"1","3":"83.294639","4":"1.437549e-08","_rn_":"grade"},{"1":"1.2978311","2":"1","3":"12.958726","4":"1.789077e-03","_rn_":"node"},{"1":"0.9003583","2":"1","3":"8.989996","4":"7.102512e-03","_rn_":"grade:node"},{"1":"2.0030227","2":"20","3":"NA","4":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>The output shows that there is a very significant interaction (<span class="math inline">\(p=\)</span> 0.0071). Hence, the association of the histological grade on the gene expression differs according to the lymph node status and vice versa.</p>
+<p>The researchers are therefore interested in studying and reporting on the following hypotheses:</p>
+<ul>
+<li><p>Is the KPNA2 expression on average different between grade 3 and grade 1 tumors from patients with unaffected lymph nodes (by testing <span class="math inline">\(H_0: \log_2{FC}_{g3n0-g1n0}=0\text{ vs }H1: \log_2{FC}_{g3n0-g1n0}\neq 0\)</span>)</p></li>
+<li><p>Is the KPNA2 expression on average different between grade 3 and grade 1 tumors from patients with affected lymph nodes (by testing <span class="math inline">\(H_0: \log_2{FC}_{g3n1-g1n1}=0\text{ vs }H1: \log_2{FC}_{g3n1-g1n1}\neq 0\)</span>)</p></li>
+<li><p>Is the KPNA2 expression on average different in grade 1 tumors of patients with affected and patients with unaffected lymph nodes (by testing <span class="math inline">\(H_0: \log_2{FC}_{g1n1-g1n0}=0\text{ vs }H1: \log_2{FC}_{g1n1-g1n0}\neq 0\)</span>)</p></li>
+<li><p>Is the KPNA2 expression on average different in grade 3 tumors of patients with affected and patients with unaffected lymph nodes (by testing <span class="math inline">\(H_0: \log_2{FC}_{g3n1-g3n0}=0\text{ vs }H1: \log_2{FC}_{g3n1-g3n0}\neq 0\)</span>)</p></li>
+<li><p>Is the fold change of the KPNA2 gene between grade 3 and grade 1 different according to the lymph node status and vice versa (tested already by assessing the interaction: <span class="math inline">\(H_0: \log_2{FC}_{g3n0-g1n0}=\log_2{FC}_{g3n1-g1n1} \text{ vs }H1:\log_2{FC}_{g3n0-g1n0}\neq\log_2{FC}_{g3n1-g1n1}\)</span>).</p></li>
+</ul>
+</div>
+</div>
+<div id="interpretation-of-model-parameters-and-statistical-tests" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Interpretation of model parameters and statistical tests</h1>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ExploreModelMatrix<span class="sc">::</span><span class="fu">VisualizeDesign</span>(kpna2,<span class="sc">~</span>grade<span class="sc">*</span>node)<span class="sc">$</span>plotlist</span></code></pre></div>
+<pre><code>[[1]]</code></pre>
+<p><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div>
+<pre><code>
+Call:
+lm(formula = gene %&gt;% log2 ~ grade * node, data = kpna2)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.57694 -0.19857 -0.04079  0.20807  0.64557 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    7.4796     0.1292  57.893  &lt; 2e-16 ***
+grade3         1.6675     0.1827   9.127 1.44e-08 ***
+node1          0.6577     0.1827   3.600  0.00179 ** 
+grade3:node1  -0.7748     0.2584  -2.998  0.00710 ** 
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.3165 on 20 degrees of freedom
+Multiple R-squared:  0.848, Adjusted R-squared:  0.8252 
+F-statistic: 37.18 on 3 and 20 DF,  p-value: 2.266e-08</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate confidence intervals for parameters of model</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>CIfit <span class="ot">&lt;-</span> <span class="fu">confint</span>(fit)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#log_2 FC between g3n0-g1n0, g1n1-g1n0</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#and log_2 difference in FC g3n1-g1n1 and FC g3n0-g1n0</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>CIfit</span></code></pre></div>
+<pre><code>                  2.5 %     97.5 %
+(Intercept)   7.2101125  7.7491128
+grade3        1.2864076  2.0486691
+node1         0.2766005  1.0388620
+grade3:node1 -1.3137511 -0.2357505</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Transform parameters and the CI back to the original scale</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^</span>fit<span class="sc">$</span>coef</span></code></pre></div>
+<pre><code> (Intercept)       grade3        node1 grade3:node1 
+ 178.4792627    3.1767209    1.5775997    0.5844896 </code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^</span>CIfit</span></code></pre></div>
+<pre><code>                   2.5 %      97.5 %
+(Intercept)  148.0676336 215.1371400
+grade3         2.4391992   4.1372414
+node1          1.2113372   2.0546063
+grade3:node1   0.4022736   0.8492431</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^-</span>fit<span class="sc">$</span>coef[<span class="st">&quot;grade3:node1&quot;</span>]</span></code></pre></div>
+<pre><code>grade3:node1 
+    1.710895 </code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^-</span>CIfit[<span class="st">&quot;grade3:node1&quot;</span>,]</span></code></pre></div>
+<pre><code>   2.5 %   97.5 % 
+2.485870 1.177519 </code></pre>
+<p>We model the log<span class="math inline">\(_2\)</span>-transformed intensities with the following model: <span class="math display">\[
+y=\beta_0+\beta_{g3}x_{g3}+\beta_{n1}x_{n1}+\beta_{g3n1}x_{g3}x_{n1},
+\]</span></p>
+<p>with <span class="math inline">\(\beta_0\)</span> the intercept, <span class="math inline">\(\beta_{g3}\)</span> the main effect for grade, <span class="math inline">\(x_{g3}\)</span> a dummy variable for grade which is 0 for the control treatment in the absence of grade and 1 for the treatment with grade, <span class="math inline">\(\beta_{n1}\)</span> the main effect for node, <span class="math inline">\(x_{n1}\)</span> a dummy variable that is 0 for the measurements of patients with unaffected lymph nodes and 1 for patients for which the lymph nodes were removed and <span class="math inline">\(\beta_{g3n1}\)</span> the interaction effect between grade and node. To ease the interpretation of the parameters, <span class="math inline">\(\log_2\)</span> transformed geometric mean intensities are given for each treatment group as well as corresponding contrasts between treatments, which have an interpretation in terms of <span class="math inline">\(\log_2\)</span> transformed fold changes (FC).</p>
+<ul>
+<li><p><span class="math inline">\(\log_2\hat{\mu}_{g1n0}=\hat\beta_0\)</span>, <span class="math inline">\(\log_2 \hat{\mu}_{g3n0}=\hat\beta_0+\hat\beta_{g3}\)</span> –&gt; <span class="math inline">\(\log_2 \widehat{FC}_{g3n0-g1n0}=\hat\beta_{g3}\)</span></p></li>
+<li><p><span class="math inline">\(\log_2 \hat{\mu}_{g1n1}=\hat\beta_0+\hat\beta_{n1}\)</span>, <span class="math inline">\(\log_2 \hat {\mu}_{g3n1}=\hat\beta_0+\hat\beta_{g3}+\hat\beta_{n1}+\hat\beta_{g3n1}\)</span> –&gt; <span class="math inline">\(\log_2 \widehat{FC}_{g3n1-g1n1}=\hat \beta_{g3} +\hat\beta_{g3n1}\)</span></p></li>
+<li><p>Similarly, <span class="math inline">\(\log_2 \widehat{FC}_{g1n1-g1n0}=\hat\beta_{n1}\)</span>, <span class="math inline">\(\log_2 \widehat{FC}_{g3n1-g3n0}=\hat\beta_{n1}+\hat\beta_{g3n1}\)</span></p></li>
+<li><p><span class="math inline">\(\log_2\frac{\widehat{FC}_{g3n1-g1n1}}{\widehat{FC}_{g3n0-g1n0}}=\log_2\frac{\widehat{FC}_{g3n1-g3n0}}{\widehat{FC}_{g1n1-g1n0}}=\hat\beta_{g3n1}\)</span></p></li>
+</ul>
+<p>with <span class="math inline">\(\log_2\hat{\mu}_{g1n0}\)</span>, <span class="math inline">\(\log_2\hat{\mu}_{g3n0}\)</span>, <span class="math inline">\(\log_2\hat {\mu}_{g1n1}\)</span> and <span class="math inline">\(\log_2\hat{\mu}_{g3n1}\)</span> the estimated mean <span class="math inline">\(\log_2\)</span> transformed intensity for patients with grade 1 and node 0 status, grade 3 and node 0 status, grade 1 and node 1 status and grade 3 and node 1 status, respectively. With <span class="math inline">\(\log_2 \widehat{FC}_{b-a}\)</span> we indicate <span class="math inline">\(\log_2\)</span> transformed fold change estimates between treatment b and treatment a, i.e. <span class="math inline">\(\log_2 \widehat{FC}_{b-a}=\log_2 \hat{\mu}_{b}-\log_2 \hat{\mu}_a=\log_2 \frac{\hat{\mu}_{b}}{\hat{\mu}_{a}}\)</span>.</p>
+<p>The model immediately provides statistical tests for assessing the significance of fold changes between grade 3 and grade 1 for patients with unaffected lymph nodes (n=0) <span class="math inline">\(\log_2 {FC}_{g3n0-g1n0}\)</span>, fold changes between the grade 1-node 1 patients and grade 1- node 0 patients <span class="math inline">\(\log_2 {FC}_{g1n1-g3n0}\)</span> and for differences in fold change related to histological grade for node 1 patients and node 0 patients. <span class="math inline">\(\log_2\frac{{FC}_{g3n1-g1n1}}{{FC}_{g3n0-g1n0}}\)</span>, the interaction term.</p>
+<p>Interpretation of the model parameters in the model output:</p>
+<ul>
+<li>The geometric mean intensity for grade 1 patients with unaffected lymph nodes equals <span class="math inline">\(\exp(\hat \beta_0)\)</span>= 178.48.
+<ul>
+<li>When lymph nodes are unaffected, the expression is on average 3.18 times higher for patients with histological grade 3 than patients with histological grade 1.</li>
+<li>The gene expression in histological grade 1 patients with affected lymph nodes is on average 1.58 times higher than for grade 1 patients with unaffected lymph nodes.</li>
+</ul></li>
+<li>The fold change corresponding to histological grade is on average 1.71 times lower in patients with affected lymph nodes as compared to patients with unaffected lymph node.</li>
+</ul>
+<p>For the remaining hypothesis of interest we will have to define contrasts: linear combinations of the model parameters and evaluate the contrasts with the multcomp package.</p>
+<p>The F-test showed an extremely significant association of the node status, hystological grade and/or the interaction between the node status and the grade (p&lt;&lt;0.001).</p>
+</div>
+<div id="assessing-the-significance-of-all-hypothesis-of-interest" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Assessing the significance of all hypothesis of interest</h1>
+<p>We can assess all contrasts of interest using the multcomp package. This will also allow us to correct for multiple testing, since we assess multiple hypotheses to answer the relevant research question.</p>
+<ul>
+<li><span class="math inline">\(H_0: \log_2{FC}_{g3n0-g1n0}= \beta_{g3}=0\)</span> <span class="math inline">\(\rightarrow\)</span> “grade3 = 0”</li>
+<li><span class="math inline">\(H_0: \log_2{FC}_{g3n1-g1n1}= \beta_{g3} + \hat\beta_{g3n1}=0\)</span> <span class="math inline">\(\rightarrow\)</span> “grade3+grade3:node1 = 0”</li>
+<li><span class="math inline">\(H_0: \log_2{FC}_{g1n1-g1n0}= \beta_{n1}\)</span> <span class="math inline">\(\rightarrow\)</span> “node1 = 0”</li>
+<li><span class="math inline">\(H_0: \log_2{FC}_{g3n1-g3n0}= \beta_{n1} + \hat\beta_{g3n1}=0\)</span> <span class="math inline">\(\rightarrow\)</span> “node1+grade3:node1 = 0”</li>
+<li><span class="math inline">\(H_0: \log_2{FC}_{g3n1-g1n1} - \log_2{FC}_{g3n0-g1n0} = \hat\beta_{g3n1}=0\)</span>, note that the latter hypothesis is also equivalent to <span class="math inline">\(H_0: \log_2{FC}_{g3n1-g3n0} - \log_2{FC}_{g1n1-g1n0} = \hat\beta_{g3n1}=0\)</span> <span class="math inline">\(\rightarrow\)</span> “grade3:node1 = 0”</li>
+</ul>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>fitGlht<span class="ot">&lt;-</span> <span class="fu">glht</span>(fit, <span class="at">linfct =</span> <span class="fu">c</span>(<span class="st">&quot;grade3 = 0&quot;</span>,<span class="st">&quot;grade3+grade3:node1 = 0&quot;</span>,<span class="st">&quot;node1 = 0&quot;</span>,<span class="st">&quot;node1+grade3:node1 = 0&quot;</span>,<span class="st">&quot;grade3:node1 = 0&quot;</span>))</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fitGlht)</span></code></pre></div>
+<pre><code>
+     Simultaneous Tests for General Linear Hypotheses
+
+Fit: lm(formula = gene %&gt;% log2 ~ grade * node, data = kpna2)
+
+Linear Hypotheses:
+                           Estimate Std. Error t value Pr(&gt;|t|)    
+grade3 == 0                  1.6675     0.1827   9.127  &lt; 0.001 ***
+grade3 + grade3:node1 == 0   0.8928     0.1827   4.886  &lt; 0.001 ***
+node1 == 0                   0.6577     0.1827   3.600  0.00709 ** 
+node1 + grade3:node1 == 0   -0.1170     0.1827  -0.640  0.89814    
+grade3:node1 == 0           -0.7748     0.2584  -2.998  0.02676 *  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+(Adjusted p values reported -- single-step method)</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(fitGlht)</span></code></pre></div>
+<pre><code>
+     Simultaneous Confidence Intervals
+
+Fit: lm(formula = gene %&gt;% log2 ~ grade * node, data = kpna2)
+
+Quantile = 2.6975
+95% family-wise confidence level
+ 
+
+Linear Hypotheses:
+                           Estimate lwr      upr     
+grade3 == 0                 1.66754  1.17468  2.16040
+grade3 + grade3:node1 == 0  0.89279  0.39993  1.38565
+node1 == 0                  0.65773  0.16487  1.15059
+node1 + grade3:node1 == 0  -0.11702 -0.60988  0.37584
+grade3:node1 == 0          -0.77475 -1.47176 -0.07774</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^</span><span class="fu">confint</span>(fitGlht)<span class="sc">$</span>confint</span></code></pre></div>
+<pre><code>                       Estimate       lwr       upr
+grade3                3.1767209 2.2580005 4.4692444
+grade3 + grade3:node1 1.8567602 1.3197777 2.6122267
+node1                 1.5775997 1.1213516 2.2194832
+node1 + grade3:node1  0.9220906 0.6554183 1.2972648
+grade3:node1          0.5844896 0.3606720 0.9471986
+attr(,&quot;conf.level&quot;)
+[1] 0.95
+attr(,&quot;calpha&quot;)
+[1] 2.695457</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^-</span><span class="fu">confint</span>(fitGlht)<span class="sc">$</span>confint[<span class="st">&quot;grade3:node1&quot;</span>,]</span></code></pre></div>
+<pre><code>Estimate      lwr      upr 
+1.710895 2.772341 1.055844 </code></pre>
+</div>
+<div id="conclusion" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Conclusion</h1>
+<ul>
+<li><p>There is an extremely significant association between the KPNA2 expression and hystological grade in patients with unaffected as well as in patients with affected lymph nodes (both p&lt;&lt;0.001). When lymph nodes are unaffected, the expression is on average 3.18 times higher for patients with histological grade 3 than patients with histological grade 1 (95% CI [2.26, 4.47]). For patients with affected lymph nodes the expression is on average 1.86 times higher for patients with histological grade 3 tumors than patients with histological grade 1 tumors (95% CI [1.32, 2.61]).</p></li>
+<li><p>The association between the KPNA2 expression with the lymph node status in grade 1 patients is very significant (<span class="math inline">\(p=\)</span> 0.007). The KPNA2 expression in histological grade 1 patients with affected lymph nodes is on average 1.58 times higher than for grade 1 patients with unaffected lymph nodes (95% CI [1.12, 2.22]). In grade 3 patients, however, this association is not significant (<span class="math inline">\(p=\)</span> 0.9, 95% CI [0.66, 1.3] ).</p></li>
+<li><p>There is also a significant interaction between the hystological grade and the lymph node status. So the association between the KPNA2 expression and the histological grade depends on the lymph node status and vice versa (<span class="math inline">\(p=\)</span> 0.027). The fold change corresponding to histological grade is on average 1.71 times lower in patients with affected lymph nodes as compared to patients with unaffected lymph node (95% CI [1.06, 2.77]). (Similarly, the fold change corresponding to the node status is on average 1.71 times lower in patients with grade 3 tumors as compared to patients with grade 1 tumors, 95% CI [1.06, 2.77])</p></li>
+</ul>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiOC40LiBNdWx0aXBsZSBSZWdyZXNzaW9uOiBLUE5BMiBleGFtcGxlIC0gc29sdXRpb24iCmF1dGhvcjogIkxpZXZlbiBDbGVtZW50IgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgpvdXRwdXQ6CiAgICBodG1sX2RvY3VtZW50OgogICAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICAgIHRoZW1lOiBjb3NtbwogICAgICB0b2M6IHRydWUKICAgICAgdG9jX2Zsb2F0OiB0cnVlCiAgICAgIGhpZ2hsaWdodDogdGFuZ28KICAgICAgbnVtYmVyX3NlY3Rpb25zOiB0cnVlCi0tLQoKPGEgcmVsPSJsaWNlbnNlIiBocmVmPSJodHRwczovL2NyZWF0aXZlY29tbW9ucy5vcmcvbGljZW5zZXMvYnktbmMtc2EvNC4wIj48aW1nIGFsdD0iQ3JlYXRpdmUgQ29tbW9ucyBMaWNlbnNlIiBzdHlsZT0iYm9yZGVyLXdpZHRoOjAiIHNyYz0iaHR0cHM6Ly9pLmNyZWF0aXZlY29tbW9ucy5vcmcvbC9ieS1uYy1zYS80LjAvODh4MzEucG5nIiAvPjwvYT4KCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGluY2x1ZGUgPSBUUlVFLCBjb21tZW50ID0gTkEsIGVjaG8gPSBUUlVFLAogICAgICAgICAgICAgICAgICAgICAgbWVzc2FnZSA9IEZBTFNFLCB3YXJuaW5nID0gRkFMU0UpCmBgYAoKIyBCYWNrZ3JvdW5kCgpIaXN0b2xvZ2ljIGdyYWRlIGluIGJyZWFzdCBjYW5jZXIgcHJvdmlkZXMgY2xpbmljYWxseSBpbXBvcnRhbnQgcHJvZ25vc3RpYyBpbmZvcm1hdGlvbi4gUmVzZWFyY2hlcnMgZXhhbWluZWQgd2hldGhlciBoaXN0b2xvZ2ljIGdyYWRlIHdhcyBhc3NvY2lhdGVkIHdpdGggZ2VuZSBleHByZXNzaW9uIHByb2ZpbGVzIG9mIGJyZWFzdCBjYW5jZXJzIGFuZCB3aGV0aGVyIHN1Y2ggcHJvZmlsZXMgY291bGQgYmUgdXNlZCB0byBpbXByb3ZlIGhpc3RvbG9naWMgZ3JhZGluZy4gSW4gdGhpcyB0dXRvcmlhbCB3ZSB3aWxsIGFzc2VzcyB0aGUgYXNzb2NpYXRpb24gYmV0d2VlbiBoaXN0b2xvZ2ljIGdyYWRlIGFuZCB0aGUgZXhwcmVzc2lvbiBvZiB0aGUgS1BOQTIgZ2VuZSB0aGF0IGlzIGtub3duIHRvIGJlIGFzc29jaWF0ZWQgd2l0aCBwb29yIEJDIHByb2dub3Npcy4KVGhlIHBhdGllbnRzLCBob3dldmVyLCBkbyBub3Qgb25seSBkaWZmZXIgaW4gdGhlIGhpc3RvbG9naWMgZ3JhZGUsIGJ1dCBhbHNvIG9uIHRoZWlyIGx5bXBoIG5vZGUgc3RhdHVzLgpUaGUgbHltcGggbm9kZXMgd2VyZSBub3QgYWZmZWN0ZWQgKDApIG9yIHN1cmdpY2FsbHkgcmVtb3ZlZCAoMSkuCgpMb2FkIGxpYnJhcmllcwoKYGBge3J9CmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKCiMgRGF0YSBhbmFseXNpcwojIyBJbXBvcnQgS1BOQTIgZGF0YSBpbiBSCmBgYHtyfQprcG5hMiA8LSByZWFkLnRhYmxlKCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1NHQTIxL21hc3Rlci9kYXRhL2twbmEyLnR4dCIsaGVhZGVyPVRSVUUpCmtwbmEyCmBgYAoKIyMgVHJhbnNmb3JtIHRoZSB2YXJpYWJsZSBncmFkZSBhbmQgbm9kZSB0byBhIGZhY3RvcgpgYGB7cn0Ka3BuYTIkZ3JhZGUgPC0gYXMuZmFjdG9yKGtwbmEyJGdyYWRlKQprcG5hMiRub2RlIDwtIGFzLmZhY3RvcihrcG5hMiRub2RlKQpgYGAKCiMjIERhdGEgZXhwbG9yYXRpb24KSGlzdG9sb2dpYyBncmFkZSBhbmQgbHltcGggbm9kZSBzdGF0dXMgY2FuIGJlIGFzc29jaWF0ZWQgd2l0aCB0aGUga3BuYTIgZ2VuZSBleHByZXNzaW9uLiBNb3Jlb3ZlciwgaXQgaXMgYWxzbyBwb3NzaWJsZSB0aGF0IHRoZSBkaWZmZXJlbnRpYWwgZXhwcmVzc2lvbiBhc3NvY2lhdGVkIHdpdGggaGlzdG9sb2dpY2FsIGdyYWRlIGlzIGRpZmZlcmVudCBpbiBwYXRpZW50cyB0aGF0IGhhdmUgdW5hZmZlY3RlZCBseW1waCBub2RlcyBhbmQgcGF0aWVudHMgZm9yIHdoaWNoIHRoZSBseW1waCBub2RlcyBoYWQgdG8gYmUgcmVtb3ZlZC4KCmBgYHtyfQprcG5hMiAlPiUKICBnZ3Bsb3QoYWVzKHg9bm9kZTpncmFkZSx5PWdlbmUsZmlsbD1ub2RlOmdyYWRlKSkgKwogIGdlb21fYm94cGxvdChvdXRsaWVyLnNoYXBlID0gTkEpICsKICBnZW9tX2ppdHRlcigpCmBgYAoKVGhlIHBsb3Qgc3VnZ2VzdHMKCi0gQW4gZWZmZWN0IG9mIHRoZSBoaXN0b2xvZ2ljYWwgZ3JhZGUKLSBBbiBlZmZlY3Qgb2Ygbm9kZSBzdGF0dXMKLSBUaGUgZGlmZmVyZW50aWFsIGV4cHJlc3Npb24gYXNzb2NpYXRlZCB0byBncmFkZSBzZWVtcyB0byBkaWZmZXIgYWNjb3JkaW5nIHRvIHRoZSBseW1waCBub2RlIHN0YXR1cyAoaW50ZXJhY3Rpb24pCi0gTWVhbiB2YXJpYW5jZSByZWxhdGlvbj8KCiMjIE1vZGVsCgpIaXN0b2xvZ2ljIGdyYWRlIGFuZCBseW1waCBub2RlIHN0YXR1cyBjYW4gYmUgYXNzb2NpYXRlZCB3aXRoIHRoZSBrcG5hMiBnZW5lIGV4cHJlc3Npb24uIE1vcmVvdmVyLCBpdCBpcyBhbHNvIHBvc3NpYmxlIHRoYXQgdGhlIGRpZmZlcmVudGlhbCBleHByZXNzaW9uIGFzc29jaWF0ZWQgd2l0aCBoaXN0b2xvZ2ljYWwgZ3JhZGUgaXMgZGlmZmVyZW50IGluIHBhdGllbnRzIHRoYXQgaGF2ZSB1bmFmZmVjdGVkIGx5bXBoIG5vZGVzIGFuZCBwYXRpZW50cyBmb3Igd2hpY2ggdGhlIGx5bXBoIG5vZGVzIGhhZCB0byBiZSByZW1vdmVkLiBIZW5jZSwgd2Ugd2lsbCBoYXZlIHRvIG1vZGVsIHRoZSBnZW5lIGV4cHJlc3Npb24gYnkgdXNpbmcgbWFpbiBlZmZlY3RzIGZvciBncmFkZSwgbm9kZSBhbmQgYSBncmFkZSB4IG5vZGUgaW50ZXJhY3Rpb24uCgpgYGB7cn0KI01vZGVsIHdpdGggbWFpbiBlZmZlY3RzIGZvciBoaXN0b2xvZ2ljYWwgZ3JhZGUgYW5kIG5vZGUgYW5kIGdyYWRlIHggbm9kZSBpbnRlcmFjdGlvbgpmaXQgPC0gbG0oZ2VuZX5ncmFkZSpub2RlLGRhdGE9a3BuYTIpCnBsb3QoZml0KQpgYGAKClRoZSB2YXJpYW5jZSBzZWVtcyB0byBpbmNyZWFzZSB3aXRoIHRoZSBtZWFuLgpUaGUgUVEtcGxvdCBvZiB0aGUgcmVzaWR1YWxzIHNob3dzIGRldmlhdGlvbnMgZnJvbSBub3JtYWxpdHkgb3Igc29tZSBvdXRsaWVycy4KCldlIHdpbGwgZmlyc3QgbG9nIHRyYW5zZm9ybSB0aGUgZGF0YS4KCgpgYGB7cn0KZml0IDwtIGxtKGdlbmUgJT4lIGxvZzJ+Z3JhZGUqbm9kZSxkYXRhPWtwbmEyKQpwbG90KGZpdCkKYGBgCgotIFRoZSB2YXJpYW5jZSBpcyBub3cgbW9yZSBvciBsZXNzIGVxdWFsIGZvciBldmVyeSB0cmVhdG1lbnQgeCBub2RlIGNvbWJpbmF0aW9uLgotIFRoZSBRUS1wbG90IG9mIHRoZSByZXNpZHVhbHMgc2hvd3Mgbm8gZGV2aWF0aW9ucyBmcm9tIG5vcm1hbGl0eS4KCgpgYGB7cn0KbGlicmFyeShjYXIpCkFub3ZhKGZpdCx0eXBlPSJJSUkiKQpgYGAKClRoZSBvdXRwdXQgc2hvd3MgdGhhdCB0aGVyZSBpcyBhIHZlcnkgc2lnbmlmaWNhbnQgaW50ZXJhY3Rpb24gKCRwPSQgYHIgZm9ybWF0KEFub3ZhKGZpdCx0eXBlPSJJSUkiKVsiZ3JhZGU6bm9kZSIsNF0sZGlnaXRzPTIpYCkuIEhlbmNlLCB0aGUgYXNzb2NpYXRpb24gb2YgdGhlIGhpc3RvbG9naWNhbCBncmFkZSBvbiB0aGUgZ2VuZSBleHByZXNzaW9uIGRpZmZlcnMgYWNjb3JkaW5nIHRvIHRoZSBseW1waCBub2RlIHN0YXR1cyBhbmQgdmljZSB2ZXJzYS4KCgpUaGUgcmVzZWFyY2hlcnMgYXJlIHRoZXJlZm9yZSBpbnRlcmVzdGVkIGluIHN0dWR5aW5nIGFuZCByZXBvcnRpbmcgb24gdGhlIGZvbGxvd2luZyBoeXBvdGhlc2VzOgoKLSBJcyB0aGUgS1BOQTIgZXhwcmVzc2lvbiBvbiBhdmVyYWdlIGRpZmZlcmVudCBiZXR3ZWVuIGdyYWRlIDMgYW5kIGdyYWRlIDEgdHVtb3JzIGZyb20gcGF0aWVudHMgd2l0aCB1bmFmZmVjdGVkIGx5bXBoIG5vZGVzIChieSB0ZXN0aW5nICRIXzA6IFxsb2dfMntGQ31fe2czbjAtZzFuMH09MFx0ZXh0eyB2cyB9SDE6IFxsb2dfMntGQ31fe2czbjAtZzFuMH1cbmVxIDAkKQotIElzIHRoZSBLUE5BMiBleHByZXNzaW9uIG9uIGF2ZXJhZ2UgZGlmZmVyZW50IGJldHdlZW4gZ3JhZGUgMyBhbmQgZ3JhZGUgMSB0dW1vcnMgZnJvbSBwYXRpZW50cyB3aXRoIGFmZmVjdGVkIGx5bXBoIG5vZGVzIChieSB0ZXN0aW5nICRIXzA6IFxsb2dfMntGQ31fe2czbjEtZzFuMX09MFx0ZXh0eyB2cyB9SDE6IFxsb2dfMntGQ31fe2czbjEtZzFuMX1cbmVxIDAkKQoKLSBJcyB0aGUgS1BOQTIgZXhwcmVzc2lvbiBvbiBhdmVyYWdlIGRpZmZlcmVudCBpbiBncmFkZSAxIHR1bW9ycyBvZiBwYXRpZW50cyB3aXRoIGFmZmVjdGVkIGFuZCBwYXRpZW50cyB3aXRoIHVuYWZmZWN0ZWQgbHltcGggbm9kZXMgKGJ5IHRlc3RpbmcgJEhfMDogXGxvZ18ye0ZDfV97ZzFuMS1nMW4wfT0wXHRleHR7IHZzIH1IMTogXGxvZ18ye0ZDfV97ZzFuMS1nMW4wfVxuZXEgMCQpCgotIElzIHRoZSBLUE5BMiBleHByZXNzaW9uIG9uIGF2ZXJhZ2UgZGlmZmVyZW50IGluIGdyYWRlIDMgdHVtb3JzIG9mIHBhdGllbnRzIHdpdGggYWZmZWN0ZWQgYW5kIHBhdGllbnRzIHdpdGggdW5hZmZlY3RlZCBseW1waCBub2RlcyAoYnkgdGVzdGluZyAkSF8wOiBcbG9nXzJ7RkN9X3tnM24xLWczbjB9PTBcdGV4dHsgdnMgfUgxOiBcbG9nXzJ7RkN9X3tnM24xLWczbjB9XG5lcSAwJCkKCi0gSXMgdGhlIGZvbGQgY2hhbmdlIG9mIHRoZSBLUE5BMiBnZW5lIGJldHdlZW4gZ3JhZGUgMyBhbmQgZ3JhZGUgMSBkaWZmZXJlbnQgYWNjb3JkaW5nIHRvIHRoZSBseW1waCBub2RlIHN0YXR1cyBhbmQgdmljZSB2ZXJzYSAodGVzdGVkIGFscmVhZHkgYnkgYXNzZXNzaW5nIHRoZSBpbnRlcmFjdGlvbjogJEhfMDogXGxvZ18ye0ZDfV97ZzNuMC1nMW4wfT1cbG9nXzJ7RkN9X3tnM24xLWcxbjF9IFx0ZXh0eyB2cyB9SDE6XGxvZ18ye0ZDfV97ZzNuMC1nMW4wfVxuZXFcbG9nXzJ7RkN9X3tnM24xLWcxbjF9JCkuCgoKCiMgSW50ZXJwcmV0YXRpb24gb2YgbW9kZWwgcGFyYW1ldGVycyBhbmQgc3RhdGlzdGljYWwgdGVzdHMKCmBgYHtyfQpFeHBsb3JlTW9kZWxNYXRyaXg6OlZpc3VhbGl6ZURlc2lnbihrcG5hMix+Z3JhZGUqbm9kZSkkcGxvdGxpc3QKYGBgCgoKYGBge3J9CnN1bW1hcnkoZml0KQojQ2FsY3VsYXRlIGNvbmZpZGVuY2UgaW50ZXJ2YWxzIGZvciBwYXJhbWV0ZXJzIG9mIG1vZGVsCkNJZml0IDwtIGNvbmZpbnQoZml0KQojbG9nXzIgRkMgYmV0d2VlbiBnM24wLWcxbjAsIGcxbjEtZzFuMAojYW5kIGxvZ18yIGRpZmZlcmVuY2UgaW4gRkMgZzNuMS1nMW4xIGFuZCBGQyBnM24wLWcxbjAKQ0lmaXQKI1RyYW5zZm9ybSBwYXJhbWV0ZXJzIGFuZCB0aGUgQ0kgYmFjayB0byB0aGUgb3JpZ2luYWwgc2NhbGUKMl5maXQkY29lZgoyXkNJZml0CjJeLWZpdCRjb2VmWyJncmFkZTM6bm9kZTEiXQoyXi1DSWZpdFsiZ3JhZGUzOm5vZGUxIixdCmBgYAoKV2UgbW9kZWwgdGhlIGxvZyRfMiQtdHJhbnNmb3JtZWQgaW50ZW5zaXRpZXMgd2l0aCB0aGUgZm9sbG93aW5nIG1vZGVsOgokJAp5PVxiZXRhXzArXGJldGFfe2czfXhfe2czfStcYmV0YV97bjF9eF97bjF9K1xiZXRhX3tnM24xfXhfe2czfXhfe24xfSwKJCQKCndpdGggJFxiZXRhXzAkIHRoZSBpbnRlcmNlcHQsICRcYmV0YV97ZzN9JCB0aGUgbWFpbiBlZmZlY3QgZm9yIGdyYWRlLCAkeF97ZzN9JCBhIGR1bW15IHZhcmlhYmxlIGZvciBncmFkZSB3aGljaCBpcyAwIGZvciB0aGUgY29udHJvbCB0cmVhdG1lbnQgaW4gdGhlIGFic2VuY2Ugb2YgZ3JhZGUgYW5kIDEgZm9yIHRoZSB0cmVhdG1lbnQgd2l0aCBncmFkZSwgJFxiZXRhX3tuMX0kIHRoZSBtYWluIGVmZmVjdCBmb3Igbm9kZSwgJHhfe24xfSQgYSBkdW1teSB2YXJpYWJsZSB0aGF0IGlzIDAgZm9yIHRoZSBtZWFzdXJlbWVudHMgb2YgcGF0aWVudHMgd2l0aCB1bmFmZmVjdGVkIGx5bXBoIG5vZGVzIGFuZCAxIGZvciBwYXRpZW50cyBmb3Igd2hpY2ggdGhlIGx5bXBoIG5vZGVzIHdlcmUgcmVtb3ZlZCBhbmQgJFxiZXRhX3tnM24xfSQgdGhlIGludGVyYWN0aW9uIGVmZmVjdCBiZXR3ZWVuIGdyYWRlIGFuZCBub2RlLgpUbyBlYXNlIHRoZSBpbnRlcnByZXRhdGlvbiBvZiB0aGUgcGFyYW1ldGVycywgJFxsb2dfMiQgdHJhbnNmb3JtZWQgZ2VvbWV0cmljIG1lYW4gaW50ZW5zaXRpZXMgYXJlIGdpdmVuIGZvciBlYWNoIHRyZWF0bWVudCBncm91cCBhcyB3ZWxsIGFzIGNvcnJlc3BvbmRpbmcgY29udHJhc3RzIGJldHdlZW4gdHJlYXRtZW50cywgd2hpY2ggaGF2ZSBhbiBpbnRlcnByZXRhdGlvbiBpbiB0ZXJtcyBvZiAkXGxvZ18yJCB0cmFuc2Zvcm1lZCBmb2xkIGNoYW5nZXMgKEZDKS4KCi0gJFxsb2dfMlxoYXR7XG11fV97ZzFuMH09XGhhdFxiZXRhXzAkLCAkXGxvZ18yIFxoYXR7XG11fV97ZzNuMH09XGhhdFxiZXRhXzArXGhhdFxiZXRhX3tnM30kIC0tPiAkXGxvZ18yIFx3aWRlaGF0e0ZDfV97ZzNuMC1nMW4wfT1caGF0XGJldGFfe2czfSQKCi0gJFxsb2dfMiBcaGF0e1xtdX1fe2cxbjF9PVxoYXRcYmV0YV8wK1xoYXRcYmV0YV97bjF9JCwgJFxsb2dfMiBcaGF0IHtcbXV9X3tnM24xfT1caGF0XGJldGFfMCtcaGF0XGJldGFfe2czfStcaGF0XGJldGFfe24xfStcaGF0XGJldGFfe2czbjF9JCAtLT4gJFxsb2dfMiBcd2lkZWhhdHtGQ31fe2czbjEtZzFuMX09XGhhdCBcYmV0YV97ZzN9ICtcaGF0XGJldGFfe2czbjF9JAoKLSBTaW1pbGFybHksICRcbG9nXzIgXHdpZGVoYXR7RkN9X3tnMW4xLWcxbjB9PVxoYXRcYmV0YV97bjF9JCwgJFxsb2dfMiBcd2lkZWhhdHtGQ31fe2czbjEtZzNuMH09XGhhdFxiZXRhX3tuMX0rXGhhdFxiZXRhX3tnM24xfSQKCi0gJFxsb2dfMlxmcmFje1x3aWRlaGF0e0ZDfV97ZzNuMS1nMW4xfX17XHdpZGVoYXR7RkN9X3tnM24wLWcxbjB9fT1cbG9nXzJcZnJhY3tcd2lkZWhhdHtGQ31fe2czbjEtZzNuMH19e1x3aWRlaGF0e0ZDfV97ZzFuMS1nMW4wfX09XGhhdFxiZXRhX3tnM24xfSQKCndpdGggJFxsb2dfMlxoYXR7XG11fV97ZzFuMH0kLCAkXGxvZ18yXGhhdHtcbXV9X3tnM24wfSQsICRcbG9nXzJcaGF0IHtcbXV9X3tnMW4xfSQgYW5kICRcbG9nXzJcaGF0e1xtdX1fe2czbjF9JCB0aGUgZXN0aW1hdGVkIG1lYW4gJFxsb2dfMiQgdHJhbnNmb3JtZWQgaW50ZW5zaXR5IGZvciBwYXRpZW50cyB3aXRoIGdyYWRlIDEgYW5kIG5vZGUgMCBzdGF0dXMsIGdyYWRlIDMgYW5kIG5vZGUgMCBzdGF0dXMsIGdyYWRlIDEgYW5kIG5vZGUgMSBzdGF0dXMgYW5kIGdyYWRlIDMgYW5kIG5vZGUgMSBzdGF0dXMsIHJlc3BlY3RpdmVseS4gV2l0aCAkXGxvZ18yIFx3aWRlaGF0e0ZDfV97Yi1hfSQgd2UgaW5kaWNhdGUgJFxsb2dfMiQgdHJhbnNmb3JtZWQgZm9sZCBjaGFuZ2UgZXN0aW1hdGVzIGJldHdlZW4gdHJlYXRtZW50IGIgYW5kIHRyZWF0bWVudCBhLCBpLmUuICRcbG9nXzIgXHdpZGVoYXR7RkN9X3tiLWF9PVxsb2dfMiBcaGF0e1xtdX1fe2J9LVxsb2dfMiBcaGF0e1xtdX1fYT1cbG9nXzIgXGZyYWN7XGhhdHtcbXV9X3tifX17XGhhdHtcbXV9X3thfX0kLgoKVGhlIG1vZGVsIGltbWVkaWF0ZWx5IHByb3ZpZGVzIHN0YXRpc3RpY2FsIHRlc3RzIGZvciBhc3Nlc3NpbmcgdGhlIHNpZ25pZmljYW5jZSBvZiBmb2xkIGNoYW5nZXMgYmV0d2VlbiBncmFkZSAzIGFuZCBncmFkZSAxIGZvciBwYXRpZW50cyB3aXRoIHVuYWZmZWN0ZWQgbHltcGggbm9kZXMgKG49MCkgJFxsb2dfMiB7RkN9X3tnM24wLWcxbjB9JCwgIGZvbGQgY2hhbmdlcyBiZXR3ZWVuIHRoZSBncmFkZSAxLW5vZGUgMSBwYXRpZW50cyBhbmQgZ3JhZGUgMS0gbm9kZSAwIHBhdGllbnRzICRcbG9nXzIge0ZDfV97ZzFuMS1nM24wfSQgYW5kIGZvciBkaWZmZXJlbmNlcyBpbiBmb2xkIGNoYW5nZSByZWxhdGVkIHRvIGhpc3RvbG9naWNhbCBncmFkZSBmb3Igbm9kZSAxIHBhdGllbnRzIGFuZCBub2RlIDAgcGF0aWVudHMuICRcbG9nXzJcZnJhY3t7RkN9X3tnM24xLWcxbjF9fXt7RkN9X3tnM24wLWcxbjB9fSQsIHRoZSBpbnRlcmFjdGlvbiB0ZXJtLgoKSW50ZXJwcmV0YXRpb24gb2YgdGhlIG1vZGVsIHBhcmFtZXRlcnMgaW4gdGhlIG1vZGVsIG91dHB1dDoKCi0gVGhlIGdlb21ldHJpYyBtZWFuIGludGVuc2l0eSBmb3IgZ3JhZGUgMSBwYXRpZW50cyB3aXRoIHVuYWZmZWN0ZWQgbHltcGggbm9kZXMgZXF1YWxzICRcZXhwKFxoYXQgXGJldGFfMCkkPQpgciByb3VuZCgyXmZpdCRjb2VmWyIoSW50ZXJjZXB0KSJdLDIpYC4KCS0gV2hlbiBseW1waCBub2RlcyBhcmUgdW5hZmZlY3RlZCwgdGhlIGV4cHJlc3Npb24gaXMgb24gYXZlcmFnZSBgciByb3VuZCgyXmZpdCRjb2VmWyJncmFkZTMiXSwyKWAgdGltZXMgaGlnaGVyIGZvciBwYXRpZW50cyB3aXRoIGhpc3RvbG9naWNhbCBncmFkZSAzIHRoYW4gcGF0aWVudHMgd2l0aCBoaXN0b2xvZ2ljYWwgZ3JhZGUgMS4KCS0gVGhlIGdlbmUgZXhwcmVzc2lvbiBpbiBoaXN0b2xvZ2ljYWwgZ3JhZGUgMSBwYXRpZW50cyB3aXRoIGFmZmVjdGVkIGx5bXBoIG5vZGVzIGlzIG9uIGF2ZXJhZ2UgYHIgcm91bmQoMl5maXQkY29lZlsibm9kZTEiXSwyKWAgdGltZXMgaGlnaGVyIHRoYW4gZm9yIGdyYWRlIDEgcGF0aWVudHMgd2l0aCB1bmFmZmVjdGVkIGx5bXBoIG5vZGVzLgotIFRoZSBmb2xkIGNoYW5nZSBjb3JyZXNwb25kaW5nIHRvIGhpc3RvbG9naWNhbCBncmFkZSBpcyBvbiBhdmVyYWdlIGByIHJvdW5kKDEvMl5maXQkY29lZlsiZ3JhZGUzOm5vZGUxIl0sMilgIHRpbWVzIGxvd2VyIGluIHBhdGllbnRzIHdpdGggYWZmZWN0ZWQgbHltcGggbm9kZXMgYXMgY29tcGFyZWQgdG8gcGF0aWVudHMgd2l0aCB1bmFmZmVjdGVkIGx5bXBoIG5vZGUuCgoKRm9yIHRoZSByZW1haW5pbmcgaHlwb3RoZXNpcyBvZiBpbnRlcmVzdCB3ZSB3aWxsIGhhdmUgdG8gZGVmaW5lIGNvbnRyYXN0czogbGluZWFyIGNvbWJpbmF0aW9ucyBvZiB0aGUgbW9kZWwgcGFyYW1ldGVycyBhbmQgZXZhbHVhdGUgdGhlIGNvbnRyYXN0cyB3aXRoIHRoZSBtdWx0Y29tcCBwYWNrYWdlLgoKVGhlIEYtdGVzdCBzaG93ZWQgYW4gZXh0cmVtZWx5IHNpZ25pZmljYW50IGFzc29jaWF0aW9uIG9mIHRoZSBub2RlIHN0YXR1cywgaHlzdG9sb2dpY2FsIGdyYWRlIGFuZC9vciB0aGUgaW50ZXJhY3Rpb24gYmV0d2VlbiB0aGUgbm9kZSBzdGF0dXMgYW5kIHRoZSBncmFkZSAocDw8MC4wMDEpLgoKIyBBc3Nlc3NpbmcgdGhlIHNpZ25pZmljYW5jZSBvZiBhbGwgaHlwb3RoZXNpcyBvZiBpbnRlcmVzdApXZSBjYW4gYXNzZXNzIGFsbCBjb250cmFzdHMgb2YgaW50ZXJlc3QgdXNpbmcgdGhlIG11bHRjb21wIHBhY2thZ2UuIFRoaXMgd2lsbCBhbHNvIGFsbG93IHVzIHRvIGNvcnJlY3QgZm9yIG11bHRpcGxlIHRlc3RpbmcsIHNpbmNlIHdlIGFzc2VzcyBtdWx0aXBsZSBoeXBvdGhlc2VzIHRvIGFuc3dlciB0aGUgcmVsZXZhbnQgcmVzZWFyY2ggcXVlc3Rpb24uCgoKLSAkSF8wOiBcbG9nXzJ7RkN9X3tnM24wLWcxbjB9PSBcYmV0YV97ZzN9PTAkICRccmlnaHRhcnJvdyQgImdyYWRlMyA9IDAiCi0gJEhfMDogXGxvZ18ye0ZDfV97ZzNuMS1nMW4xfT0gXGJldGFfe2czfSArIFxoYXRcYmV0YV97ZzNuMX09MCQgJFxyaWdodGFycm93JCAiZ3JhZGUzK2dyYWRlMzpub2RlMSA9IDAiCi0gJEhfMDogXGxvZ18ye0ZDfV97ZzFuMS1nMW4wfT0gXGJldGFfe24xfSQgICRccmlnaHRhcnJvdyQgIm5vZGUxID0gMCIKLSAkSF8wOiBcbG9nXzJ7RkN9X3tnM24xLWczbjB9PSBcYmV0YV97bjF9ICsgXGhhdFxiZXRhX3tnM24xfT0wJCAkXHJpZ2h0YXJyb3ckICJub2RlMStncmFkZTM6bm9kZTEgPSAwIgotICRIXzA6IFxsb2dfMntGQ31fe2czbjEtZzFuMX0gLSBcbG9nXzJ7RkN9X3tnM24wLWcxbjB9ID0gXGhhdFxiZXRhX3tnM24xfT0wJCwgbm90ZSB0aGF0IHRoZSBsYXR0ZXIgaHlwb3RoZXNpcyBpcyBhbHNvIGVxdWl2YWxlbnQgdG8gJEhfMDogXGxvZ18ye0ZDfV97ZzNuMS1nM24wfSAtIFxsb2dfMntGQ31fe2cxbjEtZzFuMH0gPSBcaGF0XGJldGFfe2czbjF9PTAkICRccmlnaHRhcnJvdyQgImdyYWRlMzpub2RlMSA9IDAiCgpgYGB7cn0KbGlicmFyeShtdWx0Y29tcCkKZml0R2xodDwtIGdsaHQoZml0LCBsaW5mY3QgPSBjKCJncmFkZTMgPSAwIiwiZ3JhZGUzK2dyYWRlMzpub2RlMSA9IDAiLCJub2RlMSA9IDAiLCJub2RlMStncmFkZTM6bm9kZTEgPSAwIiwiZ3JhZGUzOm5vZGUxID0gMCIpKQpzdW1tYXJ5KGZpdEdsaHQpCmNvbmZpbnQoZml0R2xodCkKMl5jb25maW50KGZpdEdsaHQpJGNvbmZpbnQKMl4tY29uZmludChmaXRHbGh0KSRjb25maW50WyJncmFkZTM6bm9kZTEiLF0KYGBgCgojIENvbmNsdXNpb24KCi0gVGhlcmUgaXMgYW4gZXh0cmVtZWx5IHNpZ25pZmljYW50IGFzc29jaWF0aW9uIGJldHdlZW4gdGhlIEtQTkEyIGV4cHJlc3Npb24gYW5kIGh5c3RvbG9naWNhbCBncmFkZSBpbiBwYXRpZW50cyB3aXRoIHVuYWZmZWN0ZWQgYXMgd2VsbCBhcyBpbiBwYXRpZW50cyB3aXRoIGFmZmVjdGVkIGx5bXBoIG5vZGVzIChib3RoIHA8PDAuMDAxKS4KICBXaGVuIGx5bXBoIG5vZGVzIGFyZSB1bmFmZmVjdGVkLCB0aGUgZXhwcmVzc2lvbiBpcyBvbiBhdmVyYWdlIGByIHJvdW5kKDJeY29uZmludChmaXRHbGh0KSRjb25maW50WyJncmFkZTMiLDFdLDIpYCB0aW1lcyBoaWdoZXIgZm9yIHBhdGllbnRzIHdpdGggaGlzdG9sb2dpY2FsIGdyYWRlIDMgdGhhbiBwYXRpZW50cyB3aXRoIGhpc3RvbG9naWNhbCBncmFkZSAxICg5NSUgQ0kgW2ByIHJvdW5kKDJeY29uZmludChmaXRHbGh0KSRjb25maW50WyJncmFkZTMiLDI6M10sMilgXSkuCiAgRm9yIHBhdGllbnRzIHdpdGggYWZmZWN0ZWQgbHltcGggbm9kZXMgdGhlIGV4cHJlc3Npb24gaXMgb24gYXZlcmFnZSBgciByb3VuZCgyXmNvbmZpbnQoZml0R2xodCkkY29uZmludFsiZ3JhZGUzICsgZ3JhZGUzOm5vZGUxIiwxXSwyKWAgdGltZXMgaGlnaGVyIGZvciBwYXRpZW50cyB3aXRoIGhpc3RvbG9naWNhbCBncmFkZSAzIHR1bW9ycyB0aGFuIHBhdGllbnRzIHdpdGggaGlzdG9sb2dpY2FsIGdyYWRlIDEgdHVtb3JzICg5NSUgQ0kgW2ByIHJvdW5kKDJeY29uZmludChmaXRHbGh0KSRjb25maW50WyJncmFkZTMgKyBncmFkZTM6bm9kZTEiLDI6M10sMilgXSkuCgotIFRoZSBhc3NvY2lhdGlvbiBiZXR3ZWVuIHRoZSBLUE5BMiBleHByZXNzaW9uIHdpdGggdGhlIGx5bXBoIG5vZGUgc3RhdHVzIGluIGdyYWRlIDEgcGF0aWVudHMgaXMgdmVyeSBzaWduaWZpY2FudCAoJHA9JCBgciBmb3JtYXQoc3VtbWFyeShmaXRHbGh0KSR0ZXN0JHB2YWx1ZXNbM10sZGlnaXRzPTIpYCkuClRoZSBLUE5BMiBleHByZXNzaW9uIGluIGhpc3RvbG9naWNhbCBncmFkZSAxIHBhdGllbnRzIHdpdGggYWZmZWN0ZWQgbHltcGggbm9kZXMgaXMgb24gYXZlcmFnZSBgciByb3VuZCgyXmNvbmZpbnQoZml0R2xodCkkY29uZmludFsibm9kZTEiLDFdLDIpYCB0aW1lcyBoaWdoZXIgdGhhbiBmb3IgZ3JhZGUgMSBwYXRpZW50cyB3aXRoIHVuYWZmZWN0ZWQgbHltcGggbm9kZXMgKDk1JSBDSSBbYHIgcm91bmQoMl5jb25maW50KGZpdEdsaHQpJGNvbmZpbnRbIm5vZGUxIiwyOjNdLDIpYF0pLgpJbiBncmFkZSAzIHBhdGllbnRzLCBob3dldmVyLCB0aGlzIGFzc29jaWF0aW9uIGlzIG5vdCBzaWduaWZpY2FudCAoJHA9JCBgciBmb3JtYXQoc3VtbWFyeShmaXRHbGh0KSR0ZXN0JHB2YWx1ZXNbNF0sZGlnaXRzPTIpYCwgOTUlIENJIFtgciByb3VuZCgyXmNvbmZpbnQoZml0R2xodCkkY29uZmludFsibm9kZTEgKyBncmFkZTM6bm9kZTEiLDI6M10sMilgXSApLgoKLSBUaGVyZSBpcyBhbHNvIGEgc2lnbmlmaWNhbnQgaW50ZXJhY3Rpb24gYmV0d2VlbiB0aGUgaHlzdG9sb2dpY2FsIGdyYWRlIGFuZCB0aGUgbHltcGggbm9kZSBzdGF0dXMuIFNvIHRoZSBhc3NvY2lhdGlvbiBiZXR3ZWVuIHRoZSBLUE5BMiBleHByZXNzaW9uIGFuZCB0aGUgaGlzdG9sb2dpY2FsIGdyYWRlIGRlcGVuZHMgb24gdGhlIGx5bXBoIG5vZGUgc3RhdHVzIGFuZCB2aWNlIHZlcnNhICgkcD0kIGByIGZvcm1hdChzdW1tYXJ5KGZpdEdsaHQpJHRlc3QkcHZhbHVlc1s1XSxkaWdpdHM9MilgKS4gVGhlIGZvbGQgY2hhbmdlIGNvcnJlc3BvbmRpbmcgdG8gaGlzdG9sb2dpY2FsIGdyYWRlIGlzIG9uIGF2ZXJhZ2UgYHIgcm91bmQoMS8yXmNvbmZpbnQoZml0R2xodCkkY29uZmludFsiZ3JhZGUzOm5vZGUxIiwxXSwyKWAgdGltZXMgbG93ZXIgaW4gcGF0aWVudHMgd2l0aCBhZmZlY3RlZCBseW1waCBub2RlcyBhcyBjb21wYXJlZCB0byBwYXRpZW50cyB3aXRoIHVuYWZmZWN0ZWQgbHltcGggbm9kZSAoOTUlIENJIFtgciByb3VuZCgxLzJeY29uZmludChmaXRHbGh0KSRjb25maW50WyJncmFkZTM6bm9kZTEiLDM6Ml0sMilgXSkuIChTaW1pbGFybHksIHRoZSBmb2xkIGNoYW5nZSBjb3JyZXNwb25kaW5nIHRvIHRoZSBub2RlIHN0YXR1cyBpcyBvbiBhdmVyYWdlIGByIHJvdW5kKDEvMl5jb25maW50KGZpdEdsaHQpJGNvbmZpbnRbImdyYWRlMzpub2RlMSIsMV0sMilgIHRpbWVzIGxvd2VyIGluIHBhdGllbnRzIHdpdGggZ3JhZGUgMyB0dW1vcnMgYXMgY29tcGFyZWQgdG8gcGF0aWVudHMgd2l0aCBncmFkZSAxIHR1bW9ycywgOTUlIENJIFtgciByb3VuZCgxLzJeY29uZmludChmaXRHbGh0KSRjb25maW50WyJncmFkZTM6bm9kZTEiLDM6Ml0sMilgXSkK</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("08_4_kpna2_sol.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

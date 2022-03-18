@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement and Jeroen Gilis" />
+
+
+<title>Exercises on chapter 7: ANOVA</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Exercises on chapter 7: ANOVA</h1>
+<h4 class="author">Lieven Clement and Jeroen Gilis</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<p>On the third day of the “Practical Statistics for the Life Sciences (2021)” course, we will have three tutorials on ANOVA, based on different datasets:</p>
+<div id="the-lettuce-freshweight-dataset" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> The lettuce freshweight dataset</h1>
+<p>In agriculture, it is important to have a high yield of crops. One way to increase the number of leaves (or better, total leaf weight) is by using a fertilizer.</p>
+<p>Here, we consider three types of fertilizers:</p>
+<ul>
+<li>biochar</li>
+<li>compost</li>
+<li>cobc (combination of biochar and compost)</li>
+</ul>
+<p>The researchers want to find out if either of these fertilizers have a positive influence on the growth of lettuce plants. To this end, they grew up lettuce plants in a greenhouse. The pots were filled with one of four soil types;</p>
+<ul>
+<li>Soil only (control)</li>
+<li>Soil supplemented with biochar (refoak)</li>
+<li>Soil supplemented with compost (compost)</li>
+<li>Soil supplemented with both biochar and compost (cobc)</li>
+</ul>
+<p>The dataset <code>freshweight_lettuce.txt</code> contains the freshweight for 28 lettuce plants. The researchers want to test if there is an effect of one or more of the treatments on the growth of lettuce plants.</p>
+<ul>
+<li>Exercise: <a href="./07_1_lettuce.html">Exercise1</a></li>
+<li>Data path: <a href="https://raw.githubusercontent.com/statOmics/PSLS21/data/freshweight_lettuce.txt" class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/freshweight_lettuce.txt</a> <!-- - Solution: [Solution1](./07_1_lettuce_sol.html) --></li>
+</ul>
+<hr />
+</div>
+<div id="the-cuckoo-dataset" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> The cuckoo dataset</h1>
+<p>The common cuckoo does not build its own nest: it prefers to lay its eggs in another birds’ nest. It is known, since 1892, that the type of cuckoo bird eggs are different between different locations. In a study from 1940, it was shown that cuckoos return to the same nesting area each year, and that they always pick the same bird species to be a “foster parent” for their eggs.</p>
+<p>Over the years, this has lead to the development of geographically determined subspecies of cuckoos. These subspecies have evolved in such a way that their eggs look as similar as possible as those of their foster parents.</p>
+<p>The cuckoo dataset contains information on 120 Cuckoo eggs, obtained from randomly selected “foster” nests. The researchers want to test if the type of foster parent has an effect on the average length of the cuckoo eggs.</p>
+<ul>
+<li>Exercise: <a href="./07_2_cuckoo.html">Exercise2</a></li>
+<li>Data path: <a href="https://raw.githubusercontent.com/statOmics/PSLS21/data/Cuckoo.txt" class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/Cuckoo.txt</a> <!-- - Solution: [Solution2](./07_2_cuckoo_sol.html) --></li>
+</ul>
+<hr />
+</div>
+<div id="the-nhanes-dataset" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> The NHANES dataset:</h1>
+<p>The National Health and Nutrition Examination Survey (NHANES) contains data that has been collected since 1960. For this tutorial, we will make use of the data that was collected between 2009 and 2012, for 10.000 U.S. civilians. The dataset contains a large number of physical, demographic, nutritional and life-style-related parameters.</p>
+<p>We want to test whether or not the mean systolic blood pressure value (take column <code>BPSys1</code>) is equal between the five self-reported health categories. To this end, we will use an ANOVA analysis.</p>
+<ul>
+<li>Exercise: <a href="./07_3_NHANES.html">Exercise3</a></li>
+<li>Data path: <a href="https://raw.githubusercontent.com/statOmics/PSLS21/data/NHANES.csv" class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/NHANES.csv</a> <!-- - Solution: [Solution3](./07_3_NHANES_sol.html) --></li>
+</ul>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2VzIG9uIGNoYXB0ZXIgNzogQU5PVkEiCmF1dGhvcjogIkxpZXZlbiBDbGVtZW50IGFuZCBKZXJvZW4gR2lsaXMiCmRhdGU6ICJzdGF0T21pY3MsIEdoZW50IFVuaXZlcnNpdHkgKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pbykiCm91dHB1dDoKICAgIGh0bWxfZG9jdW1lbnQ6CiAgICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgICAgdGhlbWU6IGNvc21vCiAgICAgIHRvYzogdHJ1ZQogICAgICB0b2NfZmxvYXQ6IHRydWUKICAgICAgaGlnaGxpZ2h0OiB0YW5nbwogICAgICBudW1iZXJfc2VjdGlvbnM6IHRydWUKLS0tCgpPbiB0aGUgdGhpcmQgZGF5IG9mIHRoZSAiUHJhY3RpY2FsIFN0YXRpc3RpY3MgZm9yIHRoZSBMaWZlIFNjaWVuY2VzICgyMDIxKSIKY291cnNlLCB3ZSB3aWxsIGhhdmUgdGhyZWUgdHV0b3JpYWxzIG9uIEFOT1ZBLCBiYXNlZCBvbiBkaWZmZXJlbnQgZGF0YXNldHM6CgoKIyBUaGUgbGV0dHVjZSBmcmVzaHdlaWdodCBkYXRhc2V0CgpJbiBhZ3JpY3VsdHVyZSwgaXQgaXMgaW1wb3J0YW50IHRvIGhhdmUgYSBoaWdoIHlpZWxkIG9mIGNyb3BzLiBPbmUgd2F5IHRvCmluY3JlYXNlIHRoZSBudW1iZXIgb2YgbGVhdmVzIChvciBiZXR0ZXIsIHRvdGFsIGxlYWYgd2VpZ2h0KSBpcyBieSB1c2luZyBhCmZlcnRpbGl6ZXIuCgpIZXJlLCB3ZSBjb25zaWRlciB0aHJlZSB0eXBlcyBvZiBmZXJ0aWxpemVyczoKCiAgLSBiaW9jaGFyCiAgLSBjb21wb3N0CiAgLSBjb2JjIChjb21iaW5hdGlvbiBvZiBiaW9jaGFyIGFuZCBjb21wb3N0KQoKVGhlIHJlc2VhcmNoZXJzIHdhbnQgdG8gZmluZCBvdXQgaWYgZWl0aGVyIG9mIHRoZXNlIGZlcnRpbGl6ZXJzIGhhdmUgYSBwb3NpdGl2ZQppbmZsdWVuY2Ugb24gdGhlIGdyb3d0aCBvZiBsZXR0dWNlIHBsYW50cy4gVG8gdGhpcyBlbmQsIHRoZXkgZ3JldyB1cCBsZXR0dWNlCnBsYW50cyBpbiBhIGdyZWVuaG91c2UuIFRoZSBwb3RzIHdlcmUgZmlsbGVkIHdpdGggb25lIG9mIGZvdXIgc29pbCB0eXBlczsKCiAgLSBTb2lsIG9ubHkgKGNvbnRyb2wpCiAgLSBTb2lsIHN1cHBsZW1lbnRlZCB3aXRoIGJpb2NoYXIgKHJlZm9haykKICAtIFNvaWwgc3VwcGxlbWVudGVkIHdpdGggY29tcG9zdCAoY29tcG9zdCkKICAtIFNvaWwgc3VwcGxlbWVudGVkIHdpdGggYm90aCBiaW9jaGFyIGFuZCBjb21wb3N0IChjb2JjKQoKVGhlIGRhdGFzZXQgYGZyZXNod2VpZ2h0X2xldHR1Y2UudHh0YCBjb250YWlucyB0aGUgZnJlc2h3ZWlnaHQgZm9yIDI4IGxldHR1Y2UKcGxhbnRzLiBUaGUgcmVzZWFyY2hlcnMgd2FudCB0byB0ZXN0IGlmIHRoZXJlIGlzIGFuIGVmZmVjdCBvZiBvbmUgb3IgbW9yZSBvZgp0aGUgdHJlYXRtZW50cyBvbiB0aGUgZ3Jvd3RoIG9mIGxldHR1Y2UgcGxhbnRzLgoKLSBFeGVyY2lzZTogW0V4ZXJjaXNlMV0oLi8wN18xX2xldHR1Y2UuaHRtbCkKLSBEYXRhIHBhdGg6IGh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9zdGF0T21pY3MvUFNMUzIxL2RhdGEvZnJlc2h3ZWlnaHRfbGV0dHVjZS50eHQKPCEtLSAtIFNvbHV0aW9uOiBbU29sdXRpb24xXSguLzA3XzFfbGV0dHVjZV9zb2wuaHRtbCkgLS0+CgotLS0KCiMgVGhlIGN1Y2tvbyBkYXRhc2V0CgpUaGUgY29tbW9uIGN1Y2tvbyBkb2VzIG5vdCBidWlsZCBpdHMgb3duIG5lc3Q6IGl0IHByZWZlcnMgdG8gbGF5IGl0cyBlZ2dzIGluCmFub3RoZXIgYmlyZHMnIG5lc3QuIEl0IGlzIGtub3duLCBzaW5jZSAxODkyLCB0aGF0IHRoZSB0eXBlIG9mIGN1Y2tvbyBiaXJkIGVnZ3MKYXJlIGRpZmZlcmVudCBiZXR3ZWVuIGRpZmZlcmVudCBsb2NhdGlvbnMuIEluIGEgc3R1ZHkgZnJvbSAxOTQwLCBpdCB3YXMgc2hvd24KdGhhdCBjdWNrb29zIHJldHVybiB0byB0aGUgc2FtZSBuZXN0aW5nIGFyZWEgZWFjaCB5ZWFyLCBhbmQgdGhhdCB0aGV5IGFsd2F5cwpwaWNrIHRoZSBzYW1lIGJpcmQgc3BlY2llcyB0byBiZSBhICJmb3N0ZXIgcGFyZW50IiBmb3IgdGhlaXIgZWdncy4KCk92ZXIgdGhlIHllYXJzLCB0aGlzIGhhcyBsZWFkIHRvIHRoZSBkZXZlbG9wbWVudCBvZiBnZW9ncmFwaGljYWxseSBkZXRlcm1pbmVkCnN1YnNwZWNpZXMgb2YgY3Vja29vcy4gVGhlc2Ugc3Vic3BlY2llcyBoYXZlIGV2b2x2ZWQgaW4gc3VjaCBhIHdheSB0aGF0IHRoZWlyCmVnZ3MgbG9vayBhcyBzaW1pbGFyIGFzIHBvc3NpYmxlIGFzIHRob3NlIG9mIHRoZWlyIGZvc3RlciBwYXJlbnRzLgoKVGhlIGN1Y2tvbyBkYXRhc2V0IGNvbnRhaW5zIGluZm9ybWF0aW9uIG9uIDEyMCBDdWNrb28gZWdncywgb2J0YWluZWQgZnJvbQpyYW5kb21seSBzZWxlY3RlZCAiZm9zdGVyIiBuZXN0cy4gVGhlIHJlc2VhcmNoZXJzIHdhbnQgdG8gdGVzdCBpZiB0aGUgdHlwZSBvZgpmb3N0ZXIgcGFyZW50IGhhcyBhbiBlZmZlY3Qgb24gdGhlIGF2ZXJhZ2UgbGVuZ3RoIG9mIHRoZSBjdWNrb28gZWdncy4KCi0gRXhlcmNpc2U6IFtFeGVyY2lzZTJdKC4vMDdfMl9jdWNrb28uaHRtbCkKLSBEYXRhIHBhdGg6IGh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9zdGF0T21pY3MvUFNMUzIxL2RhdGEvQ3Vja29vLnR4dAo8IS0tIC0gU29sdXRpb246IFtTb2x1dGlvbjJdKC4vMDdfMl9jdWNrb29fc29sLmh0bWwpIC0tPgoKLS0tCgojIFRoZSBOSEFORVMgZGF0YXNldDoKClRoZSBOYXRpb25hbCBIZWFsdGggYW5kIE51dHJpdGlvbiBFeGFtaW5hdGlvbiBTdXJ2ZXkgKE5IQU5FUykgY29udGFpbnMgZGF0YQp0aGF0IGhhcyBiZWVuIGNvbGxlY3RlZCBzaW5jZSAxOTYwLiBGb3IgdGhpcyB0dXRvcmlhbCwgd2Ugd2lsbCBtYWtlIHVzZSBvZiB0aGUKZGF0YSB0aGF0IHdhcyBjb2xsZWN0ZWQgIGJldHdlZW4gMjAwOSBhbmQgIDIwMTIsIGZvciAxMC4wMDAgVS5TLiBjaXZpbGlhbnMuClRoZSBkYXRhc2V0IGNvbnRhaW5zIGEgbGFyZ2UgbnVtYmVyIG9mIHBoeXNpY2FsLCBkZW1vZ3JhcGhpYywgbnV0cml0aW9uYWwgYW5kCmxpZmUtc3R5bGUtcmVsYXRlZCBwYXJhbWV0ZXJzLgoKV2Ugd2FudCB0byB0ZXN0IHdoZXRoZXIgb3Igbm90IHRoZSBtZWFuIHN5c3RvbGljIGJsb29kIHByZXNzdXJlIHZhbHVlCih0YWtlIGNvbHVtbiBgQlBTeXMxYCkgaXMgZXF1YWwgYmV0d2VlbiB0aGUgZml2ZSBzZWxmLXJlcG9ydGVkIGhlYWx0aApjYXRlZ29yaWVzLiBUbyB0aGlzIGVuZCwgd2Ugd2lsbCB1c2UgYW4gQU5PVkEgYW5hbHlzaXMuCgotIEV4ZXJjaXNlOiBbRXhlcmNpc2UzXSguLzA3XzNfTkhBTkVTLmh0bWwpCi0gRGF0YSBwYXRoOiBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL05IQU5FUy5jc3YKPCEtLSAtIFNvbHV0aW9uOiBbU29sdXRpb24zXSguLzA3XzNfTkhBTkVTX3NvbC5odG1sKSAtLT4K</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("07_exercises.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

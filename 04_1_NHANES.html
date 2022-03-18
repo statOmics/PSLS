@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement and Jeroen Gilis" />
+
+
+<title>Exercise 4.1: Exploring the NHANES dataset</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Exercise 4.1: Exploring the NHANES dataset</h1>
+<h4 class="author">Lieven Clement and Jeroen Gilis</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<p>In this exercise, we will learn how to import, tidy, wrangle and visualize data.</p>
+<div id="the-nhanes-dataset" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> The NHANES dataset</h1>
+<p>The National Health and Nutrition Examination Survey (NHANES) contains data that has been collected since 1960. For this tutorial, we will make use of the data that were collected between 2009 and 2012, for 10.000 U.S. civilians. The dataset contains a large number of physical, demographic, nutritional and life-style-related parameters.</p>
+<p>Before we can actually start working with data, we will need to learn how to import the required datasets into our Rstudio environment.</p>
+</div>
+<div id="data-import-with-the-readr-r-package" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Data Import with the <code>readr</code> R package</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span></code></pre></div>
+<p>Let’s try reading in some data. We will begin by reading in the <code>NHANES.csv</code> dataset.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/NHANES.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## Rows: 10000 Columns: 76
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (31): SurveyYr, Gender, AgeDecade, Race1, Race3, Education, MaritalStatu...
+## dbl (45): ID, Age, AgeMonths, HHIncomeMid, Poverty, HomeRooms, Weight, Lengt...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(NHANES) <span class="do">## take a look at the first rows of the dataset</span></span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["ID"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["SurveyYr"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Gender"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Age"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["AgeDecade"],"name":[5],"type":["chr"],"align":["left"]},{"label":["AgeMonths"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Race1"],"name":[7],"type":["chr"],"align":["left"]},{"label":["Race3"],"name":[8],"type":["chr"],"align":["left"]},{"label":["Education"],"name":[9],"type":["chr"],"align":["left"]},{"label":["MaritalStatus"],"name":[10],"type":["chr"],"align":["left"]},{"label":["HHIncome"],"name":[11],"type":["chr"],"align":["left"]},{"label":["HHIncomeMid"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["Poverty"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["HomeRooms"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["HomeOwn"],"name":[15],"type":["chr"],"align":["left"]},{"label":["Work"],"name":[16],"type":["chr"],"align":["left"]},{"label":["Weight"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["Length"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["HeadCirc"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["Height"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["BMI"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["BMICatUnder20yrs"],"name":[22],"type":["chr"],"align":["left"]},{"label":["BMI_WHO"],"name":[23],"type":["chr"],"align":["left"]},{"label":["Pulse"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["BPSysAve"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["BPDiaAve"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["BPSys1"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["BPDia1"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["BPSys2"],"name":[29],"type":["dbl"],"align":["right"]},{"label":["BPDia2"],"name":[30],"type":["dbl"],"align":["right"]},{"label":["BPSys3"],"name":[31],"type":["dbl"],"align":["right"]},{"label":["BPDia3"],"name":[32],"type":["dbl"],"align":["right"]},{"label":["Testosterone"],"name":[33],"type":["dbl"],"align":["right"]},{"label":["DirectChol"],"name":[34],"type":["dbl"],"align":["right"]},{"label":["TotChol"],"name":[35],"type":["dbl"],"align":["right"]},{"label":["UrineVol1"],"name":[36],"type":["dbl"],"align":["right"]},{"label":["UrineFlow1"],"name":[37],"type":["dbl"],"align":["right"]},{"label":["UrineVol2"],"name":[38],"type":["dbl"],"align":["right"]},{"label":["UrineFlow2"],"name":[39],"type":["dbl"],"align":["right"]},{"label":["Diabetes"],"name":[40],"type":["chr"],"align":["left"]},{"label":["DiabetesAge"],"name":[41],"type":["dbl"],"align":["right"]},{"label":["HealthGen"],"name":[42],"type":["chr"],"align":["left"]},{"label":["DaysPhysHlthBad"],"name":[43],"type":["dbl"],"align":["right"]},{"label":["DaysMentHlthBad"],"name":[44],"type":["dbl"],"align":["right"]},{"label":["LittleInterest"],"name":[45],"type":["chr"],"align":["left"]},{"label":["Depressed"],"name":[46],"type":["chr"],"align":["left"]},{"label":["nPregnancies"],"name":[47],"type":["dbl"],"align":["right"]},{"label":["nBabies"],"name":[48],"type":["dbl"],"align":["right"]},{"label":["Age1stBaby"],"name":[49],"type":["dbl"],"align":["right"]},{"label":["SleepHrsNight"],"name":[50],"type":["dbl"],"align":["right"]},{"label":["SleepTrouble"],"name":[51],"type":["chr"],"align":["left"]},{"label":["PhysActive"],"name":[52],"type":["chr"],"align":["left"]},{"label":["PhysActiveDays"],"name":[53],"type":["dbl"],"align":["right"]},{"label":["TVHrsDay"],"name":[54],"type":["chr"],"align":["left"]},{"label":["CompHrsDay"],"name":[55],"type":["chr"],"align":["left"]},{"label":["TVHrsDayChild"],"name":[56],"type":["dbl"],"align":["right"]},{"label":["CompHrsDayChild"],"name":[57],"type":["dbl"],"align":["right"]},{"label":["Alcohol12PlusYr"],"name":[58],"type":["chr"],"align":["left"]},{"label":["AlcoholDay"],"name":[59],"type":["dbl"],"align":["right"]},{"label":["AlcoholYear"],"name":[60],"type":["dbl"],"align":["right"]},{"label":["SmokeNow"],"name":[61],"type":["chr"],"align":["left"]},{"label":["Smoke100"],"name":[62],"type":["chr"],"align":["left"]},{"label":["Smoke100n"],"name":[63],"type":["chr"],"align":["left"]},{"label":["SmokeAge"],"name":[64],"type":["dbl"],"align":["right"]},{"label":["Marijuana"],"name":[65],"type":["chr"],"align":["left"]},{"label":["AgeFirstMarij"],"name":[66],"type":["dbl"],"align":["right"]},{"label":["RegularMarij"],"name":[67],"type":["chr"],"align":["left"]},{"label":["AgeRegMarij"],"name":[68],"type":["dbl"],"align":["right"]},{"label":["HardDrugs"],"name":[69],"type":["chr"],"align":["left"]},{"label":["SexEver"],"name":[70],"type":["chr"],"align":["left"]},{"label":["SexAge"],"name":[71],"type":["dbl"],"align":["right"]},{"label":["SexNumPartnLife"],"name":[72],"type":["dbl"],"align":["right"]},{"label":["SexNumPartYear"],"name":[73],"type":["dbl"],"align":["right"]},{"label":["SameSex"],"name":[74],"type":["chr"],"align":["left"]},{"label":["SexOrientation"],"name":[75],"type":["chr"],"align":["left"]},{"label":["PregnantNow"],"name":[76],"type":["chr"],"align":["left"]}],"data":[{"1":"51624","2":"2009_10","3":"male","4":"34","5":"30-39","6":"409","7":"White","8":"NA","9":"High School","10":"Married","11":"25000-34999","12":"30000","13":"1.36","14":"6","15":"Own","16":"NotWorking","17":"87.4","18":"NA","19":"NA","20":"164.7","21":"32.22","22":"NA","23":"30.0_plus","24":"70","25":"113","26":"85","27":"114","28":"88","29":"114","30":"88","31":"112","32":"82","33":"NA","34":"1.29","35":"3.49","36":"352","37":"NA","38":"NA","39":"NA","40":"No","41":"NA","42":"Good","43":"0","44":"15","45":"Most","46":"Several","47":"NA","48":"NA","49":"NA","50":"4","51":"Yes","52":"No","53":"NA","54":"NA","55":"NA","56":"NA","57":"NA","58":"Yes","59":"NA","60":"0","61":"No","62":"Yes","63":"Smoker","64":"18","65":"Yes","66":"17","67":"No","68":"NA","69":"Yes","70":"Yes","71":"16","72":"8","73":"1","74":"No","75":"Heterosexual","76":"NA"},{"1":"51624","2":"2009_10","3":"male","4":"34","5":"30-39","6":"409","7":"White","8":"NA","9":"High School","10":"Married","11":"25000-34999","12":"30000","13":"1.36","14":"6","15":"Own","16":"NotWorking","17":"87.4","18":"NA","19":"NA","20":"164.7","21":"32.22","22":"NA","23":"30.0_plus","24":"70","25":"113","26":"85","27":"114","28":"88","29":"114","30":"88","31":"112","32":"82","33":"NA","34":"1.29","35":"3.49","36":"352","37":"NA","38":"NA","39":"NA","40":"No","41":"NA","42":"Good","43":"0","44":"15","45":"Most","46":"Several","47":"NA","48":"NA","49":"NA","50":"4","51":"Yes","52":"No","53":"NA","54":"NA","55":"NA","56":"NA","57":"NA","58":"Yes","59":"NA","60":"0","61":"No","62":"Yes","63":"Smoker","64":"18","65":"Yes","66":"17","67":"No","68":"NA","69":"Yes","70":"Yes","71":"16","72":"8","73":"1","74":"No","75":"Heterosexual","76":"NA"},{"1":"51624","2":"2009_10","3":"male","4":"34","5":"30-39","6":"409","7":"White","8":"NA","9":"High School","10":"Married","11":"25000-34999","12":"30000","13":"1.36","14":"6","15":"Own","16":"NotWorking","17":"87.4","18":"NA","19":"NA","20":"164.7","21":"32.22","22":"NA","23":"30.0_plus","24":"70","25":"113","26":"85","27":"114","28":"88","29":"114","30":"88","31":"112","32":"82","33":"NA","34":"1.29","35":"3.49","36":"352","37":"NA","38":"NA","39":"NA","40":"No","41":"NA","42":"Good","43":"0","44":"15","45":"Most","46":"Several","47":"NA","48":"NA","49":"NA","50":"4","51":"Yes","52":"No","53":"NA","54":"NA","55":"NA","56":"NA","57":"NA","58":"Yes","59":"NA","60":"0","61":"No","62":"Yes","63":"Smoker","64":"18","65":"Yes","66":"17","67":"No","68":"NA","69":"Yes","70":"Yes","71":"16","72":"8","73":"1","74":"No","75":"Heterosexual","76":"NA"},{"1":"51625","2":"2009_10","3":"male","4":"4","5":"0-9","6":"49","7":"Other","8":"NA","9":"NA","10":"NA","11":"20000-24999","12":"22500","13":"1.07","14":"9","15":"Own","16":"NA","17":"17.0","18":"NA","19":"NA","20":"105.4","21":"15.30","22":"NA","23":"12.0_18.5","24":"NA","25":"NA","26":"NA","27":"NA","28":"NA","29":"NA","30":"NA","31":"NA","32":"NA","33":"NA","34":"NA","35":"NA","36":"NA","37":"NA","38":"NA","39":"NA","40":"No","41":"NA","42":"NA","43":"NA","44":"NA","45":"NA","46":"NA","47":"NA","48":"NA","49":"NA","50":"NA","51":"NA","52":"NA","53":"NA","54":"NA","55":"NA","56":"4","57":"1","58":"NA","59":"NA","60":"NA","61":"NA","62":"NA","63":"NA","64":"NA","65":"NA","66":"NA","67":"NA","68":"NA","69":"NA","70":"NA","71":"NA","72":"NA","73":"NA","74":"NA","75":"NA","76":"NA"},{"1":"51630","2":"2009_10","3":"female","4":"49","5":"40-49","6":"596","7":"White","8":"NA","9":"Some College","10":"LivePartner","11":"35000-44999","12":"40000","13":"1.91","14":"5","15":"Rent","16":"NotWorking","17":"86.7","18":"NA","19":"NA","20":"168.4","21":"30.57","22":"NA","23":"30.0_plus","24":"86","25":"112","26":"75","27":"118","28":"82","29":"108","30":"74","31":"116","32":"76","33":"NA","34":"1.16","35":"6.70","36":"77","37":"0.094","38":"NA","39":"NA","40":"No","41":"NA","42":"Good","43":"0","44":"10","45":"Several","46":"Several","47":"2","48":"2","49":"27","50":"8","51":"Yes","52":"No","53":"NA","54":"NA","55":"NA","56":"NA","57":"NA","58":"Yes","59":"2","60":"20","61":"Yes","62":"Yes","63":"Smoker","64":"38","65":"Yes","66":"18","67":"No","68":"NA","69":"Yes","70":"Yes","71":"12","72":"10","73":"1","74":"Yes","75":"Heterosexual","76":"NA"},{"1":"51638","2":"2009_10","3":"male","4":"9","5":"0-9","6":"115","7":"White","8":"NA","9":"NA","10":"NA","11":"75000-99999","12":"87500","13":"1.84","14":"6","15":"Rent","16":"NA","17":"29.8","18":"NA","19":"NA","20":"133.1","21":"16.82","22":"NA","23":"12.0_18.5","24":"82","25":"86","26":"47","27":"84","28":"50","29":"84","30":"50","31":"88","32":"44","33":"NA","34":"1.34","35":"4.86","36":"123","37":"1.538","38":"NA","39":"NA","40":"No","41":"NA","42":"NA","43":"NA","44":"NA","45":"NA","46":"NA","47":"NA","48":"NA","49":"NA","50":"NA","51":"NA","52":"NA","53":"NA","54":"NA","55":"NA","56":"5","57":"0","58":"NA","59":"NA","60":"NA","61":"NA","62":"NA","63":"NA","64":"NA","65":"NA","66":"NA","67":"NA","68":"NA","69":"NA","70":"NA","71":"NA","72":"NA","73":"NA","74":"NA","75":"NA","76":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(NHANES) <span class="do">## take a look at the last rows of the dataset</span></span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["ID"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["SurveyYr"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Gender"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Age"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["AgeDecade"],"name":[5],"type":["chr"],"align":["left"]},{"label":["AgeMonths"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Race1"],"name":[7],"type":["chr"],"align":["left"]},{"label":["Race3"],"name":[8],"type":["chr"],"align":["left"]},{"label":["Education"],"name":[9],"type":["chr"],"align":["left"]},{"label":["MaritalStatus"],"name":[10],"type":["chr"],"align":["left"]},{"label":["HHIncome"],"name":[11],"type":["chr"],"align":["left"]},{"label":["HHIncomeMid"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["Poverty"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["HomeRooms"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["HomeOwn"],"name":[15],"type":["chr"],"align":["left"]},{"label":["Work"],"name":[16],"type":["chr"],"align":["left"]},{"label":["Weight"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["Length"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["HeadCirc"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["Height"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["BMI"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["BMICatUnder20yrs"],"name":[22],"type":["chr"],"align":["left"]},{"label":["BMI_WHO"],"name":[23],"type":["chr"],"align":["left"]},{"label":["Pulse"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["BPSysAve"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["BPDiaAve"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["BPSys1"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["BPDia1"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["BPSys2"],"name":[29],"type":["dbl"],"align":["right"]},{"label":["BPDia2"],"name":[30],"type":["dbl"],"align":["right"]},{"label":["BPSys3"],"name":[31],"type":["dbl"],"align":["right"]},{"label":["BPDia3"],"name":[32],"type":["dbl"],"align":["right"]},{"label":["Testosterone"],"name":[33],"type":["dbl"],"align":["right"]},{"label":["DirectChol"],"name":[34],"type":["dbl"],"align":["right"]},{"label":["TotChol"],"name":[35],"type":["dbl"],"align":["right"]},{"label":["UrineVol1"],"name":[36],"type":["dbl"],"align":["right"]},{"label":["UrineFlow1"],"name":[37],"type":["dbl"],"align":["right"]},{"label":["UrineVol2"],"name":[38],"type":["dbl"],"align":["right"]},{"label":["UrineFlow2"],"name":[39],"type":["dbl"],"align":["right"]},{"label":["Diabetes"],"name":[40],"type":["chr"],"align":["left"]},{"label":["DiabetesAge"],"name":[41],"type":["dbl"],"align":["right"]},{"label":["HealthGen"],"name":[42],"type":["chr"],"align":["left"]},{"label":["DaysPhysHlthBad"],"name":[43],"type":["dbl"],"align":["right"]},{"label":["DaysMentHlthBad"],"name":[44],"type":["dbl"],"align":["right"]},{"label":["LittleInterest"],"name":[45],"type":["chr"],"align":["left"]},{"label":["Depressed"],"name":[46],"type":["chr"],"align":["left"]},{"label":["nPregnancies"],"name":[47],"type":["dbl"],"align":["right"]},{"label":["nBabies"],"name":[48],"type":["dbl"],"align":["right"]},{"label":["Age1stBaby"],"name":[49],"type":["dbl"],"align":["right"]},{"label":["SleepHrsNight"],"name":[50],"type":["dbl"],"align":["right"]},{"label":["SleepTrouble"],"name":[51],"type":["chr"],"align":["left"]},{"label":["PhysActive"],"name":[52],"type":["chr"],"align":["left"]},{"label":["PhysActiveDays"],"name":[53],"type":["dbl"],"align":["right"]},{"label":["TVHrsDay"],"name":[54],"type":["chr"],"align":["left"]},{"label":["CompHrsDay"],"name":[55],"type":["chr"],"align":["left"]},{"label":["TVHrsDayChild"],"name":[56],"type":["dbl"],"align":["right"]},{"label":["CompHrsDayChild"],"name":[57],"type":["dbl"],"align":["right"]},{"label":["Alcohol12PlusYr"],"name":[58],"type":["chr"],"align":["left"]},{"label":["AlcoholDay"],"name":[59],"type":["dbl"],"align":["right"]},{"label":["AlcoholYear"],"name":[60],"type":["dbl"],"align":["right"]},{"label":["SmokeNow"],"name":[61],"type":["chr"],"align":["left"]},{"label":["Smoke100"],"name":[62],"type":["chr"],"align":["left"]},{"label":["Smoke100n"],"name":[63],"type":["chr"],"align":["left"]},{"label":["SmokeAge"],"name":[64],"type":["dbl"],"align":["right"]},{"label":["Marijuana"],"name":[65],"type":["chr"],"align":["left"]},{"label":["AgeFirstMarij"],"name":[66],"type":["dbl"],"align":["right"]},{"label":["RegularMarij"],"name":[67],"type":["chr"],"align":["left"]},{"label":["AgeRegMarij"],"name":[68],"type":["dbl"],"align":["right"]},{"label":["HardDrugs"],"name":[69],"type":["chr"],"align":["left"]},{"label":["SexEver"],"name":[70],"type":["chr"],"align":["left"]},{"label":["SexAge"],"name":[71],"type":["dbl"],"align":["right"]},{"label":["SexNumPartnLife"],"name":[72],"type":["dbl"],"align":["right"]},{"label":["SexNumPartYear"],"name":[73],"type":["dbl"],"align":["right"]},{"label":["SameSex"],"name":[74],"type":["chr"],"align":["left"]},{"label":["SexOrientation"],"name":[75],"type":["chr"],"align":["left"]},{"label":["PregnantNow"],"name":[76],"type":["chr"],"align":["left"]}],"data":[{"1":"71909","2":"2011_12","3":"male","4":"28","5":"20-29","6":"NA","7":"Mexican","8":"Mexican","9":"9 - 11th Grade","10":"NeverMarried","11":"5000-9999","12":"7500","13":"0.46","14":"3","15":"Rent","16":"Working","17":"92.3","18":"NA","19":"NA","20":"177.3","21":"29.4","22":"NA","23":"25.0_to_29.9","24":"68","25":"124","26":"65","27":"124","28":"62","29":"126","30":"64","31":"122","32":"66","33":"490.43","34":"1.22","35":"3.90","36":"97","37":"0.942","38":"NA","39":"NA","40":"No","41":"NA","42":"NA","43":"NA","44":"NA","45":"NA","46":"NA","47":"NA","48":"NA","49":"NA","50":"6","51":"No","52":"Yes","53":"NA","54":"1_hr","55":"2_hr","56":"NA","57":"NA","58":"NA","59":"NA","60":"NA","61":"Yes","62":"Yes","63":"Smoker","64":"18","65":"NA","66":"NA","67":"NA","68":"NA","69":"NA","70":"NA","71":"NA","72":"NA","73":"NA","74":"NA","75":"NA","76":"NA"},{"1":"71909","2":"2011_12","3":"male","4":"28","5":"20-29","6":"NA","7":"Mexican","8":"Mexican","9":"9 - 11th Grade","10":"NeverMarried","11":"5000-9999","12":"7500","13":"0.46","14":"3","15":"Rent","16":"Working","17":"92.3","18":"NA","19":"NA","20":"177.3","21":"29.4","22":"NA","23":"25.0_to_29.9","24":"68","25":"124","26":"65","27":"124","28":"62","29":"126","30":"64","31":"122","32":"66","33":"490.43","34":"1.22","35":"3.90","36":"97","37":"0.942","38":"NA","39":"NA","40":"No","41":"NA","42":"NA","43":"NA","44":"NA","45":"NA","46":"NA","47":"NA","48":"NA","49":"NA","50":"6","51":"No","52":"Yes","53":"NA","54":"1_hr","55":"2_hr","56":"NA","57":"NA","58":"NA","59":"NA","60":"NA","61":"Yes","62":"Yes","63":"Smoker","64":"18","65":"NA","66":"NA","67":"NA","68":"NA","69":"NA","70":"NA","71":"NA","72":"NA","73":"NA","74":"NA","75":"NA","76":"NA"},{"1":"71910","2":"2011_12","3":"female","4":"0","5":"0-9","6":"5","7":"White","8":"White","9":"NA","10":"NA","11":"75000-99999","12":"87500","13":"3.37","14":"10","15":"Own","16":"NA","17":"6.7","18":"67.6","19":"42.2","20":"NA","21":"NA","22":"NA","23":"NA","24":"NA","25":"NA","26":"NA","27":"NA","28":"NA","29":"NA","30":"NA","31":"NA","32":"NA","33":"NA","34":"NA","35":"NA","36":"NA","37":"NA","38":"NA","39":"NA","40":"NA","41":"NA","42":"NA","43":"NA","44":"NA","45":"NA","46":"NA","47":"NA","48":"NA","49":"NA","50":"NA","51":"NA","52":"NA","53":"NA","54":"NA","55":"NA","56":"NA","57":"NA","58":"NA","59":"NA","60":"NA","61":"NA","62":"NA","63":"NA","64":"NA","65":"NA","66":"NA","67":"NA","68":"NA","69":"NA","70":"NA","71":"NA","72":"NA","73":"NA","74":"NA","75":"NA","76":"NA"},{"1":"71911","2":"2011_12","3":"male","4":"27","5":"20-29","6":"NA","7":"Mexican","8":"Mexican","9":"College Grad","10":"Married","11":"75000-99999","12":"87500","13":"3.25","14":"10","15":"Own","16":"Working","17":"96.7","18":"NA","19":"NA","20":"175.8","21":"31.3","22":"NA","23":"30.0_plus","24":"74","25":"133","26":"74","27":"122","28":"76","29":"132","30":"82","31":"134","32":"66","33":"509.00","34":"1.06","35":"5.72","36":"63","37":"0.600","38":"NA","39":"NA","40":"No","41":"NA","42":"Good","43":"0","44":"2","45":"None","46":"None","47":"NA","48":"NA","49":"NA","50":"6","51":"No","52":"No","53":"3","54":"1_hr","55":"0_to_1_hr","56":"NA","57":"NA","58":"Yes","59":"5","60":"4","61":"NA","62":"No","63":"Non-Smoker","64":"NA","65":"Yes","66":"22","67":"No","68":"NA","69":"No","70":"Yes","71":"21","72":"1","73":"1","74":"No","75":"Heterosexual","76":"NA"},{"1":"71915","2":"2011_12","3":"male","4":"60","5":"60-69","6":"NA","7":"White","8":"White","9":"College Grad","10":"NeverMarried","11":"65000-74999","12":"70000","13":"5.00","14":"4","15":"Own","16":"Working","17":"78.4","18":"NA","19":"NA","20":"168.8","21":"27.5","22":"NA","23":"25.0_to_29.9","24":"76","25":"147","26":"73","27":"150","28":"72","29":"148","30":"74","31":"146","32":"72","33":"505.13","34":"0.93","35":"4.94","36":"218","37":"1.253","38":"NA","39":"NA","40":"Yes","41":"56","42":"Good","43":"0","44":"2","45":"None","46":"None","47":"NA","48":"NA","49":"NA","50":"6","51":"No","52":"No","53":"1","54":"2_hr","55":"1_hr","56":"NA","57":"NA","58":"Yes","59":"NA","60":"0","61":"NA","62":"No","63":"Non-Smoker","64":"NA","65":"NA","66":"NA","67":"NA","68":"NA","69":"No","70":"Yes","71":"19","72":"2","73":"NA","74":"No","75":"NA","76":"NA"},{"1":"71915","2":"2011_12","3":"male","4":"60","5":"60-69","6":"NA","7":"White","8":"White","9":"College Grad","10":"NeverMarried","11":"65000-74999","12":"70000","13":"5.00","14":"4","15":"Own","16":"Working","17":"78.4","18":"NA","19":"NA","20":"168.8","21":"27.5","22":"NA","23":"25.0_to_29.9","24":"76","25":"147","26":"73","27":"150","28":"72","29":"148","30":"74","31":"146","32":"72","33":"505.13","34":"0.93","35":"4.94","36":"218","37":"1.253","38":"NA","39":"NA","40":"Yes","41":"56","42":"Good","43":"0","44":"2","45":"None","46":"None","47":"NA","48":"NA","49":"NA","50":"6","51":"No","52":"No","53":"NA","54":"2_hr","55":"1_hr","56":"NA","57":"NA","58":"Yes","59":"NA","60":"0","61":"NA","62":"No","63":"Non-Smoker","64":"NA","65":"NA","66":"NA","67":"NA","68":"NA","69":"No","70":"Yes","71":"19","72":"2","73":"NA","74":"No","75":"NA","76":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>NHANES[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>),<span class="fu">c</span>(<span class="st">&quot;ID&quot;</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Gender&quot;</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Age&quot;</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Race1&quot;</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Weight&quot;</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Height&quot;</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;BMI&quot;</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;BPSysAve&quot;</span>)] <span class="co"># display a select set of variable and subjects</span></span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["ID"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Gender"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Age"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Race1"],"name":[4],"type":["chr"],"align":["left"]},{"label":["Weight"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Height"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["BMI"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["BPSysAve"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"51624","2":"male","3":"34","4":"White","5":"87.4","6":"164.7","7":"32.22","8":"113"},{"1":"51625","2":"male","3":"4","4":"Other","5":"17.0","6":"105.4","7":"15.30","8":"NA"},{"1":"51630","2":"female","3":"49","4":"White","5":"86.7","6":"168.4","7":"30.57","8":"112"},{"1":"51638","2":"male","3":"9","4":"White","5":"29.8","6":"133.1","7":"16.82","8":"86"},{"1":"51646","2":"male","3":"8","4":"White","5":"35.2","6":"130.6","7":"20.64","8":"107"},{"1":"51647","2":"female","3":"45","4":"White","5":"75.7","6":"166.7","7":"27.24","8":"118"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div id="take-a-glimpse-at-your-data" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Take a <code>glimpse()</code> at your data</h2>
+<p>The glimpse function allows us to (obviously) take a first, informative glimpse at our data. The function is part of the <code>dplyr</code>, which we will explore in much more detail below!</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(NHANES[,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])</span></code></pre></div>
+<pre><code>## Rows: 10,000
+## Columns: 10
+## $ ID            &lt;dbl&gt; 51624, 51624, 51624, 51625, 51630, 51638, 51646, 51647, …
+## $ SurveyYr      &lt;chr&gt; &quot;2009_10&quot;, &quot;2009_10&quot;, &quot;2009_10&quot;, &quot;2009_10&quot;, &quot;2009_10&quot;, &quot;…
+## $ Gender        &lt;chr&gt; &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;female&quot;, &quot;male&quot;, &quot;male&quot;…
+## $ Age           &lt;dbl&gt; 34, 34, 34, 4, 49, 9, 8, 45, 45, 45, 66, 58, 54, 10, 58,…
+## $ AgeDecade     &lt;chr&gt; &quot;30-39&quot;, &quot;30-39&quot;, &quot;30-39&quot;, &quot;0-9&quot;, &quot;40-49&quot;, &quot;0-9&quot;, &quot;0-9&quot;,…
+## $ AgeMonths     &lt;dbl&gt; 409, 409, 409, 49, 596, 115, 101, 541, 541, 541, 795, 70…
+## $ Race1         &lt;chr&gt; &quot;White&quot;, &quot;White&quot;, &quot;White&quot;, &quot;Other&quot;, &quot;White&quot;, &quot;White&quot;, &quot;W…
+## $ Race3         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ Education     &lt;chr&gt; &quot;High School&quot;, &quot;High School&quot;, &quot;High School&quot;, NA, &quot;Some C…
+## $ MaritalStatus &lt;chr&gt; &quot;Married&quot;, &quot;Married&quot;, &quot;Married&quot;, NA, &quot;LivePartner&quot;, NA, …</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># or glimpse(NHANES) to see all the variables in the dataset</span></span></code></pre></div>
+</div>
+</div>
+<div id="data-tidying" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Data Tidying</h1>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<p>** Important ** If you are not familiar yet with the concepts of tidy data, have a look at the <em>extra1_preliminary_tidyverse.Rmd</em> file!</p>
+<p>If we consider our <code>NHANES</code> dataframe, we see it is already in a tidy format, as;</p>
+<ul>
+<li>Each variable forms a column.</li>
+<li>Each observation forms a row.</li>
+<li>Each type of observational unit forms a table.</li>
+</ul>
+<p>Each row contains all of the information on a single subject (US civilian) in the study.</p>
+<p>In te next tutorial, we will work with a dataset on the effects of a certain drug, <em>captopril</em>, on the systolic and diastolic blood pressure of patients. This will not be a <em>tidy</em> dataset. As such, the details of tidying data with tidyverse will be described there</p>
+</div>
+<div id="data-wrangling-with-dplyr" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Data wrangling with <code>dplyr</code></h1>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+<p>The <code>dplyr</code> package provides us with a large set of functions for handeling our data. We refer to the preliminary_tidyverse.Rmd file for a more detailed description of these functions.</p>
+<p>The most important <code>dplyr</code> functions to remember are:</p>
+<table>
+<colgroup>
+<col width="3%" />
+<col width="96%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>dplyr</code> verbs</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>select()</code></td>
+<td>select columns</td>
+</tr>
+<tr class="even">
+<td><code>filter()</code></td>
+<td>filter rows</td>
+</tr>
+<tr class="odd">
+<td><code>arrange()</code></td>
+<td>re-order or arrange rows</td>
+</tr>
+<tr class="even">
+<td><code>mutate()</code></td>
+<td>create new columns</td>
+</tr>
+<tr class="odd">
+<td><code>summarize()</code></td>
+<td>summarize values</td>
+</tr>
+<tr class="even">
+<td><code>group_by()</code></td>
+<td>allows for group operations in the “split-apply-combine” concept</td>
+</tr>
+</tbody>
+</table>
+<p>In addition, <code>dplyr</code> uses the pipe operator <code>%&gt;%</code> to use the output of one function as an input to the next function. Instead of nesting functions (reading from the inside to the outside), the idea of of piping is to read the functions from left to right.</p>
+<div id="select-and-filter" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Select and filter</h2>
+<p>Here we will demonstrate the <code>dplyr</code> functionalities with a couple of small examples.</p>
+<p>Let’s say we want to investigate how many subjects are</p>
+<ol style="list-style-type: decimal">
+<li><p>men that</p></li>
+<li><p>are older than 18 years old,</p></li>
+<li><p>are taller than 150 cm, and</p></li>
+<li><p>have weight of less than 80kg</p></li>
+</ol>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">c</span>(<span class="st">&quot;Gender&quot;</span>,<span class="st">&quot;Age&quot;</span>,<span class="st">&quot;Weight&quot;</span>,<span class="st">&quot;Height&quot;</span>)) <span class="sc">%&gt;%</span> <span class="do">## select the colums of interest</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;male&quot;</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>         Age <span class="sc">&gt;</span> <span class="dv">18</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>         Height <span class="sc">&gt;</span> <span class="dv">150</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>         Weight <span class="sc">&lt;</span> <span class="dv">80</span>) <span class="sc">%&gt;%</span> <span class="do">## filter observations (rows) based on the required values</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>()</span></code></pre></div>
+<pre><code>## [1] 1286</code></pre>
+<p>Filtering the dataset based on thee three filtering criteria retain 3.601 subjects. Note that the the <code>select</code> step wasn’t strictly necessary, but since we could answer the question based on only these 4 colums, there is no need to retain the the rest of the data (if this is the only question).</p>
+</div>
+<div id="arrange" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Arrange</h2>
+<p>Next question; Within the <code>Race1</code> category of <code>Hispanics</code>, select <code>men</code> that are <code>not married</code> and <code>display the first five by</code> <code>descending height</code>.</p>
+<p><strong>Hint</strong>: use the <code>desc()</code> function inside of <code>arrange()</code> to order rows in a descending order. Use the base R function <code>head</code> to display the first five.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">c</span>(<span class="st">&quot;Race1&quot;</span>, <span class="st">&quot;Gender&quot;</span>,<span class="st">&quot;MaritalStatus&quot;</span>,<span class="st">&quot;Height&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(MaritalStatus <span class="sc">!=</span> <span class="st">&quot;Married&quot;</span>, Race1 <span class="sc">==</span> <span class="st">&quot;Hispanic&quot;</span>, Gender <span class="sc">==</span> <span class="st">&quot;male&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Height)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="at">n=</span><span class="dv">5</span>)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Race1"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Gender"],"name":[2],"type":["chr"],"align":["left"]},{"label":["MaritalStatus"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Height"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Hispanic","2":"male","3":"NeverMarried","4":"197.2"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"189.5"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"181.9"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"180.6"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"180.3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We have successfully combined three of the main <code>dplyr</code> functionalities. Let’s try to explore another one!</p>
+</div>
+<div id="mutate" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Mutate</h2>
+<p>Assume that we don’t trust the BMI values in our dataset and we decide to calculate them ourselves. BMI is typically calculated by taking a person’s weigth (in kg) and dividing it by the its height (in m) squared. Based on this rule, generate a new column, <code>BMI_self</code>, for the subset of the NHANES dataset that we obtained from the previous question. To create new columns, we will use the <code>mutate()</code> function in <code>dplyr</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">c</span>(<span class="st">&quot;Race1&quot;</span>, <span class="st">&quot;Gender&quot;</span>,<span class="st">&quot;MaritalStatus&quot;</span>,<span class="st">&quot;Height&quot;</span>,<span class="st">&quot;Weight&quot;</span>,<span class="st">&quot;BMI&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(MaritalStatus <span class="sc">!=</span> <span class="st">&quot;Married&quot;</span>, Race1 <span class="sc">==</span> <span class="st">&quot;Hispanic&quot;</span>, Gender <span class="sc">==</span> <span class="st">&quot;male&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">BMI_self =</span> Weight<span class="sc">/</span>(Height<span class="sc">/</span><span class="dv">100</span>)<span class="sc">**</span><span class="dv">2</span>)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Race1"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Gender"],"name":[2],"type":["chr"],"align":["left"]},{"label":["MaritalStatus"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Height"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Weight"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["BMI"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["BMI_self"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"Hispanic","2":"male","3":"Divorced","4":"177.1","5":"113.9","6":"36.32","7":"36.31505"},{"1":"Hispanic","2":"male","3":"Divorced","4":"177.1","5":"113.9","6":"36.32","7":"36.31505"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"189.5","5":"124.7","6":"34.73","7":"34.72546"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"175.6","5":"160.6","6":"52.08","7":"52.08306"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"164.1","5":"88.2","6":"32.75","7":"32.75303"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"164.1","5":"88.2","6":"32.75","7":"32.75303"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"161.7","5":"78.5","6":"30.02","7":"30.02269"},{"1":"Hispanic","2":"male","3":"Divorced","4":"173.1","5":"95.4","6":"31.84","7":"31.83862"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"179.2","5":"92.8","6":"28.90","7":"28.89828"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"179.2","5":"92.8","6":"28.90","7":"28.89828"},{"1":"Hispanic","2":"male","3":"Separated","4":"176.5","5":"92.5","6":"29.69","7":"29.69288"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"170.1","5":"71.2","6":"24.61","7":"24.60772"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"170.1","5":"71.2","6":"24.61","7":"24.60772"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"172.0","5":"92.6","6":"31.30","7":"31.30070"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"172.9","5":"69.8","6":"23.35","7":"23.34885"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"180.3","5":"115.9","6":"35.65","7":"35.65266"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"180.3","5":"115.9","6":"35.65","7":"35.65266"},{"1":"Hispanic","2":"male","3":"Separated","4":"168.3","5":"113.7","6":"40.14","7":"40.14137"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"179.6","5":"95.3","6":"29.54","7":"29.54474"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"175.6","5":"82.1","6":"26.63","7":"26.62528"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"162.8","5":"70.0","6":"26.41","7":"26.41127"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"164.8","5":"94.7","6":"34.87","7":"34.86868"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"178.2","5":"75.4","6":"23.74","7":"23.74411"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"168.9","5":"79.9","6":"28.01","7":"28.00835"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"171.0","5":"79.3","6":"27.12","7":"27.11946"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"171.0","5":"79.3","6":"27.12","7":"27.11946"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"175.4","5":"90.8","6":"29.51","7":"29.51390"},{"1":"Hispanic","2":"male","3":"Widowed","4":"163.4","5":"85.0","6":"31.84","7":"31.83573"},{"1":"Hispanic","2":"male","3":"Widowed","4":"163.4","5":"85.0","6":"31.84","7":"31.83573"},{"1":"Hispanic","2":"male","3":"Widowed","4":"169.3","5":"94.2","6":"32.87","7":"32.86525"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"163.1","5":"66.7","6":"25.07","7":"25.07367"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"179.3","5":"75.6","6":"23.52","7":"23.51588"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"180.6","5":"84.6","6":"25.94","7":"25.93790"},{"1":"Hispanic","2":"male","3":"Separated","4":"177.2","5":"92.7","6":"29.52","7":"29.52244"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"172.3","5":"77.0","6":"25.94","7":"25.93703"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"179.5","5":"79.3","6":"24.61","7":"24.61185"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"174.1","5":"84.9","6":"28.01","7":"28.00981"},{"1":"Hispanic","2":"male","3":"Divorced","4":"174.8","5":"78.3","6":"25.63","7":"25.62589"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"153.2","5":"61.5","6":"26.20","7":"26.20340"},{"1":"Hispanic","2":"male","3":"Divorced","4":"177.1","5":"70.8","6":"22.57","7":"22.57336"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"174.0","5":"77.9","6":"25.73","7":"25.72995"},{"1":"Hispanic","2":"male","3":"Divorced","4":"168.4","5":"77.7","6":"27.40","7":"27.39913"},{"1":"Hispanic","2":"male","3":"Separated","4":"172.6","5":"68.8","6":"23.09","7":"23.09441"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"164.4","5":"77.0","6":"28.50","7":"28.48965"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"172.6","5":"90.6","6":"30.40","7":"30.41211"},{"1":"Hispanic","2":"male","3":"Divorced","4":"169.0","5":"84.1","6":"29.40","7":"29.44575"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"172.3","5":"82.3","6":"27.70","7":"27.72230"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"167.2","5":"82.7","6":"29.60","7":"29.58237"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"167.2","5":"82.7","6":"29.60","7":"29.58237"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"177.1","5":"105.0","6":"33.50","7":"33.47744"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"177.1","5":"105.0","6":"33.50","7":"33.47744"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"177.1","5":"105.0","6":"33.50","7":"33.47744"},{"1":"Hispanic","2":"male","3":"Divorced","4":"164.2","5":"78.0","6":"28.90","7":"28.92999"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"165.6","5":"81.0","6":"29.50","7":"29.53686"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"165.6","5":"81.0","6":"29.50","7":"29.53686"},{"1":"Hispanic","2":"male","3":"Divorced","4":"176.4","5":"94.2","6":"30.30","7":"30.27288"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"177.2","5":"111.3","6":"35.40","7":"35.44604"},{"1":"Hispanic","2":"male","3":"Separated","4":"175.6","5":"130.0","6":"42.20","7":"42.15939"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"170.4","5":"82.2","6":"28.30","7":"28.30953"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"181.9","5":"101.2","6":"30.60","7":"30.58547"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"171.0","5":"68.9","6":"23.60","7":"23.56281"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"171.0","5":"68.9","6":"23.60","7":"23.56281"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"197.2","5":"77.1","6":"19.80","7":"19.82625"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"170.7","5":"98.9","6":"33.90","7":"33.94136"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"170.7","5":"98.9","6":"33.90","7":"33.94136"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"170.7","5":"98.9","6":"33.90","7":"33.94136"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"170.7","5":"98.9","6":"33.90","7":"33.94136"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"170.5","5":"84.3","6":"29.00","7":"28.99872"},{"1":"Hispanic","2":"male","3":"Divorced","4":"173.2","5":"91.9","6":"30.60","7":"30.63513"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"167.4","5":"64.9","6":"23.20","7":"23.15975"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"180.3","5":"106.0","6":"32.60","7":"32.60727"},{"1":"Hispanic","2":"male","3":"Separated","4":"174.1","5":"100.3","6":"33.10","7":"33.09050"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"168.5","5":"68.1","6":"24.00","7":"23.98542"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"168.5","5":"68.1","6":"24.00","7":"23.98542"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"160.6","5":"56.7","6":"22.00","7":"21.98325"},{"1":"Hispanic","2":"male","3":"Separated","4":"166.6","5":"95.2","6":"34.30","7":"34.29943"},{"1":"Hispanic","2":"male","3":"Widowed","4":"161.8","5":"69.1","6":"26.40","7":"26.39496"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"169.1","5":"99.9","6":"34.90","7":"34.93641"},{"1":"Hispanic","2":"male","3":"Divorced","4":"172.7","5":"62.4","6":"20.90","7":"20.92184"},{"1":"Hispanic","2":"male","3":"Divorced","4":"172.7","5":"62.4","6":"20.90","7":"20.92184"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"170.4","5":"82.8","6":"28.50","7":"28.51617"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"171.1","5":"76.3","6":"26.10","7":"26.06301"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"160.3","5":"65.1","6":"25.30","7":"25.33459"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"160.3","5":"65.1","6":"25.30","7":"25.33459"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"160.5","5":"65.8","6":"25.50","7":"25.54323"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"160.6","5":"77.2","6":"29.90","7":"29.93134"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"160.6","5":"77.2","6":"29.90","7":"29.93134"},{"1":"Hispanic","2":"male","3":"Separated","4":"164.4","5":"73.0","6":"27.00","7":"27.00967"},{"1":"Hispanic","2":"male","3":"Separated","4":"164.4","5":"73.0","6":"27.00","7":"27.00967"},{"1":"Hispanic","2":"male","3":"Divorced","4":"172.9","5":"84.9","6":"28.40","7":"28.39996"},{"1":"Hispanic","2":"male","3":"Divorced","4":"172.9","5":"84.9","6":"28.40","7":"28.39996"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"180.1","5":"79.0","6":"24.40","7":"24.35565"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"180.1","5":"79.0","6":"24.40","7":"24.35565"},{"1":"Hispanic","2":"male","3":"Widowed","4":"170.5","5":"87.8","6":"30.20","7":"30.20270"},{"1":"Hispanic","2":"male","3":"Separated","4":"173.2","5":"82.6","6":"27.50","7":"27.53495"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"171.7","5":"99.0","6":"33.60","7":"33.58108"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"171.7","5":"99.0","6":"33.60","7":"33.58108"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"171.7","5":"99.0","6":"33.60","7":"33.58108"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"171.1","5":"83.0","6":"28.40","7":"28.35163"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"175.7","5":"65.3","6":"21.20","7":"21.15289"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"175.7","5":"65.3","6":"21.20","7":"21.15289"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"175.7","5":"65.3","6":"21.20","7":"21.15289"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"160.8","5":"67.2","6":"26.00","7":"25.98946"},{"1":"Hispanic","2":"male","3":"LivePartner","4":"166.6","5":"63.3","6":"22.80","7":"22.80624"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"177.1","5":"94.6","6":"30.20","7":"30.16157"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"162.7","5":"56.3","6":"21.30","7":"21.26833"},{"1":"Hispanic","2":"male","3":"NeverMarried","4":"162.7","5":"56.3","6":"21.30","7":"21.26833"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Note that now we need to include the <em>Weight</em> and <em>BMI</em> columns in the <code>select</code> statement, because we need that input for the <code>mutate</code> function. Good news: It turns out that the BMI column in the original dataset was computed correctly after all! But now we are interested in the mean value of the BMI_Self column. This requires a fifth <code>dplyr</code> function: <code>summarise()</code>.</p>
+</div>
+<div id="summarise" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Summarise</h2>
+<p>Given the filtering of the question above, compute the mean value of the <code>BMI_self</code> column.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">c</span>(<span class="st">&quot;Race1&quot;</span>, <span class="st">&quot;Gender&quot;</span>,<span class="st">&quot;MaritalStatus&quot;</span>,<span class="st">&quot;Height&quot;</span>,<span class="st">&quot;Weight&quot;</span>,<span class="st">&quot;BMI&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(MaritalStatus <span class="sc">!=</span> <span class="st">&quot;Married&quot;</span>, Race1 <span class="sc">==</span> <span class="st">&quot;Hispanic&quot;</span>, Gender <span class="sc">==</span> <span class="st">&quot;male&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">BMI_self =</span> Weight<span class="sc">/</span>(Height<span class="sc">/</span><span class="dv">100</span>)<span class="sc">**</span><span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_BMI_self =</span> <span class="fu">mean</span>(BMI_self, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["avg_BMI_self"],"name":[1],"type":["dbl"],"align":["right"]}],"data":[{"1":"28.81668"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## the addition argument na.rm = TRUE makes sure to remove missing</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="do">## values for the purpose of calculating the mean</span></span></code></pre></div>
+<p>For this particular subset of the data, we find an average BMI value of 28.59 kg/m**2.</p>
+<p>There are many other summary statistics you could consider such <code>sd()</code>, <code>min()</code>, <code>median()</code>, <code>max()</code>, <code>sum()</code>, <code>n()</code> (returns the length of vector), <code>first()</code> (returns first value in vector), <code>last()</code> (returns last value in vector) and <code>n_distinct()</code> (number of distinct values in vector). We will elaborate on these functions later.</p>
+<p>Note that choosing the most informative summary statistic is very important! This can be shown with the following example;</p>
+<p><img src="https://raw.githubusercontent.com/statOmics/PSLS21/data/Figure_partners.png" /><!-- --></p>
+<p>In this study, men and woman were asked about their “ideal number of partners desired over 30 years”. While almost all subjects desired a number between 0 and 50, three male subjects selected a number above 100. These three <em>outliers</em> in the data can have a large impact on the data analysis, especially when we work with summary statistics that are sensitive to these outliers.</p>
+<p>When we look at the <em>mean</em>, for instance, we see that on average woman desire 2.8 partners, while men desire 64.3 partners on average, suggesting a large discrepancy between male and female desires.</p>
+<p>However, if look at a more <em>robust</em> summary statistic such as the <em>median</em>, we see that the result is 1 for both men and woman. It is clear that the mean value was completely distorted by the three outliers in the data.</p>
+<p>Another example of a more robust summary statistic is the <em>geometric mean</em>.</p>
+</div>
+<div id="group" class="section level2" number="4.5">
+<h2><span class="header-section-number">4.5</span> Group</h2>
+<p>We already combine 5 very important functions. Here, we will add a final one: <code>group_by()</code>.</p>
+<p>The <code>group_by()</code> verb is and incredibly powerful function in <code>dplyr</code>. It allows us, for example, to calculate summarisy statistics for different groups of observations.</p>
+<p>If we take our example from above, let’s say we want to split the data frame by some variable (e.g. <code>MaritalStatus</code>), apply a function (<code>mean</code>) to a column (e.g. BMI_self) of the individual data frames and then combine the output back into a summary data frame.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">c</span>(<span class="st">&quot;Race1&quot;</span>, <span class="st">&quot;Gender&quot;</span>,<span class="st">&quot;MaritalStatus&quot;</span>,<span class="st">&quot;Height&quot;</span>,<span class="st">&quot;Weight&quot;</span>,<span class="st">&quot;BMI&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(MaritalStatus <span class="sc">!=</span> <span class="st">&quot;Married&quot;</span>, Race1 <span class="sc">==</span> <span class="st">&quot;Hispanic&quot;</span>, Gender <span class="sc">==</span> <span class="st">&quot;male&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">BMI_self =</span> Weight<span class="sc">/</span>(Height<span class="sc">/</span><span class="dv">100</span>)<span class="sc">**</span><span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(MaritalStatus) <span class="sc">%&gt;%</span> <span class="do">##  group the subjects by their marital status</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_BMI_self =</span> <span class="fu">mean</span>(BMI_self, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="do">## calculate the mean BMI_self value of each group</span></span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["MaritalStatus"],"name":[1],"type":["chr"],"align":["left"]},{"label":["avg_BMI_self"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Divorced","2":"28.42817"},{"1":"LivePartner","2":"28.97381"},{"1":"NeverMarried","2":"28.13185"},{"1":"Separated","2":"31.35547"},{"1":"Widowed","2":"30.62687"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We have successfully combined six of the most important <code>dplyr</code> functionalities!</p>
+<p>Now that we have all the required functions for importing, tidying and wrangling data in place, we will learn how to visualize our data with the ggplot2 package.</p>
+</div>
+</div>
+<div id="data-visualization" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Data Visualization</h1>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<p>As you might have have already seen, there are many functions available in base R that can create plots (e.g. <code>plot()</code>, <code>boxplot()</code>). Others include: <code>hist()</code>, <code>qqplot()</code>, etc. These functions are great because they come with a basic installation of R and can be quite powerful when you need a quick visualization of something when you are exploring data.</p>
+<p>We are choosing to introduce <code>ggplot2</code> because, in our opinion, it’s one of the simplest ways for beginners to create relatively complicated plots that are intuitive and aesthetically pleasing.</p>
+<div id="univariate-statistics" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Univariate statistics</h2>
+<p>In univariate statistics, we focus on a single variable of interest. Here, we will show different ways to visualize the <code>BMI</code> variable from the NHANES dataset. Importantly, different types of visualizations will provide us with different types of information!</p>
+<p>Here we will visualize the same data using a dotplot, a histogram and a boxplot.</p>
+<div id="dotplot" class="section level3" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Dotplot</h3>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(NHANES, <span class="at">n=</span><span class="dv">100</span>) <span class="sc">%&gt;%</span> <span class="do">## to make the visualization more clear, we take only the first 100 subjects</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>BMI)) <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_dotplot</span>(<span class="at">method =</span> <span class="st">&quot;histodot&quot;</span>)</span></code></pre></div>
+<pre><code>## Bin width defaults to 1/30 of the range of the data. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_bindot).</code></pre>
+<p><img src="04_1_NHANES_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>In the dotplot, the BMI value for each subject (in this case, the first 100 subjects of the NHANES study), is plotted on the x-axis. The y-axis allows us to count how many subjects have a BMI value that falls within a certain counting bin. For instance, in the BMI interval [29.5, 30.[ we observe 4 subjects.</p>
+<p>Note, however, that the dotplot does not provide us with information on the mean/median values of the data, which are typically features of high interest.</p>
+</div>
+<div id="histogram" class="section level3" number="5.1.2">
+<h3><span class="header-section-number">5.1.2</span> Histogram</h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(NHANES, <span class="at">n=</span><span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>BMI)) <span class="sc">+</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="04_1_NHANES_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>The information taht can be obtained from this histogram is similar to that of the dotplot. Here, we can read immediately (i.e. without counting) that the BMI interval [29.5, 30.0[ contains 4 subjects. Again, the histogram does not provide us with information on the mean/median values of the data, but only on its distribution.</p>
+</div>
+<div id="boxplot" class="section level3" number="5.1.3">
+<h3><span class="header-section-number">5.1.3</span> Boxplot</h3>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>) <span class="do">## to make the horizontal position of the jitter non-random</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(NHANES, <span class="at">n=</span><span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="st">&quot;&quot;</span>, <span class="at">y=</span>BMI)) <span class="sc">+</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape=</span><span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">&quot;text&quot;</span>, <span class="at">fun.y=</span>quantile,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">label=</span><span class="fu">sprintf</span>(<span class="st">&quot;%1.1f&quot;</span>, ..y..)),</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">position=</span><span class="fu">position_nudge</span>(<span class="at">x=</span><span class="fl">0.5</span>), <span class="at">size=</span><span class="fl">4.5</span>) <span class="sc">+</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="fu">c</span>(<span class="fl">1.5</span>,<span class="fl">1.5</span>,<span class="fl">1.5</span>,<span class="fl">1.5</span>,<span class="fl">1.5</span>,<span class="fl">1.05</span>,<span class="fl">1.05</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="fl">12.5</span>,<span class="dv">19</span>,<span class="fl">24.5</span>,<span class="fl">28.5</span>,<span class="dv">45</span>,<span class="dv">18</span>,<span class="dv">35</span>), <span class="at">label =</span> <span class="fu">c</span>(<span class="st">&quot;(minimum)&quot;</span>,<span class="st">&quot;(25%)&quot;</span>,<span class="st">&quot;(median)&quot;</span>,<span class="st">&quot;(75%)&quot;</span>,<span class="st">&quot;(maximum)&quot;</span>,<span class="st">&quot;whisker&quot;</span>,<span class="st">&quot;whisker&quot;</span>),<span class="at">size=</span><span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## Warning: `fun.y` is deprecated. Use `fun` instead.</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_summary).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<p><img src="04_1_NHANES_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Arguably, the boxplot is the most informative default visualization strategy. First, it provides us with similar insights to the shape of the distribution as the histogram. Second, It clearly displays several useful summary statistics such as the median, the interquartile range, whiskers and outliers. Third, with the geom_jitter functionality we can also project each individual value of the dataset on the plot.</p>
+<p>The only disadvantage of the boxplot as compared to the dotplat or histogram is that we cannot see (from the figure) how many subjects have a BMI value within a certain interval. However, this feature usually is not of primary interest.</p>
+</div>
+</div>
+<div id="bivariate-statistics" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Bivariate statistics</h2>
+<p>In bivariate statistics, the goal is to study two variables, including the relationship between both variables.</p>
+<p>In terms of visualizations, the scatterplot is the baseline method for displaying two variables.</p>
+<div id="create-scatter-plots-using-geom_point" class="section level3" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Create scatter plots using <code>geom_point()</code></h3>
+<p>For the NHANES dataset, we can for instance look at the relationship between a person’s height and weigth values.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Height, <span class="at">y =</span> Weight))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Height (cm)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Weight (kg)&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: Removed 366 rows containing missing values (geom_point).</code></pre>
+<p><img src="04_1_NHANES_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>We used the <code>xlab()</code> and <code>ylab()</code> functions in <code>ggplot2</code> to specify the x-axis and y-axis labels. Note that NA values were automatically remove by the geom_point function.</p>
+<p>ggplot2 also has a very broad panel of aesthetic features for improving your plot. One very basic feature is that we can give colors to the ggplot object. For instance, we can give different colors to the dots in the previous scatterplot based on a subject’s gender.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Height, <span class="at">y =</span> Weight, <span class="at">color =</span> Gender)) <span class="sc">+</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Height (cm)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Weight (kg)&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: Removed 366 rows containing missing values (geom_point).</code></pre>
+<p><img src="04_1_NHANES_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="combining-dplyr-and-ggplot2" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Combining dplyr and ggplot2</h1>
+<p>Note that the previous functions from the dplyr package can be easily combined with ggplot through the concept of pipes %&gt;%.</p>
+<p>For instance, we could make the same scatterplot as above, but only for white, married adults.</p>
+<p>In addition, we here also show some convenient ggplot features; 1. Setting the colors manually 2. Set to have a white background 3. Set a (main) title for the plot 4. Pick a different shape for the dots in the scatterplot 5. Manually set the limits of the x- and y-axes</p>
+<p>Note that this a only the tip of the iceberg of the the ggplot functionalities!</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;=</span> <span class="dv">18</span>, Race1 <span class="sc">==</span> <span class="st">&quot;White&quot;</span>, MaritalStatus <span class="sc">==</span> <span class="st">&quot;Married&quot;</span>) <span class="sc">%&gt;%</span> <span class="do">## select the required data</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Height, <span class="at">y =</span> Weight, <span class="at">color =</span> Gender)) <span class="sc">+</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape=</span><span class="dv">17</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="do">## set to a different shape (triangle) and size</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Height versus Weight&quot;</span>) <span class="sc">+</span> <span class="do">## for the main title</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Height (cm)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Weight (kg)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>,<span class="dv">220</span>) <span class="sc">+</span> <span class="do">## set limit of x-axis</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>,<span class="dv">220</span>) <span class="sc">+</span> <span class="do">## set limit of y-axis</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;blue&quot;</span>)) <span class="sc">+</span> <span class="do">## manually set colors</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="do">## set white background</span></span></code></pre></div>
+<pre><code>## Warning: Removed 22 rows containing missing values (geom_point).</code></pre>
+<p><img src="04_1_NHANES_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>Next to scatterplots, we have a large number of other types of plots at our disposal. Importantly, some plots will be more informative than others, depending on the research question. Therefore, choosing the plot that is most informative is crucial. We show this with a more elaborate example later (<code>captopril</code> exercise).</p>
+</div>
+<div id="final-example" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Final example</h1>
+<div id="goal" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Goal</h2>
+<p>Set up a reference interval for the systolic blood pressure in the NHANES dataset.</p>
+</div>
+<div id="background" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Background</h2>
+<p>The captopril dataset, which we will explore and analyse later, holds information on 15 patients that have increased blood pressure values.</p>
+<p>Before we may conduct such an experiment, we first need to know which values should be considered <em>increased</em> and which ones should be considered <em>normal</em>. To find an interval for values that are normal, we can set up a reference interval. To set up this interval, we will use the NHANES dataset. The <code>BPSysAve</code> column holds data on the systolic blood pressure. To select healthy subjects, we will need to subset the data.</p>
+</div>
+<div id="analysis" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Analysis</h2>
+<p>First, we will plot the data for all subjects for which we have all the required data and that are between 40 and 65 years old.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="do">## histogram of BPSysAve for subjects wit age between 40 and 65 years old</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Race1), <span class="sc">!</span><span class="fu">is.na</span>(Smoke100n), <span class="sc">!</span><span class="fu">is.na</span>(BMI_WHO), <span class="sc">!</span><span class="fu">is.na</span>(Age), <span class="sc">!</span><span class="fu">is.na</span>(HardDrugs), <span class="sc">!</span><span class="fu">is.na</span>(HealthGen), <span class="sc">!</span><span class="fu">is.na</span>(Gender), <span class="sc">!</span><span class="fu">is.na</span>(AlcoholYear), <span class="sc">!</span><span class="fu">is.na</span>(BPSysAve), <span class="sc">!</span><span class="fu">is.na</span>(SleepTrouble)) <span class="sc">%&gt;%</span> <span class="do">## retains 4660 subjects with the required data</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">between</span>(Age,<span class="dv">40</span>,<span class="dv">65</span>)) <span class="sc">%&gt;%</span> <span class="do">## filter the subjects on age, retains 2522 subjects</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(ID,<span class="at">.keep_all=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="do">## removes duplicated IDs, retains 1467 subjects</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>BPSysAve)) <span class="sc">+</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="04_1_NHANES_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>An important requirement of calculating reference intervals is that the data is normally distributed. this is clearly not the case; the data has a long right tail, which is quite common in biological data (in this easier to have extreme values on the right-hand side than on the left-hand size, which is additionally bounded by zero for most biological variables).</p>
+<p>By selecting only <em>healthy</em> subjects, we expect the data to be distributed more normally. We define <em>healthy</em> as being a non-smoker, without a history of diabetes, hard drugs or sleeping trouble, with a general health that is not considered poor and that has a BMI between 18.5 and 29.9.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="do">## histogram of BPSysAve for HEALTHY subjects wit age between 40 and 65 years old</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Race1), <span class="sc">!</span><span class="fu">is.na</span>(Smoke100n), <span class="sc">!</span><span class="fu">is.na</span>(BMI_WHO), <span class="sc">!</span><span class="fu">is.na</span>(Age), <span class="sc">!</span><span class="fu">is.na</span>(HardDrugs), <span class="sc">!</span><span class="fu">is.na</span>(HealthGen), <span class="sc">!</span><span class="fu">is.na</span>(Gender), <span class="sc">!</span><span class="fu">is.na</span>(AlcoholYear), <span class="sc">!</span><span class="fu">is.na</span>(BPSysAve), <span class="sc">!</span><span class="fu">is.na</span>(SleepTrouble)) <span class="sc">%&gt;%</span> <span class="do">## retains 4660 subjects with the required data</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">between</span>(Age,<span class="dv">40</span>,<span class="dv">65</span>)) <span class="sc">%&gt;%</span> <span class="do">## filter the subjects on age, retains 2522 subjects</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(ID,<span class="at">.keep_all=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="do">## removes duplicated IDs, retains 1467 subjects</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Smoke100n <span class="sc">==</span> <span class="st">&quot;Non-Smoker&quot;</span>, Diabetes <span class="sc">==</span> <span class="st">&quot;No&quot;</span>, HardDrugs <span class="sc">==</span> <span class="st">&quot;No&quot;</span>, HealthGen <span class="sc">!=</span> <span class="st">&quot;Poor&quot;</span>, SleepTrouble <span class="sc">==</span> <span class="st">&quot;No&quot;</span>, BMI_WHO<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;18.5_to_24.9&quot;</span>,<span class="st">&quot;25.0_to_29.9&quot;</span>)) <span class="sc">%&gt;%</span> <span class="do">## filter to have only healthy subjects, based on multiple health criteria. Retains 275 subjects.</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>BPSysAve)) <span class="sc">+</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="04_1_NHANES_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>Now the data seems to be approximately normal by eye (we will later show how to assess data normality more formally). From this subset, we may calculate the reference interval.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="do">## to get the 95% reference interval for the healthy group;</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>summary_NHANES <span class="ot">&lt;-</span> NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Race1), <span class="sc">!</span><span class="fu">is.na</span>(Smoke100n), <span class="sc">!</span><span class="fu">is.na</span>(BMI_WHO), <span class="sc">!</span><span class="fu">is.na</span>(Age), <span class="sc">!</span><span class="fu">is.na</span>(HardDrugs), <span class="sc">!</span><span class="fu">is.na</span>(HealthGen), <span class="sc">!</span><span class="fu">is.na</span>(Gender), <span class="sc">!</span><span class="fu">is.na</span>(AlcoholYear), <span class="sc">!</span><span class="fu">is.na</span>(BPSys1), <span class="sc">!</span><span class="fu">is.na</span>(BPSys2), <span class="sc">!</span><span class="fu">is.na</span>(BPSys3), <span class="sc">!</span><span class="fu">is.na</span>(SleepTrouble)) <span class="sc">%&gt;%</span> <span class="do">## retains 4660 subjects with the required data</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">between</span>(Age,<span class="dv">40</span>,<span class="dv">65</span>)) <span class="sc">%&gt;%</span> <span class="do">## filter the subjects on age, retains 2522 subjects</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(ID,<span class="at">.keep_all=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="do">## removes duplicated IDs, retains 1467 subjects</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Smoke100n <span class="sc">==</span> <span class="st">&quot;Non-Smoker&quot;</span>, Diabetes <span class="sc">==</span> <span class="st">&quot;No&quot;</span>, HardDrugs <span class="sc">==</span> <span class="st">&quot;No&quot;</span>, HealthGen <span class="sc">!=</span> <span class="st">&quot;Poor&quot;</span>, SleepTrouble <span class="sc">==</span> <span class="st">&quot;No&quot;</span>, BMI_WHO<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">&quot;18.5_to_24.9&quot;</span>,<span class="st">&quot;25.0_to_29.9&quot;</span>)) <span class="sc">%&gt;%</span> <span class="do">## filter to have only healthy subjects, based on multiple health criteria. Retains 275 subjects.</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  Rmisc<span class="sc">::</span><span class="fu">summarySE</span>(<span class="at">measurevar=</span><span class="st">&quot;BPSysAve&quot;</span>) <span class="co"># calculate the summary statistics</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Mean value:&quot;</span>, summary_NHANES<span class="sc">$</span>BPSysAve)</span></code></pre></div>
+<pre><code>## [1] &quot;Mean value: 119.018181818182&quot;</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Standard deviation:&quot;</span>, summary_NHANES<span class="sc">$</span>sd)</span></code></pre></div>
+<pre><code>## [1] &quot;Standard deviation: 13.9763759348907&quot;</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">&quot;Reference interval: [&quot;</span>, summary_NHANES<span class="sc">$</span>BPSysAve <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>summary_NHANES<span class="sc">$</span>sd, <span class="st">&quot;;&quot;</span>, summary_NHANES<span class="sc">$</span>BPSysAve <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>summary_NHANES<span class="sc">$</span>sd, <span class="st">&quot;]&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Reference interval: [91.0654299484005;146.970933687963]&quot;</code></pre>
+<p>The systolic blood pressure for healthy subjects is distributed symmetrically, and in a later tutorial we will show that these values approximately follow a normal distribution. We have calculated the mean and standard deviation of blood pressure values in this healthy subset, which allows us to set up the (95%) reference interval, for what we can consider to be <em>normal</em> blood pressure values. Any of the later patients who’s values do not fall within this interval, we can consider <em>abnormal</em>.</p>
+<p>The <code>mean</code> blood pressure value of the healthy subset is 119 mmHg, with a <code>standard deviation</code> of 14 mmHg. When we replace the population average and population standard deviation with these estimates, we obtain a <code>95% reference interval</code> of [91;147] mmHg.</p>
+<p>Note that in the literature a value 140 mmHg for the systolic blood pressure is typically considered to be the upper limit of <em>normality</em>.</p>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgNC4xOiBFeHBsb3JpbmcgdGhlIE5IQU5FUyBkYXRhc2V0IgphdXRob3I6ICJMaWV2ZW4gQ2xlbWVudCBhbmQgSmVyb2VuIEdpbGlzIgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgpvdXRwdXQ6CiAgICBodG1sX2RvY3VtZW50OgogICAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICAgIHRoZW1lOiBjb3NtbwogICAgICB0b2M6IHRydWUKICAgICAgdG9jX2Zsb2F0OiB0cnVlCiAgICAgIGhpZ2hsaWdodDogdGFuZ28KICAgICAgbnVtYmVyX3NlY3Rpb25zOiB0cnVlCi0tLQoKSW4gdGhpcyBleGVyY2lzZSwgd2Ugd2lsbCBsZWFybiBob3cgdG8gaW1wb3J0LCB0aWR5LCB3cmFuZ2xlIGFuZAp2aXN1YWxpemUgZGF0YS4KCiMgVGhlIE5IQU5FUyBkYXRhc2V0CgpUaGUgTmF0aW9uYWwgSGVhbHRoIGFuZCBOdXRyaXRpb24gRXhhbWluYXRpb24gU3VydmV5IChOSEFORVMpCmNvbnRhaW5zIGRhdGEgdGhhdCBoYXMgYmVlbiBjb2xsZWN0ZWQgc2luY2UgMTk2MC4gRm9yIHRoaXMgdHV0b3JpYWwsCndlIHdpbGwgbWFrZSB1c2Ugb2YgdGhlIGRhdGEgdGhhdCB3ZXJlIGNvbGxlY3RlZCBiZXR3ZWVuIDIwMDkgYW5kCjIwMTIsIGZvciAxMC4wMDAgVS5TLiBjaXZpbGlhbnMuIFRoZSBkYXRhc2V0IGNvbnRhaW5zIGEgbGFyZ2UgbnVtYmVyIG9mCnBoeXNpY2FsLCBkZW1vZ3JhcGhpYywgbnV0cml0aW9uYWwgYW5kIGxpZmUtc3R5bGUtcmVsYXRlZCBwYXJhbWV0ZXJzLgoKQmVmb3JlIHdlIGNhbiBhY3R1YWxseSBzdGFydCB3b3JraW5nIHdpdGggZGF0YSwgd2Ugd2lsbCBuZWVkIHRvIGxlYXJuIGhvdyB0bwppbXBvcnQgdGhlIHJlcXVpcmVkIGRhdGFzZXRzIGludG8gb3VyIFJzdHVkaW8gZW52aXJvbm1lbnQuCgojIERhdGEgSW1wb3J0ICB3aXRoIHRoZSBgcmVhZHJgIFIgcGFja2FnZQoKYGBge3IsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkocmVhZHIpCmBgYAoKTGV0J3MgdHJ5IHJlYWRpbmcgaW4gc29tZSBkYXRhLiBXZSB3aWxsIGJlZ2luIGJ5CnJlYWRpbmcgaW4gdGhlIGBOSEFORVMuY3N2YCBkYXRhc2V0LgoKYGBge3IgbmhhbmVzRGF0RXhwbH0KTkhBTkVTIDwtIHJlYWRfY3N2KCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL05IQU5FUy5jc3YiKQpgYGAKCmBgYHtyfQpoZWFkKE5IQU5FUykgIyMgdGFrZSBhIGxvb2sgYXQgdGhlIGZpcnN0IHJvd3Mgb2YgdGhlIGRhdGFzZXQKYGBgCgpgYGB7cn0KdGFpbChOSEFORVMpICMjIHRha2UgYSBsb29rIGF0IHRoZSBsYXN0IHJvd3Mgb2YgdGhlIGRhdGFzZXQKYGBgCgpgYGB7cn0KTkhBTkVTW2MoMSw0LDUsNiw3LDgpLGMoIklEIiwKICAgICAgICAgICAgICAgICAgICAgICAgIkdlbmRlciIsCiAgICAgICAgICAgICAgICAgICAgICAgICJBZ2UiLAogICAgICAgICAgICAgICAgICAgICAgICAiUmFjZTEiLAogICAgICAgICAgICAgICAgICAgICAgICAiV2VpZ2h0IiwKICAgICAgICAgICAgICAgICAgICAgICAgIkhlaWdodCIsCiAgICAgICAgICAgICAgICAgICAgICAgICJCTUkiLAogICAgICAgICAgICAgICAgICAgICAgICAiQlBTeXNBdmUiKV0gIyBkaXNwbGF5IGEgc2VsZWN0IHNldCBvZiB2YXJpYWJsZSBhbmQgc3ViamVjdHMKYGBgCgojIyBUYWtlIGEgYGdsaW1wc2UoKWAgYXQgeW91ciBkYXRhCgpUaGUgZ2xpbXBzZSBmdW5jdGlvbiBhbGxvd3MgdXMgdG8gKG9idmlvdXNseSkgdGFrZQphIGZpcnN0LCBpbmZvcm1hdGl2ZSBnbGltcHNlIGF0IG91ciBkYXRhLiBUaGUgZnVuY3Rpb24KaXMgcGFydCBvZiB0aGUgYGRwbHlyYCwgd2hpY2ggd2Ugd2lsbCBleHBsb3JlIGluIG11Y2gKbW9yZSBkZXRhaWwgYmVsb3chCgpgYGB7cn0KZHBseXI6OmdsaW1wc2UoTkhBTkVTWywxOjEwXSkKIyBvciBnbGltcHNlKE5IQU5FUykgdG8gc2VlIGFsbCB0aGUgdmFyaWFibGVzIGluIHRoZSBkYXRhc2V0CmBgYAoKIyBEYXRhIFRpZHlpbmcKCmBgYHtyLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKYGBgCgoqKiBJbXBvcnRhbnQgKioKSWYgeW91IGFyZSBub3QgZmFtaWxpYXIgeWV0IHdpdGggdGhlIGNvbmNlcHRzIG9mIHRpZHkgZGF0YSwKaGF2ZSBhIGxvb2sgYXQgdGhlICpleHRyYTFfcHJlbGltaW5hcnlfdGlkeXZlcnNlLlJtZCogZmlsZSEKCklmIHdlIGNvbnNpZGVyIG91ciBgTkhBTkVTYCBkYXRhZnJhbWUsIHdlIHNlZSBpdCBpcyBhbHJlYWR5IGluCmEgdGlkeSBmb3JtYXQsIGFzOwoKKiBFYWNoIHZhcmlhYmxlIGZvcm1zIGEgY29sdW1uLgoqIEVhY2ggb2JzZXJ2YXRpb24gZm9ybXMgYSByb3cuCiogRWFjaCB0eXBlIG9mIG9ic2VydmF0aW9uYWwgdW5pdCBmb3JtcyBhIHRhYmxlLgoKRWFjaCByb3cgY29udGFpbnMgYWxsIG9mIHRoZSBpbmZvcm1hdGlvbiBvbgphIHNpbmdsZSBzdWJqZWN0IChVUyBjaXZpbGlhbikgaW4gdGhlIHN0dWR5LgoKSW4gdGUgbmV4dCB0dXRvcmlhbCwgd2Ugd2lsbCB3b3JrIHdpdGggYSBkYXRhc2V0IG9uIHRoZQplZmZlY3RzIG9mIGEgY2VydGFpbiBkcnVnLCBfY2FwdG9wcmlsXywgb24gdGhlIHN5c3RvbGljCmFuZCBkaWFzdG9saWMgYmxvb2QgcHJlc3N1cmUgb2YgcGF0aWVudHMuIFRoaXMgd2lsbCBub3QgYmUKYSBfdGlkeV8gZGF0YXNldC4gQXMgc3VjaCwgdGhlIGRldGFpbHMgb2YgdGlkeWluZyBkYXRhCndpdGggdGlkeXZlcnNlIHdpbGwgYmUgZGVzY3JpYmVkIHRoZXJlCgojIERhdGEgd3JhbmdsaW5nIHdpdGggYGRwbHlyYAoKYGBge3IsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkoZHBseXIpCmBgYAoKVGhlIGBkcGx5cmAgcGFja2FnZSBwcm92aWRlcyB1cyB3aXRoIGEgbGFyZ2Ugc2V0IG9mCmZ1bmN0aW9ucyBmb3IgaGFuZGVsaW5nIG91ciBkYXRhLiBXZSByZWZlciB0byB0aGUKcHJlbGltaW5hcnlfdGlkeXZlcnNlLlJtZCBmaWxlIGZvciBhIG1vcmUgZGV0YWlsZWQKZGVzY3JpcHRpb24gb2YgdGhlc2UgZnVuY3Rpb25zLgoKVGhlIG1vc3QgaW1wb3J0YW50IGBkcGx5cmAgZnVuY3Rpb25zIHRvIHJlbWVtYmVyIGFyZToKCmBkcGx5cmAgdmVyYnMgfCBEZXNjcmlwdGlvbiB8Ci0tLSB8IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSB8CmBzZWxlY3QoKWAgfCBzZWxlY3QgY29sdW1ucyAgfApgZmlsdGVyKClgIHwgZmlsdGVyIHJvd3MgfApgYXJyYW5nZSgpYCB8IHJlLW9yZGVyIG9yIGFycmFuZ2Ugcm93cyB8CmBtdXRhdGUoKWAgfCBjcmVhdGUgbmV3IGNvbHVtbnMgfApgc3VtbWFyaXplKClgIHwgc3VtbWFyaXplIHZhbHVlcyB8CmBncm91cF9ieSgpYCB8IGFsbG93cyBmb3IgZ3JvdXAgb3BlcmF0aW9ucyBpbiB0aGUgInNwbGl0LWFwcGx5LWNvbWJpbmUiIGNvbmNlcHQgfAoKSW4gYWRkaXRpb24sIGBkcGx5cmAgdXNlcyB0aGUgcGlwZSBvcGVyYXRvciBgJT4lYCB0bwp1c2UgdGhlIG91dHB1dCBvZiBvbmUgZnVuY3Rpb24gYXMgYW4gaW5wdXQgdG8gdGhlIG5leHQKZnVuY3Rpb24uIEluc3RlYWQgb2YgbmVzdGluZyBmdW5jdGlvbnMgKHJlYWRpbmcgZnJvbSB0aGUKaW5zaWRlIHRvIHRoZSBvdXRzaWRlKSwgdGhlIGlkZWEgb2Ygb2YgcGlwaW5nIGlzIHRvCnJlYWQgdGhlIGZ1bmN0aW9ucyBmcm9tIGxlZnQgdG8gcmlnaHQuCgojIyBTZWxlY3QgYW5kIGZpbHRlcgoKSGVyZSB3ZSB3aWxsIGRlbW9uc3RyYXRlIHRoZSBgZHBseXJgIGZ1bmN0aW9uYWxpdGllcyB3aXRoCmEgY291cGxlIG9mIHNtYWxsIGV4YW1wbGVzLgoKTGV0J3Mgc2F5IHdlIHdhbnQgdG8gaW52ZXN0aWdhdGUgaG93IG1hbnkgc3ViamVjdHMgYXJlCgoxLiBtZW4gdGhhdAoKMi4gYXJlIG9sZGVyIHRoYW4gMTggeWVhcnMgb2xkLAoKMy4gYXJlIHRhbGxlciB0aGFuIDE1MCBjbSwgYW5kCgo0LiBoYXZlIHdlaWdodCBvZiBsZXNzIHRoYW4gODBrZwoKYGBge3IsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9Ck5IQU5FUyAlPiUKICBzZWxlY3QoYygiR2VuZGVyIiwiQWdlIiwiV2VpZ2h0IiwiSGVpZ2h0IikpICU+JSAjIyBzZWxlY3QgdGhlIGNvbHVtcyBvZiBpbnRlcmVzdAogIGZpbHRlcihHZW5kZXIgPT0gIm1hbGUiLAogICAgICAgICBBZ2UgPiAxOCwKICAgICAgICAgSGVpZ2h0ID4gMTUwLAogICAgICAgICBXZWlnaHQgPCA4MCkgJT4lICMjIGZpbHRlciBvYnNlcnZhdGlvbnMgKHJvd3MpIGJhc2VkIG9uIHRoZSByZXF1aXJlZCB2YWx1ZXMKICBucm93KCkKYGBgCgpGaWx0ZXJpbmcgdGhlIGRhdGFzZXQgYmFzZWQgb24gdGhlZSB0aHJlZSBmaWx0ZXJpbmcgY3JpdGVyaWEKcmV0YWluIDMuNjAxIHN1YmplY3RzLiBOb3RlIHRoYXQgdGhlIHRoZSBgc2VsZWN0YCBzdGVwIHdhc24ndApzdHJpY3RseSBuZWNlc3NhcnksIGJ1dCBzaW5jZSB3ZSBjb3VsZCBhbnN3ZXIgdGhlIHF1ZXN0aW9uCmJhc2VkIG9uIG9ubHkgdGhlc2UgNCBjb2x1bXMsIHRoZXJlIGlzIG5vIG5lZWQgdG8gcmV0YWluIHRoZQp0aGUgcmVzdCBvZiB0aGUgZGF0YSAoaWYgdGhpcyBpcyB0aGUgb25seSBxdWVzdGlvbikuCgojIyBBcnJhbmdlCgpOZXh0IHF1ZXN0aW9uOyBXaXRoaW4gdGhlIGBSYWNlMWAgY2F0ZWdvcnkgb2YgYEhpc3Bhbmljc2AsIHNlbGVjdApgbWVuYCB0aGF0IGFyZSBgbm90IG1hcnJpZWRgIGFuZCBgZGlzcGxheSB0aGUgZmlyc3QgZml2ZSBieWAKYGRlc2NlbmRpbmcgaGVpZ2h0YC4KCioqSGludCoqOiB1c2UgdGhlIGBkZXNjKClgIGZ1bmN0aW9uIGluc2lkZSBvZgpgYXJyYW5nZSgpYCB0byBvcmRlciByb3dzIGluIGEgZGVzY2VuZGluZyBvcmRlci4KVXNlIHRoZSBiYXNlIFIgZnVuY3Rpb24gYGhlYWRgIHRvIGRpc3BsYXkgdGhlIGZpcnN0CmZpdmUuCgpgYGB7ciB3YXJuaW5nPUZBTFNFLG1lc3NhZ2U9RkFMU0V9Ck5IQU5FUyAlPiUKICBzZWxlY3QoYygiUmFjZTEiLCAiR2VuZGVyIiwiTWFyaXRhbFN0YXR1cyIsIkhlaWdodCIpKSAlPiUKICBmaWx0ZXIoTWFyaXRhbFN0YXR1cyAhPSAiTWFycmllZCIsIFJhY2UxID09ICJIaXNwYW5pYyIsIEdlbmRlciA9PSAibWFsZSIpICU+JQogIGFycmFuZ2UoZGVzYyhIZWlnaHQpKSAlPiUKICBoZWFkKG49NSkKYGBgCgpXZSBoYXZlIHN1Y2Nlc3NmdWxseSBjb21iaW5lZCB0aHJlZSBvZiB0aGUgbWFpbiBgZHBseXJgCmZ1bmN0aW9uYWxpdGllcy4gTGV0J3MgdHJ5IHRvIGV4cGxvcmUgYW5vdGhlciBvbmUhCgojIyBNdXRhdGUKCkFzc3VtZSB0aGF0IHdlIGRvbid0IHRydXN0IHRoZSBCTUkgdmFsdWVzIGluIG91ciBkYXRhc2V0CmFuZCB3ZSBkZWNpZGUgdG8gY2FsY3VsYXRlIHRoZW0gb3Vyc2VsdmVzLiBCTUkgaXMgdHlwaWNhbGx5CmNhbGN1bGF0ZWQgYnkgdGFraW5nIGEgcGVyc29uJ3Mgd2VpZ3RoIChpbiBrZykgYW5kIGRpdmlkaW5nCml0IGJ5IHRoZSBpdHMgaGVpZ2h0IChpbiBtKSBzcXVhcmVkLiBCYXNlZCBvbiB0aGlzIHJ1bGUsCmdlbmVyYXRlIGEgbmV3IGNvbHVtbiwgYEJNSV9zZWxmYCwgZm9yIHRoZSBzdWJzZXQgb2YgdGhlCk5IQU5FUyBkYXRhc2V0IHRoYXQgd2Ugb2J0YWluZWQgZnJvbSB0aGUgcHJldmlvdXMgcXVlc3Rpb24uClRvIGNyZWF0ZSBuZXcgY29sdW1ucywgd2Ugd2lsbCB1c2UgdGhlIGBtdXRhdGUoKWAgZnVuY3Rpb24KaW4gYGRwbHlyYC4KCmBgYHtyfQpOSEFORVMgJT4lCiAgc2VsZWN0KGMoIlJhY2UxIiwgIkdlbmRlciIsIk1hcml0YWxTdGF0dXMiLCJIZWlnaHQiLCJXZWlnaHQiLCJCTUkiKSkgJT4lCiAgZmlsdGVyKE1hcml0YWxTdGF0dXMgIT0gIk1hcnJpZWQiLCBSYWNlMSA9PSAiSGlzcGFuaWMiLCBHZW5kZXIgPT0gIm1hbGUiKSAlPiUKICBtdXRhdGUoQk1JX3NlbGYgPSBXZWlnaHQvKEhlaWdodC8xMDApKioyKQpgYGAKCk5vdGUgdGhhdCBub3cgd2UgbmVlZCB0byBpbmNsdWRlIHRoZSBfV2VpZ2h0XyBhbmQgX0JNSV8KY29sdW1ucyBpbiB0aGUgYHNlbGVjdGAgc3RhdGVtZW50LCBiZWNhdXNlIHdlIG5lZWQgdGhhdAppbnB1dCBmb3IgdGhlIGBtdXRhdGVgIGZ1bmN0aW9uLiBHb29kIG5ld3M6IEl0IHR1cm5zIG91dAp0aGF0IHRoZSBCTUkgY29sdW1uIGluIHRoZSBvcmlnaW5hbCBkYXRhc2V0IHdhcyBjb21wdXRlZApjb3JyZWN0bHkgYWZ0ZXIgYWxsISBCdXQgbm93IHdlIGFyZSBpbnRlcmVzdGVkIGluIHRoZQptZWFuIHZhbHVlIG9mIHRoZSBCTUlfU2VsZiBjb2x1bW4uIFRoaXMgcmVxdWlyZXMgYSBmaWZ0aApgZHBseXJgIGZ1bmN0aW9uOiBgc3VtbWFyaXNlKClgLgoKIyMgU3VtbWFyaXNlCgpHaXZlbiB0aGUgZmlsdGVyaW5nIG9mIHRoZSBxdWVzdGlvbiBhYm92ZSwgY29tcHV0ZSB0aGUgbWVhbgp2YWx1ZSBvZiB0aGUgYEJNSV9zZWxmYCBjb2x1bW4uCgpgYGB7cn0KTkhBTkVTICU+JQogIHNlbGVjdChjKCJSYWNlMSIsICJHZW5kZXIiLCJNYXJpdGFsU3RhdHVzIiwiSGVpZ2h0IiwiV2VpZ2h0IiwiQk1JIikpICU+JQogIGZpbHRlcihNYXJpdGFsU3RhdHVzICE9ICJNYXJyaWVkIiwgUmFjZTEgPT0gIkhpc3BhbmljIiwgR2VuZGVyID09ICJtYWxlIikgJT4lCiAgbXV0YXRlKEJNSV9zZWxmID0gV2VpZ2h0LyhIZWlnaHQvMTAwKSoqMikgJT4lCiAgc3VtbWFyaXNlKGF2Z19CTUlfc2VsZiA9IG1lYW4oQk1JX3NlbGYsIG5hLnJtID0gVFJVRSkpCiMjIHRoZSBhZGRpdGlvbiBhcmd1bWVudCBuYS5ybSA9IFRSVUUgbWFrZXMgc3VyZSB0byByZW1vdmUgbWlzc2luZwojIyB2YWx1ZXMgZm9yIHRoZSBwdXJwb3NlIG9mIGNhbGN1bGF0aW5nIHRoZSBtZWFuCmBgYAoKRm9yIHRoaXMgcGFydGljdWxhciBzdWJzZXQgb2YgdGhlIGRhdGEsIHdlIGZpbmQgYW4KYXZlcmFnZSBCTUkgdmFsdWUgb2YgMjguNTkga2cvbSoqMi4KClRoZXJlIGFyZSBtYW55IG90aGVyIHN1bW1hcnkgc3RhdGlzdGljcyB5b3UKY291bGQgY29uc2lkZXIgc3VjaCBgc2QoKWAsIGBtaW4oKWAsIGBtZWRpYW4oKWAsCmBtYXgoKWAsIGBzdW0oKWAsIGBuKClgIChyZXR1cm5zIHRoZSBsZW5ndGggb2YgdmVjdG9yKSwKYGZpcnN0KClgIChyZXR1cm5zIGZpcnN0IHZhbHVlIGluIHZlY3RvciksCmBsYXN0KClgIChyZXR1cm5zIGxhc3QgdmFsdWUgaW4gdmVjdG9yKSBhbmQKYG5fZGlzdGluY3QoKWAgKG51bWJlciBvZiBkaXN0aW5jdCB2YWx1ZXMgaW4gdmVjdG9yKS4KV2Ugd2lsbCBlbGFib3JhdGUgb24gdGhlc2UgZnVuY3Rpb25zIGxhdGVyLgoKTm90ZSB0aGF0IGNob29zaW5nIHRoZSBtb3N0IGluZm9ybWF0aXZlIHN1bW1hcnkgc3RhdGlzdGljCmlzIHZlcnkgaW1wb3J0YW50ISBUaGlzIGNhbiBiZSBzaG93biB3aXRoIHRoZSBmb2xsb3dpbmcgZXhhbXBsZTsKCmBgYHtyLCBlY2hvPUZBTFNFfQprbml0cjo6aW5jbHVkZV9ncmFwaGljcygiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9GaWd1cmVfcGFydG5lcnMucG5nIikKYGBgCgpJbiB0aGlzIHN0dWR5LCBtZW4gYW5kIHdvbWFuIHdlcmUgYXNrZWQgYWJvdXQgdGhlaXIKImlkZWFsIG51bWJlciBvZiBwYXJ0bmVycyBkZXNpcmVkIG92ZXIgMzAgeWVhcnMiLgpXaGlsZSBhbG1vc3QgYWxsIHN1YmplY3RzIGRlc2lyZWQgYSBudW1iZXIgYmV0d2VlbiAwIGFuZCA1MCwKdGhyZWUgbWFsZSBzdWJqZWN0cyBzZWxlY3RlZCBhIG51bWJlciBhYm92ZSAxMDAuClRoZXNlIHRocmVlIF9vdXRsaWVyc18gaW4gdGhlIGRhdGEgY2FuIGhhdmUgYSBsYXJnZSBpbXBhY3Qgb24KdGhlIGRhdGEgYW5hbHlzaXMsIGVzcGVjaWFsbHkgd2hlbiB3ZSB3b3JrIHdpdGggc3VtbWFyeQpzdGF0aXN0aWNzIHRoYXQgYXJlIHNlbnNpdGl2ZSB0byB0aGVzZSBvdXRsaWVycy4KCldoZW4gd2UgbG9vayBhdCB0aGUgX21lYW5fLCBmb3IgaW5zdGFuY2UsIHdlIHNlZSB0aGF0IG9uIGF2ZXJhZ2UKd29tYW4gZGVzaXJlIDIuOCBwYXJ0bmVycywgd2hpbGUgbWVuIGRlc2lyZSA2NC4zIHBhcnRuZXJzIG9uIGF2ZXJhZ2UsCnN1Z2dlc3RpbmcgYSBsYXJnZSBkaXNjcmVwYW5jeSBiZXR3ZWVuIG1hbGUgYW5kIGZlbWFsZSBkZXNpcmVzLgoKSG93ZXZlciwgaWYgbG9vayBhdCBhIG1vcmUgX3JvYnVzdF8gc3VtbWFyeSBzdGF0aXN0aWMgc3VjaCBhcwp0aGUgX21lZGlhbl8sIHdlIHNlZSB0aGF0IHRoZSByZXN1bHQgaXMgMSBmb3IgYm90aCBtZW4gYW5kIHdvbWFuLgpJdCBpcyBjbGVhciB0aGF0IHRoZSBtZWFuIHZhbHVlIHdhcyBjb21wbGV0ZWx5IGRpc3RvcnRlZCBieSB0aGUKdGhyZWUgb3V0bGllcnMgaW4gdGhlIGRhdGEuCgpBbm90aGVyIGV4YW1wbGUgb2YgYSBtb3JlIHJvYnVzdCBzdW1tYXJ5IHN0YXRpc3RpYyBpcwp0aGUgX2dlb21ldHJpYyBtZWFuXy4KCiMjIEdyb3VwCgpXZSBhbHJlYWR5IGNvbWJpbmUgNSB2ZXJ5IGltcG9ydGFudCBmdW5jdGlvbnMuCkhlcmUsIHdlIHdpbGwgYWRkIGEgZmluYWwgb25lOiBgZ3JvdXBfYnkoKWAuCgpUaGUgYGdyb3VwX2J5KClgIHZlcmIgaXMgYW5kIGluY3JlZGlibHkgcG93ZXJmdWwKZnVuY3Rpb24gaW4gYGRwbHlyYC4gSXQgYWxsb3dzIHVzLCBmb3IgZXhhbXBsZSwKdG8gY2FsY3VsYXRlIHN1bW1hcmlzeSBzdGF0aXN0aWNzIGZvciBkaWZmZXJlbnQKZ3JvdXBzIG9mIG9ic2VydmF0aW9ucy4KCklmIHdlIHRha2Ugb3VyIGV4YW1wbGUgZnJvbSBhYm92ZSwgbGV0J3Mgc2F5CndlIHdhbnQgdG8gc3BsaXQgdGhlIGRhdGEgZnJhbWUgYnkgc29tZSB2YXJpYWJsZQooZS5nLiBgTWFyaXRhbFN0YXR1c2ApLCBhcHBseSBhIGZ1bmN0aW9uIChgbWVhbmApCnRvIGEgY29sdW1uIChlLmcuIEJNSV9zZWxmKSBvZiB0aGUgaW5kaXZpZHVhbApkYXRhIGZyYW1lcyAgYW5kIHRoZW4gY29tYmluZSB0aGUgb3V0cHV0IGJhY2sgaW50bwphIHN1bW1hcnkgZGF0YSBmcmFtZS4KCmBgYHtyfQpOSEFORVMgJT4lCiAgc2VsZWN0KGMoIlJhY2UxIiwgIkdlbmRlciIsIk1hcml0YWxTdGF0dXMiLCJIZWlnaHQiLCJXZWlnaHQiLCJCTUkiKSkgJT4lCiAgZmlsdGVyKE1hcml0YWxTdGF0dXMgIT0gIk1hcnJpZWQiLCBSYWNlMSA9PSAiSGlzcGFuaWMiLCBHZW5kZXIgPT0gIm1hbGUiKSAlPiUKICBtdXRhdGUoQk1JX3NlbGYgPSBXZWlnaHQvKEhlaWdodC8xMDApKioyKSAlPiUKICBncm91cF9ieShNYXJpdGFsU3RhdHVzKSAlPiUgIyMgIGdyb3VwIHRoZSBzdWJqZWN0cyBieSB0aGVpciBtYXJpdGFsIHN0YXR1cwogIHN1bW1hcmlzZShhdmdfQk1JX3NlbGYgPSBtZWFuKEJNSV9zZWxmLCBuYS5ybSA9IFRSVUUpKSAjIyBjYWxjdWxhdGUgdGhlIG1lYW4gQk1JX3NlbGYgdmFsdWUgb2YgZWFjaCBncm91cApgYGAKCldlIGhhdmUgc3VjY2Vzc2Z1bGx5IGNvbWJpbmVkIHNpeCBvZiB0aGUgbW9zdCBpbXBvcnRhbnQKYGRwbHlyYCBmdW5jdGlvbmFsaXRpZXMhCgpOb3cgdGhhdCB3ZSBoYXZlIGFsbCB0aGUgcmVxdWlyZWQgZnVuY3Rpb25zIGZvciBpbXBvcnRpbmcsIHRpZHlpbmcgYW5kIHdyYW5nbGluZwpkYXRhIGluIHBsYWNlLCB3ZSB3aWxsIGxlYXJuIGhvdyB0byB2aXN1YWxpemUgb3VyIGRhdGEgd2l0aCB0aGUgZ2dwbG90MiBwYWNrYWdlLgoKIyBEYXRhIFZpc3VhbGl6YXRpb24KCmBgYHtyfQpsaWJyYXJ5KGdncGxvdDIpCmBgYAoKQXMgeW91IG1pZ2h0IGhhdmUgaGF2ZSBhbHJlYWR5IHNlZW4sIHRoZXJlIGFyZSBtYW55IGZ1bmN0aW9ucwphdmFpbGFibGUgaW4gYmFzZSBSIHRoYXQgY2FuIGNyZWF0ZSBwbG90cyAoZS5nLiBgcGxvdCgpYCwgYGJveHBsb3QoKWApLgpPdGhlcnMgaW5jbHVkZTogYGhpc3QoKWAsIGBxcXBsb3QoKWAsIGV0Yy4KVGhlc2UgZnVuY3Rpb25zIGFyZSBncmVhdCBiZWNhdXNlIHRoZXkgY29tZSB3aXRoIGEgYmFzaWMgaW5zdGFsbGF0aW9uCm9mIFIgYW5kIGNhbiBiZSBxdWl0ZSBwb3dlcmZ1bCB3aGVuIHlvdSBuZWVkIGEgcXVpY2sgdmlzdWFsaXphdGlvbgpvZiBzb21ldGhpbmcgd2hlbiB5b3UgYXJlIGV4cGxvcmluZyBkYXRhLgoKV2UgYXJlIGNob29zaW5nIHRvIGludHJvZHVjZSBgZ2dwbG90MmAgYmVjYXVzZSwgaW4gb3VyCm9waW5pb24sIGl0J3Mgb25lIG9mIHRoZSBzaW1wbGVzdCB3YXlzIGZvciBiZWdpbm5lcnMgdG8KY3JlYXRlIHJlbGF0aXZlbHkgY29tcGxpY2F0ZWQgcGxvdHMgdGhhdCBhcmUgaW50dWl0aXZlCmFuZCBhZXN0aGV0aWNhbGx5IHBsZWFzaW5nLgoKIyMgVW5pdmFyaWF0ZSBzdGF0aXN0aWNzCgpJbiB1bml2YXJpYXRlIHN0YXRpc3RpY3MsIHdlIGZvY3VzIG9uIGEgc2luZ2xlIHZhcmlhYmxlCm9mIGludGVyZXN0LiBIZXJlLCB3ZSB3aWxsIHNob3cgZGlmZmVyZW50IHdheXMgdG8gdmlzdWFsaXplCnRoZSBgQk1JYCB2YXJpYWJsZSBmcm9tIHRoZSBOSEFORVMgZGF0YXNldC4gSW1wb3J0YW50bHksCmRpZmZlcmVudCB0eXBlcyBvZiB2aXN1YWxpemF0aW9ucyB3aWxsIHByb3ZpZGUgdXMgd2l0aApkaWZmZXJlbnQgdHlwZXMgb2YgaW5mb3JtYXRpb24hCgpIZXJlIHdlIHdpbGwgdmlzdWFsaXplIHRoZSBzYW1lIGRhdGEgdXNpbmcgYSBkb3RwbG90LAphIGhpc3RvZ3JhbSBhbmQgYSBib3hwbG90LgoKIyMjIERvdHBsb3QKCmBgYHtyfQpOSEFORVMgJT4lCiAgaGVhZChOSEFORVMsIG49MTAwKSAlPiUgIyMgdG8gbWFrZSB0aGUgdmlzdWFsaXphdGlvbiBtb3JlIGNsZWFyLCB3ZSB0YWtlIG9ubHkgdGhlIGZpcnN0IDEwMCBzdWJqZWN0cwogIGdncGxvdChhZXMoeD1CTUkpKSArCiAgZ2VvbV9kb3RwbG90KG1ldGhvZCA9ICJoaXN0b2RvdCIpCmBgYAoKSW4gdGhlIGRvdHBsb3QsIHRoZSBCTUkgdmFsdWUgZm9yIGVhY2ggc3ViamVjdCAoaW4gdGhpcyBjYXNlLAp0aGUgZmlyc3QgMTAwIHN1YmplY3RzIG9mIHRoZSBOSEFORVMgc3R1ZHkpLCBpcyBwbG90dGVkIG9uIHRoZQp4LWF4aXMuIFRoZSB5LWF4aXMgYWxsb3dzIHVzIHRvIGNvdW50IGhvdyBtYW55IHN1YmplY3RzIGhhdmUKYSBCTUkgdmFsdWUgdGhhdCBmYWxscyB3aXRoaW4gYSBjZXJ0YWluIGNvdW50aW5nIGJpbi4KRm9yIGluc3RhbmNlLCBpbiB0aGUgQk1JIGludGVydmFsIFsyOS41LCAzMC5bCndlIG9ic2VydmUgNCBzdWJqZWN0cy4KCk5vdGUsIGhvd2V2ZXIsIHRoYXQgdGhlIGRvdHBsb3QgZG9lcyBub3QgcHJvdmlkZSB1cyB3aXRoIGluZm9ybWF0aW9uCm9uIHRoZSBtZWFuL21lZGlhbiB2YWx1ZXMgb2YgdGhlIGRhdGEsIHdoaWNoIGFyZSB0eXBpY2FsbHkgZmVhdHVyZXMKb2YgaGlnaCBpbnRlcmVzdC4KCiMjIyBIaXN0b2dyYW0KCmBgYHtyfQpOSEFORVMgJT4lCiAgaGVhZChOSEFORVMsIG49MTAwKSAlPiUKICBnZ3Bsb3QoYWVzKHg9Qk1JKSkgKwogIGdlb21faGlzdG9ncmFtKCkKYGBgCgpUaGUgaW5mb3JtYXRpb24gdGFodCBjYW4gYmUgb2J0YWluZWQgZnJvbSB0aGlzIGhpc3RvZ3JhbQppcyBzaW1pbGFyIHRvIHRoYXQgb2YgdGhlIGRvdHBsb3QuIEhlcmUsIHdlIGNhbiByZWFkIGltbWVkaWF0ZWx5CihpLmUuIHdpdGhvdXQgY291bnRpbmcpIHRoYXQgdGhlIEJNSSBpbnRlcnZhbCBbMjkuNSwgMzAuMFsKY29udGFpbnMgNCBzdWJqZWN0cy4gQWdhaW4sIHRoZSBoaXN0b2dyYW0gZG9lcyBub3QgcHJvdmlkZSB1cyB3aXRoCmluZm9ybWF0aW9uIG9uIHRoZSBtZWFuL21lZGlhbiB2YWx1ZXMgb2YgdGhlIGRhdGEsIGJ1dCBvbmx5IG9uCml0cyBkaXN0cmlidXRpb24uCgojIyMgQm94cGxvdAoKYGBge3J9CnNldC5zZWVkKDIpICMjIHRvIG1ha2UgdGhlIGhvcml6b250YWwgcG9zaXRpb24gb2YgdGhlIGppdHRlciBub24tcmFuZG9tCgpOSEFORVMgJT4lCiAgaGVhZChOSEFORVMsIG49MTAwKSAlPiUKICBnZ3Bsb3QoYWVzKHg9IiIsIHk9Qk1JKSkgKwogIGdlb21fYm94cGxvdChvdXRsaWVyLnNoYXBlPU5BKSArCiAgZ2VvbV9qaXR0ZXIod2lkdGg9MC4yKSArCiAgc3RhdF9zdW1tYXJ5KGdlb209InRleHQiLCBmdW4ueT1xdWFudGlsZSwKICAgICAgICAgICAgICAgYWVzKGxhYmVsPXNwcmludGYoIiUxLjFmIiwgLi55Li4pKSwKICAgICAgICAgICAgICAgcG9zaXRpb249cG9zaXRpb25fbnVkZ2UoeD0wLjUpLCBzaXplPTQuNSkgKwogIGFubm90YXRlKCJ0ZXh0IiwgeCA9IGMoMS41LDEuNSwxLjUsMS41LDEuNSwxLjA1LDEuMDUpLCB5ID0gYygxMi41LDE5LDI0LjUsMjguNSw0NSwxOCwzNSksIGxhYmVsID0gYygiKG1pbmltdW0pIiwiKDI1JSkiLCIobWVkaWFuKSIsIig3NSUpIiwiKG1heGltdW0pIiwid2hpc2tlciIsIndoaXNrZXIiKSxzaXplPTMpCmBgYAoKQXJndWFibHksIHRoZSBib3hwbG90IGlzIHRoZSBtb3N0IGluZm9ybWF0aXZlIGRlZmF1bHQKdmlzdWFsaXphdGlvbiBzdHJhdGVneS4gRmlyc3QsIGl0IHByb3ZpZGVzIHVzIHdpdGgKc2ltaWxhciBpbnNpZ2h0cyB0byB0aGUgc2hhcGUgb2YgdGhlIGRpc3RyaWJ1dGlvbiBhcwp0aGUgaGlzdG9ncmFtLiBTZWNvbmQsIEl0IGNsZWFybHkgZGlzcGxheXMgc2V2ZXJhbCB1c2VmdWwKc3VtbWFyeSBzdGF0aXN0aWNzIHN1Y2ggYXMgdGhlIG1lZGlhbiwgdGhlIGludGVycXVhcnRpbGUKcmFuZ2UsIHdoaXNrZXJzIGFuZCBvdXRsaWVycy4gVGhpcmQsIHdpdGggdGhlIGdlb21faml0dGVyCmZ1bmN0aW9uYWxpdHkgd2UgY2FuIGFsc28gcHJvamVjdCBlYWNoIGluZGl2aWR1YWwgdmFsdWUKb2YgdGhlIGRhdGFzZXQgb24gdGhlIHBsb3QuCgpUaGUgb25seSBkaXNhZHZhbnRhZ2Ugb2YgdGhlIGJveHBsb3QgYXMgY29tcGFyZWQgdG8gdGhlCmRvdHBsYXQgb3IgaGlzdG9ncmFtIGlzIHRoYXQgd2UgY2Fubm90IHNlZSAoZnJvbSB0aGUgZmlndXJlKQpob3cgbWFueSBzdWJqZWN0cyBoYXZlIGEgQk1JIHZhbHVlIHdpdGhpbiBhIGNlcnRhaW4gaW50ZXJ2YWwuCkhvd2V2ZXIsIHRoaXMgZmVhdHVyZSB1c3VhbGx5IGlzIG5vdCBvZiBwcmltYXJ5IGludGVyZXN0LgoKIyMgQml2YXJpYXRlIHN0YXRpc3RpY3MKCkluIGJpdmFyaWF0ZSBzdGF0aXN0aWNzLCB0aGUgZ29hbCBpcyB0byBzdHVkeSB0d28gdmFyaWFibGVzLAppbmNsdWRpbmcgdGhlIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIGJvdGggdmFyaWFibGVzLgoKSW4gdGVybXMgb2YgdmlzdWFsaXphdGlvbnMsIHRoZSBzY2F0dGVycGxvdCBpcyB0aGUgYmFzZWxpbmUKbWV0aG9kIGZvciBkaXNwbGF5aW5nIHR3byB2YXJpYWJsZXMuCgojIyMgQ3JlYXRlIHNjYXR0ZXIgcGxvdHMgdXNpbmcgYGdlb21fcG9pbnQoKWAKCkZvciB0aGUgTkhBTkVTIGRhdGFzZXQsIHdlIGNhbiBmb3IgaW5zdGFuY2UgbG9vawphdCB0aGUgcmVsYXRpb25zaGlwIGJldHdlZW4gYSBwZXJzb24ncyBoZWlnaHQgYW5kIHdlaWd0aAp2YWx1ZXMuCgpgYGB7cn0KcCA8LSBOSEFORVMgJT4lCiAgZ2dwbG90KGFlcyh4ID0gSGVpZ2h0LCB5ID0gV2VpZ2h0KSkKcCArIGdlb21fcG9pbnQoKSArCiAgeGxhYigiSGVpZ2h0IChjbSkiKSArCiAgeWxhYigiV2VpZ2h0IChrZykiKQpgYGAKCldlIHVzZWQgdGhlIGB4bGFiKClgIGFuZCBgeWxhYigpYCBmdW5jdGlvbnMKaW4gYGdncGxvdDJgIHRvIHNwZWNpZnkgdGhlIHgtYXhpcyBhbmQgeS1heGlzCmxhYmVscy4gTm90ZSB0aGF0IE5BIHZhbHVlcyB3ZXJlIGF1dG9tYXRpY2FsbHkKcmVtb3ZlIGJ5IHRoZSBnZW9tX3BvaW50IGZ1bmN0aW9uLgoKZ2dwbG90MiBhbHNvIGhhcyBhIHZlcnkgYnJvYWQgcGFuZWwgb2YgYWVzdGhldGljIGZlYXR1cmVzCmZvciBpbXByb3ZpbmcgeW91ciBwbG90LiBPbmUgdmVyeSBiYXNpYyBmZWF0dXJlIGlzIHRoYXQgd2UKY2FuIGdpdmUgY29sb3JzIHRvIHRoZSBnZ3Bsb3Qgb2JqZWN0LiBGb3IgaW5zdGFuY2UsIHdlIGNhbgpnaXZlIGRpZmZlcmVudCBjb2xvcnMgdG8gdGhlIGRvdHMgaW4gdGhlIHByZXZpb3VzCnNjYXR0ZXJwbG90IGJhc2VkIG9uIGEgc3ViamVjdCdzIGdlbmRlci4KCmBgYHtyfQpOSEFORVMgJT4lCiAgZ2dwbG90KGFlcyh4ID0gSGVpZ2h0LCB5ID0gV2VpZ2h0LCBjb2xvciA9IEdlbmRlcikpICsKICBnZW9tX3BvaW50KCkgKwogIHhsYWIoIkhlaWdodCAoY20pIikgKwogIHlsYWIoIldlaWdodCAoa2cpIikKYGBgCgojIENvbWJpbmluZyBkcGx5ciBhbmQgZ2dwbG90MgoKTm90ZSB0aGF0IHRoZSBwcmV2aW91cyBmdW5jdGlvbnMgZnJvbSB0aGUgZHBseXIKcGFja2FnZSBjYW4gYmUgZWFzaWx5IGNvbWJpbmVkIHdpdGggZ2dwbG90IHRocm91Z2gKdGhlIGNvbmNlcHQgb2YgcGlwZXMgJT4lLgoKRm9yIGluc3RhbmNlLCB3ZSBjb3VsZCBtYWtlIHRoZSBzYW1lIHNjYXR0ZXJwbG90IGFzIGFib3ZlLApidXQgb25seSBmb3Igd2hpdGUsIG1hcnJpZWQgYWR1bHRzLgoKSW4gYWRkaXRpb24sIHdlIGhlcmUgYWxzbyBzaG93IHNvbWUgY29udmVuaWVudCBnZ3Bsb3QgZmVhdHVyZXM7CjEuIFNldHRpbmcgdGhlIGNvbG9ycyBtYW51YWxseQoyLiBTZXQgdG8gaGF2ZSBhIHdoaXRlIGJhY2tncm91bmQKMy4gU2V0IGEgKG1haW4pIHRpdGxlIGZvciB0aGUgcGxvdAo0LiBQaWNrIGEgZGlmZmVyZW50IHNoYXBlIGZvciB0aGUgZG90cyBpbiB0aGUgc2NhdHRlcnBsb3QKNS4gTWFudWFsbHkgc2V0IHRoZSBsaW1pdHMgb2YgdGhlIHgtIGFuZCB5LWF4ZXMKCk5vdGUgdGhhdCB0aGlzIGEgb25seSB0aGUgdGlwIG9mIHRoZSBpY2ViZXJnIG9mIHRoZQp0aGUgZ2dwbG90IGZ1bmN0aW9uYWxpdGllcyEKCmBgYHtyfQpOSEFORVMgJT4lCiAgZmlsdGVyKEFnZSA+PSAxOCwgUmFjZTEgPT0gIldoaXRlIiwgTWFyaXRhbFN0YXR1cyA9PSAiTWFycmllZCIpICU+JSAjIyBzZWxlY3QgdGhlIHJlcXVpcmVkIGRhdGEKICBnZ3Bsb3QoYWVzKHggPSBIZWlnaHQsIHkgPSBXZWlnaHQsIGNvbG9yID0gR2VuZGVyKSkgKwogIGdlb21fcG9pbnQoc2hhcGU9MTcsIHNpemUgPSAxKSArICMjIHNldCB0byBhIGRpZmZlcmVudCBzaGFwZSAodHJpYW5nbGUpIGFuZCBzaXplCiAgZ2d0aXRsZSgiSGVpZ2h0IHZlcnN1cyBXZWlnaHQiKSArICMjIGZvciB0aGUgbWFpbiB0aXRsZQogIHhsYWIoIkhlaWdodCAoY20pIikgKwogIHlsYWIoIldlaWdodCAoa2cpIikgKwogIHhsaW0oMCwyMjApICsgIyMgc2V0IGxpbWl0IG9mIHgtYXhpcwogIHlsaW0oMCwyMjApICsgIyMgc2V0IGxpbWl0IG9mIHktYXhpcwogIHNjYWxlX2NvbG9yX21hbnVhbCh2YWx1ZXMgPSBjKCJyZWQiLCJibHVlIikpICsgIyMgbWFudWFsbHkgc2V0IGNvbG9ycwogIHRoZW1lX2J3KCkgIyMgc2V0IHdoaXRlIGJhY2tncm91bmQKYGBgCgpOZXh0IHRvIHNjYXR0ZXJwbG90cywgd2UgaGF2ZSBhIGxhcmdlIG51bWJlciBvZiBvdGhlcgp0eXBlcyBvZiBwbG90cyBhdCBvdXIgZGlzcG9zYWwuIEltcG9ydGFudGx5LCBzb21lIHBsb3RzCndpbGwgYmUgbW9yZSBpbmZvcm1hdGl2ZSB0aGFuIG90aGVycywgZGVwZW5kaW5nIG9uIHRoZQpyZXNlYXJjaCBxdWVzdGlvbi4gVGhlcmVmb3JlLCBjaG9vc2luZyB0aGUgcGxvdCB0aGF0IGlzCm1vc3QgaW5mb3JtYXRpdmUgaXMgY3J1Y2lhbC4gV2Ugc2hvdyB0aGlzIHdpdGggYSBtb3JlCmVsYWJvcmF0ZSBleGFtcGxlIGxhdGVyIChgY2FwdG9wcmlsYCBleGVyY2lzZSkuCgojIEZpbmFsIGV4YW1wbGUKCiMjIEdvYWwKClNldCB1cCBhIHJlZmVyZW5jZSBpbnRlcnZhbCBmb3IgdGhlIHN5c3RvbGljIGJsb29kCnByZXNzdXJlIGluIHRoZSBOSEFORVMgZGF0YXNldC4KCiMjIEJhY2tncm91bmQKClRoZSBjYXB0b3ByaWwgZGF0YXNldCwgd2hpY2ggd2Ugd2lsbCBleHBsb3JlIGFuZCBhbmFseXNlIGxhdGVyLApob2xkcyBpbmZvcm1hdGlvbiBvbiAgMTUgcGF0aWVudHMgdGhhdCBoYXZlIGluY3JlYXNlZCBibG9vZCBwcmVzc3VyZQp2YWx1ZXMuCgpCZWZvcmUgd2UgbWF5IGNvbmR1Y3Qgc3VjaCBhbiBleHBlcmltZW50LCB3ZSBmaXJzdCBuZWVkIHRvIGtub3cKd2hpY2ggdmFsdWVzIHNob3VsZCBiZSBjb25zaWRlcmVkIF9pbmNyZWFzZWRfIGFuZCB3aGljaCBvbmVzIHNob3VsZCBiZQpjb25zaWRlcmVkIF9ub3JtYWxfLiBUbyBmaW5kIGFuIGludGVydmFsIGZvciB2YWx1ZXMgdGhhdCBhcmUgbm9ybWFsLAp3ZSBjYW4gc2V0IHVwIGEgcmVmZXJlbmNlIGludGVydmFsLiBUbyBzZXQgdXAgdGhpcyBpbnRlcnZhbCwgd2Ugd2lsbAp1c2UgdGhlIE5IQU5FUyBkYXRhc2V0LiBUaGUgYEJQU3lzQXZlYCBjb2x1bW4gaG9sZHMgZGF0YSBvbiB0aGUgc3lzdG9saWMKYmxvb2QgcHJlc3N1cmUuIFRvIHNlbGVjdCBoZWFsdGh5IHN1YmplY3RzLCB3ZSB3aWxsIG5lZWQgdG8gc3Vic2V0IHRoZQpkYXRhLgoKIyMgQW5hbHlzaXMKCkZpcnN0LCB3ZSB3aWxsIHBsb3QgdGhlIGRhdGEgZm9yIGFsbCBzdWJqZWN0cyBmb3Igd2hpY2ggd2UgaGF2ZSBhbGwKdGhlIHJlcXVpcmVkIGRhdGEgYW5kIHRoYXQgYXJlIGJldHdlZW4gNDAgYW5kIDY1IHllYXJzIG9sZC4KCmBgYHtyfQojIyBoaXN0b2dyYW0gb2YgQlBTeXNBdmUgZm9yIHN1YmplY3RzIHdpdCBhZ2UgYmV0d2VlbiA0MCBhbmQgNjUgeWVhcnMgb2xkCk5IQU5FUyAlPiUKICBmaWx0ZXIoIWlzLm5hKFJhY2UxKSwgIWlzLm5hKFNtb2tlMTAwbiksICFpcy5uYShCTUlfV0hPKSwgIWlzLm5hKEFnZSksICFpcy5uYShIYXJkRHJ1Z3MpLCAhaXMubmEoSGVhbHRoR2VuKSwgIWlzLm5hKEdlbmRlciksICFpcy5uYShBbGNvaG9sWWVhciksICFpcy5uYShCUFN5c0F2ZSksICFpcy5uYShTbGVlcFRyb3VibGUpKSAlPiUgIyMgcmV0YWlucyA0NjYwIHN1YmplY3RzIHdpdGggdGhlIHJlcXVpcmVkIGRhdGEKICBmaWx0ZXIoYmV0d2VlbihBZ2UsNDAsNjUpKSAlPiUgIyMgZmlsdGVyIHRoZSBzdWJqZWN0cyBvbiBhZ2UsIHJldGFpbnMgMjUyMiBzdWJqZWN0cwogIGRpc3RpbmN0KElELC5rZWVwX2FsbD1UUlVFKSAlPiUgIyMgcmVtb3ZlcyBkdXBsaWNhdGVkIElEcywgcmV0YWlucyAxNDY3IHN1YmplY3RzCiAgZ2dwbG90KGFlcyh4PUJQU3lzQXZlKSkgKwogIGdlb21faGlzdG9ncmFtKCkKYGBgCgpBbiBpbXBvcnRhbnQgcmVxdWlyZW1lbnQgb2YgY2FsY3VsYXRpbmcgcmVmZXJlbmNlIGludGVydmFscyBpcwp0aGF0IHRoZSBkYXRhIGlzIG5vcm1hbGx5IGRpc3RyaWJ1dGVkLiB0aGlzIGlzIGNsZWFybHkgbm90IHRoZQpjYXNlOyB0aGUgZGF0YSBoYXMgYSBsb25nIHJpZ2h0IHRhaWwsIHdoaWNoIGlzIHF1aXRlIGNvbW1vbgppbiBiaW9sb2dpY2FsIGRhdGEgKGluIHRoaXMgZWFzaWVyIHRvIGhhdmUgZXh0cmVtZSB2YWx1ZXMgb24gdGhlCnJpZ2h0LWhhbmQgc2lkZSB0aGFuIG9uIHRoZSBsZWZ0LWhhbmQgc2l6ZSwgd2hpY2ggaXMgYWRkaXRpb25hbGx5CmJvdW5kZWQgYnkgemVybyBmb3IgbW9zdCBiaW9sb2dpY2FsIHZhcmlhYmxlcykuCgpCeSBzZWxlY3Rpbmcgb25seSBfaGVhbHRoeV8gc3ViamVjdHMsIHdlIGV4cGVjdCB0aGUgZGF0YSB0byBiZQpkaXN0cmlidXRlZCBtb3JlIG5vcm1hbGx5LiBXZSBkZWZpbmUgX2hlYWx0aHlfIGFzIGJlaW5nIGEgbm9uLXNtb2tlciwKd2l0aG91dCBhIGhpc3Rvcnkgb2YgZGlhYmV0ZXMsIGhhcmQgZHJ1Z3Mgb3Igc2xlZXBpbmcgdHJvdWJsZSwgd2l0aCBhCmdlbmVyYWwgaGVhbHRoIHRoYXQgaXMgbm90IGNvbnNpZGVyZWQgcG9vciBhbmQgdGhhdCBoYXMgYSBCTUkgYmV0d2VlbgoxOC41IGFuZCAyOS45LgoKYGBge3J9CiMjIGhpc3RvZ3JhbSBvZiBCUFN5c0F2ZSBmb3IgSEVBTFRIWSBzdWJqZWN0cyB3aXQgYWdlIGJldHdlZW4gNDAgYW5kIDY1IHllYXJzIG9sZApOSEFORVMgJT4lCiAgZmlsdGVyKCFpcy5uYShSYWNlMSksICFpcy5uYShTbW9rZTEwMG4pLCAhaXMubmEoQk1JX1dITyksICFpcy5uYShBZ2UpLCAhaXMubmEoSGFyZERydWdzKSwgIWlzLm5hKEhlYWx0aEdlbiksICFpcy5uYShHZW5kZXIpLCAhaXMubmEoQWxjb2hvbFllYXIpLCAhaXMubmEoQlBTeXNBdmUpLCAhaXMubmEoU2xlZXBUcm91YmxlKSkgJT4lICMjIHJldGFpbnMgNDY2MCBzdWJqZWN0cyB3aXRoIHRoZSByZXF1aXJlZCBkYXRhCiAgZmlsdGVyKGJldHdlZW4oQWdlLDQwLDY1KSkgJT4lICMjIGZpbHRlciB0aGUgc3ViamVjdHMgb24gYWdlLCByZXRhaW5zIDI1MjIgc3ViamVjdHMKICBkaXN0aW5jdChJRCwua2VlcF9hbGw9VFJVRSkgJT4lICMjIHJlbW92ZXMgZHVwbGljYXRlZCBJRHMsIHJldGFpbnMgMTQ2NyBzdWJqZWN0cwogIGZpbHRlcihTbW9rZTEwMG4gPT0gIk5vbi1TbW9rZXIiLCBEaWFiZXRlcyA9PSAiTm8iLCBIYXJkRHJ1Z3MgPT0gIk5vIiwgSGVhbHRoR2VuICE9ICJQb29yIiwgU2xlZXBUcm91YmxlID09ICJObyIsIEJNSV9XSE8laW4lYygiMTguNV90b18yNC45IiwiMjUuMF90b18yOS45IikpICU+JSAjIyBmaWx0ZXIgdG8gaGF2ZSBvbmx5IGhlYWx0aHkgc3ViamVjdHMsIGJhc2VkIG9uIG11bHRpcGxlIGhlYWx0aCBjcml0ZXJpYS4gUmV0YWlucyAyNzUgc3ViamVjdHMuCiAgZ2dwbG90KGFlcyh4PUJQU3lzQXZlKSkgKwogIGdlb21faGlzdG9ncmFtKCkKYGBgCgpOb3cgdGhlIGRhdGEgc2VlbXMgdG8gYmUgYXBwcm94aW1hdGVseSBub3JtYWwgYnkgZXllICh3ZSB3aWxsIGxhdGVyIHNob3cgaG93IHRvCmFzc2VzcyBkYXRhIG5vcm1hbGl0eSBtb3JlIGZvcm1hbGx5KS4gRnJvbSB0aGlzIHN1YnNldCwgd2UgbWF5IGNhbGN1bGF0ZSB0aGUKcmVmZXJlbmNlIGludGVydmFsLgoKYGBge3J9CiMjIHRvIGdldCB0aGUgOTUlIHJlZmVyZW5jZSBpbnRlcnZhbCBmb3IgdGhlIGhlYWx0aHkgZ3JvdXA7CnN1bW1hcnlfTkhBTkVTIDwtIE5IQU5FUyAlPiUKICBmaWx0ZXIoIWlzLm5hKFJhY2UxKSwgIWlzLm5hKFNtb2tlMTAwbiksICFpcy5uYShCTUlfV0hPKSwgIWlzLm5hKEFnZSksICFpcy5uYShIYXJkRHJ1Z3MpLCAhaXMubmEoSGVhbHRoR2VuKSwgIWlzLm5hKEdlbmRlciksICFpcy5uYShBbGNvaG9sWWVhciksICFpcy5uYShCUFN5czEpLCAhaXMubmEoQlBTeXMyKSwgIWlzLm5hKEJQU3lzMyksICFpcy5uYShTbGVlcFRyb3VibGUpKSAlPiUgIyMgcmV0YWlucyA0NjYwIHN1YmplY3RzIHdpdGggdGhlIHJlcXVpcmVkIGRhdGEKICBmaWx0ZXIoYmV0d2VlbihBZ2UsNDAsNjUpKSAlPiUgIyMgZmlsdGVyIHRoZSBzdWJqZWN0cyBvbiBhZ2UsIHJldGFpbnMgMjUyMiBzdWJqZWN0cwogIGRpc3RpbmN0KElELC5rZWVwX2FsbD1UUlVFKSAlPiUgIyMgcmVtb3ZlcyBkdXBsaWNhdGVkIElEcywgcmV0YWlucyAxNDY3IHN1YmplY3RzCiAgZmlsdGVyKFNtb2tlMTAwbiA9PSAiTm9uLVNtb2tlciIsIERpYWJldGVzID09ICJObyIsIEhhcmREcnVncyA9PSAiTm8iLCBIZWFsdGhHZW4gIT0gIlBvb3IiLCBTbGVlcFRyb3VibGUgPT0gIk5vIiwgQk1JX1dITyVpbiVjKCIxOC41X3RvXzI0LjkiLCIyNS4wX3RvXzI5LjkiKSkgJT4lICMjIGZpbHRlciB0byBoYXZlIG9ubHkgaGVhbHRoeSBzdWJqZWN0cywgYmFzZWQgb24gbXVsdGlwbGUgaGVhbHRoIGNyaXRlcmlhLiBSZXRhaW5zIDI3NSBzdWJqZWN0cy4KICBSbWlzYzo6c3VtbWFyeVNFKG1lYXN1cmV2YXI9IkJQU3lzQXZlIikgIyBjYWxjdWxhdGUgdGhlIHN1bW1hcnkgc3RhdGlzdGljcwoKcGFzdGUoIk1lYW4gdmFsdWU6Iiwgc3VtbWFyeV9OSEFORVMkQlBTeXNBdmUpCnBhc3RlKCJTdGFuZGFyZCBkZXZpYXRpb246Iiwgc3VtbWFyeV9OSEFORVMkc2QpCnBhc3RlMCgiUmVmZXJlbmNlIGludGVydmFsOiBbIiwgc3VtbWFyeV9OSEFORVMkQlBTeXNBdmUgLSAyKnN1bW1hcnlfTkhBTkVTJHNkLCAiOyIsIHN1bW1hcnlfTkhBTkVTJEJQU3lzQXZlICsgMipzdW1tYXJ5X05IQU5FUyRzZCwgIl0iKQpgYGAKClRoZSBzeXN0b2xpYyBibG9vZCBwcmVzc3VyZSBmb3IgaGVhbHRoeSBzdWJqZWN0cyBpcyBkaXN0cmlidXRlZApzeW1tZXRyaWNhbGx5LCBhbmQgaW4gYSBsYXRlciB0dXRvcmlhbCB3ZSB3aWxsIHNob3cgdGhhdCB0aGVzZSB2YWx1ZXMKYXBwcm94aW1hdGVseSBmb2xsb3cgYSBub3JtYWwgZGlzdHJpYnV0aW9uLiBXZSBoYXZlIGNhbGN1bGF0ZWQgdGhlCm1lYW4gYW5kIHN0YW5kYXJkIGRldmlhdGlvbiBvZiBibG9vZCBwcmVzc3VyZSB2YWx1ZXMgaW4gdGhpcyBoZWFsdGh5CnN1YnNldCwgd2hpY2ggYWxsb3dzIHVzIHRvIHNldCB1cCB0aGUgKDk1JSkgcmVmZXJlbmNlIGludGVydmFsLCBmb3IKd2hhdCB3ZSBjYW4gY29uc2lkZXIgdG8gYmUgX25vcm1hbF8gYmxvb2QgcHJlc3N1cmUgdmFsdWVzLiBBbnkgb2YgdGhlCmxhdGVyIHBhdGllbnRzIHdobydzIHZhbHVlcyBkbyBub3QgZmFsbCB3aXRoaW4gdGhpcyBpbnRlcnZhbCwgd2UgY2FuCmNvbnNpZGVyIF9hYm5vcm1hbF8uCgpUaGUgYG1lYW5gIGJsb29kIHByZXNzdXJlIHZhbHVlIG9mIHRoZSBoZWFsdGh5IHN1YnNldCBpcyAxMTkgbW1IZywgd2l0aAphIGBzdGFuZGFyZCBkZXZpYXRpb25gIG9mIDE0IG1tSGcuIFdoZW4gd2UgcmVwbGFjZSB0aGUgcG9wdWxhdGlvbiBhdmVyYWdlCmFuZCBwb3B1bGF0aW9uIHN0YW5kYXJkIGRldmlhdGlvbiB3aXRoIHRoZXNlIGVzdGltYXRlcywgd2Ugb2J0YWluIGEKYDk1JSByZWZlcmVuY2UgaW50ZXJ2YWxgIG9mIFs5MTsxNDddIG1tSGcuCgpOb3RlIHRoYXQgaW4gdGhlIGxpdGVyYXR1cmUgYSB2YWx1ZSAxNDAgbW1IZyBmb3IgdGhlIHN5c3RvbGljIGJsb29kCnByZXNzdXJlIGlzIHR5cGljYWxseSBjb25zaWRlcmVkIHRvIGJlIHRoZSB1cHBlciBsaW1pdCBvZiBfbm9ybWFsaXR5Xy4K</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("04_1_NHANES.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement and Jeroen Gilis" />
+
+
+<title>Exercises on chapter 4: Data exploration</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Exercises on chapter 4: Data exploration</h1>
+<h4 class="author">Lieven Clement and Jeroen Gilis</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<p>In the first day of the “Practical Statistics for the Life Sciences (2021)” course, we will have four exercises on data exploration, based on different datasets:</p>
+<div id="the-nhanes-dataset" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> The NHANES dataset:</h1>
+<p>The National Health and Nutrition Examination Survey (NHANES) contains data that has been collected since 1960. For this tutorial, we will make use of the data that was collected between 2009 and 2012, for 10.000 U.S. civilians. The dataset contains a large number of physical, demographic, nutritional and life-style-related parameters.</p>
+<p>Getting familiar with the dataset will always be the first step in a data analysis pipeline. In this tutorial, you will learn the key principles of data exploration in R, including data import, tidying, wrangling and visualisation.</p>
+<ul>
+<li>Preliminary:<a href="./extra1_preliminary_tidyverse.html">Preliminary</a></li>
+<li>Exercise: <a href="./04_1_NHANES.html">Exercise1</a></li>
+<li>Data path: <a href="https://raw.githubusercontent.com/statOmics/PSLS21/data/NHANES.csv" class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/NHANES.csv</a></li>
+</ul>
+<hr />
+</div>
+<div id="the-armpit-dataset" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> The armpit dataset:</h1>
+<p>Smelly armpits are not caused by sweat, itself. The smell is caused by specific micro-organisms belonging to the group of Corynebacterium spp. that metabolise sweat. Another group of abundant bacteria are the Staphylococcus spp., which do not metabolise sweat in smelly compounds.</p>
+<p>The CMET-group at Ghent University does research on transplanting the armpit microbiome to help people with smelly armpits. To test the effect of transplanting the microbiome, they conducted an experiment on two groups of volunteers: one group was treated with a placebo, while the other had a microbiome transplant. The goal was to assess whether a microbial transplant can affect the relative abundance of Staphylococcus spp. in the microbiome of the armpit.</p>
+<p>In this exercise, you will use your acquired skills from the first exercise to explore the armpit dataset all by yourself!</p>
+<ul>
+<li>Exercise: <a href="./04_2_armpit.html">Exercise2</a></li>
+<li>Data path: <a href="https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv" class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv</a> <!-- - Solution: [Solution2](./04_2_armpit_sol.html) --></li>
+</ul>
+<hr />
+</div>
+<div id="the-captopril-dataset" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> The captopril dataset:</h1>
+<p>The captopril dataset holds information on a small experiment with 15 patients that have increased blood pressure values. More specifically, for each patient we will have four values; one value for systolic blood pressure and one for diastolyic, both before and after treating the patient with a drug named captopril.</p>
+<p>In this tutorial on data exploration, you will learn how to deal with data from paired experimental designs.</p>
+<ul>
+<li>Exercise: <a href="./04_3_captopril.html">Exercise3</a></li>
+<li>Data path: <a href="https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt" class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt</a> <!-- - Solution: [Solution3](./04_3_captopril_sol.html) --></li>
+</ul>
+<hr />
+</div>
+<div id="the-fev-dataset" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> The FEV dataset:</h1>
+<p>The FEV, which is an acronym for forced expiratory volume, is a measure of how much air a person can exhale (in liters) during a forced breath. In this dataset, the FEV of 606 children, between the ages of 6 and 17, were measured. The dataset also provides additional information on these children: their <code>age</code>, their <code>height</code>, their <code>gender</code> and, most importantly, whether the child is a smoker or a non-smoker. The goal of this experiment was to find out if smoking has an effect on the FEV of children.</p>
+<p>In this tutorial, you will learn about the importance of confounders in real-life datasets.</p>
+<ul>
+<li>Exercise: <a href="./04_4_FEV.html">Exercise4</a></li>
+<li>Data path: <a href="https://raw.githubusercontent.com/statOmics/PSLS21/data/fev.txt" class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/fev.txt</a> <!-- - Solution: [Solution4](./04_4_FV_sol.html) --></li>
+</ul>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2VzIG9uIGNoYXB0ZXIgNDogRGF0YSBleHBsb3JhdGlvbiIKYXV0aG9yOiAiTGlldmVuIENsZW1lbnQgYW5kIEplcm9lbiBHaWxpcyIKZGF0ZTogInN0YXRPbWljcywgR2hlbnQgVW5pdmVyc2l0eSAoaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSIKb3V0cHV0OgogICAgaHRtbF9kb2N1bWVudDoKICAgICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgICB0aGVtZTogY29zbW8KICAgICAgdG9jOiB0cnVlCiAgICAgIHRvY19mbG9hdDogdHJ1ZQogICAgICBoaWdobGlnaHQ6IHRhbmdvCiAgICAgIG51bWJlcl9zZWN0aW9uczogdHJ1ZQotLS0KCkluIHRoZSBmaXJzdCBkYXkgb2YgdGhlICJQcmFjdGljYWwgU3RhdGlzdGljcyBmb3IgdGhlIExpZmUgU2NpZW5jZXMgKDIwMjEpIgpjb3Vyc2UsIHdlIHdpbGwgaGF2ZSBmb3VyIGV4ZXJjaXNlcyBvbiBkYXRhIGV4cGxvcmF0aW9uLCBiYXNlZCBvbiBkaWZmZXJlbnQKZGF0YXNldHM6CgoKIyBUaGUgTkhBTkVTIGRhdGFzZXQ6CgpUaGUgTmF0aW9uYWwgSGVhbHRoIGFuZCBOdXRyaXRpb24gRXhhbWluYXRpb24gU3VydmV5IChOSEFORVMpIGNvbnRhaW5zIGRhdGEKdGhhdCBoYXMgYmVlbiBjb2xsZWN0ZWQgc2luY2UgMTk2MC4gRm9yIHRoaXMgdHV0b3JpYWwsIHdlIHdpbGwgbWFrZSB1c2Ugb2YgdGhlCmRhdGEgdGhhdCB3YXMgY29sbGVjdGVkICBiZXR3ZWVuIDIwMDkgYW5kICAyMDEyLCBmb3IgMTAuMDAwIFUuUy4gY2l2aWxpYW5zLgpUaGUgZGF0YXNldCBjb250YWlucyBhIGxhcmdlIG51bWJlciBvZiBwaHlzaWNhbCwgZGVtb2dyYXBoaWMsIG51dHJpdGlvbmFsIGFuZApsaWZlLXN0eWxlLXJlbGF0ZWQgcGFyYW1ldGVycy4KCkdldHRpbmcgZmFtaWxpYXIgd2l0aCB0aGUgZGF0YXNldCB3aWxsIGFsd2F5cyBiZSB0aGUgZmlyc3Qgc3RlcCBpbiBhIGRhdGEKYW5hbHlzaXMgcGlwZWxpbmUuIEluIHRoaXMgdHV0b3JpYWwsIHlvdSB3aWxsIGxlYXJuIHRoZSBrZXkgcHJpbmNpcGxlcyBvZiBkYXRhCmV4cGxvcmF0aW9uIGluIFIsIGluY2x1ZGluZyBkYXRhIGltcG9ydCwgdGlkeWluZywgd3JhbmdsaW5nIGFuZCB2aXN1YWxpc2F0aW9uLgoKLSBQcmVsaW1pbmFyeTpbUHJlbGltaW5hcnldKC4vZXh0cmExX3ByZWxpbWluYXJ5X3RpZHl2ZXJzZS5odG1sKQotIEV4ZXJjaXNlOiBbRXhlcmNpc2UxXSguLzA0XzFfTkhBTkVTLmh0bWwpCi0gRGF0YSBwYXRoOiBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL05IQU5FUy5jc3YKCi0tLQoKIyBUaGUgYXJtcGl0IGRhdGFzZXQ6CgpTbWVsbHkgYXJtcGl0cyBhcmUgbm90IGNhdXNlZCBieSBzd2VhdCwgaXRzZWxmLiBUaGUgc21lbGwgaXMgY2F1c2VkIGJ5IHNwZWNpZmljCm1pY3JvLW9yZ2FuaXNtcyBiZWxvbmdpbmcgdG8gdGhlIGdyb3VwIG9mIENvcnluZWJhY3Rlcml1bSBzcHAuIHRoYXQgbWV0YWJvbGlzZQpzd2VhdC4gQW5vdGhlciBncm91cCBvZiBhYnVuZGFudCBiYWN0ZXJpYSBhcmUgdGhlIFN0YXBoeWxvY29jY3VzIHNwcC4sIHdoaWNoIGRvCm5vdCBtZXRhYm9saXNlIHN3ZWF0IGluIHNtZWxseSBjb21wb3VuZHMuCgpUaGUgQ01FVC1ncm91cCBhdCBHaGVudCBVbml2ZXJzaXR5IGRvZXMgcmVzZWFyY2ggb24gdHJhbnNwbGFudGluZyB0aGUgYXJtcGl0Cm1pY3JvYmlvbWUgdG8gaGVscCBwZW9wbGUgd2l0aCBzbWVsbHkgYXJtcGl0cy4gVG8gdGVzdCB0aGUgZWZmZWN0IG9mCnRyYW5zcGxhbnRpbmcgdGhlIG1pY3JvYmlvbWUsIHRoZXkgY29uZHVjdGVkIGFuIGV4cGVyaW1lbnQgb24gdHdvIGdyb3VwcwpvZiB2b2x1bnRlZXJzOiBvbmUgZ3JvdXAgd2FzIHRyZWF0ZWQgd2l0aCBhIHBsYWNlYm8sIHdoaWxlIHRoZSBvdGhlciBoYWQgYQptaWNyb2Jpb21lIHRyYW5zcGxhbnQuIFRoZSBnb2FsIHdhcyB0byBhc3Nlc3Mgd2hldGhlciBhIG1pY3JvYmlhbCB0cmFuc3BsYW50IGNhbiBhZmZlY3QgdGhlIHJlbGF0aXZlIGFidW5kYW5jZSBvZiBTdGFwaHlsb2NvY2N1cyBzcHAuIGluIHRoZSBtaWNyb2Jpb21lIG9mIHRoZSBhcm1waXQuCgpJbiB0aGlzIGV4ZXJjaXNlLCB5b3Ugd2lsbCB1c2UgeW91ciBhY3F1aXJlZCBza2lsbHMgZnJvbSB0aGUgZmlyc3QgZXhlcmNpc2UgdG8KZXhwbG9yZSB0aGUgYXJtcGl0IGRhdGFzZXQgYWxsIGJ5IHlvdXJzZWxmIQoKLSBFeGVyY2lzZTogW0V4ZXJjaXNlMl0oLi8wNF8yX2FybXBpdC5odG1sKQotIERhdGEgcGF0aDogaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9hcm1waXQuY3N2CjwhLS0gLSBTb2x1dGlvbjogW1NvbHV0aW9uMl0oLi8wNF8yX2FybXBpdF9zb2wuaHRtbCkgLS0+CgotLS0KCiMgVGhlIGNhcHRvcHJpbCBkYXRhc2V0OgoKVGhlIGNhcHRvcHJpbCBkYXRhc2V0IGhvbGRzIGluZm9ybWF0aW9uIG9uIGEgc21hbGwgZXhwZXJpbWVudCB3aXRoIDE1IHBhdGllbnRzCnRoYXQgaGF2ZSBpbmNyZWFzZWQgYmxvb2QgcHJlc3N1cmUgdmFsdWVzLiBNb3JlIHNwZWNpZmljYWxseSwgZm9yIGVhY2ggcGF0aWVudAp3ZSB3aWxsIGhhdmUgZm91ciB2YWx1ZXM7IG9uZSB2YWx1ZSBmb3Igc3lzdG9saWMgYmxvb2QgcHJlc3N1cmUgYW5kIG9uZSBmb3IKZGlhc3RvbHlpYywgYm90aCBiZWZvcmUgYW5kIGFmdGVyIHRyZWF0aW5nIHRoZSBwYXRpZW50IHdpdGggYSBkcnVnIG5hbWVkCmNhcHRvcHJpbC4KCkluIHRoaXMgdHV0b3JpYWwgb24gZGF0YSBleHBsb3JhdGlvbiwgeW91IHdpbGwgbGVhcm4gaG93IHRvIGRlYWwgd2l0aCBkYXRhIGZyb20KcGFpcmVkIGV4cGVyaW1lbnRhbCBkZXNpZ25zLgoKLSBFeGVyY2lzZTogW0V4ZXJjaXNlM10oLi8wNF8zX2NhcHRvcHJpbC5odG1sKQotIERhdGEgcGF0aDogaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9jYXB0b3ByaWwudHh0CjwhLS0gLSBTb2x1dGlvbjogW1NvbHV0aW9uM10oLi8wNF8zX2NhcHRvcHJpbF9zb2wuaHRtbCkgLS0+CgotLS0KCiMgVGhlIEZFViBkYXRhc2V0OgoKVGhlIEZFViwgd2hpY2ggaXMgYW4gYWNyb255bSBmb3IgZm9yY2VkIGV4cGlyYXRvcnkgdm9sdW1lLCBpcyBhIG1lYXN1cmUgb2YgaG93Cm11Y2ggYWlyIGEgcGVyc29uIGNhbiBleGhhbGUgKGluIGxpdGVycykgIGR1cmluZyAgYSBmb3JjZWQgYnJlYXRoLiBJbiB0aGlzCmRhdGFzZXQsIHRoZSBGRVYgb2YgNjA2IGNoaWxkcmVuLCBiZXR3ZWVuIHRoZSBhZ2VzIG9mIDYgYW5kIDE3LCB3ZXJlIG1lYXN1cmVkLgpUaGUgZGF0YXNldCBhbHNvIHByb3ZpZGVzIGFkZGl0aW9uYWwgaW5mb3JtYXRpb24gb24gdGhlc2UgY2hpbGRyZW46CnRoZWlyIGBhZ2VgLCB0aGVpciBgaGVpZ2h0YCwgdGhlaXIgYGdlbmRlcmAgYW5kLCBtb3N0IGltcG9ydGFudGx5LCB3aGV0aGVyIHRoZQpjaGlsZCBpcyBhIHNtb2tlciBvciBhIG5vbi1zbW9rZXIuIFRoZSBnb2FsIG9mIHRoaXMgZXhwZXJpbWVudCB3YXMgdG8gZmluZCBvdXQKaWYgc21va2luZyBoYXMgYW4gZWZmZWN0IG9uIHRoZSBGRVYgb2YgY2hpbGRyZW4uCgpJbiB0aGlzIHR1dG9yaWFsLCB5b3Ugd2lsbCBsZWFybiBhYm91dCB0aGUgaW1wb3J0YW5jZSBvZiBjb25mb3VuZGVycyBpbgpyZWFsLWxpZmUgZGF0YXNldHMuCgotIEV4ZXJjaXNlOiBbRXhlcmNpc2U0XSguLzA0XzRfRkVWLmh0bWwpCi0gRGF0YSBwYXRoOiBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL2Zldi50eHQKPCEtLSAtIFNvbHV0aW9uOiBbU29sdXRpb240XSguLzA0XzRfRlZfc29sLmh0bWwpIC0tPgo=</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("04_exercises.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
