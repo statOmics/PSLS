@@ -17,10 +17,14 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
                       message = FALSE, warning = FALSE)
+```
+
+```{r libraries}
 library(Rmisc)
 library(tidyverse)
 library(NHANES)
 ```
+
 
 
 # Introduction
@@ -35,7 +39,7 @@ Until now we used models for a continuous response in function of categorical or
 
 # Test for a proportion
 
-##Saksen-study
+## Saksen-study
 
 - Fairly closed population (few migration)
 - Probability that an unborn child is male?
@@ -142,7 +146,7 @@ $(x_1,x_2)$|$s$|$P(S = s)$|
 
 ---
 
-###General: $n$ independent samples
+### General: $n$ independent samples
 
 - Probability for $\pi$ on success ($X=1$)
 - Total number of successes $S$ (sum of all values of 1) can take $n+1$ possible values
@@ -324,7 +328,7 @@ The probability that an unborn child is male equals `r format(pi*100,digits=3)`%
 - 2 measurements on same individual
 - e.g. before and after exposure to a chemical substance
 - observe a categorical outcome before and after.
-- *gepaarde binary responses*
+- *paired binary responses*
 - Statistical analysis has to account for paired design.
 
 ---
@@ -869,7 +873,8 @@ OR
 - Toxicolocal effect of carbon disulfite (CS$_2$) on beetles.
 - Research hypothesis is there an effect of the  CS$_2$ concentration on the mortality of beetles?
 
-##Design##
+Design:
+
 - 32 independent experiments
 - Each time 1 beatle is exposed to one of 8 CS$_2$ concentrations (mg/l).
 - The outcome: mortality ($y=1$) or survival ($y=0$).
@@ -890,7 +895,7 @@ beatleModel<-glm(status~dose,data=beetles,family=binomial)
 summary(beatleModel)
 ```
 
-----
+---
 
 - Intercept has an interpretation of a log odds on mortality when no $\text{CS}_2$ gas is applied.
 - Very small odds on mortality ($\pi/(1-\pi)=\exp(-53.2)$) so the probability is almost 0.
