@@ -23,38 +23,38 @@ library(tidyverse)
 
 The power of a test is defined as:
 
-$$P(p < 
+$$P(p <
 \alpha | H_1)$$
-This is the probability to reject the nulhypothesis at the significance level $\alpha$ given that the alternative hypothesis is true. 
+This is the probability to reject the nulhypothesis at the significance level $\alpha$ given that the alternative hypothesis is true.
 
 The power depends on:
 
 - the real effect size in the population $\mathbf{L}^T\boldsymbol{\beta}$.
 - the number of observations: SE and df.
-- Choice of designpoints 
-- Choice of significance-level $\alpha$. 
+- Choice of designpoints
+- Choice of significance-level $\alpha$.
 
 We will evaluate the power using simulation.
 
 # Rodents
 
-A biologist examined the effect of a fungal infection on the eating behavior of rodents. 
-Infected apples were offered to a group of eight rodents, and sterile apples were offered to a group of 4 rodents. The amount of grams of apples consumed per kg body weight are given in the dataset below. 
+A biologist examined the effect of a fungal infection on the eating behavior of rodents.
+Infected apples were offered to a group of eight rodents, and sterile apples were offered to a group of 4 rodents. The amount of grams of apples consumed per kg body weight are given in the dataset below.
 
 ```{r}
 rodents <- data.frame(weight=c(11,33,48,34,112,369,64,44,177,80,141,332),group=as.factor(c(rep("treat",8),rep("ctrl",4))))
-rodents 
+rodents
 ```
 
 ## Data exploration
 
 ```{r}
-rodents %>% 
+rodents %>%
   ggplot(aes(x=group,y=weight)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter()
 
-rodents %>% 
+rodents %>%
   ggplot(aes(sample = weight)) +
   geom_qq() +
   geom_qq_line() +
@@ -72,24 +72,24 @@ Suppose that the assumptions are valid and that standard deviation in the popula
 
 # Analysis
 
-We will model the data using a linear model with one dummy variable. 
+We will model the data using a linear model with one dummy variable.
 
 $$
-y_i = \beta_0 + \beta_1 x_{t,i} + 
+y_i = \beta_0 + \beta_1 x_{t,i} +
 \epsilon_i
 $$
-with $x_{p,i} = 0$ if the rodent is subjected the control treatment with sterile apples and $x_{t,i} = 1$ if rodent receives the treatment with infected apples. 
+with $x_{p,i} = 0$ if the rodent is subjected the control treatment with sterile apples and $x_{t,i} = 1$ if rodent receives the treatment with infected apples.
 
 - Estimated effect size?
 
-The average difference in relative abundance of Staphylococcus of patients 
-of the transplant and the placebo group. 
+The average difference in relative abundance of Staphylococcus of patients
+of the transplant and the placebo group.
 
 $$
 \hat \beta_1 = \bar y_t - \bar y_c
 $$
 
-- $H_0$: rodents eat consume on average the same amount of apples per kg body weight when they are fed with sterile or with infected apples.  
+- $H_0$: rodents eat consume on average the same amount of apples per kg body weight when they are fed with sterile or with infected apples.
 - $H_1$: the average amount of apples in g/kg body weight is different when rodents are fed with sterile then as when they are fed with infected apples.
 
 ```{r}
@@ -97,13 +97,13 @@ lm1 <- lm(weight ~ group, rodents)
 summary(lm1)
 ```
 
-With the current study and when we assume that the assumptions of the model hold, we conclude that the amount of apples that rodents on average consume does not differ significantly between the group that was fed with sterile apples and the group that was fed with infected apples. 
+With the current study and when we assume that the assumptions of the model hold, we conclude that the amount of apples that rodents on average consume does not differ significantly between the group that was fed with sterile apples and the group that was fed with infected apples.
 
-# Power of the test to detect the same effect size as observed in our dataset with our experimental design? 
+# Power of the test to detect the same effect size as observed in our dataset with our experimental design?
 
 ## Simulation function
 
-Function to simulate data similar to that of our experiment under our model assumptions. 
+Function to simulate data similar to that of our experiment under our model assumptions.
 
 ```{r}
 simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
@@ -113,10 +113,10 @@ simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
     design <- model.matrix(form, data)
     ySim <- ySim + c(design %*%betas)
     ySim <- t(ySim)
-  
+
     ### Fitting
     fitAll <- limma::lmFit(ySim,design)
-  
+
     ### Inference
     varUnscaled <- c(t(contrasts)%*%fitAll$cov.coefficients%*%contrasts)
     contrasts <- fitAll$coefficients %*%contrasts
@@ -133,23 +133,23 @@ simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
 betas <- lm1$coefficients
 
 nSim <- 10000
-form <- ~ group 
+form <- ~ group
 sd <- sigma(lm1)
 contrast <- limma::makeContrasts("grouptreat",levels = names(lm1$coefficients))
-alpha <- 0.05 
+alpha <- 0.05
 
 power <- simFast(form, rodents, betas, sd, contrasts = contrast, alpha = alpha, nSim = nSim)
 power
 ```
 
-We observe that the experiment is severly underpowered. We only have a power of `r round(power*100,1)`% to pick up the treatment effect. 
+We observe that the experiment is severly underpowered. We only have a power of `r round(power*100,1)`% to pick up the treatment effect.
 
-# Power for a balanced design 
+# Power for a balanced design
 
 ```{r}
 betas <- lm1$coefficients
 nSim <- 10000
-form <- ~ group 
+form <- ~ group
 sd <- sigma(lm1)
 contrast <- limma::makeContrasts("grouptreat",levels = names(lm1$coefficients))
 n1 <- n2 <- nrow(rodents)/2
@@ -159,32 +159,32 @@ powerBalanced <- simFast(form, predictorData, betas, sd, contrasts = contrast, a
 powerBalanced
 ```
 
-We observe that the power is larger for the balanced design. 
-We could also have known this from formula of the standard error from the two-sample t-test. 
+We observe that the power is larger for the balanced design.
+We could also have known this from formula of the standard error from the two-sample t-test.
 
 $$
 SE = \hat \sigma \sqrt{1/n1 + 1/n2}
 $$
-Indeed, 
+Indeed,
 
 ```{r}
 sqrt(1/sum(rodents$group=="treat") + 1/sum(rodents$group=="ctrl"))
 sqrt(1/n1 + 1/n1)
 ```
 
-So the SE is larger when the design is not balanced. 
+So the SE is larger when the design is not balanced.
 
 
-# Required sample size to obtain a power of 90 %? 
+# Required sample size to obtain a power of 90 %?
 
 ```{r}
 set.seed(1400)
 betas <- lm1$coefficients
 nSim <- 10000
-form <- ~ group 
+form <- ~ group
 sd <- sigma(lm1)
 power <- data.frame(n=seq(5,50,5),power=NA)
-alpha <- 0.05 
+alpha <- 0.05
 contrast <- limma::makeContrasts("grouptreat",levels = names(lm1$coefficients))
 
 for (i in 1:nrow(power))
@@ -197,7 +197,7 @@ power
 ```
 
 ```{r}
-power %>% 
+power %>%
   ggplot(aes(x=n,y=power)) +
   geom_line()
 ```
@@ -214,21 +214,21 @@ power.t.test(delta = lm1$coef[2], sd = sigma(lm1),power=.9)
 
 # Impact of effect size
 
-Suppose that we would like to pick up an effect size of $\beta_1 = 60 g/kg$. 
+Suppose that we would like to pick up an effect size of $\beta_1 = 60 g/kg$.
 how many samples would be required in each group to obtain a power of 90%?
-Note, that 
+Note, that
 
-- we do a two-sided test so the sign of the effect size is arbitrary. 
-- the intercept in the power analysis is also arbitrary so we could also set it at 0. 
+- we do a two-sided test so the sign of the effect size is arbitrary.
+- the intercept in the power analysis is also arbitrary so we could also set it at 0.
 
 ```{r}
 set.seed(1400)
 betas <- c(0,60)
 nSim <- 10000
-form <- ~ group 
+form <- ~ group
 sd <- sigma(lm1)
 power2 <- data.frame(n=seq(5,100,5),power=NA)
-alpha <- 0.05 
+alpha <- 0.05
 contrast <- limma::makeContrasts("grouptreat",levels = names(lm1$coefficients))
 
 for (i in 1:nrow(power2))
@@ -241,15 +241,15 @@ power2
 ```
 
 ```{r}
-power2 %>% 
+power2 %>%
   ggplot(aes(x=n,y=power)) +
   geom_line() +
   geom_hline(yintercept = .9, lty=2)
 ```
 
-We observe that we need between 75-80 observations to obtain a power of 90%. 
+We observe that we need between 75-80 observations to obtain a power of 90%.
 
-This is confirmed with the power functions for the two sample t-test. 
+This is confirmed with the power functions for the two sample t-test.
 
 ```{r}
 b1 = - 60
@@ -257,7 +257,6 @@ power = .9
 power.t.test(d = b1, sd = sigma(lm1), type='two.sample',power = power)
 ```
 
-Note, that we would require a much larger sample size. This is because the 
-desired effect size that we would like to pick up is small compared to the 
-variability (standard deviation) in the population. 
-
+Note, that we would require a much larger sample size. This is because the
+desired effect size that we would like to pick up is small compared to the
+variability (standard deviation) in the population.

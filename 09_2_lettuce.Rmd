@@ -1,10 +1,10 @@
 ---
-title: "Exercise 9.2: Non-parametric test on the lettuce dataset"   
+title: "Exercise 9.2: Non-parametric test on the lettuce dataset"
 author: "Lieven Clement and Jeroen Gilis"
-date: "statOmics, Ghent University (https://statomics.github.io)"  
+date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -23,7 +23,7 @@ the assumptions of normality and equal variances.
 Therefore, we will re-analyse the dataset by using the
 non-parametric alternative to ANOVA, the `Kruskal-Wallis test`.
 We will first give a concise overview of what we saw in the
-ANOVA analysis, which can be found in the 
+ANOVA analysis, which can be found in the
 `ANOVA_lettuce_plants.Rmd` file.
 
 The researchers want to find out if biochar, compost and
@@ -84,7 +84,7 @@ Interpret the visualization!
 
 In the analysis in chapter 7 (`ANOVA_lettuce_plants_half.rmd` file),
 we accepted the assumptions for analyzing the data with an ANOVA.
-However, it was not clear if all the assumptions of ANOVA were met. 
+However, it was not clear if all the assumptions of ANOVA were met.
 Indeed, with only 7 values per group, it is very hard to assess
 the assumptions of normality and equal variances.
 
@@ -110,7 +110,7 @@ Interpret the results!
 # Post-hoc analysis
 
 We will perform a post-hoc analysis with pairwise Wilcoxon rank
-sum test. As we did not want to assume the location shift, we 
+sum test. As we did not want to assume the location shift, we
 will interpret the outcome in terms of probabilistic indices.
 Note that after the analysis, we will need to correct the acquired
 p-values for multiple testing.
@@ -134,16 +134,16 @@ treatments <- levels(lettuce$treatment)
 freshweight <- lettuce$freshweight
 
 pvalues <- combn(treatments,2,function(x){
-  
+
   ## Pairwise Wilcoxon test
   test = wilcox_test(freshweight~treatment,subset(lettuce,treatment%in%x), distribution = 'exact')
-  
+
   ## Get and store p-value of test
   pvalue(test)
 })
 
 ## Adjust for multiple testing
-pvalues_bonf = p.adjust(pvalues,method = 'bonferroni') 
+pvalues_bonf = p.adjust(pvalues,method = 'bonferroni')
 
 ## link the p-value with the correct pairwise test
 names(pvalues_bonf) <- combn(levels(lettuce$treatment),2,paste,collapse="_VS_")
@@ -158,15 +158,3 @@ for the probabilistic indices? Interpret those as well.
 # Conclusion
 
 Formulate a proper conclusion that answers the research hypothesis.
-
-
-
-
-
-
-
-
-
-
-
-

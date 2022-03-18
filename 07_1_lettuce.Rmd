@@ -1,10 +1,10 @@
 ---
-title: "Exercise 7.1: ANOVA on the lettuce dataset"   
+title: "Exercise 7.1: ANOVA on the lettuce dataset"
 author: "Lieven Clement and Jeroen Gilis"
-date: "statOmics, Ghent University (https://statomics.github.io)"  
+date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -14,18 +14,18 @@ output:
 
 # Background
 
-In agriculture, it is important to have a high yield of crops. For lettuce 
+In agriculture, it is important to have a high yield of crops. For lettuce
 plants, plants with many leaves are known to be preferred by the consumers.
 
 One way to increase the number of leaves (or better, total
-leaf weight) is by using a fertilizer. Recently, there has been 
+leaf weight) is by using a fertilizer. Recently, there has been
 a tendency to rely more on natural fertilizers, such as compost.
-Near Ghent, the institute of research for agriculture and fishery is testing 
-new, natural fertilization methods. One of these new fertilizers is called 
-biochar. Biochar is a residual product from pyrolysis, a process in which 
-biomass is burned under specific conditions (such as high pressure) in order 
-to produce energy. Biochar is similar to charcoal, but has some very useful 
-properties, such as retaining water in the soil. It also has a positive 
+Near Ghent, the institute of research for agriculture and fishery is testing
+new, natural fertilization methods. One of these new fertilizers is called
+biochar. Biochar is a residual product from pyrolysis, a process in which
+biomass is burned under specific conditions (such as high pressure) in order
+to produce energy. Biochar is similar to charcoal, but has some very useful
+properties, such as retaining water in the soil. It also has a positive
 influence on the soil microbiome.
 
 # The lettuce dataset
@@ -43,8 +43,8 @@ one of four soil types;
 
 The dataset `freshweight_lettuce.txt` contains the freshweight
 (in grams) for 28 lettuce plants (7 per condition). The researchers
-want to use an ANOVA test to assess if the treatments have a different effect 
-on the growth of lettuce plants. If so, they will use a post-hoc test 
+want to use an ANOVA test to assess if the treatments have a different effect
+on the growth of lettuce plants. If so, they will use a post-hoc test
 (Tuckey test) to discover which specific treatments have an effect.
 
 Load the required libraries
@@ -89,15 +89,14 @@ Interpret the boxplots!
 
 # Questions and assignments
 
-1. How will you model the data. 
-2. Translate the research question into parameters of the model. 
+1. How will you model the data.
+2. Translate the research question into parameters of the model.
 3. Check the assumptions.
 4. If the assumptions are fulfilled you can fit model
-5. Further assess differences between the treatments in a post-hoc analysis 
+5. Further assess differences between the treatments in a post-hoc analysis
 if applicable.
 6. Question: can we extrapolate these results to another leaf vegetable,
 for instance, spinache?
-7. Question: Imaagine that all of the control and refoak plants were grown in 1 
-greenhouse and the other two conditions were grown in another greenhouse? How 
+7. Question: Imaagine that all of the control and refoak plants were grown in 1
+greenhouse and the other two conditions were grown in another greenhouse? How
 would this affect the model assumptions of linear ANOVA?
-

@@ -21,11 +21,11 @@ library(tidyverse)
 
 # Concepts
 
-- Experimental units representative for population: Randomisation 
+- Experimental units representative for population: Randomisation
 - Replication: technical vs biological, sample size - power
 - Sources of variation: technical, biological, within subject, between subject
 
-# Replicatie 
+# Replicatie
 
 Two pager on Replication in nature methods [[PDF](https://www.nature.com/articles/nmeth.3091.pdf)]
 ![](https://www.nature.com/articles/nmeth.3091.pdf){ width=100% }
@@ -37,7 +37,7 @@ Consider a single cell RNA-seq experiment where researchers want to assess the e
 Potential research questions
 
 - Is there a difference in average gene expression between treated and non treated samples
-- Is there a difference in variability of gene expression between treated and non treated samples 
+- Is there a difference in variability of gene expression between treated and non treated samples
 
 ## Sources of variation
 
@@ -49,7 +49,7 @@ TABLE 1 NATURE METHODS | VOL.11 NO.9 | SEPTEMBER 2014 | 879 - 880
 | | Strains |	B |
 | Animal study subjects | Cohoused groups |	B |
 | | Gender | B |
-| | Individuals	| B | 
+| | Individuals	| B |
 | | | |
 | | Organs from sacrificed animals | B |
 | | Methods for dissociating cells from tissue | T |
@@ -61,7 +61,7 @@ TABLE 1 NATURE METHODS | VOL.11 NO.9 | SEPTEMBER 2014 | 879 - 880
 | Sequencing | Reads from different transcript molecules | V$^\text{b}$ |
 | | Reads with unique molecular identifier (UMI) from a given transcript molecule |	T |
 
-(a) Replicates are categorized as biological (B), technical (T) or of variable type (V). 
+(a) Replicates are categorized as biological (B), technical (T) or of variable type (V).
 (b) Sequence reads serve diverse purposes depending on the application and how reads are used in analysis.
 
 ---
@@ -74,32 +74,32 @@ TABLE 1 NATURE METHODS | VOL.11 NO.9 | SEPTEMBER 2014 | 879 - 880
 ![](https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnmeth.3091/MediaObjects/41592_2014_Article_BFnmeth3091_Fig1_HTML.jpg)
 Figure 1 NATURE METHODS | VOL.11 NO.9 | SEPTEMBER 2014 | 879 - 880
 
-(a) Three levels of replication (two biological, one technical) with animal, cell and measurement replicates normally distributed with a mean across animals of 10 and ratio of variances 1:2:0.5. Solid green (biological) and blue (technical) dots show how a measurement of the expression (X = 12) samples from all three sources of variation. Distribution s.d. is shown as horizontal lines. 
+(a) Three levels of replication (two biological, one technical) with animal, cell and measurement replicates normally distributed with a mean across animals of 10 and ratio of variances 1:2:0.5. Solid green (biological) and blue (technical) dots show how a measurement of the expression (X = 12) samples from all three sources of variation. Distribution s.d. is shown as horizontal lines.
 (b) Expression variance, Var(X), and variance of expression mean, Var($\bar X$), computed across 10,000 simulations of nAnCnM = 48 measurements for unique combinations of the number of animals (nA = 1 to 48), cells per animal (nC = 1 to 48) and technical replicate measurements per cell (nM = 1 and 3). The ratio of Var(X) and Var($\bar X$) is the effective sample size, n, which corresponds to the equivalent number of statistically independent measurements. Horizontal dashed lines correspond to biological and total variation. Error bars on Var(X) show s.d. from the 10,000 simulated samples (nM = 1).
 
 ---
 
-- Cost benefit trade-off: cost difference between biological and technical replicates 
+- Cost benefit trade-off: cost difference between biological and technical replicates
 - Typically, biological variability is substantially larger than technical variability
 
-$\rightarrow$ commit resources to sampling biologically relevant variables 
+$\rightarrow$ commit resources to sampling biologically relevant variables
 
 $\rightarrow$ unless measures of technical variability are of interest then increasing number of technical measurements is valuable.
 
-- Good experimental design practice includes planning for replication. 
+- Good experimental design practice includes planning for replication.
 
-  1. Identify the research questions to be answered with experiments. 
+  1. Identify the research questions to be answered with experiments.
   2. Determine proportion of variability induced by each step.
   3. Be aware for pseudoreplication and aim for statistically independent replicates.
 
---- 
+---
 
 # Power, sample size and other design aspects
 
-Reading materials: 
+Reading materials:
 [Nature Methods (2013), 10(12), 1139–1140](https://www.nature.com/articles/nmeth.2738.pdf)
 
-## Intermezzo linear regression in matrix form 
+## Intermezzo linear regression in matrix form
 
 - Linear regression is a very important statistical tool to study the association between variables and to build prediction models.
 
@@ -176,64 +176,64 @@ $$\rightarrow \hat{\boldsymbol{\beta}}=\text{argmin}_\beta \text{ RSS}(\boldsymb
 \end{array}
 \]
 
-The uncertainty on the model parameters thus depends on the residual variability and the design! 
+The uncertainty on the model parameters thus depends on the residual variability and the design!
 
-- The larger $\mathbf{X}^T\mathbf{X}$ the more information the experiment contains on the model parameters and the smaller their variances and standard errors will be! 
-- Factorial designs? 
-- Designs with continuous predictors? 
+- The larger $\mathbf{X}^T\mathbf{X}$ the more information the experiment contains on the model parameters and the smaller their variances and standard errors will be!
+- Factorial designs?
+- Designs with continuous predictors?
 
 ---
 
-The effect size of interest is typically a linear combinations of the model parameters, i.e. 
+The effect size of interest is typically a linear combinations of the model parameters, i.e.
 $$
 l_0 \times \beta_0 + l_1 \times \beta_1 + ... + l_{p-1} \times \beta_{p-1} = \mathbf{L}^T\boldsymbol{\beta}
-$$ 
+$$
 
-The null hypothesis of our test statistics is than formulated as 
+The null hypothesis of our test statistics is than formulated as
 
 
 $$
-H_0: \mathbf{L}^T\boldsymbol{\beta} = 0 
-$$ 
+H_0: \mathbf{L}^T\boldsymbol{\beta} = 0
+$$
 
-vs the alternative hypothesis 
+vs the alternative hypothesis
 
 $$
-H_0: \mathbf{L}^T\boldsymbol{\beta} \neq 0 
+H_0: \mathbf{L}^T\boldsymbol{\beta} \neq 0
 $$
-which can be assessed using a t-test statistic: 
+which can be assessed using a t-test statistic:
 
 $$
 t=\frac{\mathbf{L}^T\hat{\boldsymbol{\beta}} - 0}{\text{se}_{\mathbf{L}^T\hat{\boldsymbol{\beta}}}}
 $$
-which follows a t-distribution with n-p degrees of freedom under the null hypothesis when all assumptions for the linear model are valid. 
+which follows a t-distribution with n-p degrees of freedom under the null hypothesis when all assumptions for the linear model are valid.
 
-So the power 
+So the power
 
 $$P(p < 0.05 | H_1)$$
 
-will typically depends on 
+will typically depends on
 
 - the real effect size in the population  $\mathbf{L}^T\boldsymbol{\beta}$.
 - Number of observations: SE and df of t-test.
 - Choice of the design points.
-- Choice of significance level. 
+- Choice of significance level.
 
 Similar to the introductory example, we can use simulations to assess the power.
 
-## Mouse example 
+## Mouse example
 
 - In 2021 Choa et al. published that the cytokine Thymic stromal lymphopoietin
 (TSLP) induced fat loss through sebum secretion (talg). [[html](https://www.science.org/doi/full/10.1126/science.abd2893)] [[PDF](https://www.science.org/doi/pdf/10.1126/science.abd2893)]
 
-- Suppose that you would like to set up a similar study to test if cytokine interleukin 25 (IL) also has beneficial effect. 
+- Suppose that you would like to set up a similar study to test if cytokine interleukin 25 (IL) also has beneficial effect.
 
-- You plan to setup a study with a control group of high fat diet (HFD) fed mice and a treatment group that recieves the HFD and IL. 
+- You plan to setup a study with a control group of high fat diet (HFD) fed mice and a treatment group that recieves the HFD and IL.
 
-- What sample size do you need to pick up the effect of the treatment. 
+- What sample size do you need to pick up the effect of the treatment.
 
 
-### How will we analyse the data of this experiment? 
+### How will we analyse the data of this experiment?
 
 
 ---
@@ -243,25 +243,25 @@ Similar to the introductory example, we can use simulations to assess the power.
 - $H_0$: The average weight difference is equal to zero
 - $H-0$: The average weight difference is different from zero
 
-- Two sample t-test or a t-test on the slope of a linear model with one dummy variable. 
+- Two sample t-test or a t-test on the slope of a linear model with one dummy variable.
 
-$$ Y_i = \beta_0 + \beta_1 X_\text{iIL} + \epsilon_i$$ 
+$$ Y_i = \beta_0 + \beta_1 X_\text{iIL} + \epsilon_i$$
 
 $$
 \text{with }
 X_\text{iIL}=\begin{cases}X_{iIL}=0 & \text{HFD}\\X_{iIL}=1 & \text{HFD + IL}\end{cases}.
 $$
 
-- Estimated effect size 
+- Estimated effect size
 $$\hat\delta = \bar X_{IL} - \bar X_{c} = \hat \beta_1$$
 
 - Test statistic
 $$
 T = \frac{\bar{X}_{IL}-\bar{X}_{c}}{SD_\text{pooled} \times \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} = \frac{\hat\beta_1}{\text{SE}_{\hat\beta_1}}
 $$
-- $\hat \beta_1$ is an unbiased estimator of the real weight difference ($\delta$) that would occur in the population of rats fed with HFD and rats fed with HFD + IL.  
+- $\hat \beta_1$ is an unbiased estimator of the real weight difference ($\delta$) that would occur in the population of rats fed with HFD and rats fed with HFD + IL.
 
-### Power? 
+### Power?
 
 $$
 P[p < \alpha \vert \beta_1 \neq 0]
@@ -271,18 +271,18 @@ $$
 - Hence, the power will depend on the real weight difference between the group means $\beta_1$ in the population.
 - The variability of the weight measurements
 - The significance level $\alpha$
-- Sample size $n_{IL}$ and $n_c$ in both groups 
+- Sample size $n_{IL}$ and $n_c$ in both groups
 
 
-We can estimate the power if 
+We can estimate the power if
 
 1. The assumptions of the model are met: weights are normally distributed with same variance
 
 and we know
 
-2. the standard deviation of the weight measurements around their average mean for HFD-fed mice  
+2. the standard deviation of the weight measurements around their average mean for HFD-fed mice
 3. the real effect size in the population
-4. $n_1$ and $n_2$ 
+4. $n_1$ and $n_2$
 
 ### Use data from a previous experiment to get insight in mice data
 
@@ -291,46 +291,46 @@ Suppose that we have access to the data of a preliminary experiment (e.g. provid
 ```{r}
 mice <- read.csv("https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv")
 
-mice %>% 
+mice %>%
   ggplot(aes(x=Diet,y=Bodyweight)) +
   geom_boxplot(outlier.shape=FALSE) +
   geom_jitter()
 
-mice %>% 
+mice %>%
   ggplot(aes(sample=Bodyweight)) +
-  geom_qq() + 
+  geom_qq() +
   geom_qq_line() +
   facet_wrap(~Diet)
 ```
 
 ```{r}
 mice <- mice %>% mutate(Diet = as.factor(Diet))
-miceSum <- mice %>% 
+miceSum <- mice %>%
   group_by(Diet)  %>%
   summarize_at("Bodyweight",list(mean=~mean(.,na.rm=TRUE),
                     sd=~sd(.,na.rm=TRUE),
                     n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
   mutate(se=sd/sqrt(n))
-miceSum 
+miceSum
 ```
-In the experiment we have data from two diets: 
+In the experiment we have data from two diets:
 
-- regular diet of cerial and grain based diet (Chow) 
+- regular diet of cerial and grain based diet (Chow)
 - High Fat (hf)
 
-We can use the hf mice as input for our power analysis. 
+We can use the hf mice as input for our power analysis.
 
-- The data of the hf mice seem to be normally distributed 
-- The mean weight is `r miceSum %>% filter(Diet == "hf") %>% pull("mean") %>% round(.,1)`g 
-- The SD of the weight is `r miceSum %>% filter(Diet == "hf") %>% pull("sd") %>% round(.,1)`g 
+- The data of the hf mice seem to be normally distributed
+- The mean weight is `r miceSum %>% filter(Diet == "hf") %>% pull("mean") %>% round(.,1)`g
+- The SD of the weight is `r miceSum %>% filter(Diet == "hf") %>% pull("sd") %>% round(.,1)`g
 
-Effect size? 
+Effect size?
 
-- The alternative hypothesis is complex. 
-- It includes all possible effects! 
-- In order to do the power analysis we will have to choose a minimum effect size that we would like to detect. 
+- The alternative hypothesis is complex.
+- It includes all possible effects!
+- In order to do the power analysis we will have to choose a minimum effect size that we would like to detect.
 
-- Suppose that we would like to detect if the weight of the rats difference $\delta$ of at least 10%. 
+- Suppose that we would like to detect if the weight of the rats difference $\delta$ of at least 10%.
 
 ```{r}
 delta <- - round(miceSum$mean[2] *.1,1)
@@ -354,15 +354,15 @@ alpha <- 0.05
 x <- rep(0:1,c(n1,n2))
 y <- b0 + b1 * x + rnorm(n1+n2,0, sd = sd)
 fit <- lm(y~x)
-bhat <- fit$coef 
+bhat <- fit$coef
 stat <- summary(fit)
 summary(fit)$coef[2,]
 ```
 
-For this simulated experiment we would `r ifelse(summary(fit)$coef[2,"Pr(>|t|)"] < alpha,"","not")` have been able to pick up the effect of the treatment at the significance level $\alpha$=`r alpha` (p = `r` round(summary(fit)$coef[2,"Pr(>|t|)"],2)`)! 
+For this simulated experiment we would `r ifelse(summary(fit)$coef[2,"Pr(>|t|)"] < alpha,"","not")` have been able to pick up the effect of the treatment at the significance level $\alpha$=`r alpha` (p = `r` round(summary(fit)$coef[2,"Pr(>|t|)"],2)`)!
 
-- We have to repeat the experiment many times to estimate the power. 
-- We will therefore put our simulation in a general function. 
+- We have to repeat the experiment many times to estimate the power.
+- We will therefore put our simulation in a general function.
 
 #### Simulation of repeated experiments
 
@@ -397,17 +397,17 @@ simLm(
   contrasts = "Diethf = 0")
 ```
 
-We now have a generic function that can simulate data from a normal distribution for every design. 
-The function has arguments: 
+We now have a generic function that can simulate data from a normal distribution for every design.
+The function has arguments:
 
-- `form`: One sided formula including the structure of the predictors in the model 
+- `form`: One sided formula including the structure of the predictors in the model
 - `data`: Data frame with the predictor values for the design
 - `betas`: A vector with values for all mean model parameters
-- `sd`: The standard deviation of the error 
-- `contrasts`: a scalar or a vector with the null hypotheses that we would like to assess. 
-- `simIndex`: an arbitrary argument that is not used by the  function but that will allow it to be used in an sapply loop that runs from 1 up to the number of simulations. 
+- `sd`: The standard deviation of the error
+- `contrasts`: a scalar or a vector with the null hypotheses that we would like to assess.
+- `simIndex`: an arbitrary argument that is not used by the  function but that will allow it to be used in an sapply loop that runs from 1 up to the number of simulations.
 
-Simulate nSim = 1000 repeated experiments: 
+Simulate nSim = 1000 repeated experiments:
 
 ```{r}
 set.seed(1425)
@@ -418,11 +418,11 @@ power <- mean(simResults[,4] < alpha)
 power
 ```
 
-We have a power of `r power*100`% to pick up the treatment effect when using 8 bioreps in each treatment group. 
+We have a power of `r power*100`% to pick up the treatment effect when using 8 bioreps in each treatment group.
 
-#### Power for multiple sample sizes 
+#### Power for multiple sample sizes
 
-We can now calculate the power for multiple sample sizes. 
+We can now calculate the power for multiple sample sizes.
 
 ```{r}
 power <- data.frame(n=c(3,5,10,25,50,75,100),power=NA)
@@ -438,15 +438,15 @@ power
 ```
 
 ```{r}
-power %>% 
+power %>%
   ggplot(aes(x=n,y=power)) +
   geom_line()
 ```
 
-#### Assess power in function of sample size for different effect sizes 
+#### Assess power in function of sample size for different effect sizes
 
-Note, that 
-- the sign of the delta is arbitrary because we test two-sided. 
+Note, that
+- the sign of the delta is arbitrary because we test two-sided.
 - the intercept is arbitrary because we only asses $\beta_0$
 - We therefore typically set $\beta_0 = 0$
 
@@ -455,7 +455,7 @@ nSim <- 1000
 b0 <- 0
 deltas <- c(1,2,3,5,10)
 sd <- round(miceSum$sd[2],1)
-ns <-  c(3,5,10,20,25,50,75,100)  
+ns <-  c(3,5,10,20,25,50,75,100)
 
 power <- data.frame(b1=rep(deltas,each=length(ns)),
                     n=rep(ns,length(deltas)),
@@ -472,32 +472,32 @@ for (i in 1:nrow(power))
 ```
 
 ```{r}
-power %>% 
+power %>%
   ggplot(aes(x=n,y=power,col=b1%>%as.factor)) +
   geom_line()
 ```
 
-Note, that the power curves are still a bit choppy because we selected a limited number of sample sizes and because `nSim` simulations is not enough to get a good power estimate when the power is low. 
+Note, that the power curves are still a bit choppy because we selected a limited number of sample sizes and because `nSim` simulations is not enough to get a good power estimate when the power is low.
 
 # Final remarks
 
 - The code can be easily extended towards other designs by altering
-    
-    - predictor data 
+
+    - predictor data
     - formula
     - contrast
 
-- The simulations start to take long when you evaluate many scenario's. 
-    
+- The simulations start to take long when you evaluate many scenario's.
+
     - More efficient code using matrices
     - For a two group comparison closed form solutions exist
-    
+
 
 
 
 ## More efficient code based on matrix algebra
 
-Code runs much faster. We now simulate 20 times more experiments in a much shorter time! 
+Code runs much faster. We now simulate 20 times more experiments in a much shorter time!
 
 ```{r}
 simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
@@ -507,10 +507,10 @@ simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
     design <- model.matrix(form, data)
     ySim <- ySim + c(design %*%betas)
     ySim <- t(ySim)
-  
+
     ### Fitting
     fitAll <- limma::lmFit(ySim,design)
-  
+
     ### Inference
     varUnscaled <- c(t(contrasts)%*%fitAll$cov.coefficients%*%contrasts)
     contrasts <- fitAll$coefficients %*%contrasts
@@ -525,7 +525,7 @@ simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
 nSim <- 20000
 b0 <- 0
 sd <- round(miceSum$sd[2],1)
-ns <-  c(3,5,10,20,25,50,75,100)  
+ns <-  c(3,5,10,20,25,50,75,100)
 deltas <- c(1,2,3,5,10)
 
 contrast <- limma::makeContrasts("Diethf",levels=c("(Intercept)","Diethf"))
@@ -539,7 +539,7 @@ i <- 0
 for (n in ns)
 {
   n1 <- n2 <-  n
-  
+
   ### Simulation
   predictorData <- data.frame(Diet = rep(c("c","hf"),c(n1,n2)) %>% as.factor)
 
@@ -553,15 +553,15 @@ for (n in ns)
 ```
 
 ```{r}
-powerFast %>% 
+powerFast %>%
   ggplot(aes(x=n,y=power,col=b1%>%as.factor)) +
   geom_line()
 ```
 
 ## More efficient code based on closed form solution that exists for two group comparison
 
-For the two sample t-test a closed form estimate exists for the power. 
-In this context the Cohen's effect size is typically used: 
+For the two sample t-test a closed form estimate exists for the power.
+In this context the Cohen's effect size is typically used:
 
 $D = \frac{\delta}{SD}$
 
@@ -570,12 +570,12 @@ $D = \frac{\delta}{SD}$
 power.t.test(n=8, delta = delta, sd = sd, type='two.sample')
 ```
 
-Note, that this is very similar to the power that we calculated using the simulations! 
+Note, that this is very similar to the power that we calculated using the simulations!
 
 ```{r}
 b0 <- 0
 sd <- round(miceSum$sd[2],1)
-ns <-  c(3,5,10,20,25,50,75,100)  
+ns <-  c(3,5,10,20,25,50,75,100)
 deltas <- c(1,2,3,5,10)
 
 
@@ -588,8 +588,7 @@ powerTheo$power <- apply(powerTheo[,1:2],1,function(x) power.t.test(delta=x[1],n
 
 
 ```{r}
-powerTheo %>% 
+powerTheo %>%
   ggplot(aes(x=n,y=power,col=deltas%>%as.factor)) +
   geom_line()
 ```
-

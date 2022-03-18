@@ -1,10 +1,10 @@
 ---
-title: "7. Analysis of Variance" 
+title: "7. Analysis of Variance"
 author: "Lieven Clement"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -24,10 +24,10 @@ library(tidyverse)
 
 # Prostacyclin Example
 
-Researchers study the effect of arachidonic acid on prostacyclin level in blood plasma. They use 3 different concentrations of arachidonic acid: 
+Researchers study the effect of arachidonic acid on prostacyclin level in blood plasma. They use 3 different concentrations of arachidonic acid:
 
-- low, 
-- medium and 
+- low,
+- medium and
 - high dose
 
 Each treatment is adopted to 12 rats. They measure the prostacyclin levels in blood plasma using an elisa fluorescence measurement.
@@ -44,16 +44,16 @@ head(prostacyclin)
 ##Data exploration
 
 ```{r}
-prostacyclin %>% 
+prostacyclin %>%
   ggplot(aes(x=dose,y=prostac,fill=dose)) +
   geom_boxplot() +
   geom_point(position="jitter") +
   ylab("prostacyclin (ng/ml)")
-  
-prostacyclin %>% 
+
+prostacyclin %>%
   ggplot(aes(sample=prostac)) +
   geom_qq() +
-  geom_qq_line() + 
+  geom_qq_line() +
   facet_grid(~dose)
 ```
 
@@ -64,7 +64,7 @@ with $j= \text{1, 2, 3}$
 
 ## Research Question
 
-Research question can translated in the following hypotheses 
+Research question can translated in the following hypotheses
 
 - $H_0$: the arachidonic acid concentration has no effect on the mean prostacyclin level in blood plasma in rats
 \[
@@ -82,7 +82,7 @@ and
 \[H_1: \exists\ j,k \in \{1,\ldots,g\} : \mu_j\neq\mu_k\]
 
 
-Alternative approach: split null hypothesis in partial hypotheses: 
+Alternative approach: split null hypothesis in partial hypotheses:
 \[
   H_{0jk}: \mu_j=\mu_k \text{ versus } H_{1jk}: \mu_j \neq \mu_k
 \]
@@ -113,7 +113,7 @@ Correct solution for testing problem: ANalysis Of VAriance (ANOVA)
 \vspace{7pt}
 - $\epsilon_i\text{i.i.d.} N(0,\sigma^2)$
 \vspace{7pt}
-- and dummy variables 
+- and dummy variables
 $$x_{i1} = \left\{ \begin{array}{ll}
 1 & \text{ if observation $i$ belongs to middle dose group (M)} \\
 0 & \text{ if observation $i$ belongs to other dose group} \end{array}\right.$$
@@ -158,7 +158,7 @@ We reformulate the model by using $\mu$-notations:
  with $\epsilon_i \sim N(0,\sigma^2)$ and
  $$  \mu_j = \text{E}\left[Y_i \mid \text{treatment group } j\right].$$
 
- Original null hypothese 
+ Original null hypothese
  $$H_0:\mu_1=\mu_2=\mu_3$$
  can be formulated as
  $$H_0: \beta_1=\beta_2=0.$$
@@ -197,9 +197,9 @@ with $n_1$, $n_2$ en $n_3$ the number of observations in each group (here $n-1=n
 \text{SSR}&=&\sum\limits_{i=1}^n (\hat Y_i -\bar Y)^2
 \end{eqnarray*}
 
-- Sum of squares is again equivalent with comparison of model (1) and reduced model with an intercept, only. 
-- For reduced model the intercept is estimated by the sample mean.  
-- This sum of squares has g-1=2 degrees of freedom:  
+- Sum of squares is again equivalent with comparison of model (1) and reduced model with an intercept, only.
+- For reduced model the intercept is estimated by the sample mean.
+- This sum of squares has g-1=2 degrees of freedom:
 
   - g=3 model parameters - 1 parameter to estimate overall sample mean or
   - g=3 par. in complex model - 1 par. in reduced model.
@@ -208,10 +208,10 @@ with $n_1$, $n_2$ en $n_3$ the number of observations in each group (here $n-1=n
 ## Decomposition of Total Sum of Squares
 
  - The convention in the Anova setting is to denote the sum of squares as SST, the **Sum of Squares of the Treatment (treatment)** or as SSBetween.
-- The sum of squares of the regression indeed reflects the variability between the groups. 
+- The sum of squares of the regression indeed reflects the variability between the groups.
 - The corresponding mean sum of squares becomes  $\text{MST}=\text{SST}/2$.
 
-The decomposition of SSTot can be written as 
+The decomposition of SSTot can be written as
 \[
   \text{SSTot} = \text{SST} + \text{SSE}
 \]
@@ -293,7 +293,7 @@ Test $H_0: \beta_1=\beta_2=0$ with $F$-test.
 
 with
 
-- $\text{MST}=\text{SST}/(g-1)$  
+- $\text{MST}=\text{SST}/(g-1)$
 \vspace{10pt}
 - $\text{MSE}=\text{SSE}/(n-p)$
 \vspace{10pt}
@@ -341,7 +341,7 @@ arrows(x0=17.5,x1=fval,y0=.9,y1=.9,col="darkorange")
 ```
 
 
-### F-distributions with different number of degrees of freedom in the nominator and denominator 
+### F-distributions with different number of degrees of freedom in the nominator and denominator
 ```{r ftheo, out.width='100%', fig.asp=.8, fig.align='center',echo=FALSE}
 plot(grid,df(grid,1,5),type="l",ylab="Density",xlab="F-statistic",xlim=c(0,5),ylim=c(0,1.5),lwd=2,cex.axis=1.5,cex.lab=1.5)
 lines(grid,df(grid,5,5),type="l",col=2,lwd=2)
@@ -359,7 +359,7 @@ summary(model1)
 
 With model output we can assess if the mean prostacyclin concentration differs between middle and low dose group ($\beta_1$: dose25), and, between high and low dose group ($\beta_2$: dose50).
 
-The p-values do not account for multiple testing.  
+The p-values do not account for multiple testing.
 
 # Post hoc analysis: Multiple comparisons of means
 
@@ -386,7 +386,7 @@ With
 - $S_p^2$ the pooled variance estimator,
 $$S_p^2 = \frac{(n_j-1)S_j^2 + (n_k-1)S_k^2}{n_j+n_k-2}$$
 
-- with $S_j^2$ and $S_k^2$ the sample variances of group $j$ en $k$, respectively. 
+- with $S_j^2$ and $S_k^2$ the sample variances of group $j$ en $k$, respectively.
 
 In ANOVA context we assume that the variance of **all** $g$ groups is equal, i.e. the residual variance $\sigma^2$.
 
@@ -419,9 +419,9 @@ When we perform $m$-tests on the $\alpha$ significance level we cannot correctly
 g<-3 # number of treatments (g=3)
 ni<-12 # number of observations in each group
 n<-g*ni # total number of observation
-alpha<-0.05 # significance level of individual test 
+alpha<-0.05 # significance level of individual test
 N=10000 # number of simulations
-set.seed(302) #seed to reproduce results exactly 
+set.seed(302) #seed to reproduce results exactly
 trt=factor(rep(1:g,ni)) #factor
 cnt<-0 #counter for erroneous rejections
 for(i in 1:N) {
@@ -472,13 +472,13 @@ An alternative approach is to report
   1. *adjusted p-values* that can be compared to the FWER $\alpha_F$ level: $$\tilde{p}=min(m\times p,1)$$
   2. and $(1-\alpha_F/m)100\%$ confidence intervals.
 
-### prostacyclin example 
+### prostacyclin example
 
 ```{r}
 with(prostacyclin,pairwise.t.test(prostac,dose, data = prostacyclin, p.adjust.method="bonferroni"))
 ```
 
-- The conclusions remain similar, except that the FWER is now controlled at $\alpha_F=5\%$ and that the $\tilde{p}$-values are larger with a factor 3. 
+- The conclusions remain similar, except that the FWER is now controlled at $\alpha_F=5\%$ and that the $\tilde{p}$-values are larger with a factor 3.
 
 The same analysis can be conducted in the `multcomp` R package that is developed for multiple testing in linear models.
 ```{r}
@@ -490,9 +490,9 @@ model1.mcp<-glht(model1,linfct=mcp(dose="Tukey"))
 summary(model1.mcp,test=adjusted("bonferroni"))
 ```
 
-Note, that the user has to define custum functions to obtain Bonferonni adjusted confidence intervals. 
+Note, that the user has to define custum functions to obtain Bonferonni adjusted confidence intervals.
 
-- Bonferonni confidence intervals are not implemented because better methods exist for multiple testing. 
+- Bonferonni confidence intervals are not implemented because better methods exist for multiple testing.
 
 - The function below is added here merely for completeness, but we will generally use the default method for multiple testing in multcomp.
 
@@ -516,9 +516,9 @@ confint(model1.mcp,calpha=calpha_bon_t)
 g<-3 # number of treatments (g=3)
 ni<-12 # number of observations in each group
 n<-g*ni # totaal number observation
-alpha<-0.05 # significance level of individual test 
+alpha<-0.05 # significance level of individual test
 N=10000 # number of simulaties
-set.seed(302) #seed to reproduce results exactly 
+set.seed(302) #seed to reproduce results exactly
 trt=factor(rep(1:g,ni)) #factor
 cnt<-0 #counter for erroneous rejections
 for(i in 1:N) {
@@ -532,7 +532,7 @@ cnt/N
 ```
 
 
-- We find an FWER of `r round(cnt/N*100,1)`%, which is slightly conservative. 
+- We find an FWER of `r round(cnt/N*100,1)`%, which is slightly conservative.
 - For simulations of $g=5$ group the FWER is $4.1\%$ (more conservative).
 
 - By using Bonferroni the probability on at least one false positive result is lower than $< \alpha_F$.
@@ -542,13 +542,13 @@ cnt/N
 
 - Less conservatieve
 - Implementation approximates the null distribution of posthoc tests via simulations
-- Results can change slightly if the posthoc analysis is repeated 
-- Details on the method falls outside the scope of the short course  
+- Results can change slightly if the posthoc analysis is repeated
+- Details on the method falls outside the scope of the short course
 - Is the default method in the multcomp package:
 
     - adjusted p-values
-    - adjusted confidence intervals 
-    
+    - adjusted confidence intervals
+
 ### Captopril example
 
 ```{r}
@@ -572,9 +572,9 @@ plot(confint(model1.mcp))
 g<-3 # number of treatments (g=3)
 ni<-12 # number of observations in each group
 n<-g*ni # totaal number observation
-alpha<-0.05 # significance level of individual test 
+alpha<-0.05 # significance level of individual test
 N <- 10000 # number of simulations
-set.seed(302) #seed to reproduce results exactly 
+set.seed(302) #seed to reproduce results exactly
 trt <- factor(rep(1:g,ni)) #factor
 cnt<-0 #counter for erroneous rejections
 for(i in 1:N) {
@@ -590,9 +590,9 @@ cnt/N
 ```
 
 
-# Conclusions: Prostacyclin example 
+# Conclusions: Prostacyclin example
 
-Entire analysis for prostacyclin example 
+Entire analysis for prostacyclin example
 
 1. Anova before posthoc tests: F-test has a higher power than  pairwise t-test
 
@@ -619,4 +619,3 @@ The average prostacyclin concentration is higher in the high dose group than in 
 - The average concentration in the high dose group is `r round(confint(model1.mcp)$confint[2,1],1)`ng/ml (95% CI [`r paste(round(confint(model1.mcp)$confint[2,2:3],1),collapse=",")`]ng/ml) and `r round(confint(model1.mcp)$confint[3,1],1)`ng/ml (95% BI [`r paste(round(confint(model1.mcp)$confint[3,2:3],1),collapse=",")`]ng/ml) higher than in the low and middle dose group, respectively.
 - The difference in average prostacyclin concentration between the moderate and low dose group is not significant  (p=`r round(summary(model1.mcp)$test$pvalues[1],2)`).
 (All p-values and confidence intervals for post-hoc tests are corrected for multiple testing using the Tukey method).
-

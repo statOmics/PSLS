@@ -1,10 +1,10 @@
 ---
 title: "Exercise 4.4: Exploring the FEV dataset"
 author: "Lieven Clement and Jeroen Gilis"
-date: "statOmics, Ghent University (https://statomics.github.io)"  
+date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -12,13 +12,13 @@ output:
       number_sections: true
 ---
 
-In this tutorial, you will learn how to import, tidy, wrangle and 
+In this tutorial, you will learn how to import, tidy, wrangle and
 visualize data yourself!
 
 # The FEV dataset
 
 The FEV, which is an acronym for `forced expiratory volume`,
-is a measure of how much air a person can exhale (in liters) 
+is a measure of how much air a person can exhale (in liters)
 during  a forced breath. In this dataset, the FEV of 606 children,
 between the ages of 6 and 17, were measured. The dataset
 also provides additional information on these children:
@@ -29,7 +29,7 @@ The goal of this experiment was to find out whether or not
 smoking has an effect on the FEV of children.
 
 Note: to analyse this dataset properly, we will need some
-relatively advanced modeling techniques. At the end of this 
+relatively advanced modeling techniques. At the end of this
 week, you will have seen all three required steps to analyse
 such a dataset! For now, we will limit ourselves to exploring
 the data.
@@ -92,7 +92,7 @@ informative representation of the data.
 
 Did you expect these results?
 
-Maybe there is something else going on in the data. 
+Maybe there is something else going on in the data.
 By taking more of the information in the dataset into account, can
 you provide a more detailed/accurate visualizition of the
 variables that effect the FEV?
@@ -107,6 +107,3 @@ variables that effect the FEV?
 
 ...
 ```
-
-
-

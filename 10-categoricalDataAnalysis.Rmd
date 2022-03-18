@@ -23,17 +23,17 @@ library(NHANES)
 ```
 
 
-# Introduction 
+# Introduction
 
 Until now we used models for a continuous response in function of categorical or continuous predictor. Here we will focus on a categorical response.
 
-- we study the association of a categorical outcome and a categorical predictor and 
-- touch upon methods to model a categorical outcome with a continuous response. 
+- we study the association of a categorical outcome and a categorical predictor and
+- touch upon methods to model a categorical outcome with a continuous response.
 
 
 ---
 
-# Test for a proportion 
+# Test for a proportion
 
 ##Saksen-study
 
@@ -46,16 +46,16 @@ n <- 6155
 ```
 
 - On `r n` unborn children `r boys` boys are observed.
-- Is there a difference in the probability on the gender of an unborn child? 
+- Is there a difference in the probability on the gender of an unborn child?
 
 ---
 
 - The data are derived from a binary random variable $X$
 
-  - $X=1$ for a boy and 
+  - $X=1$ for a boy and
   - $X=0$ for a girl.
 
-- Note: count problem: the outcome is a count (number of boys) 
+- Note: count problem: the outcome is a count (number of boys)
 
 - Formally we have considered a population of unborn children where each individual is characterized by a 0 or 1.
 
@@ -109,13 +109,13 @@ In our example $\bar x =$ `r boys` / `r n` = `r format(pi*100,digits=3)`%.
 
 ## Binomiale test
 
-- Is the observed probability `r format(pi*100,digit=3)`% that an unborn child is male, sufficient evidence to conclude that there is a higher chance on a boy than on a girl? 
+- Is the observed probability `r format(pi*100,digit=3)`% that an unborn child is male, sufficient evidence to conclude that there is a higher chance on a boy than on a girl?
 
-- Statistical test for 
+- Statistical test for
   $$H_0: \pi=1/2 \text{ versus } H_1: \pi\neq 1/2,$$
 
-- We need known the distribution of 
-   
+- We need known the distribution of
+
     - $X$ and $\bar X$
     - or of the sum $S=n\bar X$.
 
@@ -126,8 +126,8 @@ In our example $\bar x =$ `r boys` / `r n` = `r format(pi*100,digits=3)`%.
 - A random individual from the population has a probability of $$P(X=1)=\pi=1/2.$$ to be a boy
 
 - Two children that are drawn independently :
-  
-    - Probability of $\pi=1/2$ on a boy for the first and second child (independent from each other) 
+
+    - Probability of $\pi=1/2$ on a boy for the first and second child (independent from each other)
     - Outcomes $(x_1, x_2)$ for both children have 4 possible combinations:
     $(0,0),(0,1),(1,0)\text{ en }(1,1).$
     - Each of them has a probability of $1/4 = 1/2 \times 1/2$.
@@ -154,7 +154,7 @@ P(S=k) = \left (
 n \\
 k \\
 \end{array}
-\right ) \pi^k (1-\pi)^{n-k}  
+\right ) \pi^k (1-\pi)^{n-k}
 \end{equation}
 - $1-\pi$: probability on 0 for individual observation and
 -  binomial coefficient
@@ -180,7 +180,7 @@ S is a:
 
 - Parameters
 
-    - $n$ (total number of draws from the population, is equivalent to maximal value of the outcome)  
+    - $n$ (total number of draws from the population, is equivalent to maximal value of the outcome)
     - $\pi$ (probability on `success` for each draw).
 
 - Calculate probability on $k$ successes on $n$ independent draws each with a succes probability of $\pi$.
@@ -231,7 +231,7 @@ $$p=\text{P}_0\left[S\geq s_0+ \vert \delta\vert \right] + \text{P}_0\left[S \le
 
 - The Binomial distribution is symmetric for$\pi=1/2$:
 $$\text{P}_0\left[S\geq s_0+ \vert \delta\vert \right] = \text{P}_0\left[S \leq s_0 - \vert \delta\vert \right]$$
-- This is no longer the case when $\pi$ deviate from 0.5.  
+- This is no longer the case when $\pi$ deviate from 0.5.
 
 ---
 
@@ -254,9 +254,9 @@ c(pUp,pDown, p)
 ---
 
 
-- If $\pi= 1/2$, the probability to observe at least  $\delta=$ `r delta` boys more or less than the mean under $H_0: s_0=$ `r s0` in a random sample under H_0 is only `r format(p*100,digits=3)`% is: **$p$-value of binomial test.**  
+- If $\pi= 1/2$, the probability to observe at least  $\delta=$ `r delta` boys more or less than the mean under $H_0: s_0=$ `r s0` in a random sample under H_0 is only `r format(p*100,digits=3)`% is: **$p$-value of binomial test.**
 - Very unlikely to observe such a large number of boys in a random sample when boys and girls have the same  frequency in the population (under $H_0$).
-- Hence the hypothesis that the frequency of boys and girls is the same is not supported by the data. 
+- Hence the hypothesis that the frequency of boys and girls is the same is not supported by the data.
 
 ---
 
@@ -280,7 +280,7 @@ The test can immediately be conducted using the `binomial.test` function in R.
 binom.test(x=boys,n=n,p=pi0)
 ```
 
-On the 5% significance-level we conclude that there is on average a higher probability on a unborn male child than an unborn female child.   
+On the 5% significance-level we conclude that there is on average a higher probability on a unborn male child than an unborn female child.
 
 ---
 
@@ -299,7 +299,7 @@ pi+c(-1,1)*qnorm(0.975)*se
 
 ---
 
-### CI on proportion in small sample? 
+### CI on proportion in small sample?
 
 ```{r}
 CI <- binom.test(x=boys,n=n,p=pi0)$conf.int
@@ -318,7 +318,7 @@ The probability that an unborn child is male equals `r format(pi*100,digits=3)`%
 
 ---
 
-# Test for association between two qualitative variables 
+# Test for association between two qualitative variables
 ## Paired observations
 
 - 2 measurements on same individual
@@ -359,9 +359,9 @@ text(2.35,1.9,"\\MA",vfont=c("sans serif","bold"),cex=1.3)
 
 ---
 
-- The gate is opened upon 3 minutes 
-- aggressive vs non-agressive male 
-- Each female undergoes the test twice: 
+- The gate is opened upon 3 minutes
+- aggressive vs non-agressive male
+- Each female undergoes the test twice:
 
     - once upon stay in hostile environment (high population density, shortage of feed, a lot of competition)
     - and once upon stay in gentle evironment.
@@ -427,12 +427,12 @@ ci
 \begin{equation*}
 \widehat{\text{ARD}}=\frac{17-1}{34}=0.471
 \end{equation*}
-The absolute risk difference on choosing for an agressive male is 47.1% larger upon staying in a hostile environment that when residing in a gentle environment. 
+The absolute risk difference on choosing for an agressive male is 47.1% larger upon staying in a hostile environment that when residing in a gentle environment.
 - The standard error
 \begin{equation*}
 \text{SE}_{\widehat{\text{ARD}}}=\frac{1}{34}\sqrt{17+1-\frac{(17-1)^2}{34}}=0.0952
 \end{equation*}
-- A 95\% confidence interval on this absolute risk difference is 
+- A 95\% confidence interval on this absolute risk difference is
 \begin{equation*}
 \left[0.471-1.96\times 0.0952,0.471+1.96\times 0.0952\right]=[0.284,0.658]
 \end{equation*}
@@ -479,7 +479,7 @@ mcnemar.test(hamster)
 ```
 
 
-- We reject the null hypothesis at the 5% significance level 
+- We reject the null hypothesis at the 5% significance level
 - We conclude that the choice of partner is extremely significantly associated with the environment.
 
 ---
@@ -538,7 +538,7 @@ knitr::kable(brcaHlp,
     - controls:$\pi_0=c/(a+b+c)=56/572=9.8\%$
 - Relative risk on exposure for cases versus controls is $11.1/9.8=1.14$.
 - The probability on the Leu/Leu genotype is 14% higher for women with breast cancer than for women without borstkanker.
-- It suggests an association, but it does not let us conclude how much higher the risk is on breast cancer for women with the Leu/Leu genotype as compared to the other women. 
+- It suggests an association, but it does not let us conclude how much higher the risk is on breast cancer for women with the Leu/Leu genotype as compared to the other women.
 - Other statistic?
 
 ---
@@ -591,13 +591,13 @@ knitr::kable(brcaHlp,
 \begin{equation*}
 OR_{case}=\frac{ \frac{ f}{c}}{ \frac{(d+e)}{(a+b)}} = \frac{f(a+b)}{c(d+e)}=OR_{Leu/Leu}=1.15,
 \end{equation*}
-- OR is a symmetric statistic! 
+- OR is a symmetric statistic!
 - OR on borstcancer can be estimated!
 - The odds on borstcancer is 15% higher for women with this specific allele combination.
 
 ---
 
-- Is the difference large enough to generalize the effect in the sample towards the population? 
+- Is the difference large enough to generalize the effect in the sample towards the population?
 
 - We will first rewrite the data in a 2x2 table
 
@@ -622,8 +622,8 @@ $$H_0: \text{There is no association between } X \text{ and } Y \text{ vs } H_1:
 - They give information on *marginal distribution* of the exposure (variant, X) and outcome (disease, Y),
 but not on the association between these variables.
 - Under $H_0$ $X$ and $Y$ are independent and one expects  that $(b+d)/n$
-of the $a+b$ controls have a Leu/Leu variant, or that $(a+b)(b+d)/n$ of them has a Leu/Leu variant 
-- We can calculate this expected number $E_{ij}$ under the null hypothesis for *each cell* of the $2 
+of the $a+b$ controls have a Leu/Leu variant, or that $(a+b)(b+d)/n$ of them has a Leu/Leu variant
+- We can calculate this expected number $E_{ij}$ under the null hypothesis for *each cell* of the $2
 \times 2$ table.
 
 ---
@@ -665,7 +665,7 @@ legend("topright",lty=1,lwd=2,col=1:3,legend=sapply(dfs, function(d) as.expressi
 significance level as soon as the observed test-statistic is larger than the $100\%(1-\alpha)$-quantile, $\chi^2_{1,
 \alpha}$, of the $\chi^2_1$-distribution.
 - Otherwise we do not reject $H_0$.
-- The p-value of a 2-sided test is the probability to observe a larger test-statistic in a random sample under the null than what we observed in our sample. 
+- The p-value of a 2-sided test is the probability to observe a larger test-statistic in a random sample under the null than what we observed in our sample.
 $$p=P_0[\chi^2_1 \geq x^2]$$.
 
 ---
@@ -683,8 +683,8 @@ x2 <- sum((abs(brcaTab2-expected) - .5)^2/expected)
 
 ---
 
-- Because $O_{ij}$ are discrete values, the $X^2$ can only take discrete values and the continuouss $\chi^2_1$-distribution is only an approximation of the real distribution. 
-- To improve the approximation one substracts 0.5 from the value in each cell: 
+- Because $O_{ij}$ are discrete values, the $X^2$ can only take discrete values and the continuouss $\chi^2_1$-distribution is only an approximation of the real distribution.
+- To improve the approximation one substracts 0.5 from the value in each cell:
 *continuity-correction*
 - We refer to this test as *Pearson Chi-squared test with Yates correction*.
 - When the correction is not used (i.e. when the values of `0.5' in the estimator $X^2$ are replaced) we use the *Pearson Chi-squared test*.
@@ -744,7 +744,7 @@ chisq.test(brcaTab)
 
 - To assess if the variant of the BRCA1 gene is associated with breast cancer we conducted a  Pearson $\chi^2$test for the $3 \times 2$ table.
 - The statistic is now `r format(chisq.test(brcaTab)$statistic,digits=4)` and follows a $\chi^2$ distribution with `r chisq.test(brcaTab)$parameter` degrees of freedom under $H_0$. The probability to obtain a $\chi^2$-test statistic in a random sample under $H_0$ that is more extreme than `r format(chisq.test(brcaTab)$statistic,digits=4)`, is `r format(chisq.test(brcaTab)$p.value*100,digits=2)`%.
-- On the 5% level of significance we conclude that the variant of the BRCA-gene is not associated with breast cancer. 
+- On the 5% level of significance we conclude that the variant of the BRCA-gene is not associated with breast cancer.
 
 ---
 
@@ -792,7 +792,7 @@ $$x_{i2} = \left\{ \begin{array}{ll}
 
 We fit the model in R.
 
-- Note that we use the function `as.factor` to convert the cancer variable to a factor variable. - We further use the function `relevel` to specify the control treatment as the reference group.  
+- Note that we use the function `as.factor` to convert the cancer variable to a factor variable. - We further use the function `relevel` to specify the control treatment as the reference group.
 ```{r}
 brca$cancer<-brca$cancer %>% as.factor %>% relevel("control")
 brca$variant<-brca$variant %>% as.factor %>% relevel("pro/pro")
@@ -823,11 +823,11 @@ De p-value is almost equivalent to the one of the  $\chi^2$-test (see previous s
 
 ---
 
-- Significant association? 
+- Significant association?
 
     - Post-hoc tests to evaluate which of the odds ratios are different from 1.
     - For BRCA1 example we did not reject the omnibus hypothesis so no post-hoc analysis
-    - For your reference we include the post hoc analysis so that you would have the code. 
+    - For your reference we include the post hoc analysis so that you would have the code.
 
 ---
 
@@ -908,10 +908,10 @@ summary(beatleModel)
 
 beetlesTab<-table(beetles) %>% data.frame
 
-data.frame(grid=seq(min(beetles$dose),max(beetles$dose),.1)) %>% 
+data.frame(grid=seq(min(beetles$dose),max(beetles$dose),.1)) %>%
   mutate(piHat=predict(beatleModel,
 	      newdata=data.frame(dose=grid),
-	      type="response")) %>% 
+	      type="response")) %>%
   ggplot(aes(grid,piHat))+
   geom_line() +
   xlab("dose") +
@@ -919,5 +919,3 @@ data.frame(grid=seq(min(beetles$dose),max(beetles$dose),.1)) %>%
   geom_text(aes(x=dose%>%as.character%>%as.double,y=status%>%as.character%>%as.double,label=Freq),beetlesTab%>%filter(status==0)) +
 geom_text(aes(x=dose%>%as.character%>%as.double,y=status%>%as.character%>%as.double,label=Freq),beetlesTab%>%filter(status==1))
 ```
-
-

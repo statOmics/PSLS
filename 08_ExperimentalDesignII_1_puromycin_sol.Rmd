@@ -20,33 +20,33 @@ library(tidyverse)
 
 # Puromycin data
 
-Data on the velocity of an enzymatic reaction were obtained by Treloar (1974).  
+Data on the velocity of an enzymatic reaction were obtained by Treloar (1974).
 The number of counts per minute of radioactive product from the reaction was measured as a function of substrate concentration in parts per million (ppm) and from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min).  The experiment was conducted once with the enzyme treated with Puromycin, and once with the enzyme untreated.
 
-Here, we will focus again on the enzyme treated data. 
+Here, we will focus again on the enzyme treated data.
 
 ```{r}
 data(Puromycin)
-Puromycin <- Puromycin %>% 
+Puromycin <- Puromycin %>%
   filter(state=="treated")
 ```
 
-There was a linear association between the log10 substrate concentration and the reaction rate 
+There was a linear association between the log10 substrate concentration and the reaction rate
 
 
 ```{r}
 Puromycin  %>%
   ggplot(aes(x=conc %>% log10,y=rate)) +
-  geom_point() + 
-  stat_smooth(method = "loess",col="red") + 
+  geom_point() +
+  stat_smooth(method = "loess",col="red") +
   stat_smooth(method='lm',col="black") +
   ylab("Reaction Rate (counts/min)") +
   xlab("log10(Substrate concentration) (log10 ppm)")
 ```
 
-Note, that the researchers have chosen 6 different substrate concentrations and conducted an experiment where they assessed the initial reaction rate twice for every concentration. 
+Note, that the researchers have chosen 6 different substrate concentrations and conducted an experiment where they assessed the initial reaction rate twice for every concentration.
 
-1. Use the data to calculate the power to pick up an association that is as least as strong as the association you observed in the dataset when using an experiment with the same design. 
+1. Use the data to calculate the power to pick up an association that is as least as strong as the association you observed in the dataset when using an experiment with the same design.
 
 2. Use the data to calculate the power to pick up an association where the reaction rate increases on average with 10 counts/min when the substrate concentration is 10 times higher ($\beta_1=10$).
 
@@ -56,7 +56,7 @@ Note, that the researchers have chosen 6 different substrate concentrations and 
 
 ## Simulation function
 
-Function to simulate data similar to that of our experiment under our model assumptions. 
+Function to simulate data similar to that of our experiment under our model assumptions.
 
 ```{r}
 simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
@@ -66,10 +66,10 @@ simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
     design <- model.matrix(form, data)
     ySim <- ySim + c(design %*%betas)
     ySim <- t(ySim)
-  
+
     ### Fitting
     fitAll <- limma::lmFit(ySim,design)
-  
+
     ### Inference
     varUnscaled <- c(t(contrasts)%*%fitAll$cov.coefficients%*%contrasts)
     contrasts <- fitAll$coefficients %*%contrasts
@@ -80,18 +80,18 @@ simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
 }
 ```
 
-## Power to pick up the same effect size as we observed in the data set with the same design 
+## Power to pick up the same effect size as we observed in the data set with the same design
 
 ```{r}
 mod1 <- lm(rate ~ conc %>% log10, Puromycin)
 betas <- mod1$coefficients
 
 nSim <- 10000
-form <- ~ conc %>% log10 
+form <- ~ conc %>% log10
 sd <- sigma(mod1)
 contrast <- matrix(c(0,1),ncol=1)
 rownames(contrast) <- names(mod1$coefficients)
-alpha <- 0.05 
+alpha <- 0.05
 
 power <- simFast(form, Puromycin, betas, sd, contrasts = contrast, alpha = alpha, nSim = nSim)
 power
@@ -105,38 +105,38 @@ betas <- mod1$coefficients
 betas[2] <- 10
 
 nSim <- 10000
-form <- ~ conc %>% log10 
+form <- ~ conc %>% log10
 sd <- sigma(mod1)
 contrast <- matrix(c(0,1),ncol=1)
 rownames(contrast) <- names(mod1$coefficients)
-alpha <- 0.05 
+alpha <- 0.05
 
 power <- simFast(form, Puromycin, betas, sd, contrasts = contrast, alpha = alpha, nSim = nSim)
 power
 ```
 
-The power to pick up a slope of $\beta_1=10$ for this experiment is only 
-`round(power*100,1)`%. 
+The power to pick up a slope of $\beta_1=10$ for this experiment is only
+`round(power*100,1)`%.
 
 ## Calculate the number of repeats needed per concentration to obtain a power of 90% to pick up an effect of $\beta=10$.
 
 
 ```{r}
 mod1 <- lm(rate ~ conc %>% log10, Puromycin)
-concentrations <- Puromycin %>% 
-  pull(conc) %>% 
+concentrations <- Puromycin %>%
+  pull(conc) %>%
   unique
-  
-  
+
+
 betas <- mod1$coefficients
 betas[2] <- 10
 
 nSim <- 10000
-form <- ~ conc %>% log10 
+form <- ~ conc %>% log10
 sd <- sigma(mod1)
 contrast <- matrix(c(0,1),ncol=1)
 rownames(contrast) <- names(mod1$coefficients)
-alpha <- 0.05 
+alpha <- 0.05
 
 powers <- data.frame(n = 1:10, power=NA)
 
@@ -146,31 +146,31 @@ for (i in 1:10)
   powers[i,2] <- simFast(form, simData, betas, sd, contrasts = contrast, alpha = alpha, nSim = nSim)
 }
 
-powers %>% 
+powers %>%
   ggplot(aes(n,power)) +
   geom_line() +
   geom_hline(yintercept = .9, lty = 2)
 ```
-We need `which(powers$power>0.9) %>%min` repeats for each concentration to 
-obtain a power above 90%. 
+We need `which(powers$power>0.9) %>%min` repeats for each concentration to
+obtain a power above 90%.
 
-# Optimal design with 12 reactions 
+# Optimal design with 12 reactions
 
 ```{r}
-concentrations <- Puromycin %>% 
-  pull(conc) %>% 
+concentrations <- Puromycin %>%
+  pull(conc) %>%
   unique
-  
-  
+
+
 betas <- mod1$coefficients
 betas[2] <- 10
 
 nSim <- 10000
-form <- ~ conc %>% log10 
+form <- ~ conc %>% log10
 sd <- sigma(mod1)
 contrast <- matrix(c(0,1),ncol=1)
 rownames(contrast) <- names(mod1$coefficients)
-alpha <- 0.05 
+alpha <- 0.05
 
 simData <- data.frame(conc = c(concentrations,rep(min(concentrations),3),rep(max(concentrations),3)))
 powerOpt <- simFast(form, simData, betas, sd, contrasts = contrast, alpha = alpha, nSim = nSim)
@@ -179,16 +179,16 @@ simData
 powerOpt
 ```
 
-Note that the power for a design where we repeat each concentration 1 time and 
-the minimum and maximum concentration 4 times is considerably higher than that 
-for the designs where we repeat all data points. 
+Note that the power for a design where we repeat each concentration 1 time and
+the minimum and maximum concentration 4 times is considerably higher than that
+for the designs where we repeat all data points.
 
 ```{r}
-powers %>% 
+powers %>%
   ggplot(aes(n,power)) +
   geom_line() +
   geom_hline(yintercept = powerOpt, lty = 2)
 ```
-Indeed, the power for our optimal design with 12 reactions is as high as the 
-power for an experiment where you would repeat every concentration 3 times for 
-which we need to conduct 18 reactions! 
+Indeed, the power for our optimal design with 12 reactions is as high as the
+power for an experiment where you would repeat every concentration 3 times for
+which we need to conduct 18 reactions!

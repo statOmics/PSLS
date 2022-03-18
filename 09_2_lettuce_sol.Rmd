@@ -1,10 +1,10 @@
 ---
-title: "Exercise 9.2: Non-parametric statistics on the lettuce dataset"   
+title: "Exercise 9.2: Non-parametric statistics on the lettuce dataset"
 author: "Lieven Clement and Jeroen Gilis"
-date: "statOmics, Ghent University (https://statomics.github.io)"  
+date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -23,7 +23,7 @@ the assumptions of normality and equal variances.
 Therefore, we will re-analyse the dataset by using the
 non-parametric alternative to ANOVA, the `Kruskal-Wallis test`.
 We will first give a concise overview of what we saw in the
-ANOVA analysis, which can be found in the 
+ANOVA analysis, which can be found in the
 `ANOVA_lettuce_plants.Rmd` file.
 
 The researchers want to find out if biochar, compost and
@@ -74,13 +74,13 @@ of each treatment condition:
 
 ```{r}
 lettuce %>%
-  ggplot(aes(x=treatment,y=freshweight,fill=treatment)) + 
+  ggplot(aes(x=treatment,y=freshweight,fill=treatment)) +
     scale_fill_brewer(palette="RdGy") +
     theme_bw() +
-    geom_boxplot(outlier.shape=NA) + 
+    geom_boxplot(outlier.shape=NA) +
     geom_jitter(width = 0.2) +
     ggtitle("Boxplot of the freshweigth for each treatment condition") +
-    ylab("freshweight (gram)") + 
+    ylab("freshweight (gram)") +
     stat_summary(fun=mean, geom="point", shape=5, size=3, color="black", fill="black")
 ```
 
@@ -104,7 +104,7 @@ The null hypothesis of ANOVA states that:
 The mean freshweigth is equal between the different treatment groups.
 
 The alternative hypothesis of ANOVA states that:
-The mean freshweigth for at least one treatment group is different 
+The mean freshweigth for at least one treatment group is different
 than the mean freshweight in at least one other treatment group.
 
 ## Checking the assumptions of ANOVA
@@ -148,13 +148,13 @@ We can check the assumption of equal variance with a boxplot:
 
 ```{r}
 lettuce %>%
-  ggplot(aes(x=treatment,y=freshweight,fill=treatment)) + 
+  ggplot(aes(x=treatment,y=freshweight,fill=treatment)) +
   scale_fill_brewer(palette="RdGy") +
   theme_bw() +
-  geom_boxplot(outlier.shape=NA) + 
+  geom_boxplot(outlier.shape=NA) +
   geom_jitter(width = 0.2) +
   ggtitle("Boxplot of the freshweigth for each treatment condition") +
-  ylab("freshweight (gram)") + 
+  ylab("freshweight (gram)") +
   stat_summary(fun=mean, geom="point", shape=5, size=3, color="black", fill="black")
 ```
 
@@ -163,8 +163,8 @@ of each boxplot's box. This is the interval between
 the 25% and 75% quantile. Here we can see that this
 interval, as well as the length of the whiskers, is
 approximately equal for most groups. However, the
-variability of cobc does seem to be quite a bit larger 
-than the variability in the refoak group. 
+variability of cobc does seem to be quite a bit larger
+than the variability in the refoak group.
 
 **While we accepted the assumption of equal variances in the**
 **`ANOVA_lettuce_plants.Rmd` file, we will here reject the**
@@ -202,7 +202,7 @@ $H0$: The distribution of freshweights of lettuce plants are equal
 for all treatment conditions.
 
 - Alternative hypothesis:
-$HA$: The chance that a random value of at least one treatment group 
+$HA$: The chance that a random value of at least one treatment group
 is larger than or equal to ("$\geq$") a random value of at least
 one other treatment group is significantly different from 50%.
 
@@ -222,17 +222,17 @@ permutations of the original lettuce dataset.
 
 We find an extremly significant (p < 1e-05) of the treatment
 on the freshweight. On the 5% global significance level, we may
-state that the chance that a random value of at least one treatment 
-group is larger than or equal to ("$\geq$") a random value of at 
+state that the chance that a random value of at least one treatment
+group is larger than or equal to ("$\geq$") a random value of at
 least one other treatment group is significantly different from 50%.
 
-Now, we will perform a post-hoc analysis to find out which specific 
+Now, we will perform a post-hoc analysis to find out which specific
 groups are different from each other.
 
 # Post-hoc analysis
 
 We will perform a post-hoc analysis with pairwise Wilcoxon rank
-sum test. As we did not want to assume the location shift, we 
+sum test. As we did not want to assume the location shift, we
 will interpret the outcome in terms of probabilistic indices.
 Note that after the analysis, we will need to correct the acquired
 p-values for multiple testing.
@@ -246,8 +246,8 @@ $H0$: The distribution of freshweights of lettuce plants are equal
 for both treatment conditions.
 
 - Alternative hypothesis:
-$HA$: The chance that a random value of treatment group 1 is larger 
-than or equal to ("$\geq$") a random value of treatment group 2 
+$HA$: The chance that a random value of treatment group 1 is larger
+than or equal to ("$\geq$") a random value of treatment group 2
 is significantly different from 50%.
 
 ## Test
@@ -280,16 +280,16 @@ treatments <- levels(lettuce$treatment)
 freshweight <- lettuce$freshweight
 
 pvalues <- combn(treatments,2,function(x){
-  
+
   ## Pairwise Wilcon test
   test = wilcox_test(freshweight~treatment,subset(lettuce,treatment%in%x), distribution = 'exact')
-  
+
   ## Get and store p-value of test
   pvalue(test)
 })
 
 ## Adjust for multiple testing
-pvalues_holm = p.adjust(pvalues,method = 'holm') 
+pvalues_holm = p.adjust(pvalues,method = 'holm')
 
 ## link the p-value with the correct pairwise test
 names(pvalues_holm) <- combn(levels(lettuce$treatment),2,paste,collapse="_VS_")
@@ -314,7 +314,7 @@ treatments <- levels(lettuce$treatment)
 probInd <- combn(treatments,2,function(x){
   ## Compute the U1 statistic
   U1 <- wilcox.test(freshweight~treatment,subset(lettuce,treatment%in%x))$statistic
-  
+
   ## Compute the probabilistic index
   U1/prod(nGroup[x])
 })
@@ -325,7 +325,7 @@ probInd
 ```
 
 We again see the same warning message. Here, this is not a
-prblem, we are not interested in the p-values (which we 
+prblem, we are not interested in the p-values (which we
 already computed), we only care about the probabilistic indices,
 that are calculated from the U1 statistic. U1 is computed as
 the number of times an observation of group 1 is larger than or
@@ -336,39 +336,39 @@ defined even in the case of ties.
 
 We find an extremly significant (p < 1e-05) of the treatment
 on the freshweight. On the 5% global significance level, we may
-state that the chance that a random value of at least one treatment 
-group  is larger than or equal to ("$\geq$") a random value of at 
+state that the chance that a random value of at least one treatment
+group  is larger than or equal to ("$\geq$") a random value of at
 least one other treatment group is significantly different from 50%.
 
 For the post-hoc analysis:
 
 - We find a highly significant difference in the distributions between
-the compost treatment and the control treatment. The probability 
+the compost treatment and the control treatment. The probability
 that the freshweigth of plants grown in compost soil is higher than
-or equal to ("$\geq$") the freshweigth of plants grown in control 
+or equal to ("$\geq$") the freshweigth of plants grown in control
 soil is 100%. This is highly significantly different from 50%
-(adjusted p-value=0.003). 
+(adjusted p-value=0.003).
 
 - We find a highly significant difference in the distributions between
-the cobc treatment and the control treatment. The probability 
+the cobc treatment and the control treatment. The probability
 that the freshweigth of plants grown in compost soil is higher than
-or equal to ("$\geq$") the freshweigth of plants grown in control 
+or equal to ("$\geq$") the freshweigth of plants grown in control
 soil is 98%. This is highly significantly different from 50%
-(adjusted p-value=0.005). 
+(adjusted p-value=0.005).
 
 - We find a highly significant difference in the distributions between
-the compost treatment and the refoak treatment. The probability 
+the compost treatment and the refoak treatment. The probability
 that the freshweigth of plants grown in compost soil is higher than
-or equal to ("$\geq$") the freshweigth of plants grown in control 
+or equal to ("$\geq$") the freshweigth of plants grown in control
 soil is 100%. This is highly significantly different from 50%
-(adjusted p-value=0.003). 
+(adjusted p-value=0.003).
 
 - We find a highly significant difference in the distributions between
-the cobc treatment and the refoak treatment. The probability 
+the cobc treatment and the refoak treatment. The probability
 that the freshweigth of plants grown in compost soil is higher than
-or equal to ("$\geq$") the freshweigth of plants grown in control 
+or equal to ("$\geq$") the freshweigth of plants grown in control
 soil is 100%. This is highly significantly different from 50%
-(adjusted p-value=0.003). 
+(adjusted p-value=0.003).
 
 For the other contrast, we do not enough find evidence to suggest
 significant differences between the treatment groups.
@@ -376,9 +376,5 @@ significant differences between the treatment groups.
 We may conclude that supplementing soil with compost or with
 both compost and biochar has a positive effect on the freshweigth
 of lettuce plants. Note that, qualitatively, these conclusion are
-exactly the same as with the ANOVA analysis of the dataset in the 
+exactly the same as with the ANOVA analysis of the dataset in the
 `ANOVA_lettuce_plants.Rmd` file.
-
-
-
-

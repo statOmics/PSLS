@@ -20,13 +20,13 @@ library(tidyverse)
 
 # Puromycin data
 
-Data on the velocity of an enzymatic reaction were obtained by Treloar (1974).  
-The number of counts per minute of radioactive product from the reaction was 
+Data on the velocity of an enzymatic reaction were obtained by Treloar (1974).
+The number of counts per minute of radioactive product from the reaction was
 measured as a function of substrate concentration in parts per million (ppm) and
 from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min). The experiment was conducted once with the enzyme treated
 with Puromycin, and once with the enzyme untreated.
 
-Assess if there is an association between the substrate concentration and rate 
+Assess if there is an association between the substrate concentration and rate
 **for both the treated and untreated enzymes.**
 
 # Import data
@@ -47,13 +47,13 @@ Puromycin <- Puromycin %>%
 
 ## Data Exploration
 
-First, we visualize the association between the concentration and the enzyme 
-rate, for both of the enzyme states. 
+First, we visualize the association between the concentration and the enzyme
+rate, for both of the enzyme states.
 
 ```{r}
 Puromycin  %>%
   ggplot(aes(x=conc,y=rate)) +
-  geom_point() + 
+  geom_point() +
   stat_smooth(method = "loess",col="red") + # fit een kromme door de punten (rode lijn)
   stat_smooth(method='lm',col="black") + # fit een rechte door de punten aan de hand van de kleinstekwadratenmethode
   ylab("Reaction rate (counts/min)") +
@@ -61,33 +61,33 @@ Puromycin  %>%
   facet_grid(~state)
 ```
 
-The plot shows that there is a relation between the velocity and the 
-concentration, however, the relation does not seem to be linear. 
+The plot shows that there is a relation between the velocity and the
+concentration, however, the relation does not seem to be linear.
 
-We will assess the impact of log-transforming the concentration. Because the 
-concentration is measured in ppm we will log$_{10}$ transform the data. 
+We will assess the impact of log-transforming the concentration. Because the
+concentration is measured in ppm we will log$_{10}$ transform the data.
 
 ```{r}
 Puromycin  %>%
   ggplot(aes(x=conc %>% log10,y=rate)) +
-  geom_point() + 
-  stat_smooth(method = "loess",col="red") + 
+  geom_point() +
+  stat_smooth(method = "loess",col="red") +
   stat_smooth(method='lm',col="black") +
   ylab("Reaction Rate (counts/min)") +
   xlab("log10(Substrate concentration) (log10 ppm)") +
   facet_grid(~state)
 ```
 
-The relation between the velocity and the log$_{10}$ transformed concentration 
-seems to be linear. 
+The relation between the velocity and the log$_{10}$ transformed concentration
+seems to be linear.
 
-# Linear regression 
+# Linear regression
 
-We will fit the following model to the data 
+We will fit the following model to the data
 
 $Y_i = \beta_0 + \beta_c x_c+ \beta_s x_s +\beta_{c:s}x_{c}x_{s} + \epsilon_i$
 
-with 
+with
 
 - $Y_i$ the reaction rate,
 
@@ -106,28 +106,28 @@ the enzymes are treated with Puromycin,
 
 - $\epsilon_i$ i.i.d. normally distributed with mean 0 and variance $\sigma^2$.
 
-Note, that we write the substrate concentration with a small letter because 
-the predictor is not random. The researchers have chosen the substrate 
+Note, that we write the substrate concentration with a small letter because
+the predictor is not random. The researchers have chosen the substrate
 concentrations in the design phase and it is thus no random variable.
 
 The model implies two different regression lines
 
-- no treatment ($x_s = 0$) 
+- no treatment ($x_s = 0$)
 $$
-Y_i = \beta_0 + \beta_c x_c + \epsilon  
+Y_i = \beta_0 + \beta_c x_c + \epsilon
 $$
 - treatment (x_s = 1)
 
 $$
-Y_i = (\beta_0 + \beta_s)  + (\beta_c+\beta_{c:s}) x_c + \epsilon  
+Y_i = (\beta_0 + \beta_s)  + (\beta_c+\beta_{c:s}) x_c + \epsilon
 $$
 
-So the main effect for treatment has the interpretation as the change in intercept between treated and untreated samples. 
+So the main effect for treatment has the interpretation as the change in intercept between treated and untreated samples.
 
-The interaction term has the interpretation as the change in slope between treated and untreated samples. 
+The interaction term has the interpretation as the change in slope between treated and untreated samples.
 
 ```{r}
-Puromycin <-Puromycin %>% 
+Puromycin <-Puromycin %>%
   mutate(log10conc = conc %>% log10)
 mod1 <- lm(rate ~ log10conc * state, Puromycin)
 summary(mod1)
@@ -135,18 +135,18 @@ summary(mod1)
 
 Before we perform inference we will first assess the assumptions
 
-## Assumptions 
+## Assumptions
 
-1. Independence 
+1. Independence
 2. Linearity
 3. Normal distribution of the residuals
-4. Homoscedasticity 
+4. Homoscedasticity
 
 We assume that the experiment was well designed and that the different reactions that were use in the experiment are independent.
 
-## Linearity 
+## Linearity
 
-We assess linearity in a residual analysis 
+We assess linearity in a residual analysis
 
 ```{r}
 plot(mod1, which=1)
@@ -154,19 +154,19 @@ plot(mod1, which=1)
 
 The assumption of linearity is met.
 
-### Normality 
+### Normality
 
 ```{r}
 plot(mod1,which=2)
 ```
 
-The QQ-plot does not show large deviations from normality. 
+The QQ-plot does not show large deviations from normality.
 
 ### Homoscedasticity: equality of the variance
 
-We can again use the residual plot for assessing this assumption or the plot 
-were we plot the square root of the standardized residuals in function of 
-the fit. 
+We can again use the residual plot for assessing this assumption or the plot
+were we plot the square root of the standardized residuals in function of
+the fit.
 
 ```{r}
 plot(mod1, which=3)
@@ -175,28 +175,28 @@ plot(mod1, which=3)
 We see that the spread of the majority of the residuals is more or less similar.
 As such, we may assume homoscedasticity of the data.
 
-## Inference 
+## Inference
 
-### hypotheses 
+### hypotheses
 
-We first do an omnibus test to assess is there is an effect of the log10 concentration on the velocity. 
+We first do an omnibus test to assess is there is an effect of the log10 concentration on the velocity.
 
 ```{r}
 mod0 <- lm(rate ~ state, data = Puromycin)
 anova(mod0,mod1)
 ```
 
-Next, we assess the interaction. 
+Next, we assess the interaction.
 
 ```{r}
 car::Anova(mod1)
 ```
 
-We cannot remove the interaction of the model. 
+We cannot remove the interaction of the model.
 
-Hence, we cannot study the effect of the concentration without accounting for the treatment and have to assess following research questions.  
+Hence, we cannot study the effect of the concentration without accounting for the treatment and have to assess following research questions.
 
-1. the association between velocity and the concentration is significant in the untreated group 
+1. the association between velocity and the concentration is significant in the untreated group
 
 $$
 H_0: \beta_c = 0 \text{ vs } H_1: \beta_c \neq 0
@@ -209,13 +209,13 @@ $$
 H_0: \beta_c + \beta_{c:s}= 0 \text { vs } H_1: \beta_c + \beta_{c:s}\neq 0
 $$
 
-3. the association between velocity and the concentration is different between treated and untreated group 
+3. the association between velocity and the concentration is different between treated and untreated group
 
 $$
 H_0: \beta_{c:s}= 0\text{ vs }H_1: \beta_{c:s}\neq 0
 $$
 
-We can assess all these hypotheses using multcomp while correcting for multiple testing. 
+We can assess all these hypotheses using multcomp while correcting for multiple testing.
 
 ```{r}
 library(multcomp)
@@ -227,12 +227,7 @@ confint(mcp1)
 
 ### Conclusion
 
-There is an extremely significant effect of the substrate concentration on the reaction rate (p<<0.001). 
-The effect of the substrate concentration on the reaction rate is extremely significant for reactions catalysed with untreated enzymes. A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average  `r round(confint(mcp1)$confint[1,1],1)` counts/min higher (95% CI [`r round(confint(mcp1)$confint[1,-1],1)`] counts/min) (p << 0.001). 
+There is an extremely significant effect of the substrate concentration on the reaction rate (p<<0.001).
+The effect of the substrate concentration on the reaction rate is extremely significant for reactions catalysed with untreated enzymes. A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average  `r round(confint(mcp1)$confint[1,1],1)` counts/min higher (95% CI [`r round(confint(mcp1)$confint[1,-1],1)`] counts/min) (p << 0.001).
 The effect of the substrate concentration on the reaction rate is extremely significant for reactions catalysed puromycin treated enzymes  (p << 0.001). A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average  `r round(confint(mcp1)$confint[2,1],1)` counts/min higher (95% CI [`r round(confint(mcp1)$confint[2,-1],1)`] counts/min).
-The effect of the substrate concentration on the reaction rate is very significantly higher for reactions catalysed with Puromycin treated enzymes than when catalysed with non-treated enzymes  (p = `r round(summary(mcp1)$test$pvalue[3],3)`). A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average `r round(confint(mcp1)$confint[3,1],1)` counts/min higher for reactions that are catalysed with Puromycin treated enzymes than with untreated enzymes (95% CI [`r round(confint(mcp1)$confint[3,-1],1)`] counts/min). 
-
-
-
-
-
+The effect of the substrate concentration on the reaction rate is very significantly higher for reactions catalysed with Puromycin treated enzymes than when catalysed with non-treated enzymes  (p = `r round(summary(mcp1)$test$pvalue[3],3)`). A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average `r round(confint(mcp1)$confint[3,1],1)` counts/min higher for reactions that are catalysed with Puromycin treated enzymes than with untreated enzymes (95% CI [`r round(confint(mcp1)$confint[3,-1],1)`] counts/min).

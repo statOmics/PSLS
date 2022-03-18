@@ -1,10 +1,10 @@
 ---
-title: "Exercise 7.3: ANOVA on the NHANES dataset"   
+title: "Exercise 7.3: ANOVA on the NHANES dataset"
 author: "Lieven Clement and Jeroen Gilis"
-date: "statOmics, Ghent University (https://statomics.github.io)"  
+date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -14,21 +14,21 @@ output:
 
 # The NHANES dataset
 
-The National Health and Nutrition Examination Survey (NHANES) contains data 
-that has been collected since 1960. For this tutorial, we will make use of 
-the data that were collected between 2009 and 2012, for 10.000 U.S. civilians. 
-The dataset contains a large number of physical, demographic, nutritional and 
+The National Health and Nutrition Examination Survey (NHANES) contains data
+that has been collected since 1960. For this tutorial, we will make use of
+the data that were collected between 2009 and 2012, for 10.000 U.S. civilians.
+The dataset contains a large number of physical, demographic, nutritional and
 life-style-related parameters.
 
 # Goal
 
-In the NHANES dataset, one of the columns is named `HealthGen`. 
-HealthGen is a self-reported rating of a participant's health 
+In the NHANES dataset, one of the columns is named `HealthGen`.
+HealthGen is a self-reported rating of a participant's health
 in general terms. HealthGen is reported for participants aged 12
 years or older. It is a factor with the following levels:
 Excellent, Vgood, Good, Fair, or Poor.
 
-We want to assess if the systolic blood pressure 
+We want to assess if the systolic blood pressure
 value (take column `BPSys1`) is equal between the five self-reported
 health categories. To this end, we will use an ANOVA analysis
 (if the required assumptions are met).
@@ -39,7 +39,7 @@ health categories. To this end, we will use an ANOVA analysis
 
 ```
 
-# Data import  
+# Data import
 
 ```{r, message=FALSE}
 
@@ -52,7 +52,7 @@ To get a more informative and intuitive visualization, you can:
 1. Filter out subjects with NA values for `HealthGen` or `BPSys1`
 2. Set `HealthGen` to a factor and relevel it to Poor --> Excellent
 
-**Hint:** The second task can be achieved by using the `mutate`, 
+**Hint:** The second task can be achieved by using the `mutate`,
 `as.factor` and `fct_relevel` functions.
 
 ```{r}
@@ -62,22 +62,15 @@ To get a more informative and intuitive visualization, you can:
 
 1. What do you observe from the data exploration?
 
-2. How will you model the data? 
+2. How will you model the data?
 
 3. Translate the research question in a null and alternative hypothesis
 
-4. Which test will you use to assess the research hypothesis? 
+4. Which test will you use to assess the research hypothesis?
 
-5. Formulate the assumptions of the test and assess the assumptions using 
-diagnostic plots. 
+5. Formulate the assumptions of the test and assess the assumptions using
+diagnostic plots.
 
 6. If all assumptions to perform the test are met, complete the analysis and
 formulate a proper conclusion. If the assumptions are not met (immediately), can
-you think about the concepts we discussed in the theory to tackle this issue? 
-
-
-
-
-
-
-
+you think about the concepts we discussed in the theory to tackle this issue?

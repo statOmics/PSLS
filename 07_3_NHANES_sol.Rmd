@@ -1,8 +1,8 @@
 ---
-title: "Tutorial 7.3: ANOVA in the NHANES dataset"   
+title: "Tutorial 7.3: ANOVA in the NHANES dataset"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -12,21 +12,21 @@ output:
 
 # The NHANES dataset
 
-The National Health and Nutrition Examination Survey (NHANES) contains data 
-that has been collected since 1960. For this tutorial, we will make use of 
-the data that were collected between 2009 and 2012, for 10.000 U.S. civilians. 
-The dataset contains a large number of physical, demographic, nutritional and 
+The National Health and Nutrition Examination Survey (NHANES) contains data
+that has been collected since 1960. For this tutorial, we will make use of
+the data that were collected between 2009 and 2012, for 10.000 U.S. civilians.
+The dataset contains a large number of physical, demographic, nutritional and
 life-style-related parameters.
 
 # Goal
 
-In the NHANES dataset, one of the columns is named `HealthGen`. 
-HealthGen is a self-reported rating of a participant’s health 
+In the NHANES dataset, one of the columns is named `HealthGen`.
+HealthGen is a self-reported rating of a participant’s health
 in general terms. HealthGen is reported for participants aged 12
 years or older. It is a factor with the following levels:
 Excellent, Vgood, Good, Fair, or Poor.
 
-We want to test whether or not the mean systolic blood pressure 
+We want to test whether or not the mean systolic blood pressure
 value (take column `BPSys1`) is equal between the five self-reported
 health categories. To this end, we will use an ANOVA analysis
 (if the required assumptions are met).
@@ -37,7 +37,7 @@ Load the required libraries
 library(tidyverse)
 ```
 
-# Data import  
+# Data import
 
 ```{r, message=FALSE, warning=FALSE}
 NHANES <- read_csv("https://raw.githubusercontent.com/statOmics/PSLS21/data/NHANES.csv")
@@ -48,13 +48,13 @@ glimpse(NHANES[1:10])
 
 ```{r}
 NHANES %>%
-  ggplot(aes(x=HealthGen,y=BPSys1,fill=HealthGen)) + 
+  ggplot(aes(x=HealthGen,y=BPSys1,fill=HealthGen)) +
   scale_fill_brewer(palette="RdGy") +
   theme_bw() +
   geom_boxplot(outlier.shape=NA) +
   #geom_jitter(width = 0.2,size=0.01) + ## omitted as it makes the plot messy
   ggtitle("Boxplot of the systolic bloodpressure for each health category") +
-  ylab("Systolic blood pressure (mmHg)") + 
+  ylab("Systolic blood pressure (mmHg)") +
   stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
 ```
 
@@ -67,7 +67,7 @@ To get a more informative and intuitive visualization, you can:
 1. Filter out subjects with NA values for `HealthGen` or `BPSys1`
 2. Set `HealthGen` to a factor and relevel it to Poor --> Excellent
 
-**Hint:** The second task can be achieved by using the `mutate`, 
+**Hint:** The second task can be achieved by using the `mutate`,
 `as.factor` and `fct_relevel` functions.
 
 ```{r}
@@ -79,12 +79,12 @@ NHANES <- NHANES %>%
 
 ```{r}
 NHANES %>%
-  ggplot(aes(x=HealthGen,y=BPSys1,fill=HealthGen)) + 
+  ggplot(aes(x=HealthGen,y=BPSys1,fill=HealthGen)) +
   scale_fill_brewer(palette="RdGy") +
   theme_bw() +
   geom_boxplot(outlier.shape=NA) +
   ggtitle("Boxplot of the systolic bloodpressure for each health category") +
-  ylab("Systolic blood pressure (mmHg)") + 
+  ylab("Systolic blood pressure (mmHg)") +
   stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
 ```
 
@@ -100,7 +100,7 @@ The null hypothesis of ANOVA states that:
 $H0$: The mean systolic blood pressure is equal between the different health groups.
 
 The alternative hypothesis of ANOVA states that:
-$HA$: The mean systolic blood pressure for at least one health group is different 
+$HA$: The mean systolic blood pressure for at least one health group is different
 from the mean systolic blood pressure in at least one other health group.
 
 ## Check the assumptions for ANOVA
@@ -121,10 +121,10 @@ The first assumption is met; there shoud be no specific pattterns of dependence.
 For the second assumption, we must check normality in each group.
 
 ```{r}
-NHANES %>% 
+NHANES %>%
   ggplot(aes(sample=BPSys1)) +
   geom_qq() +
-  geom_qq_line() + 
+  geom_qq_line() +
   facet_grid(~HealthGen)
 ```
 
@@ -133,11 +133,11 @@ each group. It seems to have a heavy right tail. We can
 perform a log transformation on the data.
 
 ```{r}
-NHANES %>% 
+NHANES %>%
   mutate(BPSys1_log = log(BPSys1)) %>%
   ggplot(aes(sample=BPSys1_log)) +
   geom_qq() +
-  geom_qq_line() + 
+  geom_qq_line() +
   facet_grid(~HealthGen)
 ```
 
@@ -154,8 +154,8 @@ NHANES %>%
 
 As such, we may rely on the cental limit theorem.
 Remember, the cental limit theorem that when the number
-of observations is sufficiently large (i.e. >100), we 
-will assume that the distribution of the sample mean will 
+of observations is sufficiently large (i.e. >100), we
+will assume that the distribution of the sample mean will
 approximate a normal distribution, even if the underlying
 data is not normally distributed.
 
@@ -169,8 +169,8 @@ print(paste("Not-rounded p-value:", fit_anova$`Pr(>F)`[1]))
 ```
 
 The p-value of the ANOVA analysis is extremely significant
-(p-value = `r format(fit_anova$"Pr(>F)"[1],digits=4)`), 
-so we reject the null hypothesis that the mean 
+(p-value = `r format(fit_anova$"Pr(>F)"[1],digits=4)`),
+so we reject the null hypothesis that the mean
 egg length is equal between the different bird types.
 We can say that the mean egg length is significantly different
 between at least two bird types on the 5% significance level.
@@ -190,7 +190,7 @@ confint(mcp)
 
 ## Conclusion
 
-We have found an extremely significant dependence (p-value = `r format(fit_anova$"Pr(>F)"[1],digits=4)`), 
+We have found an extremely significant dependence (p-value = `r format(fit_anova$"Pr(>F)"[1],digits=4)`),
 between the mean systolic blood pressure and the health group
 on the global 5% significance level.
 
@@ -218,13 +218,5 @@ We do not find enough evidence to claim a difference in systolic
 blood pressure levels between the other groups.
 
 Note that in order to interpret the outcomes on the original scale,
-we should backtransform the outcomes with the `exp()` functions 
+we should backtransform the outcomes with the `exp()` functions
 (interpretation on the geometric mean).
-
-
-
-
-
-
-
-

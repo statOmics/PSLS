@@ -1,10 +1,10 @@
 ---
-title: "Exercise 6.3: Linear regression vs t-test on the armpit dataset"   
+title: "Exercise 6.3: Linear regression vs t-test on the armpit dataset"
 author: "Lieven Clement and Jeroen Gilis"
-date: "statOmics, Ghent University (https://statomics.github.io)"  
+date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -17,10 +17,10 @@ output:
 Smelly armpits are not caused by sweat, itself. The smell is caused
 by specific micro-organisms belonging to the group of
 *Corynebacterium spp.* that metabolise sweat. Another group of abundant bacteria
-are the *Staphylococcus spp.*, these bacteria do not metabolise sweat in smelly 
+are the *Staphylococcus spp.*, these bacteria do not metabolise sweat in smelly
 compounds.
 
-The CMET-group at Ghent University does research to on transplanting the armpit 
+The CMET-group at Ghent University does research to on transplanting the armpit
 microbiome to save people with smelly armpits.
 
 - Proposed Therapy:
@@ -30,7 +30,7 @@ microbiome to save people with smelly armpits.
 
 - Experiment:
 
-    - 20 students with smelly armpits are attributed to one of 
+    - 20 students with smelly armpits are attributed to one of
       two treatment groups
     - placebo (only antibiotics)
     - transplant (antibiotica followed by microbial transplant).
@@ -39,17 +39,17 @@ microbiome to save people with smelly armpits.
       *Corynebacterium spp.* + *Staphylococcus spp.* in the
       microbiome is measured via DGGE (*Denaturing Gradient Gel
       Electrophoresis*).
-    
+
 # Goal
 
-The overarching goal of this research was to assess if the relative abundance 
+The overarching goal of this research was to assess if the relative abundance
 *Staphylococcus spp.*
-in the microbiome of the armpit is affected by transplanting the microbiome. 
+in the microbiome of the armpit is affected by transplanting the microbiome.
 To this end the researchers randomized patients to two treatment:
 A treatment with antibiotics only and a treatment with
 antibiotics and a microbial transplant.
 
-In the tutorial on hypotheses testing we will use a formal statistical test to 
+In the tutorial on hypotheses testing we will use a formal statistical test to
 generalize the results from the sample to that of the population.
 
 # Import the dataset
@@ -71,39 +71,39 @@ glimpse(ap)
 
 # Data Exploration
 
-A crucial first step in a data analysis is to visualize and to explore the raw 
+A crucial first step in a data analysis is to visualize and to explore the raw
 data.
 
 ```{r}
-ap %>% ggplot(aes(x=trt,y=rel,fill=trt)) + 
-  geom_boxplot(outlier.shape=NA) + 
+ap %>% ggplot(aes(x=trt,y=rel,fill=trt)) +
+  geom_boxplot(outlier.shape=NA) +
   geom_point(position="jitter") +
   ylab("relative abundance (%)") +
-  xlab("treatment group") + 
+  xlab("treatment group") +
   stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
 ```
 
 We clearly see that, on average, the subjects who had a
 microbial transplant have a higher relative abundance of
-Staphylococcus spp. But is this difference statistically  
-*significant* so that we can generalized what we observe 
+Staphylococcus spp. But is this difference statistically
+*significant* so that we can generalized what we observe
 in the sample to the population?
 
-We can test this with an unpaired, two-sample t-test, which falsifies the null 
-hypothesis that there is on average no difference in relative abundance of 
-*Staphylococcus* in the armpit microbiome between the transplant and the 
-placebo group against the alternative hypothesis that there is a difference 
-in average abundance of *Staphyloccocus* in the armpit microbiome between 
-the transplant and placebo treatment. 
+We can test this with an unpaired, two-sample t-test, which falsifies the null
+hypothesis that there is on average no difference in relative abundance of
+*Staphylococcus* in the armpit microbiome between the transplant and the
+placebo group against the alternative hypothesis that there is a difference
+in average abundance of *Staphyloccocus* in the armpit microbiome between
+the transplant and placebo treatment.
 
-But, before we can start the analysis, we must check if all assumptions to 
+But, before we can start the analysis, we must check if all assumptions to
 perform a t-test are met.
 
 # Analysis
 
 ## Check the assumptions
 
-1. The observations are independent. This has to be 
+1. The observations are independent. This has to be
 guaranteed by the design.
 
 2. The data (rel) are normally distributed in each of the groups
@@ -127,11 +127,11 @@ For the third assumption, we must compare the within-group
 variability of both groups. We can do this visually:
 
 ```{r}
-ap %>%  ggplot(aes(x=trt,y=rel)) + 
-  geom_boxplot(outlier.shape=NA) + 
+ap %>%  ggplot(aes(x=trt,y=rel)) +
+  geom_boxplot(outlier.shape=NA) +
   geom_point(position="jitter") +
   ylab("relative abundance (%)") +
-  xlab("treatment group") + 
+  xlab("treatment group") +
   stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
 ```
 
@@ -164,11 +164,11 @@ On average the relative abundance of *Staphylococcus spp.* in the microbiome of 
 
 # ADDENDUM: Train yourself in checking the assumptions
 
-In order for the learners to get more proficient in evaluating the assumptions we will simulate 9 dataset with sample sizes similar to our data for which the assumptions of normality and equal variance do hold. For the QQ-plots we will only plot the one from one of the groups. 
+In order for the learners to get more proficient in evaluating the assumptions we will simulate 9 dataset with sample sizes similar to our data for which the assumptions of normality and equal variance do hold. For the QQ-plots we will only plot the one from one of the groups.
 
-## Simulate data 
+## Simulate data
 
-We simulate 9 datasets with the same sample sizes, means and pooled variance as in the sample. 
+We simulate 9 datasets with the same sample sizes, means and pooled variance as in the sample.
 
 ```{r}
 ap <- read_csv("https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv")
@@ -183,13 +183,13 @@ apRelSum<-ap %>%
                     n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
   mutate(se=sd/sqrt(n))
 
-sigma <- sqrt(sum(apRelSum$sd^2*(apRelSum$n-1))/(sum(apRelSum$n)-2)) 
+sigma <- sqrt(sum(apRelSum$sd^2*(apRelSum$n-1))/(sum(apRelSum$n)-2))
 
 normSim <- matrix(rnorm(sum(apRelSum$n)*nSamp,
               mean=c(rep(apRelSum$mean[1],apRelSum$n[1]),
                      rep(apRelSum$mean[2],apRelSum$n[2])),
                      sd=sigma),nrow=sum(apRelSum$n)) %>%
-  as.data.frame %>% 
+  as.data.frame %>%
   mutate(trt=ap$trt)
 ```
 
@@ -207,7 +207,7 @@ normSim %>% gather(samp,data,-trt) %>%
 ### Placebo group
 
 ```{r}
-normSim %>% 
+normSim %>%
   gather(samp,data,-trt) %>%
   filter(trt=="placebo") %>%
   ggplot(aes(sample=data)) +
@@ -219,7 +219,7 @@ normSim %>%
 ### Transplant group
 
 ```{r}
-normSim %>% 
+normSim %>%
   gather(samp,data,-trt) %>%
   filter(trt=="transplant") %>%
   ggplot(aes(sample=data)) +
@@ -228,17 +228,17 @@ normSim %>%
   facet_wrap(~samp)
 ```
 
-# Data Analysis with a linear model 
+# Data Analysis with a linear model
 
-## Fit the model 
+## Fit the model
 
-We do not need to check the assumptions again because we have done this already in the data exploration when analysing the data using the t-test. 
+We do not need to check the assumptions again because we have done this already in the data exploration when analysing the data using the t-test.
 
 ```{r, eval=FALSE}
 mod1 <- ...
 ```
 
-## Inference 
+## Inference
 
 1. hypothesis test
 
@@ -246,7 +246,7 @@ mod1 <- ...
 ...
 ```
 
-2. confidence interval 
+2. confidence interval
 
 ```{r eval=FALSE}
 ...
@@ -255,4 +255,3 @@ mod1 <- ...
 3. How do your results compare to the analysis with the t-test.
 
 4. Formulate your conclusion based on the output of the linear model.
-

@@ -1,10 +1,10 @@
 ---
-title: "Exercise 7.2: ANOVA on the cuckoo dataset - solution"   
+title: "Exercise 7.2: ANOVA on the cuckoo dataset - solution"
 author: "Lieven Clement and Jeroen Gilis"
-date: "statOmics, Ghent University (https://statomics.github.io)"  
+date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -65,18 +65,18 @@ head(Cuckoo)
 
 # Data tidying
 
-It seems that the `tpye` column is a `double` rather than a `factor`. 
+It seems that the `tpye` column is a `double` rather than a `factor`.
 Let's fix this:
 
 ```{r}
 Cuckoo <- Cuckoo %>%
   mutate(type = as.factor(type)) %>%
-  mutate(type = recode(type, 
-           "1" = "meadow", 
-           "2" = "tree", 
-           "3" = "dunnock",  
-           "4" = "robin", 
-           "5" = "wagtail", 
+  mutate(type = recode(type,
+           "1" = "meadow",
+           "2" = "tree",
+           "3" = "dunnock",
+           "4" = "robin",
+           "5" = "wagtail",
            "6" = "wren"))
 ```
 
@@ -100,14 +100,14 @@ Cuckoo %>%
     geom_boxplot() +
     geom_jitter(width = 0.2) +
     ggtitle("Boxplot of the length of eggs per type") +
-    ylab("length (mm)") + 
+    ylab("length (mm)") +
     stat_summary(fun=mean, geom="point", shape=5, size=3, color="black", fill="black")
 ```
 
 # ANOVA
 
-To study if the observed differences in average egg length 
-between the different foster bird types are significant, we may perform 
+To study if the observed differences in average egg length
+between the different foster bird types are significant, we may perform
 an ANOVA.
 
 ## Formulate null and alternative hypothesis
@@ -116,10 +116,10 @@ The null hypothesis of ANOVA states that:
 $H0$: The mean egg length is equal between the different bird types.
 
 The alternative hypothesis of ANOVA states that:
-$HA$: The mean egg length for at least one bird type is different 
+$HA$: The mean egg length for at least one bird type is different
 from the mean egg length in at least one other bird type.
 
-## Parameter estimation 
+## Parameter estimation
 
 ```{r}
 mod1 <- lm(length~type, Cuckoo)
@@ -144,10 +144,10 @@ plot(mod1, which = 2)
 ```
 
 ```{r}
-Cuckoo %>% 
+Cuckoo %>%
   ggplot(aes(sample=length)) +
   geom_qq() +
-  geom_qq_line() + 
+  geom_qq_line() +
   facet_grid(~type)
 ```
 
@@ -159,16 +159,16 @@ visualization with the boxplots (see above).
 As such, we may proceed with the ANOVA analysis.
 
 
-### Simulate to train your skills in assessing assumptions 
+### Simulate to train your skills in assessing assumptions
 
 ```{r}
 set.seed(1031)
-sigma <- mod1 %>% sigma 
+sigma <- mod1 %>% sigma
 dataHlp <- Cuckoo
 
 simModels <- list()
 plotList <- list()
-plotListQQ1 <- list() 
+plotListQQ1 <- list()
 
 par(mfrow=c(3,3))
 for (i in 1:9)
@@ -177,15 +177,15 @@ for (i in 1:9)
   dataHlp$ySim <- mod1$fit + rnorm(nobs, sd = sigma)
   simModels[[i]] <- lm(ySim~type, dataHlp)
   plot(simModels[[i]], which = 2)
-  plotList[[i]] <- dataHlp %>%  
-    ggplot(aes(type,ySim)) + 
+  plotList[[i]] <- dataHlp %>%
+    ggplot(aes(type,ySim)) +
     geom_boxplot(outlier.shape = NA) +
     geom_jitter()
-  plotListQQ1[[i]] <- dataHlp %>%  
-    filter(type == "meadow")  %>% 
-    ggplot(aes(sample = ySim)) + 
+  plotListQQ1[[i]] <- dataHlp %>%
+    filter(type == "meadow")  %>%
+    ggplot(aes(sample = ySim)) +
     geom_qq() +
-    geom_qq_line() + 
+    geom_qq_line() +
     xlab("QQ for meadow")
 }
 
@@ -193,7 +193,7 @@ do.call(gridExtra::grid.arrange, plotList)
 do.call(gridExtra::grid.arrange, plotListQQ1)
 ```
 
-The most deviating QQ-plot of the residuals in the nine simulation runs: 
+The most deviating QQ-plot of the residuals in the nine simulation runs:
 ```{r}
 par(mfrow=c(1,1))
 plot(simModels[[8]], which = 2)
@@ -208,8 +208,8 @@ mod1_anova
 ```
 
 The p-value of the ANOVA analysis is extremely significant
-(p-value < 0.001), 
-so we reject the null hypothesis that the mean 
+(p-value < 0.001),
+so we reject the null hypothesis that the mean
 egg length is equal between the different bird types.
 We can say that the mean egg length is significantly different
 between at least two bird types on the 5% significance level.
@@ -220,7 +220,7 @@ perform the Tuckey post-hoc analysis.
 
 ## Post-hoc analysis
 
-We will perform a post-hoc analysis, to look at the difference 
+We will perform a post-hoc analysis, to look at the difference
 in egg length between each pairwise comparison of bird types.
 Importantly, with this strategy, the p-values will be correctly
 adjusted for multiple testing.
@@ -255,5 +255,3 @@ species in the study:
 - the white wagtail (adjusted p-value = `r summary(mcp)$test$pvalues[names(summary(mcp)$test$tstat) == "wren - wagtail"] %>% format(digits=1)`, mean difference = `r round(confint(mcp)$confint["wren - wagtail",1],1)`mm, 95% CI [`r round(confint(mcp)$confint["wren - wagtail",-1],1)`])
 
 The mean length of the cuckoo bird's eggs for all other pairwise comparisons between foster bird species are not statistically significantly different at the 5% level.
-
-

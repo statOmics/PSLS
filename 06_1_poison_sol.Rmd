@@ -1,10 +1,10 @@
 ---
-title: "Exercise 6.1: Linear regression on the fish tank dataset - solution"   
+title: "Exercise 6.1: Linear regression on the fish tank dataset - solution"
 author: "Lieven Clement and Jeroen Gilis"
-date: "statOmics, Ghent University (https://statomics.github.io)"  
+date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -45,7 +45,7 @@ We can see a couple of things in the data that can be improved upon:
 
 1. Capitalise the fist column name. *Hint*: use the `rename` function.
 
-2. Set the Species column as a factor. *Hint*: use the `mutate` and `as.factor` 
+2. Set the Species column as a factor. *Hint*: use the `mutate` and `as.factor`
 functions.
 
 3. Change the species factor levels from 0, 1 and 2 to
@@ -77,9 +77,9 @@ as a color to the plot.
 ```{r}
 poison %>%
   ggplot(aes(x=Dose,y=Surv_time)) +
-  geom_point() + 
+  geom_point() +
   stat_smooth(method = "loess") +
-  geom_smooth(method='lm',col="black") + 
+  geom_smooth(method='lm',col="black") +
   ylab("Survival time (min)") +
   xlab("Dose (mg)") +
   geom_point(aes(col=Species)) + ## not necessary, additional layer of information
@@ -98,24 +98,24 @@ assumptions are met.
 # Important note on the dataset
 
 In this dataset, there are multiple variables can have an effect on the survival
-time of the fish. The most obvious one is the dose of poison that was 
-administered (as displayed above). However, we could also imagine that heavier 
+time of the fish. The most obvious one is the dose of poison that was
+administered (as displayed above). However, we could also imagine that heavier
 fish are less prone to the poison than light fish. Additionally, one fish
 species may be more resistant to the poison than the other.
 
-As such, not taking into account species into the analysis will introduce 
-problems regarding the assumption of *independence* of the data. The assumption 
-of *independence* entails that knowing the response value of one observation 
-(fish) does not learn us anything about the response values for another 
-variable. This will not be the case here; the response values (survival times) 
-of fish of the same species will be much more alike compared to those of fish 
+As such, not taking into account species into the analysis will introduce
+problems regarding the assumption of *independence* of the data. The assumption
+of *independence* entails that knowing the response value of one observation
+(fish) does not learn us anything about the response values for another
+variable. This will not be the case here; the response values (survival times)
+of fish of the same species will be much more alike compared to those of fish
 from another species.
 
-Thus, in order to correctly analyze this data, fish `species` and `weight` 
+Thus, in order to correctly analyze this data, fish `species` and `weight`
 should be taken into consideration. **For now, we will "avoid" taking into**
 **account the effect of species into the analysis by only performing an**
 **analysis for the dojofish**. As such, we will filter the dataset so that
-it only contains observations for the Dojofish. 
+it only contains observations for the Dojofish.
 
 ```{r}
 # filter the data so it only contains dojofish
@@ -123,8 +123,8 @@ poison_dojo <- poison %>%
     filter(Species == "Dojofish")
 ```
 
-Later in the course, we will come back to this dataset and perform a analysis 
-that allows us to assess the different research hypotheses for all fish species 
+Later in the course, we will come back to this dataset and perform a analysis
+that allows us to assess the different research hypotheses for all fish species
 at once!
 
 The second predictor variable, `Weight`, still may influence our analysis; fish
@@ -133,7 +133,7 @@ would be a systematic bias in the experiment, e.g. if all lighter fish obtained
 a low dose  of poison and heavier fish obtained a high dose of poison
 (so, if the dose was not correctly randomized accros the different weights),
 then we would not be able to correctly estimate the linear association between
-`Dose` and `survival`; indeed, this relationship would be confounded by the 
+`Dose` and `survival`; indeed, this relationship would be confounded by the
 effect of weight.
 
 ```{r, message=FALSE}
@@ -141,7 +141,7 @@ poison_dojo %>%
   ggplot(aes(x = Dose, y = Weight)) +
   geom_point() +
   ggtitle("Association between dose and weight") +
-  theme_bw() + 
+  theme_bw() +
   stat_summary(
     geom = "point",
     fun = "mean",
@@ -151,12 +151,12 @@ poison_dojo %>%
     fill = "red")
 ```
 
-In our dataset, there seems to be **no systematic bias**, i.e., no clear trend 
-in the association between `Dose` and `Weight`. However, we do notice that the 
+In our dataset, there seems to be **no systematic bias**, i.e., no clear trend
+in the association between `Dose` and `Weight`. However, we do notice that the
 fish weights are not perfectly uniformly distributed across the different doses;
-we don't see a clear trend, but we do see some fluctuations. To check if 
-fluctuations of the size that we observe here could happen by random change if 
-we carefully randomise, we may use simulations where we simulate the allocation 
+we don't see a clear trend, but we do see some fluctuations. To check if
+fluctuations of the size that we observe here could happen by random change if
+we carefully randomise, we may use simulations where we simulate the allocation
 of the fish to the different doses.
 
 ```{r}
@@ -171,7 +171,7 @@ plots <- lapply(1:9,
          mutate(Dose=sample(Dose))%>% # randomization
          ggplot(aes(x = Dose, y = Weight)) +
          geom_point() +
-         theme_bw()  + 
+         theme_bw()  +
          stat_summary(
             geom = "point",
             fun = "mean",
@@ -183,10 +183,10 @@ plots <- lapply(1:9,
 do.call(gridExtra::grid.arrange, plots)
 ```
 
-In the above simulation, we randomly assigned the different fish to different 
-poison doses. Even though we did this randomly, we still see that by random 
-chance there can be fluctuations as large as the ones observed in our real 
-dataset. As such, we may conclude that there is indeed **no systematic bias**, 
+In the above simulation, we randomly assigned the different fish to different
+poison doses. Even though we did this randomly, we still see that by random
+chance there can be fluctuations as large as the ones observed in our real
+dataset. As such, we may conclude that there is indeed **no systematic bias**,
 i.e., no clear trend in the association between `Dose` and `Weight`.
 
 # Linear regression analysis
@@ -201,8 +201,8 @@ List assumptions:
 4. Homoscedasticity of the data
 
 The first assumption is **met** based on the experimental design. In the
-data exploration phase, we saw that there is no clear trend in the association 
-between `Dose` and `Weight`. With respect to species, we have "avoided" taking 
+data exploration phase, we saw that there is no clear trend in the association
+between `Dose` and `Weight`. With respect to species, we have "avoided" taking
 into account the effect of species into the analysis by only performing an
 analysis for the dojofish.
 
@@ -213,7 +213,7 @@ required diagnostic plots.
 ```{r}
 # fit a linear regression model with 'Surv_time' as response variable and
 # 'Dose' as predictor variabele
-model <- lm(Surv_time~Dose, data=poison_dojo) 
+model <- lm(Surv_time~Dose, data=poison_dojo)
 
 ## display the diagnostic plots of the model
 plot(model)
@@ -257,7 +257,7 @@ The assumption of homoscedasticity is **not met.**
 Multiple assumptions are not met, so we may not continue by performing
 a linear regression.
 
-We can try to remediate these deviations by log-transforming the data. Indeed, 
+We can try to remediate these deviations by log-transforming the data. Indeed,
 data with heavy right tails can often be normalized by applying this strategy.
 
 Fit a (log-)linear model by log-transforming the response.Generate diagnostic
@@ -310,35 +310,35 @@ Compute the 95% confidence interval on the model parameters:
 confint(log.model)
 ```
 
-## Interpretation on the log scale 
+## Interpretation on the log scale
 
 Currently, all the outcomes should be interpreted on the log-scale.
-Indeed, since we are now modelling  _the log$_{10}$ of survival time_, we 
+Indeed, since we are now modelling  _the log$_{10}$ of survival time_, we
 don't have direct inference on survival time.
 
 As such, we may interpret the output as follows:
 
 - The slope:
 
-Dojofish that are exposed to a higher dose of the poison will have a $log_{10}$ 
-survival time that is on average `r log.model$coef[2] %>% abs %>% round(.,2)` 
-lower per gram of poison that was administered additionally 
-(95% CI [`r confint(log.model) %>% abs %>% round(.,2)`]). This decrease in 
+Dojofish that are exposed to a higher dose of the poison will have a $log_{10}$
+survival time that is on average `r log.model$coef[2] %>% abs %>% round(.,2)`
+lower per gram of poison that was administered additionally
+(95% CI [`r confint(log.model) %>% abs %>% round(.,2)`]). This decrease in
 survival time is significant on the 5% significance level (p<0.001).
 
-Note, that the study is an experimental study so we can conclude that there is 
-a causal effect of the poison dose and the survival time. 
+Note, that the study is an experimental study so we can conclude that there is
+a causal effect of the poison dose and the survival time.
 
 - The intercept:
 
 The average of the log10 of survival time for fish that
 were given a dose of 0 mg is `r log.model$coef[1] %>% abs %>% round(.,2)`.
 
-## Interpretation on the original scale 
+## Interpretation on the original scale
 
-The interpretation the log-scale is quite difficult. To ease 
+The interpretation the log-scale is quite difficult. To ease
 the interpretation, we will backtransform the results to the original
-scale (time in minutes). This we can do by 
+scale (time in minutes). This we can do by
 
 ```{r}
 10^(summary(log.model)$coefficients[,"Estimate"])
@@ -354,29 +354,29 @@ Now, we can interpret the results in terms of the geometric mean:
 
 - The slope:
 
-Dojo fish that are exposed to a higher dose of the poison will have a geometric 
-mean of the survival time that is factor `r round(10^log.model$coef[2],2)` 
-(95% CI [`r round(10^(confint(log.model)[2,]),2)`]) per gram of poison that they 
-received more than fish exposed to a lower dose. This decrease is very 
+Dojo fish that are exposed to a higher dose of the poison will have a geometric
+mean of the survival time that is factor `r round(10^log.model$coef[2],2)`
+(95% CI [`r round(10^(confint(log.model)[2,]),2)`]) per gram of poison that they
+received more than fish exposed to a lower dose. This decrease is very
 significant on the 5% significance level (p<0.001).
 
 - The intercept:
 
-The geometric mean of the survival time for fish that were given a 
-dose of 0 mg is `r round(10^log.model$coef[1],2)` minutes. 
+The geometric mean of the survival time for fish that were given a
+dose of 0 mg is `r round(10^log.model$coef[1],2)` minutes.
 
-In other words, our analysis seems to suggest that fish in uncontaminated water 
+In other words, our analysis seems to suggest that fish in uncontaminated water
 would only survive for about 8 minutes! This seems a little bit _fishy_...
 
 Note, that this interpretation is not biologically relevant and is induced
 because we extrapolated considerably because all fish in the experiment were
-exposed to poison. 
+exposed to poison.
 
 ```{r}
-plot(x=poison_dojo$Dose, 
-     y=poison_dojo$Surv_time, 
-     xlab="Dose (mg)", 
-     ylab="Survival time (min)", 
+plot(x=poison_dojo$Dose,
+     y=poison_dojo$Surv_time,
+     xlab="Dose (mg)",
+     ylab="Survival time (min)",
      xlim=c(0,2.2))
 abline(lsfit(poison_dojo$Dose,poison_dojo$Surv_time), lty=2) ## lty=2 draws a dashed line
 
@@ -393,22 +393,12 @@ However, in most applications we will never test for the intercept term.
 
 # Conclusion
 
-There is a very significant effect of the poison on survival of Dojofish 
-(p< 0.001). Dojofish that are exposed to a higher dose of the poison will 
-have a survival time that decrease on average with a factor 
-`r log.model$coef[2] %>% abs %>% 10^. %>% round(.,2)` per gram of poison that 
+There is a very significant effect of the poison on survival of Dojofish
+(p< 0.001). Dojofish that are exposed to a higher dose of the poison will
+have a survival time that decrease on average with a factor
+`r log.model$coef[2] %>% abs %>% 10^. %>% round(.,2)` per gram of poison that
 is added (95% CI [`r confint(log.model)[2,] %>% abs %>% 10^. %>% round(.,2)`]).
 
-In the tutorial of multiple regression, we will revisit this exercise. 
+In the tutorial of multiple regression, we will revisit this exercise.
 More specifically, we will there study the association between dose and survival
 for all the species in the dataset.
-
-
-
-
-
-
-
-
-
-

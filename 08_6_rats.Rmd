@@ -1,10 +1,10 @@
 ---
-title: "Exercise 8.6: Blocking on the rat diet dataset (2)"   
+title: "Exercise 8.6: Blocking on the rat diet dataset (2)"
 author: "Lieven Clement and Jeroen Gilis"
-date: "statOmics, Ghent University (https://statomics.github.io)"  
+date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -12,36 +12,36 @@ output:
       number_sections: true
 ---
 
-# Background 
+# Background
 
-Researchers are studying the impact of protein sources and protein levels in 
-the diet on the weight of rats. They feed the rats with diets of beef, cereal 
-and pork and use a low and high protein level for each diet type. 
+Researchers are studying the impact of protein sources and protein levels in
+the diet on the weight of rats. They feed the rats with diets of beef, cereal
+and pork and use a low and high protein level for each diet type.
 The researchers can include 60 rats in the experiment. Prior to the experiment,
-the rats were divided in 10 homogeneous groups of 6 rats based on 
+the rats were divided in 10 homogeneous groups of 6 rats based on
 characteristics such as initial weight, appetite, etc.
 
-Within each group a rat is randomly assigned to a diet. The rats are fed during 
-a month and the weight gain in grams is recorded for each rat. 
+Within each group a rat is randomly assigned to a diet. The rats are fed during
+a month and the weight gain in grams is recorded for each rat.
 
-The researchers want to assess the effect of the type of diet and the protein 
-level on the weight of the rats. 
+The researchers want to assess the effect of the type of diet and the protein
+level on the weight of the rats.
 
 **In contrast to the previous exercise, we perform the analysis for all three**
 **diets in the dataset.**
 
-# Experimental design 
+# Experimental design
 
 - There are three explanatory variables in the experiment: the factor diet type
-with two levels (beef and cereal), factor protein level with levels 
+with two levels (beef and cereal), factor protein level with levels
 (low and high) and a group blocking factor with 10 levels.
 
-- There are 6 treatments: beef-high, cereal-high, pork-high, beef-low, 
-cereal-low, pork-low protein. 
+- There are 6 treatments: beef-high, cereal-high, pork-high, beef-low,
+cereal-low, pork-low protein.
 
-- The rats are the experimental and observational units. 
+- The rats are the experimental and observational units.
 
-- The weight gain is the response variable. 
+- The weight gain is the response variable.
 
 - The experiment is a randomized complete block (RCB) design
 
@@ -92,19 +92,19 @@ diet <- diet %>%
 Based  on the data exploration, propose a sensible regression model to analyse
 the data.
 
-## Assumptions 
+## Assumptions
 
 Check the assumptions of the linear regression model
 
 ## Hypothesis testing
 
-Use the `summary` function to get an initial test for the parameters in the 
+Use the `summary` function to get an initial test for the parameters in the
 model.
 
 ## Interpretation of the regression parameters
 
 To facilitate the interpretation of the different parameters in our regression
-model, we can make use of the `VisualizeDesign` function of the 
+model, we can make use of the `VisualizeDesign` function of the
 `ExploreModelMatrix` R package. The first argument of this function is the name
 of our target dataset, the second argument is a model formula, which in this
 case is specified as a `~` followed by the explanatory variables in our model.
@@ -136,14 +136,14 @@ diet effects, using anova.
 ## Assessing specific contrasts
 
 Imagine that we are interested in assessing if there is an effect of
- 
-1. protein source in the low protein diets 
+
+1. protein source in the low protein diets
 	- cereal versus beef
 	- pork verus beef
 	- pork versus cereal
 
 
-2. protein source in high protein diets 
+2. protein source in high protein diets
 	- cereal versus beef
 	- pork verus beef
 	- pork versus cereal
@@ -160,18 +160,16 @@ Imagine that we are interested in assessing if there is an effect of
 	- beef and pork
 	- cereal and pork diets
 
-These effects of interest are so-called 
+These effects of interest are so-called
 **contrasts, i.e. linear combinations of the parameters**.
 
 Step 1: translate these research questions into parameters of the model (or
 combinations of multiple parameters).
 
-Step 2: Assess the significance of the contrasts using the `multcomp` package. 
+Step 2: Assess the significance of the contrasts using the `multcomp` package.
 The contrasts are given as input in the form of symbolic
 descriptions to the `linfct` argument of the `glht` function.
 
 # Conclusion
 
 Formulate a conclusion for the different research hypotheses.
-
-

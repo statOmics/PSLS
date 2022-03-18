@@ -112,7 +112,7 @@ source("https://raw.githubusercontent.com/GTPB/PSLS21/master/install.R")
 1. [Introduction](./01-intro.html)
 2. [Concepts](./02-concepts.html)
 3. [Experimental Design](./03-experimentalDesign.html)
-    
+
 
 4. [Data Exploration](./04-dataExploration.html)
 
@@ -132,7 +132,7 @@ source("https://raw.githubusercontent.com/GTPB/PSLS21/master/install.R")
 
     - [Exercises](./07_exercises.html)
 
-8. Multiple Regression: 
+8. Multiple Regression:
 
     - [Multiple Regression](./08-MultipleRegression.html)
     - [Factorial Designs](./08-MultipleRegression-SpecificDesigns.html)
@@ -141,11 +141,11 @@ source("https://raw.githubusercontent.com/GTPB/PSLS21/master/install.R")
     - [Exercises](./08_exercises.html)
 
 9. Nonparametric Statistics:
-    
+
     - [9.1 Nonparametric Statistics: Wilcoxon-Mann-Whitney test](./09-NonparametericStatistics-WilcoxonMannWithney.html)
     - [9.2 Nonparametric Statistics: Kruskal Wallis test](./09-NonparametericStatistics-KruskalWallis.html)
     - [Exercises](./049_exercises.html)
-    
+
 10. [Categorical Data Analysis](./10-categoricalDataAnalysis.html)
 
 

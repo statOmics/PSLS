@@ -1,10 +1,10 @@
 ---
 title: "Exercise 4.4: Exploring the FEV dataset - solution"
 author: "Lieven Clement and Jeroen Gilis"
-date: "statOmics, Ghent University (https://statomics.github.io)"  
+date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -12,13 +12,13 @@ output:
       number_sections: true
 ---
 
-In this tutorial, you will learn how to import, tidy, wrangle and 
+In this tutorial, you will learn how to import, tidy, wrangle and
 visualize data yourself!
 
 # The FEV dataset
 
 The FEV, which is an acronym for `forced expiratory volume`,
-is a measure of how much air a person can exhale (in liters) 
+is a measure of how much air a person can exhale (in liters)
 during  a forced breath. In this dataset, the FEV of 606 children,
 between the ages of 6 and 17, were measured. The dataset
 also provides additional information on these children:
@@ -29,7 +29,7 @@ The goal of this experiment was to find out whether or not
 smoking has an effect on the FEV of children.
 
 Note: to analyse this dataset properly, we will need some
-relatively advanced modeling techniques. At the end of this 
+relatively advanced modeling techniques. At the end of this
 week, you will have seen all three required steps to analyse
 such a dataset! For now, we will limit ourselves to exploring
 the data.
@@ -93,7 +93,7 @@ fev %>%
   ggplot(aes(x=smoking,y=fev,fill=smoking)) +
   scale_fill_manual(values=c("dimgrey","firebrick")) +
   theme_bw() +
-  geom_boxplot(outlier.shape=NA) + 
+  geom_boxplot(outlier.shape=NA) +
   geom_jitter(width = 0.2, size=0.1) +
   ggtitle("Boxplot of FEV versus smoking") +
   ylab("fev (l)") +
@@ -103,8 +103,8 @@ fev %>%
 Did you expect these results?
 
 It appears that children that smoke have a higher
-median FEV than children that do not smoke. 
-Should we change legislation worldwide and make 
+median FEV than children that do not smoke.
+Should we change legislation worldwide and make
 smoking obligatory for children?
 
 Maybe there is something else going on in the data.
@@ -123,8 +123,8 @@ fev %>%
   xlab("smoking status")
 ```
 
-This plot seems to already be much more plausible. First, it seems 
-that we do not have any smoking children of ages 6, 7 or 8. 
+This plot seems to already be much more plausible. First, it seems
+that we do not have any smoking children of ages 6, 7 or 8.
 Second, when looking at the results per age "category", it seems
 no longer the case that smokers have a much higher FEV
 than non-smokers; for the higher ages, the contrary
@@ -148,11 +148,11 @@ fev %>%
   scale_fill_manual(values=c("dimgrey","firebrick")) +
   ggtitle("Boxplot of FEV versus smoking, stratified on age and gender") +
   ylab("fev (l)") +
-  xlab("smoking status") + 
+  xlab("smoking status") +
   facet_grid(rows = vars(gender))
 ```
 
-This plot holds one extra level of information, the gender 
+This plot holds one extra level of information, the gender
 of the child. Especially for higher ages, the median FEV
 is higher for males as compared to females.
 
@@ -176,8 +176,3 @@ fev %>%
 There is a clear relationship between height and FEV.
 In addition, we see that for the large height values
 (>175cm), we mainly find male subjects.
-
-
-
-
-

@@ -1,10 +1,10 @@
 ---
-title: "Exercise 5.3: Hypothesis testing on the cuckoo dataset"   
+title: "Exercise 5.3: Hypothesis testing on the cuckoo dataset"
 author: "Lieven Clement and Jeroen Gilis"
-date: "statOmics, Ghent University (https://statomics.github.io)"  
+date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -77,7 +77,7 @@ Load the required libraries
 
 For this exercise, we only care about the European robin
 and the Eurasian wren. Therefore, we can remove the observations
-of the other types. In addition, it seems that the `tpye` 
+of the other types. In addition, it seems that the `tpye`
 column rather than a factor. Let's fix this:
 
 ```{r, eval=FALSE}
@@ -105,21 +105,13 @@ Visualize the data using a suitable strategy
 
 1. What do you observe?
 
-2. How will you model the data? 
+2. How will you model the data?
 
 3. Translate the research question in a null and alternative hypothesis
 
-4. Which test will you use to assess the research hypothesis? 
+4. Which test will you use to assess the research hypothesis?
 
-5. Formulate the assumptions of the test and assess the assumptions using diagnostic plots. 
+5. Formulate the assumptions of the test and assess the assumptions using diagnostic plots.
 
 6. If all assumptions to perform the test, complete the analysis and
 formulate a proper conclusion.
-
-
-
-
-
-
-
-

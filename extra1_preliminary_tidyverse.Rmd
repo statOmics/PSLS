@@ -4,7 +4,7 @@ author: "Lieven Clement and Jeroen Gilis"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -12,7 +12,7 @@ output:
       number_sections: true
 ---
 
-In this tutorial, we will learn how to import, tidy, wrangle and 
+In this tutorial, we will learn how to import, tidy, wrangle and
 visualize data. All steps will be demonstrated for one example dataset. This
 tutorial is strongly based on material from the `opencasestudies` initiative, see [link](https://opencasestudies.github.io/casestudies/ocs-healthexpenditure.html).
 
@@ -24,22 +24,22 @@ we will make use of the data that were collected between 2009 and 2012,
 for 10.000 U.S. civilians. The dataset contains a large number of
 physical, demographic, nutritional and life-style-related parameters.
 
-However, before we can actually start working with data, we will need to 
+However, before we can actually start working with data, we will need to
 learn how to import the required datasets into our Rstudio environment.
 
-# Data Import 
- 
+# Data Import
+
 ## Introduction to "Tidy data"
 
-The [tidyverse](https://www.tidyverse.org) is "an opinionated 
-collection of R packages designed for data science. All packages 
+The [tidyverse](https://www.tidyverse.org) is "an opinionated
+collection of R packages designed for data science. All packages
 share an underlying philosophy and common APIs."
 
-Another way of putting it is that it's a set of packages that are useful 
-specifically for data manipulation, exploration and visualization with a common 
-philosophy. 
+Another way of putting it is that it's a set of packages that are useful
+specifically for data manipulation, exploration and visualization with a common
+philosophy.
 
-The common philosophy is called _"tidy"_ data. It is a standard way of mapping 
+The common philosophy is called _"tidy"_ data. It is a standard way of mapping
 the meaning of a dataset to its structure.
 
 In _tidy_ data:
@@ -52,26 +52,26 @@ In _tidy_ data:
 knitr::include_graphics("http://r4ds.had.co.nz/images/tidy-1.png")
 ```
 
-Below, we are interested in transforming the table on 
-the right to the the table on the left, which is 
-considered "tidy". 
+Below, we are interested in transforming the table on
+the right to the the table on the left, which is
+considered "tidy".
 
 ```{r out.width = "95%", echo = FALSE}
 knitr::include_graphics("http://r4ds.had.co.nz/images/tidy-9.png")
 ```
 
 Working with tidy data is useful because it creates a structured way of
-organizing data values within a data set. This makes the data analysis 
+organizing data values within a data set. This makes the data analysis
 process more efficient and simplifies the development of data analysis tools
 that work together. In this way, you can focus on the problem you are
-investigating, rather than the uninteresting logistics of data.  
+investigating, rather than the uninteresting logistics of data.
 
-### The `tidyverse` R package 
+### The `tidyverse` R package
 
-We can install and load the set of R packages using 
-`install.packages("tidyverse")` function. 
+We can install and load the set of R packages using
+`install.packages("tidyverse")` function.
 
-When we load the tidyverse package using `library(tidyverse)`, 
+When we load the tidyverse package using `library(tidyverse)`,
 there are six core R packages that load:
 
 * [readr](http://readr.tidyverse.org), for data import.
@@ -81,52 +81,52 @@ there are six core R packages that load:
 * [purrr](http://purrr.tidyverse.org), for functional programming.
 * [tibble](http://tibble.tidyverse.org), for tibbles, a modern re-imagining of data frames.
 
-Here, we load in the tidyverse. 
+Here, we load in the tidyverse.
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 ```
 
-These packages are highlighted in bold here: 
+These packages are highlighted in bold here:
 
 ```{r out.width = "95%", echo = FALSE}
 knitr::include_graphics("https://rviews.rstudio.com/post/2017-06-09-What-is-the-tidyverse_files/tidyverse1.png")
 ```
 
-Because these packages all share the "tidy" philosophy, 
-the data analysis workflow is easier as you move from 
-package to package. 
+Because these packages all share the "tidy" philosophy,
+the data analysis workflow is easier as you move from
+package to package.
 
-Here, we will focus on the `readr`, `dplyr` and `ggplot2` R packages to import 
-data, to wrangle data and to visualize the data, respectively. 
+Here, we will focus on the `readr`, `dplyr` and `ggplot2` R packages to import
+data, to wrangle data and to visualize the data, respectively.
 
-Next, we will give a brief description of the 
-features in each of these packages. 
+Next, we will give a brief description of the
+features in each of these packages.
 
-There are several base R functions that allow you 
-read in data into R, which you may be familiar 
-with such as `read.table()`, `read.csv()`, 
-and `read.delim()`. Instead of using these, 
-we will use the functions in the 
+There are several base R functions that allow you
+read in data into R, which you may be familiar
+with such as `read.table()`, `read.csv()`,
+and `read.delim()`. Instead of using these,
+we will use the functions in the
 [readr](https://readr.tidyverse.org/articles/readr.html)
-R package. The main reasons for this are 
+R package. The main reasons for this are
 
-1. Compared to equivalent base R functions, the 
+1. Compared to equivalent base R functions, the
 functions in `readr` are around 10x faster.
 
-2. You can specify the column types (e.g 
-character, integer, double, logical, date, 
+2. You can specify the column types (e.g
+character, integer, double, logical, date,
 time, etc)
 
-3. All parsing problems are recorded in 
-a data frame. 
+3. All parsing problems are recorded in
+a data frame.
 
-### The `readr` R package  
+### The `readr` R package
 
 ```{r, message=FALSE, warning=FALSE}
 library(readr)
 ```
 
-The main functions in `readr` are: 
+The main functions in `readr` are:
 
 `readr` functions | Description |
 --- | ---------------------------------------------------------------------------------------- |
@@ -135,17 +135,17 @@ The main functions in `readr` are:
 `read_tsv()` | reads in a file with values separated by tabs |
 `read_lines()` | reads only a certain number of lines from the file |
 `read_file()` | reads a complete file into a string |
-`write_csv()` | writes data frame to CSV | 
+`write_csv()` | writes data frame to CSV |
 
 A useful cheatsheet for the functions in the
-`readr` package can be found on RStudio's website: 
+`readr` package can be found on RStudio's website:
 
 ![](https://www.rstudio.com/wp-content/uploads/2018/08/data-import.png)
 
-## Read in data 
+## Read in data
 
 Let's try reading in some data. We will begin by
-reading in the `NHANES.csv` dataset. 
+reading in the `NHANES.csv` dataset.
 
 ```{r nhanesDatExpl}
 NHANES <- read_csv("https://raw.githubusercontent.com/statOmics/PSLS21/data/NHANES.csv")
@@ -173,29 +173,29 @@ NHANES[c(1,4,5,6,7,8),c("ID",
 
 ## Take a `glimpse()` at your data
 
-One last thing in this section. 
-One way to look at our data would be to use 
-`head()` or `tail()`, as we just saw. 
+One last thing in this section.
+One way to look at our data would be to use
+`head()` or `tail()`, as we just saw.
 Another one you might have heard of is the
-`str()` function. One you might not have 
+`str()` function. One you might not have
 heard of is the `glimpse()` function. It's
-used for a special type of object in R called 
+used for a special type of object in R called
 a `tibble`. Let's read the help file to learn
-more. 
+more.
 
 ```{r, eval=FALSE}
 ?tibble::tibble
 ```
 
-It's kind of like `print()` where it shows you 
-columns running down the page. Let's try it out. 
+It's kind of like `print()` where it shows you
+columns running down the page. Let's try it out.
 
 ```{r}
 glimpse(NHANES[,1:10])
 # or glimpse(NHANES) to see all the variables in the dataset
 ```
 
-# Data Wrangling  
+# Data Wrangling
 
 A subset of the data analysis process can be thought about in the following way:
 
@@ -203,21 +203,21 @@ A subset of the data analysis process can be thought about in the following way:
 knitr::include_graphics("http://r4ds.had.co.nz/diagrams/data-science.png")
 ```
 
-where each of these steps needs its own tools and software to complete. 
+where each of these steps needs its own tools and software to complete.
 
-After we import the data into R, if we are going to take advantage of 
-the _"tidyverse"_, this means we need to _transform_ the data into a form that 
+After we import the data into R, if we are going to take advantage of
+the _"tidyverse"_, this means we need to _transform_ the data into a form that
 is _"tidy"_. If you recall, in _tidy_ data:
 
 * Each variable forms a column.
 * Each observation forms a row.
 * Each type of observational unit forms a table.
 
-For example, consider the following dataset: 
+For example, consider the following dataset:
 
 ![](https://github.com/datasciencelabs/2016/raw/master/lectures/wrangling/pics/stocks-by-company.png)
 
-Here:  
+Here:
 
 * each row represents one company (row names are companies)
 * each column represent one time point
@@ -226,37 +226,37 @@ Here:
 Alternatively, a data set can be structured in the following way:
 
 * each row represents one time point (but no row names)
-* the first column defines the time variable and the last three columns contain the stock prices for three companies 
+* the first column defines the time variable and the last three columns contain the stock prices for three companies
 
 ![](https://github.com/datasciencelabs/2016/raw/master/lectures/wrangling/pics/stocks-by-time.png)
 
-In both cases, the data is the same, but the structure is 
-different. This can be  _frustrating_ to deal with as an 
+In both cases, the data is the same, but the structure is
+different. This can be  _frustrating_ to deal with as an
 analyst because the meaning of the values (rows and columns)
-in the two data sets are different. Providing a standardized 
-way of organizing values within a data set would alleviate 
-a major portion of this frustration.  
+in the two data sets are different. Providing a standardized
+way of organizing values within a data set would alleviate
+a major portion of this frustration.
 
-For motivation, a _tidy_ version of the stock data we 
+For motivation, a _tidy_ version of the stock data we
 looked at above looks like this: (we'll learn how the
 functions work in just a moment)
 
 ![](https://github.com/datasciencelabs/2016/raw/master/lectures/wrangling/pics/stocks-tidy.png)
 
-In this "tidy" data set, we have three columns representing 
-three variables (time, company name and stock price). 
-Every row represents contains one stock price from a 
-particular time and for a specific company. 
+In this "tidy" data set, we have three columns representing
+three variables (time, company name and stock price).
+Every row represents contains one stock price from a
+particular time and for a specific company.
 
-If we consider our `NHANES` dataframe, we see it is already in 
+If we consider our `NHANES` dataframe, we see it is already in
 a tidy format, as;
 
 * Each variable forms a column.
 * Each observation forms a row.
 * Each type of observational unit forms a table.
 
-Each row contains all of the information on 
-a single subject (US civilian) in the study. 
+Each row contains all of the information on
+a single subject (US civilian) in the study.
 
 After we finished with the manipulation and visualization of
 the NHANES dataset, we will additional work with a dataset
@@ -267,34 +267,34 @@ described below.
 
 ## The `dplyr` R package
 
-### What is the `dplyr` R package ? 
+### What is the `dplyr` R package ?
 
-[`dplyr`](http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html) 
-is a powerful R-package to transform and summarize 
-tabular data with rows and columns. 
+[`dplyr`](http://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
+is a powerful R-package to transform and summarize
+tabular data with rows and columns.
 
-The package contains a set of functions 
+The package contains a set of functions
 (or "verbs") to perform common data manipulation
-operations such as filtering for rows, selecting 
-specific columns, re-ordering rows, adding new 
-columns and summarizing data. 
+operations such as filtering for rows, selecting
+specific columns, re-ordering rows, adding new
+columns and summarizing data.
 
 In addition, `dplyr` contains a useful function to
-perform another common task which is the is the 
-"split-apply-combine" concept.  We will discuss 
-that in a little bit. 
+perform another common task which is the is the
+"split-apply-combine" concept.  We will discuss
+that in a little bit.
 
-### Compare `dplyr` R package compare with base functions R 
+### Compare `dplyr` R package compare with base functions R
 
-If you are familiar with R, you are probably familiar 
-with base R functions such as `split()`, `subset()`, 
-`apply()`, `sapply()`, `lapply()`, `tapply()` and 
-`aggregate()`. Compared to base functions in R, the 
-functions in `dplyr` are easier to work with, are 
-more consistent in the syntax and are targeted for 
-data analysis around data frames instead of just vectors. 
+If you are familiar with R, you are probably familiar
+with base R functions such as `split()`, `subset()`,
+`apply()`, `sapply()`, `lapply()`, `tapply()` and
+`aggregate()`. Compared to base functions in R, the
+functions in `dplyr` are easier to work with, are
+more consistent in the syntax and are targeted for
+data analysis around data frames instead of just vectors.
 
-The important `dplyr` verbs to remember are: 
+The important `dplyr` verbs to remember are:
 
 
 `dplyr` verbs | Description |
@@ -309,36 +309,36 @@ The important `dplyr` verbs to remember are:
 
 ### Pipe operator: %>%
 
-Before we go any further, let's introduce the 
+Before we go any further, let's introduce the
 pipe operator: `%>%`. In the `stocks` example,
 we briefly saw this symbol. It is called the
 pipe operator. `dplyr` imports
-this operator from another package 
+this operator from another package
 (`magrittr`)
-[see help file here](http://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html). 
-This operator allows you to pipe the output 
+[see help file here](http://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html).
+This operator allows you to pipe the output
 from one function to the input of another
-function. Instead of nesting functions 
-(reading from the inside to the 
-outside), the idea of of piping is to 
-read the functions from left to right. 
+function. Instead of nesting functions
+(reading from the inside to the
+outside), the idea of of piping is to
+read the functions from left to right.
 
-In the online `stocks` example, we can pipe the 
-`stocks` data frame to the function that will 
-gather multiple columns into key-value pairs. 
+In the online `stocks` example, we can pipe the
+`stocks` data frame to the function that will
+gather multiple columns into key-value pairs.
 
 ![](https://github.com/datasciencelabs/2016/raw/master/lectures/wrangling/pics/stocks-tidy.png)
 
 
 ### combining and splittin columns with `unite()` and `separate()`
 
-First, let's unite the `ID` and `SurveyYr` columns 
+First, let's unite the `ID` and `SurveyYr` columns
 in the `NHANES` dataset to a single column `united`.
 
-To do this, we will use the `unite()` 
-function in the `tidyr` package. 
+To do this, we will use the `unite()`
+function in the `tidyr` package.
 
-Note that: 
+Note that:
 
 * `unite()` = unite multiple columns into one
 * `separate()` = separate one column into multiple columns
@@ -346,23 +346,23 @@ Note that:
 ```{r}
 library(tidyverse)
 NHANES <- NHANES %>%
-              unite(United, 
+              unite(United,
                     ID:SurveyYr,
                     sep = "-")
 
 head(NHANES)
 ```
 
-Let us walk through the snippet of code from above. 
+Let us walk through the snippet of code from above.
 First, we need to specify the name of the dataset that we want
-to work with. Next, we use the pipe command to pipe the output 
-from the first function (here this is simply taking the NHANES dataset) 
+to work with. Next, we use the pipe command to pipe the output
+from the first function (here this is simply taking the NHANES dataset)
 to the input of another function (in this case, the _unite_ function).
-Finally, we apply the unite function. In this example, 
+Finally, we apply the unite function. In this example,
 the unite function takes three arguments
 1. The name of the new column, as a string or symbol
 2. A selection of colums we want to unite
-3. The separator to use between values 
+3. The separator to use between values
 
 The behaviour of the unite function is as expected; the initial variables
 `ID` and `SurveyYr` are now united into a new variable `united`.
@@ -372,8 +372,8 @@ The `separate()` function performs the exact opposite operation of the
 
 ```{r}
 NHANES <- NHANES %>%
-              separate(United, 
-                       sep = "-", 
+              separate(United,
+                       sep = "-",
                        into=c("ID", "SurveyYear"))
 
 head(NHANES)
@@ -381,36 +381,36 @@ head(NHANES)
 
 ### Select columns using `select()`
 
-The two most basic functions are `select()` and 
-`filter()` which selects columns and filters 
-rows, respectively. 
+The two most basic functions are `select()` and
+`filter()` which selects columns and filters
+rows, respectively.
 
-To select a range 
+To select a range
 of columns by name, use the ":" (colon) operator
 
 ```{r warning=FALSE,message=FALSE}
-NHANES %>% 
+NHANES %>%
   select(Gender:Age)
 ```
 
-To select all columns that start with the 
+To select all columns that start with the
 character string "t", use the function `starts_with()`
 
 ```{r warning=FALSE,message=FALSE}
-NHANES %>% 
+NHANES %>%
   select(starts_with("t"))
 ```
 
-Some additional options to select columns based 
+Some additional options to select columns based
 on a specific criteria include
 
-1. `ends_with()` = Select columns that end with 
+1. `ends_with()` = Select columns that end with
 a character string
-2. `contains()` = Select columns that contain 
+2. `contains()` = Select columns that contain
 a character string
-3. `matches()` = Select columns that match a 
+3. `matches()` = Select columns that match a
 regular expression
-4. `one_of()` = Select columns names that are 
+4. `one_of()` = Select columns names that are
 from a group of names
 
 ### Select rows using `filter()`
@@ -425,21 +425,21 @@ Let's say we want to investigate weight of
 
 
 ```{r warning=FALSE,message=FALSE}
-NHANES %>% 
+NHANES %>%
   select(c("Gender","Age","Weight","Height")) %>% ## select four colums
-  filter(Gender == "male", 
+  filter(Gender == "male",
          Age > 18,
          Height > 120) ## filter observations (rows) based on the required values
 ```
 
-### Arrange or re-order rows using `arrange()` 
+### Arrange or re-order rows using `arrange()`
 
-Now, let's say we want to see the NHANES data ordered from 
-lowest to highest `Age`. To arrange (or re-order) rows by 
+Now, let's say we want to see the NHANES data ordered from
+lowest to highest `Age`. To arrange (or re-order) rows by
 a particular column you'll use the `arrange()` function:
 
 ```{r warning=FALSE,message=FALSE}
-NHANES %>% 
+NHANES %>%
     arrange(Age)
 ```
 
@@ -452,26 +452,26 @@ women that are not married and display the first five
 by descending height.
 
 **Hint**: use the `desc()` function inside of
-`arrange()` to order rows in a descending order. 
+`arrange()` to order rows in a descending order.
 
 ```{r warning=FALSE,message=FALSE}
 NHANES %>%
   select(c("Race1", "Gender","MaritalStatus","Height")) %>%
-  filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "female") %>% 
-  arrange(desc(Height)) %>% 
+  filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "female") %>%
+  arrange(desc(Height)) %>%
   head(n=5)
 ```
 
 ### Add columns using `mutate()`
 
 Let's say we don't trust the BMI values in our dataset
-and we decide to calculate them ourselves. BMI is typically 
+and we decide to calculate them ourselves. BMI is typically
 calculated by taking a person's weigth (in kg) and dividing
 it by the its height (in m) squared.
 
-We will now construct a new column, BMI_self, by adopting 
-this formula. To create new columns, we will use 
-the `mutate()` function in `dplyr`. 
+We will now construct a new column, BMI_self, by adopting
+this formula. To create new columns, we will use
+the `mutate()` function in `dplyr`.
 
 ```{r}
 NHANES %>%
@@ -481,29 +481,29 @@ NHANES %>%
 
 ### Create summaries of columns using `summarise()`
 
-The `summarise()` function in `dplyr` 
-will create summary statistics for a given 
-column in the data frame, such as finding 
-the maximum, minimum or average. 
+The `summarise()` function in `dplyr`
+will create summary statistics for a given
+column in the data frame, such as finding
+the maximum, minimum or average.
 
-For example, to compute the average weigth 
-of the civilians, we can apply the `mean()` function 
-to the column `Weight` and call the 
-summary value `avg_Weight`. 
+For example, to compute the average weigth
+of the civilians, we can apply the `mean()` function
+to the column `Weight` and call the
+summary value `avg_Weight`.
 
 ```{r}
-NHANES %>% 
+NHANES %>%
   summarise(avg_Weight = mean(Weight, na.rm = TRUE))
 ## the addition argument na.rm = TRUE makes sure to remove missing
 ## values for the purpose of calculating the mean
 ```
 
-There are many other summary statistics you 
-could consider such `sd()`, `min()`, `median()`, 
-`max()`, `sum()`, `n()` (returns the length of vector), 
-`first()` (returns first value in vector), 
-`last()` (returns last value in vector) and 
-`n_distinct()` (number of distinct values in vector). 
+There are many other summary statistics you
+could consider such `sd()`, `min()`, `median()`,
+`max()`, `sum()`, `n()` (returns the length of vector),
+`first()` (returns first value in vector),
+`last()` (returns last value in vector) and
+`n_distinct()` (number of distinct values in vector).
 We will elaborate on these functions later.
 
 Note that choosing the most informative summary statistic
@@ -513,16 +513,16 @@ is very important! This can be shown with the following example;
 knitr::include_graphics("https://raw.githubusercontent.com/statOmics/PSLS21/data/Figure_partners.png")
 ```
 
-In this sudy, men and woman were asked about their 
+In this sudy, men and woman were asked about their
 "ideal number of partners desired over 30 years".
 While almost all subjects desired a number betweeb 0 and 50,
 three male subjects selected a number above 100.
 These three _outliers_ in the data can have a large impact on
-the data analysis, especially when we work with summary 
-statistics that are sensitive to these outliers. 
+the data analysis, especially when we work with summary
+statistics that are sensitive to these outliers.
 
-When we look at the _mean_, for instance, we see that on average 
-woman desire 2.8 partners, while men desire 64.3 partners on average, 
+When we look at the _mean_, for instance, we see that on average
+woman desire 2.8 partners, while men desire 64.3 partners on average,
 suggesting a large discrepancy between male and female desires.
 
 However, if look at a more _robust_ summary statistic such as
@@ -530,77 +530,77 @@ the _median_, we see that the result is 1 for both men and woman.
 It is clear that the mean value was completely distorted by the
 three outliers in the data.
 
-Another example of a more robust summary statistic is 
+Another example of a more robust summary statistic is
 the _geometric mean_.
 
 ### Group operations using `group_by()`
 
-The `group_by()` verb is and incredibly powerful function in `dplyr`. It allows 
-us, for example, to calculate summary statistics for different groups of 
+The `group_by()` verb is and incredibly powerful function in `dplyr`. It allows
+us, for example, to calculate summary statistics for different groups of
 observations.
 
-If we take our example from above, let's say we want to split the data frame by 
-some variable (e.g. `Race1`), apply a function to the individual data frames 
-(`mean`) and then combine the output back into a summary data frame. 
+If we take our example from above, let's say we want to split the data frame by
+some variable (e.g. `Race1`), apply a function to the individual data frames
+(`mean`) and then combine the output back into a summary data frame.
 
 Let's see how that would look
 
 ```{r}
-NHANES %>% 
+NHANES %>%
   group_by(Race1) %>%
   summarise(avg_Weight = mean(Weight, na.rm = TRUE))
 ```
 
-Now that we have all the required functions for importing, tidying and wrangling 
+Now that we have all the required functions for importing, tidying and wrangling
 data in place, we will learn how to visualize our data with the ggplot2 package.
 
 # Data Visualization
 
-As you might have have already seen, there are many functions 
-available in base R that can create plots (e.g. `plot()`, `boxplot()`). 
+As you might have have already seen, there are many functions
+available in base R that can create plots (e.g. `plot()`, `boxplot()`).
 Others include: `hist()`, `qqplot()`, etc.
-These functions are great because they come with a basic installation 
-of R and can be quite powerful when you need a quick visualization 
-of something when you are exploring data. 
+These functions are great because they come with a basic installation
+of R and can be quite powerful when you need a quick visualization
+of something when you are exploring data.
 
-We are choosing to introduce `ggplot2` because, in our 
-opinion, it's one of the simplest ways for beginners to 
-create relatively complicated plots that are intuitive 
+We are choosing to introduce `ggplot2` because, in our
+opinion, it's one of the simplest ways for beginners to
+create relatively complicated plots that are intuitive
 and aesthetically pleasing.
 
 ## The `ggplot2` R package
 
-The reasons [`ggplot2`](http://ggplot2.tidyverse.org) 
-is generally intuitive for beginners is the use of 
-[grammar of graphics](http://vita.had.co.nz/papers/layered-grammar.html) 
+The reasons [`ggplot2`](http://ggplot2.tidyverse.org)
+is generally intuitive for beginners is the use of
+[grammar of graphics](http://vita.had.co.nz/papers/layered-grammar.html)
 or the `gg` in `ggplot2`. The idea is that you can construct
 many sentences by learning just a few nouns, adjectives,
-and verbs. There are specific "words" that we will need to 
-learn and once we do, you will be able to create 
-(or "write") hundreds of different plots. 
+and verbs. There are specific "words" that we will need to
+learn and once we do, you will be able to create
+(or "write") hundreds of different plots.
 
-The critical part to making graphics using `ggplot2` is the 
-data needs to be in a _tidy_ format. Given that we have 
-just spend the last two lectures learning about how to 
-work with _tidy_ data, we are primed to take 
-advantage of all that `ggplot2` has to offer! 
+The critical part to making graphics using `ggplot2` is the
+data needs to be in a _tidy_ format. Given that we have
+just spend the last two lectures learning about how to
+work with _tidy_ data, we are primed to take
+advantage of all that `ggplot2` has to offer!
 
 We will show how it's easy to pipe _tidy_ data
 (output) as input to other functions that creates
-plots. This all works because we are working 
-within the _tidyverse_. 
+plots. This all works because we are working
+within the _tidyverse_.
 
 ## `ggplot2` cheatsheet
 
 The ggplot2 cheat sheet is a very handy list for looking up ggplot2 functions,
-see [cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization.pdf) 
+see [cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization.pdf)
 
-## What is the `ggplot()` function? 
+## What is the `ggplot()` function?
 
-As explained by Hadley Wickham: 
+As explained by Hadley Wickham:
 
 > the grammar tells us that a statistical graphic is a mapping from data to aesthetic attributes (colour, shape, size) of geometric objects (points, lines, bars). The plot may also contain statistical transformations of the data and is drawn on a specific coordinates system.
-#### `ggplot2` Terminology 
+#### `ggplot2` Terminology
 * **ggplot** - the main function where you specify the data set and variables to plot (this is where we define the `x` and
 `y` variable names)
 * **geoms** - geometric objects
@@ -610,33 +610,33 @@ As explained by Hadley Wickham:
 * **scales** - define how your data will be plotted
     * continuous, discrete, log, etc
 
-There are three ways to initialize a `ggplot()` object. 
+There are three ways to initialize a `ggplot()` object.
 
 An empty ggplot object
 ```{r}
 library(ggplot2)
-p <- ggplot()         
+p <- ggplot()
 ```
 
 A ggplot object associated with a dataset
 ```{r}
-p <- NHANES %>% 
-        filter(Gender=="male") %>% 
+p <- NHANES %>%
+        filter(Gender=="male") %>%
         ggplot()
 ```
 
 or a ggplot object with a dataset and `x` and `y` defined
 ```{r}
-p <- NHANES %>% 
-      filter(Gender=="male") %>% 
+p <- NHANES %>%
+      filter(Gender=="male") %>%
       ggplot(aes(x = Height, y = Weight))
 ```
 
-The function `aes()` is an aesthetic mapping 
-function inside the `ggplot()` object. We 
-use this function to specify plot attributes 
-(e.g. `x` and `y` variable names) that 
-will not change as we add more layers.  
+The function `aes()` is an aesthetic mapping
+function inside the `ggplot()` object. We
+use this function to specify plot attributes
+(e.g. `x` and `y` variable names) that
+will not change as we add more layers.
 
 ```{r, eval = FALSE}
 p
@@ -646,18 +646,18 @@ Now we have initialize a ggplot object on a subset of
 the NHANES dataset. But the plot is still empty! To actually
 show the data, we will need an additional command, specifying
 which visualization type we want to use. Importantly,
-different types of visualizations will provide us with 
+different types of visualizations will provide us with
 different types of information! This we will discuss in
 more detail in the following tutorial. For now, we will
 demonstrate how to generate a scatterplot.
 
-## Create scatter plots using `geom_point()` 
+## Create scatter plots using `geom_point()`
 
 Anything that goes in the `ggplot()` object becomes
 a global setting. From there, we use the `geom`
-objects to add more layers to the base `ggplot()` 
-object. These will define what we are interested in 
-illustrating using the data.  
+objects to add more layers to the base `ggplot()`
+object. These will define what we are interested in
+illustrating using the data.
 
 For the NHANES dataset, we can for instance look
 at the relationship between a person's height and weigth
@@ -666,9 +666,9 @@ values.
 ```{r}
 p <- NHANES %>%
   filter(Gender == "male", Age >= 18) %>%
-  ggplot(aes(x = Height, y = Weight)) + 
-  geom_point() + 
-  xlab("Height (cm)") + 
+  ggplot(aes(x = Height, y = Weight)) +
+  geom_point() +
+  xlab("Height (cm)") +
   ylab("Weight (kg)")
 
 p
@@ -682,14 +682,14 @@ remove by the geom_point function.
 ggplot2 also has a very broad panel of aesthetic features
 for improving your plot. One very basic feature is that we
 can give colors to the ggplot object. For instance, we can
-give different colors to the dots in the previous 
+give different colors to the dots in the previous
 scatterplot based on a subject's gender.
 
 ```{r}
 NHANES %>%
   ggplot(aes(x = Height, y = Weight, color = Gender)) +
-  geom_point() + 
-  xlab("Height (cm)") + 
+  geom_point() +
+  xlab("Height (cm)") +
   ylab("Weight (kg)")
 ```
 
@@ -701,8 +701,3 @@ in the first tutorial.
 # Reference
 
 https://opencasestudies.github.io/casestudies/ocs-healthexpenditure.html
-
-
-
-
-

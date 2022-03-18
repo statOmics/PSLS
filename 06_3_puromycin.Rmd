@@ -16,16 +16,16 @@ output:
 
 # Puromycin dataset
 
-Data on the velocity of an enzymatic reaction were obtained by Treloar (1974).  
-The number of counts per minute of radioactive product from the reaction was 
+Data on the velocity of an enzymatic reaction were obtained by Treloar (1974).
+The number of counts per minute of radioactive product from the reaction was
 measured as a function of substrate concentration in parts per million (ppm) and
-from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min). The experiment was conducted once with the enzyme treated 
+from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min). The experiment was conducted once with the enzyme treated
 with Puromycin, and once with the enzyme untreated.
 
 # Goal
 
-Assess if there is an association between the substrate concentration and rate 
-for the **treated** enzyme. 
+Assess if there is an association between the substrate concentration and rate
+for the **treated** enzyme.
 
 Import libraries
 
@@ -44,13 +44,13 @@ can simply do
 data(Puromycin)
 ```
 
-and an object called `Puromycin` is immediately available in your working 
+and an object called `Puromycin` is immediately available in your working
 environment.
 
 # Data wrangling
 
-For this exercise, we only want to assess if there is an association between 
-the substrate concentration and rate for the **treated** enzyme. As such, we 
+For this exercise, we only want to assess if there is an association between
+the substrate concentration and rate for the **treated** enzyme. As such, we
 should filter the data so that we are left with only the treated enzymes.
 
 ```{r}
@@ -71,7 +71,7 @@ Puromycin %>%
   ... # you can add some extra elements like axis labels, title, ...
 ```
 
-Does the relationship look linear? Can you think of any other steps that we 
+Does the relationship look linear? Can you think of any other steps that we
 might take to assess this relationship?
 
 ```{r}
@@ -81,7 +81,7 @@ might take to assess this relationship?
 
 ```
 
-Now may we assume a linear relationship between the substrate concentration and 
+Now may we assume a linear relationship between the substrate concentration and
 the enzyme's rate?
 
 # Linear regression
@@ -95,17 +95,3 @@ the enzyme's rate?
 ## Interpret the results, both for the intercept as well as for the slope
 
 ## Write a conclusion that answers the research hypothesis.
-
-
-
-
-
-
-
-
-
-
-
-
-
-

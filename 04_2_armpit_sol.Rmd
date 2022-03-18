@@ -4,7 +4,7 @@ author: "Lieven Clement and Jeroen Gilis"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -12,17 +12,17 @@ output:
       number_sections: true
 ---
 
-In this exercise, we will explore the "smelly armpit" dataset. 
+In this exercise, we will explore the "smelly armpit" dataset.
 
 # Smelly armpit dataset
 
 Smelly armpits are not caused by sweat, itself. The smell is caused
 by specific micro-organisms belonging to the group of
 *Corynebacterium spp.* that metabolise sweat. Another group of abundant bacteria
-are the *Staphylococcus spp.*, these bacteria do not metabolise sweat in smelly 
+are the *Staphylococcus spp.*, these bacteria do not metabolise sweat in smelly
 compounds.
 
-The CMET-group at Ghent University does research to on transplanting the armpit 
+The CMET-group at Ghent University does research to on transplanting the armpit
 microbiome to save people with smelly armpits.
 
 - Proposed Therapy:
@@ -32,7 +32,7 @@ microbiome to save people with smelly armpits.
 
 - Experiment:
 
-    - 20 students with smelly armpits are attributed to one of 
+    - 20 students with smelly armpits are attributed to one of
       two treatment groups
     - placebo (only antibiotics)
     - transplant (antibiotica followed by microbial transplant).
@@ -60,13 +60,13 @@ glimpse(ap)
 
 # Goal
 
-The overarching goal of this study was to assess if the relative abundance 
-*Staphylococcus spp.* in the microbiome of the armpit is affected by 
-transplanting the microbiome. To this end, the researchers randomized patients 
+The overarching goal of this study was to assess if the relative abundance
+*Staphylococcus spp.* in the microbiome of the armpit is affected by
+transplanting the microbiome. To this end, the researchers randomized patients
 to two treatments: A treatment with antibiotics only and a treatment with
 antibiotics and a microbial transplant.
 
-In the tutorial on hypotheses testing we will use a formal statistical test to 
+In the tutorial on hypotheses testing we will use a formal statistical test to
 generalize the results from the sample to that of the population.
 For this test to be valid, we have to assess following assumptions:
 
@@ -74,9 +74,9 @@ For this test to be valid, we have to assess following assumptions:
 
 2. The data from the two treatment groups has the same variance.
 
-A statistical analysis always starts with a exploratory data analysis to get 
-insight in the nature and distribution of the data, and to assess the 
-assumptions of the downstream data analysis. Mastering this data exploration 
+A statistical analysis always starts with a exploratory data analysis to get
+insight in the nature and distribution of the data, and to assess the
+assumptions of the downstream data analysis. Mastering this data exploration
 step is the purpose of the current exercise
 
 # Data visualization
@@ -90,7 +90,7 @@ visualization:
 
 ```{r}
 ap %>%
-  ggplot(aes(x=rel,fill=trt)) + # fill in the correct values for x and fill 
+  ggplot(aes(x=rel,fill=trt)) + # fill in the correct values for x and fill
   geom_histogram() +
   facet_grid(rows = vars(trt)) + # fill in to put the histograms for both treatment conditions in a separate row
   theme_bw() +
@@ -105,10 +105,10 @@ show the data in a `boxplot`:
 
 ```{r}
 ap %>%  ggplot(aes(x=trt,y=rel,fill=trt)) +
-  geom_boxplot(outlier.shape=NA) + 
+  geom_boxplot(outlier.shape=NA) +
   geom_point(position="jitter") +
   ylab("relative abundance (%)") +
-  xlab("treatment group") + 
+  xlab("treatment group") +
   stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
 ```
 
@@ -127,10 +127,10 @@ result in an object apRelSum via 'apRelSum<-`
 the data by treatment trt `group_by(trt)`
 2. We pipe the result to the `summarize_at` function to summarize
 the "rel" variable and calculate the mean, standard deviation and
-the number of observations 
+the number of observations
 3. We pipe the result to the `mutate` function to make a new
 variable in the data frame that is named `se` for which we calculate the
-standard error 
+standard error
 
 ```{r}
 apRelSum<-ap%>%
@@ -146,4 +146,3 @@ apRelSum
 
 This concludes the data exploration. Tomorrow, we will learn how to formally
 test if the observed difference is **statistically significant**.
-

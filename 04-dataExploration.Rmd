@@ -91,8 +91,8 @@ library(NHANES)
 ```
 
 ```{r}
-NHANES %>% filter(Gender=="female") %>% 
-ggplot(aes(x=DirectChol)) + 
+NHANES %>% filter(Gender=="female") %>%
+ggplot(aes(x=DirectChol)) +
 geom_histogram(aes(y=..density.., fill=..count..),bins=30) +
 geom_density(aes(y=..density..))
 ```
@@ -141,15 +141,15 @@ lines(c(1.1,1.3,1.3,1.1),c(rangeCl[2],rangeCl[2]+(max(fem$DirectChol)-rangeCl[2]
 With ggplot we always have to define an x variable if we make a boxplot. If we use a string then all data is considered to originate from one category and one boxplot is constructed.
 
 ```{r}
-NHANES %>% 
+NHANES %>%
   filter(Gender=="female") %>%
   ggplot(aes(x="",y=DirectChol)) +
-  geom_boxplot() 
+  geom_boxplot()
 ```
 
-So we can add a boxplot to a ggplot figure by using the `geom_boxplot()` function. 
+So we can add a boxplot to a ggplot figure by using the `geom_boxplot()` function.
 
-If the dataset is small to moderate in size we can also add the raw data to the plot with the `geom_point()` function and the `position="jitter"` argument. Note, that we then also set the `outlier.shape` argument in the `geom_boxplot` function on NA so that the outliers are not plotted twice. 
+If the dataset is small to moderate in size we can also add the raw data to the plot with the `geom_point()` function and the `position="jitter"` argument. Note, that we then also set the `outlier.shape` argument in the `geom_boxplot` function on NA so that the outliers are not plotted twice.
 
 Here, we will plot again the relative abundances of **Staphylococcus** from the armpit transplant experiment.
 
@@ -157,8 +157,8 @@ Here, we will plot again the relative abundances of **Staphylococcus** from the 
 ap<-read_csv("https://raw.githubusercontent.com/GTPB/PSLS20/master/data/armpit.csv")
 ap
 
-ap %>%  
-  ggplot(aes(x=trt,y=rel)) + 
+ap %>%
+  ggplot(aes(x=trt,y=rel)) +
   geom_boxplot(outlier.shape=NA) +
   geom_point(position="jitter")
 ```
@@ -167,7 +167,7 @@ When we specify a factor variable for x, we get a boxplot for each treatment gro
 
 ---
 
-## Descriptive statistics 
+## Descriptive statistics
 
 ### Central location: Mean or Median?
 
@@ -182,7 +182,7 @@ When we specify a factor variable for x, we get a boxplot for each treatment gro
 
 ---
 
-#### What happens? 
+#### What happens?
 
 ![](https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/partners.png){width=75%}
 
@@ -196,25 +196,25 @@ $$\sqrt[n]{\prod\limits_{i=1}^n x_i} = \exp\left\{\frac{1}{n} \sum_{i=1}^n \log(
 
 - Geometric mean is closer to the median then the mean
 
-- log-transformation removes skewness 
+- log-transformation removes skewness
 
 - Often a more useful measure for the central location than median:
 
-1. Uses all observations: is more precise 
+1. Uses all observations: is more precise
 2. It is the ordinary mean on log-transformed data $\rightarrow$ classical statistical methods can be directly applied, e.g. hypothesis tests and confidence intervals (see chapter 5)
 3. Useful for many biological characteristics e.g. concentrations that cannot be negative.
-4. Differences on a log scale have the interpretation of a log fold change: 
+4. Differences on a log scale have the interpretation of a log fold change:
 
 $$\log (B) - \log(A)= \log(\frac{B}{A})=\log(FC_\text{B vs A})$$
 
-In Genomics often the $log_2$ transformation is used. A difference of 1 corresponds to a $FC=2$. 
+In Genomics often the $log_2$ transformation is used. A difference of 1 corresponds to a $FC=2$.
 
 ```{r}
-logSummary <- 
+logSummary <-
 NHANES %>% filter(Gender=="female") %>% summarize(logMean=mean(DirectChol %>% log2,na.rm=TRUE),sd=sd(DirectChol %>% log2,na.rm=TRUE),mean=mean(DirectChol,na.rm=TRUE),median=median(DirectChol,na.rm=TRUE)) %>% mutate(geoMean=2^logMean)
 
 NHANES %>% filter(Gender=="female") %>%
-ggplot(aes(x=DirectChol %>% log2)) + 
+ggplot(aes(x=DirectChol %>% log2)) +
 geom_histogram(aes(y=..density.., fill=..count..),bins=30) +
 geom_density(aes(y=..density..)) +
   stat_function(fun=dnorm,color="red",args=list(mean=logSummary$logMean, sd=logSummary$sd))
@@ -224,21 +224,21 @@ logSummary
 
 - Indeed the mean is pulled to larger values by the skewed data.
 - The geometric mean is closer to the median.
-- The cholesterol data are much more symmetric upon log transformation and the approximation by a Normal distribution is good. 
+- The cholesterol data are much more symmetric upon log transformation and the approximation by a Normal distribution is good.
 
 
 
-## Descriptive Statistics for Variability 
+## Descriptive Statistics for Variability
 
 The variability around the central value is crucial:
 
-1. Biologists are often interested in how animals or plants are spread in the study region. 
+1. Biologists are often interested in how animals or plants are spread in the study region.
 2. Compare groups: the group effect is more clear when the response has less variability. Quantifying variability is crucial to distinguish between systematic and random patterns.
 
 - The response varies between and within individuals and is the reason why we need statistics.
 
 - Crucial to describe both the central location and the variability.
-- Which part of the variability can we explain (e.g. with characteristics treatment, age, etc,) and which part is unexplained? 
+- Which part of the variability can we explain (e.g. with characteristics treatment, age, etc,) and which part is unexplained?
 
 ### Sample variance and sample standard deviation
 
@@ -258,7 +258,7 @@ $$
 
 - These intervals are referred to as 68% en 95% *reference-intervals*.
 
-- If the data are not Normally distributed, reference intervals are not valid. 
+- If the data are not Normally distributed, reference intervals are not valid.
 
 ---
 
@@ -267,7 +267,7 @@ $$
 For skewed data the standard deviation is not useful
 
 - It is very sensitive to outliers
-- *Inter Quartile Range*: Distance between first and third quartile 
+- *Inter Quartile Range*: Distance between first and third quartile
 - Width of the boxplot!
 
 ```{r}
@@ -278,7 +278,7 @@ NHANES %>% filter(Gender=="female") %>% summarize(IQR=IQR(DirectChol,na.rm=TRUE)
 ```{r}
 NHANES %>% filter(Gender=="female") %>%
   ggplot(aes(x="",y=DirectChol)) +
-  geom_boxplot() 
+  geom_boxplot()
 ```
 
 ---
@@ -286,7 +286,7 @@ NHANES %>% filter(Gender=="female") %>%
 # Normal approximation
 
 
-- Biological and chemical data are often Normally distributed upon transformation. 
+- Biological and chemical data are often Normally distributed upon transformation.
 
 - If this is the case we can get a lot of insight in the data using just two descriptive statistics: mean $\mu$ and standard deviation $\sigma$.
 
@@ -300,15 +300,15 @@ We use *QQ-plots* or *quantile-quantile plots*.
 
 - Observed quantiles from the observations in the sample are plotted against quantiles from the Normal distribution.
 
-- If the data are Normally distributed both quantiles have to be in line. 
+- If the data are Normally distributed both quantiles have to be in line.
 
 - Dots in the plot are expected on a straight line.
 
-- Systematic deviations of the straight line indicate that the data are not Normally distributed. 
+- Systematic deviations of the straight line indicate that the data are not Normally distributed.
 
 - Note, that we will always observe some random deviations from the straight line in the plot because of random biological variability, which is not indicative for deviations from Normality.
 
-- So it is important to train yourself to learn to distinguish systematic from random deviations. 
+- So it is important to train yourself to learn to distinguish systematic from random deviations.
 
 ---
 
@@ -325,13 +325,13 @@ nSamp <-9
 
 normSim <- matrix(rnorm(n*nSamp,mean=mu,sd=sigma),nrow=n) %>% as.data.frame
 
-normSim %>% gather(samp,data) %>% 
+normSim %>% gather(samp,data) %>%
 ggplot(aes(x=data)) +
 geom_histogram(aes(y=..density.., fill=..count..),bins=30) +
 geom_density(aes(y=..density..)) +
   facet_wrap(~samp)
 
-normSim %>% gather(samp,data) %>% 
+normSim %>% gather(samp,data) %>%
   ggplot(aes(sample=data)) +
   geom_qq() +
   geom_qq_line() +
@@ -364,13 +364,13 @@ The QQ-plot shows that the quantiles of the data
 - are larger (above the line) than these from the Normal in the right tail: long tail to the right.
 
 We can clearly see that the data are right-skewed.
-  
+
 ---
 
 # Two continuous variables: Correlation
 
 - NHANES study
-- Height and Weight Example for females 
+- Height and Weight Example for females
 
 ```{r}
 NHANES%>% filter(Age>25 & Gender=="female") %>%
@@ -378,7 +378,7 @@ NHANES%>% filter(Age>25 & Gender=="female") %>%
   geom_point()
 ```
 
-We observe an association between Weight and Height, but we also observe that the Weights tend to be right-skewed. 
+We observe an association between Weight and Height, but we also observe that the Weights tend to be right-skewed.
 
 Lets look at the univariate distributions first.
 
@@ -413,7 +413,7 @@ NHANES%>% filter(Age>25 & Gender=="female") %>%
 
 The weights are indeed skewed!
 
-Upon log transformaton the Weights are less skewed, but still not Normally distributed. 
+Upon log transformaton the Weights are less skewed, but still not Normally distributed.
 
 ```{r}
 NHANES%>% filter(Age>25 & Gender=="female") %>%
@@ -429,7 +429,7 @@ NHANES%>% filter(Age>25 & Gender=="female") %>%
   geom_qq_line()
 ```
 
-Skewness is still there but is reduced already. 
+Skewness is still there but is reduced already.
 
 ```{r}
 NHANES%>% filter(Age>25 & Gender=="female") %>%
@@ -443,7 +443,7 @@ NHANES%>% filter(Age>25 & Gender=="female") %>%
 ## Covariance and Correlation
 
 - Let X and Y be to continuous random variables, and for each subject i we observe $(X_i,Y_i)$.
-- Covariance: how deviate X_i and Y_i around their means? 
+- Covariance: how deviate X_i and Y_i around their means?
 
 $$\mbox{Covar}(X,Y)=E[(X-E[X])(Y-E[Y])]$$
 
@@ -472,7 +472,7 @@ ranges<-NHANES%>% filter(Age>25 & Gender=="female") %>% select(Weight,Height) %>
 NHANES%>% filter(Age>25 & Gender=="female") %>%
   ggplot(aes(x=Height,y=Weight %>% log2)) +
   ylab("Weight (log2)") +
-  geom_point() + 
+  geom_point() +
   geom_hline(yintercept=means["log2Weight"],color="red") +
   geom_vline(xintercept=means["Height"],color="red") +
   annotate(geom="text",
@@ -481,12 +481,12 @@ NHANES%>% filter(Age>25 & Gender=="female") %>%
            label=c("+","-","-","+"),color="red",size=10)
 ```
 
-```{r} 
-NHANES%>% 
+```{r}
+NHANES%>%
   filter(Age>25 & Gender=="female") %>%
   ggplot(aes(x=Height,y=Weight)) +
   ylab("Weight (log2)") +
-  geom_point() + 
+  geom_point() +
   geom_hline(yintercept=means["Weight"],color="red") +
   geom_vline(xintercept=means["Height"],color="red") +
   annotate(geom="text",
@@ -498,7 +498,7 @@ NHANES%>%
 
 
 ```{r}
-NHANES%>% 
+NHANES%>%
   filter(Age>25 & Gender=="female") %>%
   select(Weight,Height) %>%
   mutate(log2Weight=Weight%>%log2) %>%
@@ -506,18 +506,18 @@ NHANES%>%
   cor
 ```
 
-- Note, that the correlation is lower when the data are not transformed. 
+- Note, that the correlation is lower when the data are not transformed.
 - The Pearson correlation is sensitive to outliers!
-- Do not use Pearson correlation for skewed distributions or for data with outliers. 
+- Do not use Pearson correlation for skewed distributions or for data with outliers.
 
-### Impact of outliers 
+### Impact of outliers
 
-Illustration with simulated data that has one outlier. 
+Illustration with simulated data that has one outlier.
 
 ```{r}
 set.seed(100)
 x <- rnorm(20)
-simData <- data.frame(x=x,y=x*2 + rnorm(length(x))) 
+simData <- data.frame(x=x,y=x*2 + rnorm(length(x)))
 simData %>% ggplot(aes(x=x,y=y)) +
   geom_point() +
   ggtitle(paste("cor =",cor(simData[,1],simData[,2]) %>% round(.,2)))
@@ -534,12 +534,12 @@ Note, that the Pearson correlation only captures linear association!
 
 ```{r}
 x <- rnorm(100)
-quadratic <- data.frame(x=x,y=x^2 + rnorm(length(x))) 
+quadratic <- data.frame(x=x,y=x^2 + rnorm(length(x)))
 quadratic %>% ggplot(aes(x=x,y=y)) +
   geom_point() +
   ggtitle(paste("cor =",cor(quadratic[,1],quadratic[,2]) %>% round(.,2))) +
   geom_hline(yintercept = mean(quadratic[,2]),col="red") +
-    geom_vline(xintercept = mean(quadratic[,1]),col="red") 
+    geom_vline(xintercept = mean(quadratic[,1]),col="red")
 ```
 
 
@@ -552,8 +552,8 @@ simData2<-cbind(x,1.5*x,sapply(1:7,function(sd,x) 1.5*x+rnorm(length(x),sd=sd),x
 
 colnames(simData2)[-1]<-paste("cor",round(cor(simData2)[1,-1],2),sep="=")
 
-simData2 %>% 
-  as.data.frame %>% 
+simData2 %>%
+  as.data.frame %>%
   gather(cor,y,-x) %>%
   ggplot(aes(x=x,y=y)) +
   geom_point() +
@@ -563,8 +563,8 @@ simData3 <- simData2
 simData3[,-1]<--simData2[,-1]
 colnames(simData3)[-1]<-paste("cor",round(cor(simData3)[1,-1],2),sep="=")
 
-simData3 %>% 
-  as.data.frame %>% 
+simData3 %>%
+  as.data.frame %>%
   gather(cor,y,-x) %>%
   ggplot(aes(x=x,y=y)) +
   geom_point() +
@@ -575,7 +575,7 @@ simData3 %>%
 
 ## Spearman correlation
 
-The Spearman correlation is the Pearson correlation after transforming the data to ranks.  
+The Spearman correlation is the Pearson correlation after transforming the data to ranks.
 
 - Pearson correlation
 ```{r}
@@ -595,10 +595,10 @@ rankData<-apply(outlier,2,rank)
 cor(rankData)
 ```
 
-- NHANES example 
+- NHANES example
 
 ```{r}
-NHANES%>% 
+NHANES%>%
   filter(Age>25 & Gender=="female") %>%
   select(Weight,Height) %>%
   mutate(log2Weight=Weight%>%log2) %>%

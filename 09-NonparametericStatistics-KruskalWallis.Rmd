@@ -1,10 +1,10 @@
 ---
-title: "9. Non-parametric statistics - Kruskal Wallis"  
+title: "9. Non-parametric statistics - Kruskal Wallis"
 author: "Lieven Clement"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -30,11 +30,11 @@ set.seed(140)
 
 Assess genotoxicity of 1,2-dimethylhydrazine dihydrochloride (DMH)  (EU directive)
 
-- 24 rats 
+- 24 rats
 - four groups with daily DMH dose
   - control
   - low
-  - medium 
+  - medium
   - high
 
 - Genotoxicity in liver using comet assay on 150 liver cells per rat.
@@ -43,7 +43,7 @@ Assess genotoxicity of 1,2-dimethylhydrazine dihydrochloride (DMH)  (EU directiv
 ## Comet Assay:
 
 - Visualise DNA strand breaks
-- Length comet tail is a proxy for strand breaks. 
+- Length comet tail is a proxy for strand breaks.
 
 ![Comet assay](https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/comet.jpg){ width=50% }
 
@@ -56,20 +56,20 @@ dna
 
 
 ```{r}
-dna %>% 
+dna %>%
   ggplot(aes(x=dose,y=length,fill=dose))+
   geom_boxplot() +
   geom_point(position="jitter")
 
 dna %>%
   ggplot(aes(sample=length)) +
-  geom_qq() + 
+  geom_qq() +
   geom_qq_line() +
   facet_wrap(~dose)
 ```
 
 - Strong indication that data in control group has a lower variance.
-- 6 observations per group are too few to check the assumptions 
+- 6 observations per group are too few to check the assumptions
 
 ```{r}
 plot(lm(length~dose,data=dna))
@@ -77,15 +77,15 @@ plot(lm(length~dose,data=dna))
 
 # Kruskal-Wallis Rank Test
 
-- The Kruskal-Wallis Rank Test (KW-test) is a  non-parameteric alternative  for ANOVA F-test.  
-  
+- The Kruskal-Wallis Rank Test (KW-test) is a  non-parameteric alternative  for ANOVA F-test.
+
 -  Classical $F$-teststatistic can be written as
   \[
     F = \frac{\text{SST}/(g-1)}{\text{SSE}/(n-g)} = \frac{\text{SST}/(g-1)}{(\text{SSTot}-\text{SST})/(n-g)} ,
   \]
--  with $g$ the number of groups. 
- 
-- SSTot depends only on  outcomes $\mathbf{y}$ and will not vary in permutation test. 
+-  with $g$ the number of groups.
+
+- SSTot depends only on  outcomes $\mathbf{y}$ and will not vary in permutation test.
 
 - SST can be used as statistic
  $$\text{SST}=\sum_{j=1}^t n_j(\bar{Y}_j-\bar{Y})^2$$
@@ -103,16 +103,16 @@ plot(lm(length~dose,data=dna))
   \[
     KW = \frac{12}{n(n+1)}  \sum_{j=1}^g n_j \left(\bar{R}_j - \frac{n+1}{2}\right)^2.
   \]
--  The factor $\frac{12}{n(n+1)}$ is used so that $KW$ has a simple asymptotic null distribution. In particular under $H_0$, given thart $\min(n_1,\ldots, n_g)\rightarrow \infty$, 
+-  The factor $\frac{12}{n(n+1)}$ is used so that $KW$ has a simple asymptotic null distribution. In particular under $H_0$, given thart $\min(n_1,\ldots, n_g)\rightarrow \infty$,
   \[
     KW  \rightarrow \chi^2_{t-1}.
   \]
 
 -  The exact KW-test can be executed by calculating the permutation null distribution (that only depends on $n_1, \ldots, n_g$) to test
-  $$H_0: f_1=\ldots=f_g \text{ vs } H_1: \text{ at least two means are different}.$$ 
-  
+  $$H_0: f_1=\ldots=f_g \text{ vs } H_1: \text{ at least two means are different}.$$
+
 - In order to allow $H_1$ to be formulated in terms of means, the assumption of locations shift should be valid.
-- For DMH example this is not the case.   
+- For DMH example this is not the case.
 - If location-shift is invalid, we have to formulate $H_1$ in terms of probabilistic indices:
   $$H_0: f_1=\ldots=f_g \text{ vs } H_1: \exists\ j,k \in \{1,\ldots,g\} : \text{P}\left[Y_j\geq Y_k\right]\neq 0.5$$
 
@@ -123,9 +123,9 @@ plot(lm(length~dose,data=dna))
 kruskal.test(length~dose,data=dna)
 ```
 
-- On the $5\%$ level of significance we can reject the null hypothesis. 
-  
-- R-functie `kruskal.test` only returns the asymptotic approximation for $p$-values. 
+- On the $5\%$ level of significance we can reject the null hypothesis.
+
+- R-functie `kruskal.test` only returns the asymptotic approximation for $p$-values.
 
 - With only 6 observaties per groep, this is not a good approximation of the $p$-value
 
@@ -138,16 +138,16 @@ kwPerm <- kruskal_test(length~dose,data=dna,
 kwPerm
 ```
 
-- We conclude that the difference in the distribution of the DNA damages due to the DMH dose is extremely significantly different. 
+- We conclude that the difference in the distribution of the DNA damages due to the DMH dose is extremely significantly different.
 
-- Posthoc analysis with WMW tests. 
+- Posthoc analysis with WMW tests.
 
 ```{r}
 pairwise.wilcox.test(dna$length,dna$dose)
 ```
 
-- All DMH behandelingen are significantly different from the control. 
-- The DMH are not significantly different from one another.  
+- All DMH behandelingen are significantly different from the control.
+- The DMH are not significantly different from one another.
 - U1 does not occur in the `pairwise.wilcox.test` output. Point estimate on probability on higher DNA-damage?
 
 ```{r, echo=FALSE}
@@ -156,7 +156,7 @@ pairWilcox <- pairwise.wilcox.test(dna$length,dna$dose)
 
 ```{r}
 nGroup <- table(dna$dose)
-probInd <- combn(levels(dna$dose),2,function(x) 
+probInd <- combn(levels(dna$dose),2,function(x)
 		 {
 		 test <- wilcox.test(length~dose,subset(dna,dose%in%x))
 		 return(test$statistic/prod(nGroup[x]))
@@ -166,14 +166,13 @@ names(probInd) <- combn(levels(dna$dose),2,paste,collapse="vs")
 probInd
 ```
 
-Because there are doubts on the location-shift model we draw our conclusions in terms of the probabilistic index. 
+Because there are doubts on the location-shift model we draw our conclusions in terms of the probabilistic index.
 
 ### Conclusion
 
 - There is an extremely significant difference in in the distribution of the DNA-damage measurements due to the treatment with DMH  ($p<0.001$ KW-test).
-- DNA-damage is more likely upon DMH treatment than in the control treatment (all p=0.013, WMW-testen). 
-- The probability on higher DNA-damage upon exposure to DMH is 100% (Calculation of a CI on the probabilistic index is beyond the scope of the course) 
-- There are no significant differences in the distributions of the comit-lengths among the treatment with the different DMH concentrations ($p=$ `r paste(format(range(pairWilcox$p.value[,-1],na.rm=TRUE),digit=2),collapse="-")`). 
-- DMH shows already genotoxic effects at low dose. 
+- DNA-damage is more likely upon DMH treatment than in the control treatment (all p=0.013, WMW-testen).
+- The probability on higher DNA-damage upon exposure to DMH is 100% (Calculation of a CI on the probabilistic index is beyond the scope of the course)
+- There are no significant differences in the distributions of the comit-lengths among the treatment with the different DMH concentrations ($p=$ `r paste(format(range(pairWilcox$p.value[,-1],na.rm=TRUE),digit=2),collapse="-")`).
+- DMH shows already genotoxic effects at low dose.
 - (Alle paarswise tests are gecorrected for multiple testing using Holm's methode).
-

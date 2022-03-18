@@ -1,10 +1,10 @@
 ---
-title: "Exercise 5.1: Hypothesis testing on the captopril dataset - solution"   
+title: "Exercise 5.1: Hypothesis testing on the captopril dataset - solution"
 author: "Lieven Clement and Jeroen Gilis"
-date: "statOmics, Ghent University (https://statomics.github.io)"  
+date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -12,15 +12,15 @@ output:
       number_sections: true
 ---
 
-In this exercise, we will see some basics in hypothesis testing and more 
+In this exercise, we will see some basics in hypothesis testing and more
 specifically on t-tests. As an example, we will work with the
 captopril dataset that we already explored in the exercise on data exploration.
 
 The goal is to answer these two research questions;
 
-1. Is the average systolic baseline blood pressure of the patients is higher than the treshold for hypertension of 140 mmHg? 
+1. Is the average systolic baseline blood pressure of the patients is higher than the treshold for hypertension of 140 mmHg?
 
-2. Is the average SBP before captopril treatment 
+2. Is the average SBP before captopril treatment
 different from the average SBP after
 captopril treatment?
 
@@ -33,21 +33,21 @@ library(tidyverse)
 # Import the data
 
 ```{r}
-(captopril <- read.table("https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt", 
-                         header = TRUE, 
+(captopril <- read.table("https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt",
+                         header = TRUE,
                          sep = ","))
 ```
 
 # Data exploration
 
-Before we start delving into the data in order to solve 
+Before we start delving into the data in order to solve
 our research hypothesis, we have to explore our data. Our dataset looks like this;
 
 ```{r}
 head(captopril)
 ```
 
-We have 15 patients, for which the systolic 
+We have 15 patients, for which the systolic
 blood pressures and diastolyic blood pressures were measured, before and after
 treatment with the captopril drug.
 
@@ -55,7 +55,7 @@ Note, that the dataset is not in the tidy format. We could tidy the data using
 the following code.
 
 ```{r}
-captopril %>% 
+captopril %>%
     gather(type,bp,-id) %>%
     filter(type%in%c("SBPa","SBPb")) %>%
     mutate(id = as.factor(id))
@@ -65,13 +65,13 @@ captopril %>%
 We can visualize the dataframe using boxplots;
 
 ```{r}
-captopril %>% 
+captopril %>%
   gather(type,bp,-id) %>%
   filter(type%in%c("SBPa","SBPb")) %>%
-  ggplot(aes(x=type, y=bp, fill=type)) + 
+  ggplot(aes(x=type, y=bp, fill=type)) +
       scale_fill_brewer(palette="RdGy") +
       theme_bw() +
-      geom_boxplot(outlier.shape=NA) + 
+      geom_boxplot(outlier.shape=NA) +
       geom_jitter(width = 0.2) +
       ggtitle("Boxplot of blood pressure measures before and after treatment") +
       ylab("blood pressure (mmHg)") +
@@ -81,17 +81,17 @@ captopril %>%
 Clearly, it seems that on average the measurements
 after treatment are lower than those before treatment.
 
-Note that the boxplot is useful in light of the first question where we have to assess if the average systolic blood pressure of patients is above 140mm Hg, the threshold for hypertension. 
+Note that the boxplot is useful in light of the first question where we have to assess if the average systolic blood pressure of patients is above 140mm Hg, the threshold for hypertension.
 
-However, to assess the question if there is an affect of administering captopril it is essential to account for the fact that the blood pressure before and after administering captopril was measured on the same patients. 
+However, to assess the question if there is an affect of administering captopril it is essential to account for the fact that the blood pressure before and after administering captopril was measured on the same patients.
 
 ```{r}
-captopril %>% 
+captopril %>%
   gather(type,bp,-id) %>%
   filter(type%in%c("SBPa","SBPb")) %>%
   ggplot(aes(x=type, y=bp, group=id)) +
   geom_line() +
-  geom_point() + 
+  geom_point() +
   ylab("Systolic blood pressure (mmHg)")
 ```
 
@@ -105,8 +105,8 @@ Let's start of with question 1.
 Is the average baseline systolic blood pressure (SBP) higher than the threshold for hypertension of 140 mmHg?
 
 To test the effect of the captopril on subjects with hypertension
-(patients), we need to select patients with hypertension, hence they should have 
-elevated SBP levels, that are on average higher than 140 mmHg. 
+(patients), we need to select patients with hypertension, hence they should have
+elevated SBP levels, that are on average higher than 140 mmHg.
 We can assess this hypothesis using a one sample t-test.
 
 ## Assess the assumptions
@@ -117,14 +117,14 @@ assumptions are met!
 1. The observations are independent
 2. The data (SBPb) must be normally distributed
 
-The first assumption requires us to think about how the data were collected. 
+The first assumption requires us to think about how the data were collected.
 Are there any underlying correlation structures (that we know of)
 in the data? For instance, if all the 15 subjects are members of
-the same family, we expect that the data will give us a good 
-representation of the underlying population of interest, i.e., 
+the same family, we expect that the data will give us a good
+representation of the underlying population of interest, i.e.,
 all past, present and future patients with elevated SBP levels.
 
-Here, we have no reason to believe that this 
+Here, we have no reason to believe that this
 assumption was violated; we may assume 15 unrelated patients with elevated SBP levels were selected at random from the population.
 
 We can assess the second assumption with a quantile-quantile plot.
@@ -141,7 +141,7 @@ captopril %>%
   geom_qq_line()
 
 # or, equivalently
-captoprilTidy <- captopril %>% gather(type,bp,-id) 
+captoprilTidy <- captopril %>% gather(type,bp,-id)
 captoprilTidy %>%
   filter(type%in%c("SBPa","SBPb")) %>%
   ggplot(aes(sample=bp)) +
@@ -151,12 +151,12 @@ captoprilTidy %>%
 ```
 
 We can see that all of the data lies nicely around the quantile-quantile
-line (black line). As such, we may conclude that our data is normally 
+line (black line). As such, we may conclude that our data is normally
 distributed.
 
 ## Hypothesis test
 
-Here, we will test if mean systolic blood pressure at baseline is significantly higher than 140 mmHg. More 
+Here, we will test if mean systolic blood pressure at baseline is significantly higher than 140 mmHg. More
 specifically, we will test the null hypothesis;
 
 $H_0:$ the mean SBPb is equal to 140 mmHg
@@ -166,7 +166,7 @@ versus the alternative hypothesis;
 $H_1:$ the mean SBPb is greater than 140 mmHg
 
 ```{r}
-output1 <- t.test(captopril$SBPb, 
+output1 <- t.test(captopril$SBPb,
                   mu=140,
                   alternative = "greater",
                   conf.level = 0.95)
@@ -181,28 +181,28 @@ it is very important to be precise, concise, and complete.
 An example of such a conclusion for our research question
 is given below:
 
-We can conclude that the mean systolic baseline blood pressure of patients in the captopril study is extremely significantly higher  than the threshold for hypertension of 140 mmHg (p << 0.001). 
-The mean SBPb equals `r round(unname(output1$estimate),2)` mmHg with 
+We can conclude that the mean systolic baseline blood pressure of patients in the captopril study is extremely significantly higher  than the threshold for hypertension of 140 mmHg (p << 0.001).
+The mean SBPb equals `r round(unname(output1$estimate),2)` mmHg with
 a 95% confidence interval of [`r round(output1$conf.int[c(1,1)],2)`, +$\infty$]).
 
-As we have seen in the theory class, the 95% confidence 
+As we have seen in the theory class, the 95% confidence
 interval can be interpreted as;
 
 With 95% confidence we can conclude that the true average of baseline systolic blood pressure of diseased patients in the population is above `r round(output1$conf.int[1],2)`.
 
-Note, that we only report a one sided confidence interval because we only test against the alternative hypothesis that the blood pressure is on average larger than the threshold for hypertension of 140 mmHg. 
+Note, that we only report a one sided confidence interval because we only test against the alternative hypothesis that the blood pressure is on average larger than the threshold for hypertension of 140 mmHg.
 
 # Question 2
 
-Is the average SBP before captopril treatment different from the average 
+Is the average SBP before captopril treatment different from the average
 SBP after captopril treatment?
 
-As the data are paired, there will be a strong correlation between the BP values 
+As the data are paired, there will be a strong correlation between the BP values
 before and after treatment of each individual patient. We can show this
 with a scatterplot.
 
 ```{r}
-captopril %>% 
+captopril %>%
   ggplot(aes(x=SBPb,y=SBPa)) +
     geom_point() +
     ggtitle("correlation between SBPb and SBPa") +
@@ -213,18 +213,18 @@ captopril %>%
 We clearly see that if a patient's SBPb value is high, its
 SBPa value will be comparatively high as well.
 
-We can immediately calculate the impact of the treatment for every patient by calculating the difference between the blood pressure after and before the treatment. 
+We can immediately calculate the impact of the treatment for every patient by calculating the difference between the blood pressure after and before the treatment.
 
 ```{r}
-captopril <- 
+captopril <-
   captopril %>% mutate(deltaSBP = SBPa-SBPb)
 
 captopril%>%
   ggplot(aes(x="Systolic blood pressure",y=deltaSBP)) +
-  geom_boxplot(outlier.shape=NA) + 
+  geom_boxplot(outlier.shape=NA) +
   geom_point(position="jitter")+
   ylab("Difference (mm mercury)") +
-  xlab("") 
+  xlab("")
 ```
 
 ## Check the assumptions
@@ -233,7 +233,7 @@ The paired t-test has 2 assumptions:
 
 1. The blood pressure differences are independent of each other.
 
-2. The blood pressure differences are normally distributed. 
+2. The blood pressure differences are normally distributed.
 
 The first assumption is met given the experimental design.
 
@@ -255,10 +255,10 @@ performing the unpaired t-test.
 
 As such, we will perform a `paired` t-test.
 
-- The null hypothesis of the test is that the blood pressure before and after 
-the treatment with captopril is on average equal. 
+- The null hypothesis of the test is that the blood pressure before and after
+the treatment with captopril is on average equal.
 - Which will be tested against the alternative that the blood pressure before
-and after the treatment with captopril is on average different. 
+and after the treatment with captopril is on average different.
 
 ```{r}
 output2 <- t.test(captopril$SBPb, captopril$SBPa, paired = TRUE)
@@ -277,7 +277,7 @@ analogous to performing a one-sample t-test on the difference
 between both groups.
 
 This can be easily seen from the output of the paired two-sample
-t-test. The alternative hypothesis $HA$ there states that 
+t-test. The alternative hypothesis $HA$ there states that
 the "true difference in means is not equal to 0". So internally,
 R will actually perform a one-sample t-test on the difference, and
 check whether or not the true mean difference is equal to 0.
@@ -288,10 +288,3 @@ t.test(captopril$deltaSBP, mu=0)
 ```
 
 Indeed, the output is equivalent to that of the  paired t-test.
-
-
-
-
-
-
-

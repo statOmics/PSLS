@@ -4,7 +4,7 @@ author: "Lieven Clement and Jeroen Gilis"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -12,28 +12,28 @@ output:
       number_sections: true
 ---
 
-In this exercise, we will learn how to import, tidy, wrangle and 
+In this exercise, we will learn how to import, tidy, wrangle and
 visualize data.
 
 # The NHANES dataset
 
 The National Health and Nutrition Examination Survey (NHANES)
 contains data that has been collected since 1960. For this tutorial,
-we will make use of the data that were collected between 2009 and 
+we will make use of the data that were collected between 2009 and
 2012, for 10.000 U.S. civilians. The dataset contains a large number of
 physical, demographic, nutritional and life-style-related parameters.
 
-Before we can actually start working with data, we will need to learn how to 
+Before we can actually start working with data, we will need to learn how to
 import the required datasets into our Rstudio environment.
 
-# Data Import  with the `readr` R package  
+# Data Import  with the `readr` R package
 
 ```{r, message=FALSE, warning=FALSE}
 library(readr)
 ```
 
 Let's try reading in some data. We will begin by
-reading in the `NHANES.csv` dataset. 
+reading in the `NHANES.csv` dataset.
 
 ```{r nhanesDatExpl}
 NHANES <- read_csv("https://raw.githubusercontent.com/statOmics/PSLS21/data/NHANES.csv")
@@ -76,24 +76,24 @@ dplyr::glimpse(NHANES[,1:10])
 library(tidyverse)
 ```
 
-** Important ** 
+** Important **
 If you are not familiar yet with the concepts of tidy data,
 have a look at the *extra1_preliminary_tidyverse.Rmd* file!
 
-If we consider our `NHANES` dataframe, we see it is already in 
+If we consider our `NHANES` dataframe, we see it is already in
 a tidy format, as;
 
 * Each variable forms a column.
 * Each observation forms a row.
 * Each type of observational unit forms a table.
 
-Each row contains all of the information on 
-a single subject (US civilian) in the study. 
+Each row contains all of the information on
+a single subject (US civilian) in the study.
 
-In te next tutorial, we will work with a dataset on the 
+In te next tutorial, we will work with a dataset on the
 effects of a certain drug, _captopril_, on the systolic
-and diastolic blood pressure of patients. This will not be 
-a _tidy_ dataset. As such, the details of tidying data 
+and diastolic blood pressure of patients. This will not be
+a _tidy_ dataset. As such, the details of tidying data
 with tidyverse will be described there
 
 # Data wrangling with `dplyr`
@@ -102,12 +102,12 @@ with tidyverse will be described there
 library(dplyr)
 ```
 
-The `dplyr` package provides us with a large set of 
-functions for handeling our data. We refer to the 
+The `dplyr` package provides us with a large set of
+functions for handeling our data. We refer to the
 preliminary_tidyverse.Rmd file for a more detailed
 description of these functions.
 
-The most important `dplyr` functions to remember are: 
+The most important `dplyr` functions to remember are:
 
 `dplyr` verbs | Description |
 --- | ------------------------------------------------------------------------------------ |
@@ -118,11 +118,11 @@ The most important `dplyr` functions to remember are:
 `summarize()` | summarize values |
 `group_by()` | allows for group operations in the "split-apply-combine" concept |
 
-In addition, `dplyr` uses the pipe operator `%>%` to 
+In addition, `dplyr` uses the pipe operator `%>%` to
 use the output of one function as an input to the next
-function. Instead of nesting functions (reading from the 
-inside to the outside), the idea of of piping is to 
-read the functions from left to right. 
+function. Instead of nesting functions (reading from the
+inside to the outside), the idea of of piping is to
+read the functions from left to right.
 
 ## Select and filter
 
@@ -140,9 +140,9 @@ Let's say we want to investigate how many subjects are
 4. have weight of less than 80kg
 
 ```{r, message=FALSE, warning=FALSE}
-NHANES %>% 
+NHANES %>%
   select(c("Gender","Age","Weight","Height")) %>% ## select the colums of interest
-  filter(Gender == "male", 
+  filter(Gender == "male",
          Age > 18,
          Height > 150,
          Weight < 80) %>% ## filter observations (rows) based on the required values
@@ -162,15 +162,15 @@ Next question; Within the `Race1` category of `Hispanics`, select
 `descending height`.
 
 **Hint**: use the `desc()` function inside of
-`arrange()` to order rows in a descending order. 
+`arrange()` to order rows in a descending order.
 Use the base R function `head` to display the first
 five.
 
 ```{r warning=FALSE,message=FALSE}
 NHANES %>%
   select(c("Race1", "Gender","MaritalStatus","Height")) %>%
-  filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "male") %>% 
-  arrange(desc(Height)) %>% 
+  filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "male") %>%
+  arrange(desc(Height)) %>%
   head(n=5)
 ```
 
@@ -180,24 +180,24 @@ functionalities. Let's try to explore another one!
 ## Mutate
 
 Assume that we don't trust the BMI values in our dataset
-and we decide to calculate them ourselves. BMI is typically 
+and we decide to calculate them ourselves. BMI is typically
 calculated by taking a person's weigth (in kg) and dividing
 it by the its height (in m) squared. Based on this rule,
 generate a new column, `BMI_self`, for the subset of the
 NHANES dataset that we obtained from the previous question.
-To create new columns, we will use the `mutate()` function 
-in `dplyr`. 
+To create new columns, we will use the `mutate()` function
+in `dplyr`.
 
 ```{r}
 NHANES %>%
   select(c("Race1", "Gender","MaritalStatus","Height","Weight","BMI")) %>%
-  filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "male") %>% 
+  filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "male") %>%
   mutate(BMI_self = Weight/(Height/100)**2)
 ```
 
 Note that now we need to include the _Weight_ and _BMI_
 columns in the `select` statement, because we need that
-input for the `mutate` function. Good news: It turns out 
+input for the `mutate` function. Good news: It turns out
 that the BMI column in the original dataset was computed
 correctly after all! But now we are interested in the
 mean value of the BMI_Self column. This requires a fifth
@@ -211,7 +211,7 @@ value of the `BMI_self` column.
 ```{r}
 NHANES %>%
   select(c("Race1", "Gender","MaritalStatus","Height","Weight","BMI")) %>%
-  filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "male") %>% 
+  filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "male") %>%
   mutate(BMI_self = Weight/(Height/100)**2) %>%
   summarise(avg_BMI_self = mean(BMI_self, na.rm = TRUE))
 ## the addition argument na.rm = TRUE makes sure to remove missing
@@ -221,12 +221,12 @@ NHANES %>%
 For this particular subset of the data, we find an
 average BMI value of 28.59 kg/m**2.
 
-There are many other summary statistics you 
-could consider such `sd()`, `min()`, `median()`, 
-`max()`, `sum()`, `n()` (returns the length of vector), 
-`first()` (returns first value in vector), 
-`last()` (returns last value in vector) and 
-`n_distinct()` (number of distinct values in vector). 
+There are many other summary statistics you
+could consider such `sd()`, `min()`, `median()`,
+`max()`, `sum()`, `n()` (returns the length of vector),
+`first()` (returns first value in vector),
+`last()` (returns last value in vector) and
+`n_distinct()` (number of distinct values in vector).
 We will elaborate on these functions later.
 
 Note that choosing the most informative summary statistic
@@ -236,16 +236,16 @@ is very important! This can be shown with the following example;
 knitr::include_graphics("https://raw.githubusercontent.com/statOmics/PSLS21/data/Figure_partners.png")
 ```
 
-In this study, men and woman were asked about their 
+In this study, men and woman were asked about their
 "ideal number of partners desired over 30 years".
 While almost all subjects desired a number between 0 and 50,
 three male subjects selected a number above 100.
 These three _outliers_ in the data can have a large impact on
-the data analysis, especially when we work with summary 
-statistics that are sensitive to these outliers. 
+the data analysis, especially when we work with summary
+statistics that are sensitive to these outliers.
 
-When we look at the _mean_, for instance, we see that on average 
-woman desire 2.8 partners, while men desire 64.3 partners on average, 
+When we look at the _mean_, for instance, we see that on average
+woman desire 2.8 partners, while men desire 64.3 partners on average,
 suggesting a large discrepancy between male and female desires.
 
 However, if look at a more _robust_ summary statistic such as
@@ -253,12 +253,12 @@ the _median_, we see that the result is 1 for both men and woman.
 It is clear that the mean value was completely distorted by the
 three outliers in the data.
 
-Another example of a more robust summary statistic is 
+Another example of a more robust summary statistic is
 the _geometric mean_.
 
 ## Group
 
-We already combine 5 very important functions. 
+We already combine 5 very important functions.
 Here, we will add a final one: `group_by()`.
 
 The `group_by()` verb is and incredibly powerful
@@ -266,17 +266,17 @@ function in `dplyr`. It allows us, for example,
 to calculate summarisy statistics for different
 groups of observations.
 
-If we take our example from above, let's say 
-we want to split the data frame by some variable 
-(e.g. `MaritalStatus`), apply a function (`mean`) 
-to a column (e.g. BMI_self) of the individual  
-data frames  and then combine the output back into 
-a summary data frame. 
+If we take our example from above, let's say
+we want to split the data frame by some variable
+(e.g. `MaritalStatus`), apply a function (`mean`)
+to a column (e.g. BMI_self) of the individual
+data frames  and then combine the output back into
+a summary data frame.
 
 ```{r}
-NHANES %>% 
+NHANES %>%
   select(c("Race1", "Gender","MaritalStatus","Height","Weight","BMI")) %>%
-  filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "male") %>% 
+  filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "male") %>%
   mutate(BMI_self = Weight/(Height/100)**2) %>%
   group_by(MaritalStatus) %>% ##  group the subjects by their marital status
   summarise(avg_BMI_self = mean(BMI_self, na.rm = TRUE)) ## calculate the mean BMI_self value of each group
@@ -294,24 +294,24 @@ data in place, we will learn how to visualize our data with the ggplot2 package.
 library(ggplot2)
 ```
 
-As you might have have already seen, there are many functions 
-available in base R that can create plots (e.g. `plot()`, `boxplot()`). 
+As you might have have already seen, there are many functions
+available in base R that can create plots (e.g. `plot()`, `boxplot()`).
 Others include: `hist()`, `qqplot()`, etc.
-These functions are great because they come with a basic installation 
-of R and can be quite powerful when you need a quick visualization 
-of something when you are exploring data. 
+These functions are great because they come with a basic installation
+of R and can be quite powerful when you need a quick visualization
+of something when you are exploring data.
 
-We are choosing to introduce `ggplot2` because, in our 
-opinion, it's one of the simplest ways for beginners to 
-create relatively complicated plots that are intuitive 
+We are choosing to introduce `ggplot2` because, in our
+opinion, it's one of the simplest ways for beginners to
+create relatively complicated plots that are intuitive
 and aesthetically pleasing.
 
 ## Univariate statistics
 
-In univariate statistics, we focus on a single variable 
-of interest. Here, we will show different ways to visualize 
+In univariate statistics, we focus on a single variable
+of interest. Here, we will show different ways to visualize
 the `BMI` variable from the NHANES dataset. Importantly,
-different types of visualizations will provide us with 
+different types of visualizations will provide us with
 different types of information!
 
 Here we will visualize the same data using a dotplot,
@@ -323,14 +323,14 @@ a histogram and a boxplot.
 NHANES %>%
   head(NHANES, n=100) %>% ## to make the visualization more clear, we take only the first 100 subjects
   ggplot(aes(x=BMI)) +
-  geom_dotplot(method = "histodot") 
+  geom_dotplot(method = "histodot")
 ```
 
 In the dotplot, the BMI value for each subject (in this case,
 the first 100 subjects of the NHANES study), is plotted on the
-x-axis. The y-axis allows us to count how many subjects have 
+x-axis. The y-axis allows us to count how many subjects have
 a BMI value that falls within a certain counting bin.
-For instance, in the BMI interval [29.5, 30.[ 
+For instance, in the BMI interval [29.5, 30.[
 we observe 4 subjects.
 
 Note, however, that the dotplot does not provide us with information
@@ -348,8 +348,8 @@ NHANES %>%
 
 The information taht can be obtained from this histogram
 is similar to that of the dotplot. Here, we can read immediately
-(i.e. without counting) that the BMI interval [29.5, 30.0[ 
-contains 4 subjects. Again, the histogram does not provide us with 
+(i.e. without counting) that the BMI interval [29.5, 30.0[
+contains 4 subjects. Again, the histogram does not provide us with
 information on the mean/median values of the data, but only on
 its distribution.
 
@@ -361,7 +361,7 @@ set.seed(2) ## to make the horizontal position of the jitter non-random
 NHANES %>%
   head(NHANES, n=100) %>%
   ggplot(aes(x="", y=BMI)) +
-  geom_boxplot(outlier.shape=NA) + 
+  geom_boxplot(outlier.shape=NA) +
   geom_jitter(width=0.2) +
   stat_summary(geom="text", fun.y=quantile,
                aes(label=sprintf("%1.1f", ..y..)),
@@ -391,7 +391,7 @@ including the relationship between both variables.
 In terms of visualizations, the scatterplot is the baseline
 method for displaying two variables.
 
-### Create scatter plots using `geom_point()` 
+### Create scatter plots using `geom_point()`
 
 For the NHANES dataset, we can for instance look
 at the relationship between a person's height and weigth
@@ -399,9 +399,9 @@ values.
 
 ```{r}
 p <- NHANES %>%
-  ggplot(aes(x = Height, y = Weight)) 
-p + geom_point() + 
-  xlab("Height (cm)") + 
+  ggplot(aes(x = Height, y = Weight))
+p + geom_point() +
+  xlab("Height (cm)") +
   ylab("Weight (kg)")
 ```
 
@@ -413,14 +413,14 @@ remove by the geom_point function.
 ggplot2 also has a very broad panel of aesthetic features
 for improving your plot. One very basic feature is that we
 can give colors to the ggplot object. For instance, we can
-give different colors to the dots in the previous 
+give different colors to the dots in the previous
 scatterplot based on a subject's gender.
 
 ```{r}
 NHANES %>%
   ggplot(aes(x = Height, y = Weight, color = Gender)) +
-  geom_point() + 
-  xlab("Height (cm)") + 
+  geom_point() +
+  xlab("Height (cm)") +
   ylab("Weight (kg)")
 ```
 
@@ -449,7 +449,7 @@ NHANES %>%
   ggplot(aes(x = Height, y = Weight, color = Gender)) +
   geom_point(shape=17, size = 1) + ## set to a different shape (triangle) and size
   ggtitle("Height versus Weight") + ## for the main title
-  xlab("Height (cm)") + 
+  xlab("Height (cm)") +
   ylab("Weight (kg)") +
   xlim(0,220) + ## set limit of x-axis
   ylim(0,220) + ## set limit of y-axis
@@ -458,27 +458,27 @@ NHANES %>%
 ```
 
 Next to scatterplots, we have a large number of other
-types of plots at our disposal. Importantly, some plots 
-will be more informative than others, depending on the 
-research question. Therefore, choosing the plot that is 
-most informative is crucial. We show this with a more 
+types of plots at our disposal. Importantly, some plots
+will be more informative than others, depending on the
+research question. Therefore, choosing the plot that is
+most informative is crucial. We show this with a more
 elaborate example later (`captopril` exercise).
 
 # Final example
 
 ## Goal
 
-Set up a reference interval for the systolic blood 
+Set up a reference interval for the systolic blood
 pressure in the NHANES dataset.
 
 ## Background
 
 The captopril dataset, which we will explore and analyse later,
-holds information on  15 patients that have increased blood pressure 
-values. 
+holds information on  15 patients that have increased blood pressure
+values.
 
-Before we may conduct such an experiment, we first need to know 
-which values should be considered _increased_ and which ones should be 
+Before we may conduct such an experiment, we first need to know
+which values should be considered _increased_ and which ones should be
 considered _normal_. To find an interval for values that are normal,
 we can set up a reference interval. To set up this interval, we will
 use the NHANES dataset. The `BPSysAve` column holds data on the systolic
@@ -507,7 +507,7 @@ in biological data (in this easier to have extreme values on the
 right-hand side than on the left-hand size, which is additionally
 bounded by zero for most biological variables).
 
-By selecting only _healthy_ subjects, we expect the data to be 
+By selecting only _healthy_ subjects, we expect the data to be
 distributed more normally. We define _healthy_ as being a non-smoker,
 without a history of diabetes, hard drugs or sleeping trouble, with a
 general health that is not considered poor and that has a BMI between
@@ -525,7 +525,7 @@ NHANES %>%
 ```
 
 Now the data seems to be approximately normal by eye (we will later show how to
-assess data normality more formally). From this subset, we may calculate the 
+assess data normality more formally). From this subset, we may calculate the
 reference interval.
 
 ```{r}
@@ -543,22 +543,18 @@ paste0("Reference interval: [", summary_NHANES$BPSysAve - 2*summary_NHANES$sd, "
 ```
 
 The systolic blood pressure for healthy subjects is distributed
-symmetrically, and in a later tutorial we will show that these values 
+symmetrically, and in a later tutorial we will show that these values
 approximately follow a normal distribution. We have calculated the
 mean and standard deviation of blood pressure values in this healthy
 subset, which allows us to set up the (95%) reference interval, for
 what we can consider to be _normal_ blood pressure values. Any of the
 later patients who's values do not fall within this interval, we can
-consider _abnormal_. 
+consider _abnormal_.
 
 The `mean` blood pressure value of the healthy subset is 119 mmHg, with
 a `standard deviation` of 14 mmHg. When we replace the population average
-and population standard deviation with these estimates, we obtain a 
+and population standard deviation with these estimates, we obtain a
 `95% reference interval` of [91;147] mmHg.
 
-Note that in the literature a value 140 mmHg for the systolic blood 
-pressure is typically considered to be the upper limit of _normality_. 
-
-
-
-
+Note that in the literature a value 140 mmHg for the systolic blood
+pressure is typically considered to be the upper limit of _normality_.

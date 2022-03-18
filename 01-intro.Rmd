@@ -1,10 +1,10 @@
 ---
-title: "1. Introduction: Why do we need statistics" 
+title: "1. Introduction: Why do we need statistics"
 author: "Lieven Clement"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -18,7 +18,7 @@ knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
 library(tidyverse)
 ```
 
-# Motivation 
+# Motivation
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
 
 ![](https://images.martechadvisor.com/images/uploads/content_images/ways_to_capture_b2b_customer_data_5bacd2dbe1a09.png)
@@ -27,11 +27,11 @@ library(tidyverse)
 
 - We live in a big data era
 - Data on location, clicks, e-commerce, social media ...
-- Life Sciences: measure expression of thousands of genes, proteins, ... for each subject or even individual cells 
+- Life Sciences: measure expression of thousands of genes, proteins, ... for each subject or even individual cells
 - Data driven journalism
 - ...
 
-Statistics is the science to learn from empirical data. 
+Statistics is the science to learn from empirical data.
 
 Statistical literacy is key to interpret results from scientific publications.
 
@@ -94,7 +94,7 @@ Though our results do not allow to infer causality, they do reinforce our a prio
 knitr::include_graphics("./figures/fear.png")
 ```
 
-Papers are merged, published, and 39 times cited 
+Papers are merged, published, and 39 times cited
 
 Bousquet et al. (2021). Cabbage and fermented vegetables: From death rate heterogeneity in countries to candidates for mitigation strategies of severe COVID-19. Allergy 76:735–750.
 
@@ -106,18 +106,18 @@ In the example we covered issues with three important branches in statistics
 
   - Is there an association between  COVID-19 mortality and food consumption?
   - Issue in study:
-      - data dredging, p-hacking, ...: when you assess many hypotheses you will allways find strong patterns by random change $\rightarrow$ correct for multiple testing! 
+      - data dredging, p-hacking, ...: when you assess many hypotheses you will allways find strong patterns by random change $\rightarrow$ correct for multiple testing!
       - Assumptions of the models do not hold
       - Confounding
 
 2. Experimental design
 
-    - Confounding: countries do not only differ in consumption of a vegetable but also in may other variables (demographical, COVID measures, healty care, ...) that are associated with COVID mortality. 
+    - Confounding: countries do not only differ in consumption of a vegetable but also in may other variables (demographical, COVID measures, healty care, ...) that are associated with COVID mortality.
 
-    - Difficult to draw causal conclusions from observational studies. 
-    
-    - In experimental studies: randomisation! $\rightarrow$ so that  the groups only differ in the treatment. 
-    
+    - Difficult to draw causal conclusions from observational studies.
+
+    - In experimental studies: randomisation! $\rightarrow$ so that  the groups only differ in the treatment.
+
     - Experimental studies are therefore the golden standard
 
 3. Data exploration and visualisation
@@ -220,16 +220,16 @@ ap
 
 ## Data Exploration and Descriptive Statistics
 
-- Data exploration is extremely important to get insight in the data. 
-- It is often underrated and overlooked. 
+- Data exploration is extremely important to get insight in the data.
+- It is often underrated and overlooked.
 
 ### Descriptive statistics
 
 We first summarize the data and calculate the mean, standard deviation, number of observations and standard error and store the result in an object apRelSum via 'apRelSum<-`
 
 1. We pipe the `ap` dataframe to the group_by function to group the data by treatment trt `group_by(trt)`
-2. We pipe the result to the `summarize_at` function to summarize the "rel" variable and calculate the mean, standard deviation and the number of observations 
-3. We pipe the result to the `mutate` function to make a new variable in the data frame `se` for which we calculate the standard error 
+2. We pipe the result to the `summarize_at` function to summarize the "rel" variable and calculate the mean, standard deviation and the number of observations
+3. We pipe the result to the `mutate` function to make a new variable in the data frame `se` for which we calculate the standard error
 
 
 ```{r}
@@ -247,7 +247,7 @@ apRelSum
 ---
 
 ### Plots
-We will use ggplot2 to make our plots. 
+We will use ggplot2 to make our plots.
 With the ggplot2 library we can easily build plots by adding layers.
 
 #### barplot
@@ -257,9 +257,9 @@ With the ggplot2 library we can easily build plots by adding layers.
 2. We make a barplot based on this data using the `geom_bar` function. The statistic is `stat="identity"` because the bar height should be equal the value for the mean of the relative abundance.
 
 ```{r}
-apRelSum%>% 
+apRelSum%>%
   ggplot(aes(x=trt,y=mean)) +
-  geom_bar(stat="identity") 
+  geom_bar(stat="identity")
 ```
 
 - Is this plot informative??
@@ -267,12 +267,12 @@ apRelSum%>%
 ---
 
 We will now add standard errors to the plot
-using `geom_errorbar` function and specify the minimum and maximum value for of the error bar, the width command is used to set the width of the error bar smaller than the width of the bar. 
+using `geom_errorbar` function and specify the minimum and maximum value for of the error bar, the width command is used to set the width of the error bar smaller than the width of the bar.
 
 ```{r}
-apRelSum%>% 
+apRelSum%>%
   ggplot(aes(x=trt,y=mean)) +
-  geom_bar(stat="identity") + 
+  geom_bar(stat="identity") +
   geom_errorbar(aes(ymin=mean-se,ymax=mean+se),width=.2)
 ```
 
@@ -286,10 +286,10 @@ I consider barplots to be bad plots
 
 - They are not informative
 - They just visualize a two point summary of the data. It is better to do this in a table
-- They use a lot of space (e.g. from zero up to the minimum relative abundance) where no data are present. 
+- They use a lot of space (e.g. from zero up to the minimum relative abundance) where no data are present.
 
 It is better to get a view on the distribution of the data. We can use a boxplot for this purpose.
-We first explain what a boxplot. 
+We first explain what a boxplot.
 
 ---
 
@@ -309,10 +309,10 @@ We will now make a boxplot for the ap data
 1. We pipe the `ap` dataframe to the ggplot command
 2. We select the data with the command `ggplot(aes(x=trt,y=rel))`
 3. We add a boxplot with the command `geom_boxplot()`
-    
+
 ```{r}
-ap %>%  
-  ggplot(aes(x=trt,y=rel)) + 
+ap %>%
+  ggplot(aes(x=trt,y=rel)) +
   geom_boxplot()
 ```
 
@@ -328,7 +328,7 @@ We will now add the raw data to the plot.
 - We add the raw data using `geom_point(position="jitter")`, with the argument position='jitter' we will add some random noise to the x coordinate so that we can see all data.
 
 ```{r}
-ap %>%  
+ap %>%
   ggplot(aes(x=trt,y=rel)) +
   geom_boxplot(outlier.shape=NA) +
   geom_point(position="jitter")
@@ -340,39 +340,39 @@ This is an informative plot!
 
 - We observed an effect of the transplantation on the relatieve abundantie of Staphylococcus.
 
-- Is that effect large enough to conclude that the treatment works? 
+- Is that effect large enough to conclude that the treatment works?
 
 ---
 
-## Estimation and statistical inference 
+## Estimation and statistical inference
 
-- Induction: With statistical inference we can generalize what we observe in the sample towards the population. 
+- Induction: With statistical inference we can generalize what we observe in the sample towards the population.
 
-- The price that we have to pay: uncertainty on our conclusions! 
+- The price that we have to pay: uncertainty on our conclusions!
 
 ---
 
 - With data we cannot prove that the treatment works
 
-- Falsification principle of Popper: With data we can only  reject a hypothesis or theory. 
+- Falsification principle of Popper: With data we can only  reject a hypothesis or theory.
 
-- With stats we can thus not prove that the treatment works. 
+- With stats we can thus not prove that the treatment works.
 
 - But stats will allow us to falcify the opposite hypothesis: how much evidence is there in the data against the assumption that there is no effect of the treatment?
 
-- With stats we can calculate how likely it is to draw a random sample (when you would repeat the experiment) with a mean difference in relative abundance between transplant and placebo group that is at least as large as what we observed in our sample when there would be no effect of the treatment. 
+- With stats we can calculate how likely it is to draw a random sample (when you would repeat the experiment) with a mean difference in relative abundance between transplant and placebo group that is at least as large as what we observed in our sample when there would be no effect of the treatment.
 
 - This probability is called a p-value.
 
-- If p is very small, it is very unlikely to observe a sample like ours by random change when there would be no effect of the treatment. 
+- If p is very small, it is very unlikely to observe a sample like ours by random change when there would be no effect of the treatment.
 
-- We typically compare p with 5%. If there is no effect of the treatment we will thus tolerate a probability of 5% on a false positive conclusion. 
+- We typically compare p with 5%. If there is no effect of the treatment we will thus tolerate a probability of 5% on a false positive conclusion.
 
 - To calculate p we will have to model the data using  statistical models.
 
 ---
 
-In chapter 5 we will learn that we can use a two-sample t-test to generalise what we observe in the microbiome dataset towards the population. 
+In chapter 5 we will learn that we can use a two-sample t-test to generalise what we observe in the microbiome dataset towards the population.
 
 ```{r}
 t.test(rel~trt,data=ap)
@@ -380,7 +380,7 @@ t.test(rel~trt,data=ap)
 
 Conclusion:
 
-We can conclude that the relative abundance of Staphylococcus in the microbiome of individuals with smelly armpits  is `r format(apRelSum$mean[2]-apRelSum$mean[1],digits=3)`% higher upon the transplant than upon the placebo treatment (p < 0.001). 
+We can conclude that the relative abundance of Staphylococcus in the microbiome of individuals with smelly armpits  is `r format(apRelSum$mean[2]-apRelSum$mean[1],digits=3)`% higher upon the transplant than upon the placebo treatment (p < 0.001).
 
 ---
 
@@ -433,7 +433,7 @@ glimpse(NHANES)
 
 Suppose that we are interested in assessing the difference in direct cholesterol levels between males and females older than 25 years.
 
-1. We pipe the dataset to the function `filter` to filter the data according to age. 
+1. We pipe the dataset to the function `filter` to filter the data according to age.
 2. We plot the direct cholesterol levels.
     - We select the data with the command `ggplot(aes(x=DirectChol))`
     - We add a histogram with the command `geom_histogram()`
@@ -482,11 +482,11 @@ nhanesSub<- NHANES%>%
 
 ---
 
-We will calculate the summary statistics for the cholLog variable for males and females in the large dataset. 
+We will calculate the summary statistics for the cholLog variable for males and females in the large dataset.
 So we group by Gender
 
 ```{r}
-cholLogSum<- nhanesSub %>% 
+cholLogSum<- nhanesSub %>%
   group_by(Gender) %>%
    summarize_at("cholLog",
                list(mean=~mean(.,na.rm=TRUE),
@@ -525,7 +525,7 @@ samp %>%
   facet_grid(Gender~.) +
   xlab("Direct cholesterol (log2)")
 
-samp%>% 
+samp%>%
   ggplot(aes(x=Gender,y=cholLog)) +
   geom_boxplot(outlier.shape=NA) +
   geom_point(position="jitter")
@@ -535,7 +535,7 @@ samp%>%
 
 We summarize the data
 ```{r}
-samp %>% 
+samp %>%
   group_by(Gender) %>%
    summarize_at("cholLog",
                list(mean=~mean(.,na.rm=TRUE),
@@ -544,7 +544,7 @@ samp %>%
   mutate(se=sd/sqrt(n))
 ```
 
-Note that the sample mean is different from that of the large experiment ("population") we sampled from. 
+Note that the sample mean is different from that of the large experiment ("population") we sampled from.
 
 We test for the difference between Males and females
 
@@ -570,12 +570,12 @@ samp2%>%
   facet_grid(Gender~.) +
   xlab("Direct cholesterol (log)")
 
-samp2%>% 
+samp2%>%
   ggplot(aes(x=Gender,y=cholLog)) +
   geom_boxplot(outlier.shape=NA) +
   geom_point(position="jitter")
 
-samp2 %>% 
+samp2 %>%
   group_by(Gender) %>%
    summarize_at("cholLog",
                list(mean=~mean(.,na.rm=TRUE),
@@ -602,13 +602,13 @@ samp3%>%
   facet_grid(Gender~.) +
   xlab("Direct cholesterol (log)")
 
-samp3%>% 
+samp3%>%
   ggplot(aes(x=Gender,y=cholLog)) +
   geom_boxplot(outlier.shape=NA) +
   geom_point(position="jitter")
 
 
-samp3 %>% 
+samp3 %>%
   group_by(Gender) %>%
    summarize_at("cholLog",
                list(mean=~mean(.,na.rm=TRUE),
@@ -662,14 +662,14 @@ sum(res[,2]<0.05&res[,1]<0)
 
 res<-res %>% as.data.frame
 names(res) <- c("delta","pvalue")
-res %>% 
-  ggplot(aes(x=delta,y=-log10(pvalue),color=pvalue<0.05)) + 
-  geom_point() + 
+res %>%
+  ggplot(aes(x=delta,y=-log10(pvalue),color=pvalue<0.05)) +
+  geom_point() +
   xlab("Average cholesterol difference") +
   ylab("- log10(pvalue)") +
   scale_color_manual(values=c("black","red"))
 
-res %>% 
+res %>%
   ggplot(aes(y=delta)) +
   geom_boxplot() +
   geom_point(aes(x=0,y=c(mean(fem$cholLog)-mean(mal$cholLog)),color="pop. diff")) +
@@ -692,12 +692,12 @@ Only in `r sum(res[,2]<0.05&res[,1]<0)` out of 20000 samples we conclude that th
 
 ## Control of false positives
 
-Wat happens when there is no difference between both groups? 
+Wat happens when there is no difference between both groups?
 
-- We will have to simulate experiments for which the cholestorol levels are the same for both groups. 
+- We will have to simulate experiments for which the cholestorol levels are the same for both groups.
 
 
-- We can do this by sampling data for both groups from the subset of women in the study. 
+- We can do this by sampling data for both groups from the subset of women in the study.
 
 - We do this again for 10 subjects per group
 
@@ -732,14 +732,14 @@ sum(res[,2]<0.05&res[,1]<0)
 
 res<-res %>% as.data.frame
 names(res) <- c("delta","pvalue")
-res %>% 
-  ggplot(aes(x=delta,y=-log10(pvalue),color=pvalue<0.05)) + 
-  geom_point() + 
+res %>%
+  ggplot(aes(x=delta,y=-log10(pvalue),color=pvalue<0.05)) +
+  geom_point() +
   xlab("Average cholesterol difference") +
   ylab("- log10(pvalue)") +
   scale_color_manual(values=c("black","red"))
 
-res %>% 
+res %>%
   ggplot(aes(y=delta)) +
   geom_boxplot() +
   geom_point(aes(x=0,y=0,color="pop. diff")) +
@@ -748,7 +748,7 @@ res %>%
 
 Note, that the number of false positives are on `r sum(res[,2]<0.05)` on `r format(nsim,digits=5)` experiments and are nicely controlled at the 5% level.
 
-What happens if we increase the sample size to 50 subjects per group?  
+What happens if we increase the sample size to 50 subjects per group?
 
 
 ---
@@ -848,7 +848,7 @@ knitr::kable(salk)
 - We have seen that
     - it is important to carefully specify the scope of the study before the experiment,
     - the sample size matters,
-    - we should be aware of confounding, and 
+    - we should be aware of confounding, and
     - a proper control is required.
 
 $\rightarrow$ Good experimental design is crucial!
@@ -914,5 +914,3 @@ text(1.5,5,"EXP. DESIGN (1)",col="black",cex=1.2)
 text(8.5,5,"ESTIMATION &\nINFERENCE (3)",col="black",cex=1.2)
 text(7.5,.5,"DATA EXPLORATION &\nDESCRIPTIVE STATISTICS (2)",col="black",cex=1.2)
 ```
-
-

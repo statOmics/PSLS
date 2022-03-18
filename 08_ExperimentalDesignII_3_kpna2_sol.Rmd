@@ -29,13 +29,13 @@ library(tidyverse)
 # Background
 
 Histologic grade in breast cancer provides clinically important prognostic information. Researchers examined whether histologic grade was associated with gene expression profiles of breast cancers and whether such profiles could be used to improve histologic grading. In this tutorial we will assess the association between histologic grade and the expression of the KPNA2 gene that is known to be associated with poor BC prognosis.
-The patients, however, do not only differ in the histologic grade, but also on their lymph node status. 
+The patients, however, do not only differ in the histologic grade, but also on their lymph node status.
 The lymph nodes were not affected (0) or chirugically removed (1).
 
 - Redo data analysis (you can copy the results of the tutorial on multiple linear regression)
-- What is the power to pick up each of the contrasts when their real effect sizes would be equal to the effect sizes we observed in the study? 
-- How does the power evolves if we have 2 upto 10 repeats for each factor combination of grade and node when their real effect sizes would be equal to the ones we observed in the study? 
-- What is the power to pick up each of the contrasts when the FC for grade for patients with unaffected lymph nodes equals 1.5 ($\beta_g = log2(1.5)$)? 
+- What is the power to pick up each of the contrasts when their real effect sizes would be equal to the effect sizes we observed in the study?
+- How does the power evolves if we have 2 upto 10 repeats for each factor combination of grade and node when their real effect sizes would be equal to the ones we observed in the study?
+- What is the power to pick up each of the contrasts when the FC for grade for patients with unaffected lymph nodes equals 1.5 ($\beta_g = log2(1.5)$)?
 
 
 # Data analysis
@@ -54,7 +54,7 @@ kpna2$node <- as.factor(kpna2$node)
 ```
 
 ```{r}
-kpna2 %>% 
+kpna2 %>%
   ggplot(aes(x=node:grade,y=gene,fill=node:grade)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter()
@@ -96,7 +96,7 @@ The researchers want to know the power for testing following hypotheses (remark 
 
 $$H_0: \log_2{FC}_{g3n0-g1n0} = \beta_{g3} = 0$$
 
-- Log fold change between histologic grade 3 and histologic grade 1 for patients with removed lymph nodes (=1). 
+- Log fold change between histologic grade 3 and histologic grade 1 for patients with removed lymph nodes (=1).
 
 $$H_0: \log_2{FC}_{g3n1-g1n1} = \beta_{g3} + \beta_{g3n1} = 0$$
 
@@ -127,7 +127,7 @@ We get a significant p-value for the first, second, third and fifth hypothesis. 
 
 ## Simulation function
 
-Function to simulate data similar to that of our experiment under our model assumptions. 
+Function to simulate data similar to that of our experiment under our model assumptions.
 
 ```{r}
 simFastMultipleContrasts <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000, adjust = "holm")
@@ -137,10 +137,10 @@ simFastMultipleContrasts <- function(form, data, betas, sd, contrasts, alpha = .
     design <- model.matrix(form, data)
     ySim <- ySim + c(design %*%betas)
     ySim <- t(ySim)
-  
+
     ### Fitting
     fitAll <- limma::lmFit(ySim,design)
-  
+
     ### Inference
     varUnscaled <- t(contrasts)%*%fitAll$cov.coefficients%*%contrasts
     contrasts <- fitAll$coefficients %*%contrasts
@@ -148,7 +148,7 @@ simFastMultipleContrasts <- function(form, data, betas, sd, contrasts, alpha = .
     tstats <- contrasts/seContrasts
     pvals <- pt(abs(tstats),fitAll$df.residual,lower.tail = FALSE)*2
     pvals <- t(apply(pvals, 1, p.adjust, method = adjust))
-    
+
     return(colMeans(pvals < alpha))
 }
 ```
@@ -175,7 +175,7 @@ power1 <- simFastMultipleContrasts(form, kpna2, betas, sd, contrasts, nSim = nSi
 power1
 ```
 
-We observe large powers for all contrasts, exept for contrast nodeg3, which has a small effect size. 
+We observe large powers for all contrasts, exept for contrast nodeg3, which has a small effect size.
 
 ## Power for increasing sample size
 
@@ -199,12 +199,12 @@ powers <- matrix(NA,nrow=9, ncol=6)
 colnames(powers) <- c("n",colnames(contrasts))
 powers[,1] <- 2:10
 
-dataAllComb <- data.frame(grade = rep(c(1,3),each=2)%>% as.factor, 
-                          node = rep(c(0,1),2)%>%as.factor) 
-  
+dataAllComb <- data.frame(grade = rep(c(1,3),each=2)%>% as.factor,
+                          node = rep(c(0,1),2)%>%as.factor)
+
 for (i in 1:nrow(powers))
-{  
-predData <- data.frame(grade = rep(dataAllComb$grade, powers[i,1]), 
+{
+predData <- data.frame(grade = rep(dataAllComb$grade, powers[i,1]),
                        node = rep(dataAllComb$node, powers[i,1]))
 powers[i,-1] <- simFastMultipleContrasts(form, predData, betas, sd, contrasts, nSim = nSim)
 }
@@ -212,9 +212,9 @@ powers
 ```
 
 ```{r}
-powers %>% 
-  as.data.frame %>% 
-  gather(contrast, power, -n) %>% 
+powers %>%
+  as.data.frame %>%
+  gather(contrast, power, -n) %>%
   ggplot(aes(n,power,color=contrast)) +
   geom_line()
 ```
@@ -244,11 +244,11 @@ power3
 
 We observe a drop in the power for all the contrasts!?
 
-We only would expect to loose power for the contrasts assessing the grade effect because both fold changes have been decreased. 
+We only would expect to loose power for the contrasts assessing the grade effect because both fold changes have been decreased.
 
-The reason why all powers are affected is because we also do multiple testing and the multiple testing using the pvalue correction using Holm's method for a particular contrast is also depending on the order of significance of the tests within each simulation. 
+The reason why all powers are affected is because we also do multiple testing and the multiple testing using the pvalue correction using Holm's method for a particular contrast is also depending on the order of significance of the tests within each simulation.
 
-When we do both simulations without correcting for multiple testing (adjust = "none") we see that changing the size of the fold change for grade for patients with unaffected lymph nodes only impacts the power for the contrasts for assessing the grade effect. 
+When we do both simulations without correcting for multiple testing (adjust = "none") we see that changing the size of the fold change for grade for patients with unaffected lymph nodes only impacts the power for the contrasts for assessing the grade effect.
 
 ```{r}
 power1None <- simFastMultipleContrasts(form, kpna2, betas, sd, contrasts, nSim = nSim, adjust = "none")
@@ -256,8 +256,3 @@ power3None <- simFastMultipleContrasts(form, kpna2, betas2, sd, contrasts, nSim 
 power1None
 power3None
 ```
-
-
-
-
-

@@ -1,10 +1,10 @@
 ---
-title: "Exercise 5.3: Hypothesis testing on the cuckoo dataset - solution"   
+title: "Exercise 5.3: Hypothesis testing on the cuckoo dataset - solution"
 author: "Lieven Clement and Jeroen Gilis"
-date: "statOmics, Ghent University (https://statomics.github.io)"  
+date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -60,7 +60,7 @@ stage of this course week.
 
 In this tutorial, we will assess a single pairwise comparison,
 between the European robin and the European wren. In a following
-tutorial, we will come back to this dataset and make a full 
+tutorial, we will come back to this dataset and make a full
 analysis with ANOVA.
 
 Load the required libraries
@@ -80,7 +80,7 @@ head(Cuckoo)
 
 For this exercise, we only care about the European robin
 and the Eurasian wren. Therefore, we can remove the observations
-of the other types. In addition, it seems that the `type` 
+of the other types. In addition, it seems that the `type`
 column rather than a factor. Let's fix this:
 
 ```{r}
@@ -105,21 +105,21 @@ Cuckoo %>%
   ggplot(aes(x=type,y=length,fill=type)) +
     geom_boxplot() +
     theme_bw() +
-    geom_boxplot(outlier.shape=NA) + 
+    geom_boxplot(outlier.shape=NA) +
     geom_jitter(width = 0.2) +
     scale_fill_manual(values=c("dimgrey","firebrick")) +
     ggtitle("Boxplot of the length of eggs per type") +
-    ylab("length (mm)") + 
+    ylab("length (mm)") +
     stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
 ```
 
-We clearly see that, on average, the eggs laid in the 
-nest of the European robin (type=4) are larger than those 
+We clearly see that, on average, the eggs laid in the
+nest of the European robin (type=4) are larger than those
 laid in the nest of the Eurasian wren. But is this difference **significant**?
 
 # Analysis
 
-We can test this with an unpaired, two-sample t-test. 
+We can test this with an unpaired, two-sample t-test.
 But before we can start the analysis, we must check if
 all assumptions to perform a t-test are met.
 
@@ -141,10 +141,10 @@ specific patterns of correlation randomly selected nests.
 To check the normality assumption, we will use QQ plots.
 
 ```{r}
-Cuckoo %>% 
+Cuckoo %>%
   ggplot(aes(sample=length)) +
   geom_qq() +
-  geom_qq_line() + 
+  geom_qq_line() +
   facet_grid(~type)
 ```
 
@@ -160,16 +160,10 @@ output <- t.test(length ~ type, data = Cuckoo, var.equal = TRUE)
 output
 ```
 
-## Conclusion 
+## Conclusion
 
-There is an extremely significant difference in mean 
-length of Cuckoo eggs fostered by the European robin and those fostered by the Eurasian wren  (p << 0.001). The eggs 
-fostered by the European wren are on average 
+There is an extremely significant difference in mean
+length of Cuckoo eggs fostered by the European robin and those fostered by the Eurasian wren  (p << 0.001). The eggs
+fostered by the European wren are on average
 `r round(output$estimate[1]-output$estimate[2],2)` mm longer
 (95% CI [`r round(output$conf.int[c(1,2)],2)`]).
-
-
-
-
-
-

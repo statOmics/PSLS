@@ -1,10 +1,10 @@
 ---
-title: "Exercise 6.1: Linear regression on the fish tank dataset"   
+title: "Exercise 6.1: Linear regression on the fish tank dataset"
 author: "Lieven Clement and Jeroen Gilis"
-date: "statOmics, Ghent University (https://statomics.github.io)"  
+date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -63,8 +63,8 @@ How many fish do we have per species?
 
 ```
 
-Which variables might influence survival? Make a suitable visualisation of the 
-association between the dose and the survival time. 
+Which variables might influence survival? Make a suitable visualisation of the
+association between the dose and the survival time.
 
 ```{r}
 
@@ -73,13 +73,13 @@ association between the dose and the survival time.
 # Important note on the dataset
 
 In this dataset, there are multiple variables can have an effect on the survival
-time of the fish. The most obvious one is the dose of poison that was 
-administered (as displayed above). However, we could also imagine that heavier 
+time of the fish. The most obvious one is the dose of poison that was
+administered (as displayed above). However, we could also imagine that heavier
 fish are less prone to the poison than light fish. Additionally, one fish
 species may be more resistant to the poison.
 
 To correctly analyse this data, all these factors should be taken into account.
-However, modeling the response based on multiple predictors will only be 
+However, modeling the response based on multiple predictors will only be
 discussed later in this course. **For now, we will simply ignore the potential**
 **effect of weigth and species on the survival time of the fish.** Hence, we
 only consider the effect of the poison `dosage`. This allows us to analyze
@@ -90,7 +90,7 @@ analysis that takes into acount all relevant predictors.
 
 # Linear regression
 
-In order to get familiar with simple linear regression 
+In order to get familiar with simple linear regression
 
 1. Check the assumptions
 
@@ -99,4 +99,3 @@ In order to get familiar with simple linear regression
 3. Interpret the results, both for the intercept as well as for the slope
 
 4. Write a conclusion that answers the research hypothesis.
-

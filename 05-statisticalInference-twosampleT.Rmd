@@ -1,10 +1,10 @@
 ---
-title: "5. Statistical Inference: Two-sample t-test"   
+title: "5. Statistical Inference: Two-sample t-test"
 author: "Lieven Clement"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
-      code_download: true    
+      code_download: true
       theme: cosmo
       toc: true
       toc_float: true
@@ -55,7 +55,7 @@ We plot the direct relative abundances in function of the treatment group. With 
 ```{r}
 ap %>%  ggplot(aes(x=trt,y=rel)) + geom_boxplot(outlier.shape=NA) + geom_point(position="jitter")
 
-ap %>% ggplot(aes(sample=rel)) + 
+ap %>% ggplot(aes(sample=rel)) +
   geom_qq() +
   geom_qq_line() +
   facet_wrap(~trt)
@@ -70,9 +70,9 @@ Suppose that $Y_{ij}$ is the response for subjects $i=1,\ldots, n_j$ from popula
 
 Use of the term **treatment** or **group** instead of population
 
-Here the treatment is $j=1$ microbial transplant vs $j=2$ placebo. 
+Here the treatment is $j=1$ microbial transplant vs $j=2$ placebo.
 
-We assume 
+We assume
 
 $$Y_{ij}\text{ i.i.d. } N(\mu_j,\sigma^2)\;\;\;i=1,\ldots,n_i\;j=1,2.$$
 
@@ -88,7 +88,7 @@ Test $$ H_0: \mu_1 = \mu_2 $$
 against
 $$  H_1: \mu_1 \neq \mu_2 .$$
 
-$H_1$ is again the research hypothesis: the average relative abundance of *Staphylococcus spp.* is different upon microbial transplant then upon placebo treatment.  
+$H_1$ is again the research hypothesis: the average relative abundance of *Staphylococcus spp.* is different upon microbial transplant then upon placebo treatment.
 
 $H_0$ and $H_1$ can also be specified in terms of the effect size between the two treatments, $\mu_1-\mu_2$
 $$H_0: \mu_1-\mu_2 = 0,$$
@@ -99,9 +99,9 @@ $$\hat \mu_1-\hat \mu_2=\bar Y_1 -\bar Y_2.$$
 
 ---
 
-## Variance estimator 
+## Variance estimator
 
-The experimental units are independent so the sample means are also independent and the variance on the difference is  
+The experimental units are independent so the sample means are also independent and the variance on the difference is
 $$\text{Var}_{\bar Y_1 -\bar Y_2}=\frac{\sigma^2}{n_1}+\frac{\sigma^2}{n_2}=\sigma^2 \left(\frac{1}{n_1}+\frac{1}{n_2}\right).$$
 
 And the standard error becomes
@@ -124,11 +124,11 @@ $$  S_p^2 = \frac{n_1-1}{n_1+n_2-2} S_1^2 + \frac{n_2-1}{n_1+n_2-2} S_2^2 = \fra
 $$ S_p^2= \sum\limits_{j=1}^2\sum\limits_{i=1}^{n_j} \frac{(Y_{ij}-\bar{Y}_{.j})^2}{n_1+n_2-2}$$
 
 
-The pooled variance estimator uses the squared deviations of the observations from their group mean and has $n_1+n_2-2$ degrees of freedom. 
+The pooled variance estimator uses the squared deviations of the observations from their group mean and has $n_1+n_2-2$ degrees of freedom.
 
 ---
 
-## Test statistic 
+## Test statistic
 Two-sample $t$-teststatistiek:
 
 $$T = \frac{\bar{Y}_1-\bar{Y}_2}{\sqrt{\frac{S_p^2}{n_1}+\frac{S_p^2}{n_2}}} =
@@ -146,13 +146,13 @@ We can implement the test in R:
 t.test(rel~trt,data=ap,var.equal=TRUE)
 ```
 
-On the $5\%$ significance level we reject the null hypothesis in favor of the alternative hypothesis and conclude that the relative abundance of  *Staphylococcus spp.* is on average extreme significant larger is in transplantation group than in the placebo group.   
+On the $5\%$ significance level we reject the null hypothesis in favor of the alternative hypothesis and conclude that the relative abundance of  *Staphylococcus spp.* is on average extreme significant larger is in transplantation group than in the placebo group.
 
-If there is no effect of the transplant we have a probability of less then 9 in $100000$ to observe a test statistic in a random sample that is at least as extreme as what we observed in the armpit experiment. 
+If there is no effect of the transplant we have a probability of less then 9 in $100000$ to observe a test statistic in a random sample that is at least as extreme as what we observed in the armpit experiment.
 
-This is extremely rare under $H_0$. 
+This is extremely rare under $H_0$.
 
-If $H_1$ is correct, we expect that the test statistic is larger in absolute value and expect small p-values. Hence we decide that there is a lot of evidence against $H_0$ in favour of $H_1$.  
+If $H_1$ is correct, we expect that the test statistic is larger in absolute value and expect small p-values. Hence we decide that there is a lot of evidence against $H_0$ in favour of $H_1$.
 
 **Good statistical practice** is to report the $p$-value, but also  effect size along with its confidence interval. So that we can judge the statistical significance and the biological relevance.
 
@@ -167,64 +167,64 @@ On average the relative abundance of *Staphylococcus spp.* in the microbiome of 
 Validity of t-test depends on distributional assumptions:
 
 - Independence (design)
-- One-sample t-test: normality of the observations 
-- Paired t-test: normality of the difference  
+- One-sample t-test: normality of the observations
+- Paired t-test: normality of the difference
 - Two-sample t-test: Normality of the observations in both groups, and equal variances.
 
-If the assumptions are not met, the null distribution does not follow a t-distribution, and, the p-values and critical values are incorrect.  
+If the assumptions are not met, the null distribution does not follow a t-distribution, and, the p-values and critical values are incorrect.
 
 To construct confidence intervals we also rely on these assumptions.
 
-- We used quantiles from the t-distribution to calculate the lower and upper limit. 
+- We used quantiles from the t-distribution to calculate the lower and upper limit.
 
-- The correct coverage of the CI depends on these assumptions 
+- The correct coverage of the CI depends on these assumptions
 
 ---
 
-## Evaluate normality 
- 
+## Evaluate normality
+
  - Boxplots and histograms: shape of distribution and outliers
- 
+
  - QQ-plots
 
-There also exist hypothesis tests (goodness-of-fit test), but their null hypothesis is that the data are normally distributed so we make a weak conclusion!  
+There also exist hypothesis tests (goodness-of-fit test), but their null hypothesis is that the data are normally distributed so we make a weak conclusion!
 
   - Kolmogorov-Smirnov, Shapiro-Wilk en Anderson-Darling.
   - In small samples they have a low power
   - In large samples they often flag very small deviations as significant
 
-Recommendation 
+Recommendation
 
-- Start with graphical exploration of the data and keep the sample size in mind to avoid overinterpretation of the plots. 
+- Start with graphical exploration of the data and keep the sample size in mind to avoid overinterpretation of the plots.
 
-- If you have doubts, use simulation where you simulate data with the same sample size from a Normal distribution with the same mean and variance as the one that you observed in the sample 
+- If you have doubts, use simulation where you simulate data with the same sample size from a Normal distribution with the same mean and variance as the one that you observed in the sample
 
 - If you observed deviations of normality check in the literature how sensitive your method is such deviations of normality. (e.g. T-tests for instance are rather insensitive to deviations as long as the distribution of the data is symmetric.)
 
-- In large samples you can resort to the central limit theorem. 
+- In large samples you can resort to the central limit theorem.
 
-- You might resort to transformations of the response. 
+- You might resort to transformations of the response.
 
---- 
+---
 
 ## Homoscedasticity
 
-- Boxplots: The box size is the inter quartile range (IQR) a robust estimator of the variance. 
+- Boxplots: The box size is the inter quartile range (IQR) a robust estimator of the variance.
 
-- If the differences are not large $\rightarrow$ homoscedasticiteit 
+- If the differences are not large $\rightarrow$ homoscedasticiteit
 
-- Again you can use simulation to get insight in the differences you can expect. 
+- Again you can use simulation to get insight in the differences you can expect.
 
-- Formal F-test can be used to compare the variances, but again under the null you assume equal variances, so the same criticism as for normality tests applies here. 
+- Formal F-test can be used to compare the variances, but again under the null you assume equal variances, so the same criticism as for normality tests applies here.
 
 ---
 
 ## Welch modified t-test
 
-If the data are heteroscedastic, you can use a Welch two-sample T-test, which no longer uses the pooled variance estimator. 
+If the data are heteroscedastic, you can use a Welch two-sample T-test, which no longer uses the pooled variance estimator.
 
 $$T =  \frac{\bar{Y}_1 - \bar{Y}_2}{\sqrt{\frac{S^2_1}{n_1}+\frac{S^2_2}{n_2}}}$$
-with $S^2_1$ en $S^2_2$ the sample variances in both groups.  
+with $S^2_1$ en $S^2_2$ the sample variances in both groups.
 
 This statistic follows approximately a t-distribution with a number of degrees of freedom between  $\text{min}(n_1-1,n_2-1)$ and $n_1+n_2-2$.
 
@@ -234,27 +234,27 @@ In R the degrees of freedom are estimated using the Welch- Satterthwaite approxi
 t.test(rel~trt,data=ap,var.equal=FALSE)
 ```
 
-Note that you can see that the Welch T-test is adopted in the title. The adjusted degrees of freedom are $df = 17.876$ $\pm$ to that of the conventional T-test, because the variances are approximately equal. 
+Note that you can see that the Welch T-test is adopted in the title. The adjusted degrees of freedom are $df = 17.876$ $\pm$ to that of the conventional T-test, because the variances are approximately equal.
 
 ---
 
-# How to report? 
+# How to report?
 
 - In the scientific literature there is too much attention for p-values
 
-- It is much more informative to combine an estimate with its confidence interval. 
+- It is much more informative to combine an estimate with its confidence interval.
 
 **Rule of thumb**:
 
-Report an estimate together with its  confidence interval (and its p-value) 
+Report an estimate together with its  confidence interval (and its p-value)
 
-1. The result of the test can be derived of the confidence interval 
+1. The result of the test can be derived of the confidence interval
 2. It allows the reader to judge **scientific relevance**.
 
 ```{r}
 t.test(rel~trt,data=ap)
 ```
 
-The result of an $\alpha$-level t-test is equivalent with comparing the effect size under $H_0$ with the $1-\alpha$ CI. 
+The result of an $\alpha$-level t-test is equivalent with comparing the effect size under $H_0$ with the $1-\alpha$ CI.
 
-An effect can be extremely statistically significant, but scientifically irrelevant. With a CI you will spot this. 
+An effect can be extremely statistically significant, but scientifically irrelevant. With a CI you will spot this.
