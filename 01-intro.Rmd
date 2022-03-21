@@ -4,7 +4,7 @@ author: "Lieven Clement"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, cache=FALSE}
 knitr::opts_chunk$set(
   include = TRUE, comment = NA, echo = TRUE,
   message = FALSE, warning = FALSE, cache = TRUE

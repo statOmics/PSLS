@@ -4,12 +4,20 @@ author: "Lieven Clement"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, cache=FALSE}
 knitr::opts_chunk$set(
   include = TRUE, comment = NA, echo = TRUE,
   message = FALSE, warning = FALSE, cache = TRUE
 )
+```
+
+```{r libraries, message=FALSE, warning=FALSE, cache=FALSE}
 library(tidyverse)
+library(car)
+library(faraway)
+library(GGally)
+library(car)
+library(multcomp)
 ```
 
 # Introduction
@@ -36,13 +44,11 @@ We will first transform the data to hours.
 
 
 ```{r}
-library(faraway)
 data(rats)
 
 rats <- rats %>%
   mutate(time = time * 10)
 
-library(GGally)
 rats %>%
   ggpairs()
 ```
@@ -127,7 +133,6 @@ There are multiple interaction terms involved in the factorial design.
 We will first assess them together, which can be done using the anova table.
 
 ```{r}
-library(car)
 Anova(rats3, type = "III")
 ```
 
@@ -149,7 +154,6 @@ The anova table shows that the effect of the poison and the treatment are both e
 In the additive model we can assess the effect of the poison type and the treatments, separately in a post-hoc analysis.
 
 ```{r}
-library(multcomp)
 comparisons <- glht(rats4, linfct = mcp(poison = "Tukey", treat = "Tukey"))
 summary(comparisons)
 confint(comparisons)
