@@ -9,7 +9,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Lieven Clement" />
 
 
 <title>Instructors</title>
@@ -30,9 +29,6 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <script src="site_libs/navigation-1.1/sourceembed.js"></script>
@@ -229,69 +225,6 @@ $(document).ready(function () {
 
 
 
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-
 
 </head>
 
@@ -299,16 +232,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -447,8 +370,6 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Instructors</h1>
-<h4 class="author">Lieven Clement</h4>
-<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
@@ -466,11 +387,10 @@ div.tocify {
 <h3>Milan Malfait</h3>
 <p><img src="figures/milan.jpg" width="17%" style="float:left; padding:10px" /></p>
 <p>Milan Malfait is a PhD student in the <a href="https://statomics.github.io/">statOmics</a> Group at Ghent University, headed by prof. Lieven Clement. He has a background in bioengineering and bioinformatics and is currently pursuing a PhD in statistical data analysis in collaboration with Janssen Pharmaceutica. His main research topic is to develop robust and scalable statistical methods for differential expression analysis with single-cell transcriptomics data.</p>
-<p><br/></p>
 <p>Affiliation: Department of Applied Mathematics, Computer Science and Statistics, Ghent University, Ghent, BE</p>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiSW5zdHJ1Y3RvcnMiCmF1dGhvcjogIkxpZXZlbiBDbGVtZW50IgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgpvdXRwdXQ6CiAgICBodG1sX2RvY3VtZW50OgogICAgICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UKLS0tCgojIyMgTGlldmVuIENsZW1lbnQKCmBgYHtyIGVjaG89RkFMU0Usb3V0LndpZHRoPSIxNyUiLG91dC5leHRyYT0nc3R5bGU9ImZsb2F0OmxlZnQ7IHBhZGRpbmc6MTBweCInfQprbml0cjo6aW5jbHVkZV9ncmFwaGljcygiLi9maWd1cmVzL2xpZXZlbi5qcGciKQpgYGAKCkxpZXZlbiBDbGVtZW50IGlzIGFuIEFzc29jaWF0ZSBQcm9mZXNzb3Igb2YgU3RhdGlzdGljYWwgR2Vub21pY3MgYXQgR2hlbnQgVW5pdmVyc2l0eSwgd2hlcmUgaGUgbGVhZHMgdGhlIFtzdGF0T21pY3NdKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pby8pIEdyb3VwLiBIZSBpcyBhbiBleHBlcnQgaW4gZGV2ZWxvcGluZyBzdGF0aXN0aWNhbCBtZXRob2RzIGFuZCBvcGVuIHNvdXJjZSB0b29scyBmb3IgZGlmZmVyZW50aWFsIG9taWNzIGRhdGEgYW5hbHlzaXMuIEhpcyByZXNlYXJjaCBlZmZvcnRzIHJlc3VsdGVkIGluIG51bWVyb3VzIHB1YmxpY2F0aW9ucyBvbiBub3ZlbCBtZXRob2RzIGFuZCB0b29scyBmb3IsIGFuZCBhcHBsaWVkIHJlc2VhcmNoIGluIG9taWNzIGRhdGEgYW5hbHlzaXMuIEhpcyBsYWIgaXMgYnVpbHQgYXJvdW5kIHR3byBzdHJhdGVnaWMgcmVzZWFyY2ggcGlsbGFycyBlYWNoIGNvbm5lY3RlZCB0byBhbiBvbWljcyBkb21haW46IChzaW5nbGUgY2VsbCkgdHJhbnNjcmlwdG9taWNzIGFuZCBwcm90ZW9taWNzIGFuZCBoZSBoYXMgYSBzdHJvbmcgaW50ZXJlc3QgaW4gbGV2ZXJhZ2luZyBoaXMgZXhwZXJ0aXNlIHRvIHRyYW5zbGF0aW9uYWwgcmVzZWFyY2guIEhlIGFsc28gc2VydmVzIGFzIGEgbWVtYmVyIG9mIHRoZSBjb3JlIHRlYW0gdGhhdCBlc3RhYmxpc2hlZCBhIG5ldyBNYXN0ZXIgb2YgU2NpZW5jZSBpbiBCaW9pbmZvcm1hdGljcyBhdCBHaGVudCBVbml2ZXJzaXR5IGFuZCBhcyBhIGJvYXJkIG1lbWJlciBvZiB0aGUgQmVsZ2lhbiBQcm90ZW9taWNzIEFzc29jaWF0aW9uLgoKQWZmaWxpYXRpb246IERlcGFydG1lbnQgb2YgQXBwbGllZCBNYXRoZW1hdGljcywgQ29tcHV0ZXIgU2NpZW5jZSBhbmQgU3RhdGlzdGljcywgR2hlbnQgVW5pdmVyc2l0eSwgR2hlbnQsIEJFCgpcClwKCiMjIyBNaWxhbiBNYWxmYWl0CgpgYGB7ciBlY2hvPUZBTFNFLG91dC53aWR0aD0iMTclIixvdXQuZXh0cmE9J3N0eWxlPSJmbG9hdDpsZWZ0OyBwYWRkaW5nOjEwcHgiJ30Ka25pdHI6OmluY2x1ZGVfZ3JhcGhpY3MoIi4vZmlndXJlcy9taWxhbi5qcGciKQpgYGAKCk1pbGFuIE1hbGZhaXQgaXMgYSBQaEQgc3R1ZGVudCBpbiB0aGUgW3N0YXRPbWljc10oaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvLykgR3JvdXAgYXQgR2hlbnQgVW5pdmVyc2l0eSwgaGVhZGVkIGJ5IHByb2YuIExpZXZlbiBDbGVtZW50LiBIZSBoYXMgYSBiYWNrZ3JvdW5kIGluIGJpb2VuZ2luZWVyaW5nIGFuZCBiaW9pbmZvcm1hdGljcyBhbmQgaXMgY3VycmVudGx5IHB1cnN1aW5nIGEgUGhEIGluIHN0YXRpc3RpY2FsIGRhdGEgYW5hbHlzaXMgaW4gY29sbGFib3JhdGlvbiB3aXRoIEphbnNzZW4gUGhhcm1hY2V1dGljYS4gSGlzIG1haW4gcmVzZWFyY2ggdG9waWMgaXMgdG8gZGV2ZWxvcCByb2J1c3QgYW5kIHNjYWxhYmxlIHN0YXRpc3RpY2FsIG1ldGhvZHMgZm9yIGRpZmZlcmVudGlhbCBleHByZXNzaW9uIGFuYWx5c2lzIHdpdGggc2luZ2xlLWNlbGwgdHJhbnNjcmlwdG9taWNzIGRhdGEuCgo8YnIvPgoKQWZmaWxpYXRpb246IERlcGFydG1lbnQgb2YgQXBwbGllZCBNYXRoZW1hdGljcywgQ29tcHV0ZXIgU2NpZW5jZSBhbmQgU3RhdGlzdGljcywgR2hlbnQgVW5pdmVyc2l0eSwgR2hlbnQsIEJFCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiSW5zdHJ1Y3RvcnMiCm91dHB1dDoKICAgIGh0bWxfZG9jdW1lbnQ6CiAgICAgICAgbnVtYmVyX3NlY3Rpb25zOiBmYWxzZQogICAgICAgIHRvYzogZmFsc2UKLS0tCgojIyMgTGlldmVuIENsZW1lbnQKCmBgYHtyIGVjaG89RkFMU0Usb3V0LndpZHRoPSIxNyUiLG91dC5leHRyYT0nc3R5bGU9ImZsb2F0OmxlZnQ7IHBhZGRpbmc6MTBweCInfQprbml0cjo6aW5jbHVkZV9ncmFwaGljcygiLi9maWd1cmVzL2xpZXZlbi5qcGciKQpgYGAKCkxpZXZlbiBDbGVtZW50IGlzIGFuIEFzc29jaWF0ZSBQcm9mZXNzb3Igb2YgU3RhdGlzdGljYWwgR2Vub21pY3MgYXQgR2hlbnQgVW5pdmVyc2l0eSwgd2hlcmUgaGUgbGVhZHMgdGhlIFtzdGF0T21pY3NdKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pby8pIEdyb3VwLiBIZSBpcyBhbiBleHBlcnQgaW4gZGV2ZWxvcGluZyBzdGF0aXN0aWNhbCBtZXRob2RzIGFuZCBvcGVuIHNvdXJjZSB0b29scyBmb3IgZGlmZmVyZW50aWFsIG9taWNzIGRhdGEgYW5hbHlzaXMuIEhpcyByZXNlYXJjaCBlZmZvcnRzIHJlc3VsdGVkIGluIG51bWVyb3VzIHB1YmxpY2F0aW9ucyBvbiBub3ZlbCBtZXRob2RzIGFuZCB0b29scyBmb3IsIGFuZCBhcHBsaWVkIHJlc2VhcmNoIGluIG9taWNzIGRhdGEgYW5hbHlzaXMuIEhpcyBsYWIgaXMgYnVpbHQgYXJvdW5kIHR3byBzdHJhdGVnaWMgcmVzZWFyY2ggcGlsbGFycyBlYWNoIGNvbm5lY3RlZCB0byBhbiBvbWljcyBkb21haW46IChzaW5nbGUgY2VsbCkgdHJhbnNjcmlwdG9taWNzIGFuZCBwcm90ZW9taWNzIGFuZCBoZSBoYXMgYSBzdHJvbmcgaW50ZXJlc3QgaW4gbGV2ZXJhZ2luZyBoaXMgZXhwZXJ0aXNlIHRvIHRyYW5zbGF0aW9uYWwgcmVzZWFyY2guIEhlIGFsc28gc2VydmVzIGFzIGEgbWVtYmVyIG9mIHRoZSBjb3JlIHRlYW0gdGhhdCBlc3RhYmxpc2hlZCBhIG5ldyBNYXN0ZXIgb2YgU2NpZW5jZSBpbiBCaW9pbmZvcm1hdGljcyBhdCBHaGVudCBVbml2ZXJzaXR5IGFuZCBhcyBhIGJvYXJkIG1lbWJlciBvZiB0aGUgQmVsZ2lhbiBQcm90ZW9taWNzIEFzc29jaWF0aW9uLgoKQWZmaWxpYXRpb246IERlcGFydG1lbnQgb2YgQXBwbGllZCBNYXRoZW1hdGljcywgQ29tcHV0ZXIgU2NpZW5jZSBhbmQgU3RhdGlzdGljcywgR2hlbnQgVW5pdmVyc2l0eSwgR2hlbnQsIEJFCgpcClwKCiMjIyBNaWxhbiBNYWxmYWl0CgpgYGB7ciBlY2hvPUZBTFNFLG91dC53aWR0aD0iMTclIixvdXQuZXh0cmE9J3N0eWxlPSJmbG9hdDpsZWZ0OyBwYWRkaW5nOjEwcHgiJ30Ka25pdHI6OmluY2x1ZGVfZ3JhcGhpY3MoIi4vZmlndXJlcy9taWxhbi5qcGciKQpgYGAKCk1pbGFuIE1hbGZhaXQgaXMgYSBQaEQgc3R1ZGVudCBpbiB0aGUgW3N0YXRPbWljc10oaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvLykgR3JvdXAgYXQgR2hlbnQgVW5pdmVyc2l0eSwgaGVhZGVkIGJ5IHByb2YuIExpZXZlbiBDbGVtZW50LiBIZSBoYXMgYSBiYWNrZ3JvdW5kIGluIGJpb2VuZ2luZWVyaW5nIGFuZCBiaW9pbmZvcm1hdGljcyBhbmQgaXMgY3VycmVudGx5IHB1cnN1aW5nIGEgUGhEIGluIHN0YXRpc3RpY2FsIGRhdGEgYW5hbHlzaXMgaW4gY29sbGFib3JhdGlvbiB3aXRoIEphbnNzZW4gUGhhcm1hY2V1dGljYS4gSGlzIG1haW4gcmVzZWFyY2ggdG9waWMgaXMgdG8gZGV2ZWxvcCByb2J1c3QgYW5kIHNjYWxhYmxlIHN0YXRpc3RpY2FsIG1ldGhvZHMgZm9yIGRpZmZlcmVudGlhbCBleHByZXNzaW9uIGFuYWx5c2lzIHdpdGggc2luZ2xlLWNlbGwgdHJhbnNjcmlwdG9taWNzIGRhdGEuCgpBZmZpbGlhdGlvbjogRGVwYXJ0bWVudCBvZiBBcHBsaWVkIE1hdGhlbWF0aWNzLCBDb21wdXRlciBTY2llbmNlIGFuZCBTdGF0aXN0aWNzLCBHaGVudCBVbml2ZXJzaXR5LCBHaGVudCwgQkUK</div>
 <div class="footer">
     <hr>
     This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
@@ -478,8 +398,6 @@ div.tocify {
 </div>
 
 
-</div>
-</div>
 
 </div>
 
@@ -518,35 +436,6 @@ $(document).ready(function () {
 });
 </script>
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
