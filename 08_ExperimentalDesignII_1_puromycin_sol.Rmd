@@ -20,18 +20,18 @@ Here, we will focus again on the enzyme treated data.
 ```{r}
 data(Puromycin)
 Puromycin <- Puromycin %>%
-  filter(state=="treated")
+  filter(state == "treated")
 ```
 
 There was a linear association between the log10 substrate concentration and the reaction rate
 
 
 ```{r}
-Puromycin  %>%
-  ggplot(aes(x=conc %>% log10,y=rate)) +
+Puromycin %>%
+  ggplot(aes(x = conc %>% log10(), y = rate)) +
   geom_point() +
-  stat_smooth(method = "loess",col="red") +
-  stat_smooth(method='lm',col="black") +
+  stat_smooth(method = "loess", col = "red") +
+  stat_smooth(method = "lm", col = "black") +
   ylab("Reaction Rate (counts/min)") +
   xlab("log10(Substrate concentration) (log10 ppm)")
 ```
@@ -51,37 +51,36 @@ Note, that the researchers have chosen 6 different substrate concentrations and 
 Function to simulate data similar to that of our experiment under our model assumptions.
 
 ```{r}
-simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
-{
-    ySim <- rnorm(nrow(data)*nSim,sd=sd)
-    dim(ySim) <-c(nrow(data),nSim)
-    design <- model.matrix(form, data)
-    ySim <- ySim + c(design %*%betas)
-    ySim <- t(ySim)
+simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000) {
+  ySim <- rnorm(nrow(data) * nSim, sd = sd)
+  dim(ySim) <- c(nrow(data), nSim)
+  design <- model.matrix(form, data)
+  ySim <- ySim + c(design %*% betas)
+  ySim <- t(ySim)
 
-    ### Fitting
-    fitAll <- limma::lmFit(ySim,design)
+  ### Fitting
+  fitAll <- limma::lmFit(ySim, design)
 
-    ### Inference
-    varUnscaled <- c(t(contrasts)%*%fitAll$cov.coefficients%*%contrasts)
-    contrasts <- fitAll$coefficients %*%contrasts
-    seContrasts <- varUnscaled^.5*fitAll$sigma
-    tstats <- contrasts/seContrasts
-    pvals <- pt(abs(tstats),fitAll$df.residual,lower.tail = FALSE)*2
-    return(mean(pvals < alpha))
+  ### Inference
+  varUnscaled <- c(t(contrasts) %*% fitAll$cov.coefficients %*% contrasts)
+  contrasts <- fitAll$coefficients %*% contrasts
+  seContrasts <- varUnscaled^.5 * fitAll$sigma
+  tstats <- contrasts / seContrasts
+  pvals <- pt(abs(tstats), fitAll$df.residual, lower.tail = FALSE) * 2
+  return(mean(pvals < alpha))
 }
 ```
 
 ## Power to pick up the same effect size as we observed in the data set with the same design
 
 ```{r}
-mod1 <- lm(rate ~ conc %>% log10, Puromycin)
+mod1 <- lm(rate ~ conc %>% log10(), Puromycin)
 betas <- mod1$coefficients
 
 nSim <- 10000
-form <- ~ conc %>% log10
+form <- ~ conc %>% log10()
 sd <- sigma(mod1)
-contrast <- matrix(c(0,1),ncol=1)
+contrast <- matrix(c(0, 1), ncol = 1)
 rownames(contrast) <- names(mod1$coefficients)
 alpha <- 0.05
 
@@ -92,14 +91,14 @@ power
 ## Power for $\beta_1=10$
 
 ```{r}
-mod1 <- lm(rate ~ conc %>% log10, Puromycin)
+mod1 <- lm(rate ~ conc %>% log10(), Puromycin)
 betas <- mod1$coefficients
 betas[2] <- 10
 
 nSim <- 10000
-form <- ~ conc %>% log10
+form <- ~ conc %>% log10()
 sd <- sigma(mod1)
-contrast <- matrix(c(0,1),ncol=1)
+contrast <- matrix(c(0, 1), ncol = 1)
 rownames(contrast) <- names(mod1$coefficients)
 alpha <- 0.05
 
@@ -114,32 +113,32 @@ The power to pick up a slope of $\beta_1=10$ for this experiment is only
 
 
 ```{r}
-mod1 <- lm(rate ~ conc %>% log10, Puromycin)
+mod1 <- lm(rate ~ conc %>% log10(), Puromycin)
 concentrations <- Puromycin %>%
   pull(conc) %>%
-  unique
+  unique()
 
 
 betas <- mod1$coefficients
 betas[2] <- 10
 
 nSim <- 10000
-form <- ~ conc %>% log10
+form <- ~ conc %>% log10()
 sd <- sigma(mod1)
-contrast <- matrix(c(0,1),ncol=1)
+contrast <- matrix(c(0, 1), ncol = 1)
 rownames(contrast) <- names(mod1$coefficients)
 alpha <- 0.05
 
-powers <- data.frame(n = 1:10, power=NA)
+powers <- data.frame(n = 1:10, power = NA)
 
 for (i in 1:10)
 {
-  simData <- data.frame(conc = rep(concentrations,each=i))
-  powers[i,2] <- simFast(form, simData, betas, sd, contrasts = contrast, alpha = alpha, nSim = nSim)
+  simData <- data.frame(conc = rep(concentrations, each = i))
+  powers[i, 2] <- simFast(form, simData, betas, sd, contrasts = contrast, alpha = alpha, nSim = nSim)
 }
 
 powers %>%
-  ggplot(aes(n,power)) +
+  ggplot(aes(n, power)) +
   geom_line() +
   geom_hline(yintercept = .9, lty = 2)
 ```
@@ -151,20 +150,20 @@ obtain a power above 90%.
 ```{r}
 concentrations <- Puromycin %>%
   pull(conc) %>%
-  unique
+  unique()
 
 
 betas <- mod1$coefficients
 betas[2] <- 10
 
 nSim <- 10000
-form <- ~ conc %>% log10
+form <- ~ conc %>% log10()
 sd <- sigma(mod1)
-contrast <- matrix(c(0,1),ncol=1)
+contrast <- matrix(c(0, 1), ncol = 1)
 rownames(contrast) <- names(mod1$coefficients)
 alpha <- 0.05
 
-simData <- data.frame(conc = c(concentrations,rep(min(concentrations),3),rep(max(concentrations),3)))
+simData <- data.frame(conc = c(concentrations, rep(min(concentrations), 3), rep(max(concentrations), 3)))
 powerOpt <- simFast(form, simData, betas, sd, contrasts = contrast, alpha = alpha, nSim = nSim)
 
 simData
@@ -177,7 +176,7 @@ for the designs where we repeat all data points.
 
 ```{r}
 powers %>%
-  ggplot(aes(n,power)) +
+  ggplot(aes(n, power)) +
   geom_line() +
   geom_hline(yintercept = powerOpt, lty = 2)
 ```

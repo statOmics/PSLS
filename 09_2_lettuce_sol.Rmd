@@ -66,14 +66,14 @@ of each treatment condition:
 
 ```{r}
 lettuce %>%
-  ggplot(aes(x=treatment,y=freshweight,fill=treatment)) +
-    scale_fill_brewer(palette="RdGy") +
-    theme_bw() +
-    geom_boxplot(outlier.shape=NA) +
-    geom_jitter(width = 0.2) +
-    ggtitle("Boxplot of the freshweigth for each treatment condition") +
-    ylab("freshweight (gram)") +
-    stat_summary(fun=mean, geom="point", shape=5, size=3, color="black", fill="black")
+  ggplot(aes(x = treatment, y = freshweight, fill = treatment)) +
+  scale_fill_brewer(palette = "RdGy") +
+  theme_bw() +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.2) +
+  ggtitle("Boxplot of the freshweigth for each treatment condition") +
+  ylab("freshweight (gram)") +
+  stat_summary(fun = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
 ```
 
 Note that there are no clear outliers in the data.
@@ -121,9 +121,9 @@ For the second assumption, we must check normality in each group.
 
 ```{r}
 ## get qqplots for each individual treatment group
-par(mfrow = c(2,2))
-for(i in levels(lettuce$treatment)){
-  qqPlot(subset(lettuce,treatment == i)$freshweight, main = i, ylab = "")
+par(mfrow = c(2, 2))
+for (i in levels(lettuce$treatment)) {
+  qqPlot(subset(lettuce, treatment == i)$freshweight, main = i, ylab = "")
 }
 ```
 
@@ -140,14 +140,14 @@ We can check the assumption of equal variance with a boxplot:
 
 ```{r}
 lettuce %>%
-  ggplot(aes(x=treatment,y=freshweight,fill=treatment)) +
-  scale_fill_brewer(palette="RdGy") +
+  ggplot(aes(x = treatment, y = freshweight, fill = treatment)) +
+  scale_fill_brewer(palette = "RdGy") +
   theme_bw() +
-  geom_boxplot(outlier.shape=NA) +
+  geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2) +
   ggtitle("Boxplot of the freshweigth for each treatment condition") +
   ylab("freshweight (gram)") +
-  stat_summary(fun=mean, geom="point", shape=5, size=3, color="black", fill="black")
+  stat_summary(fun = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
 ```
 
 As a measure of variability, we may take the height
@@ -202,8 +202,9 @@ one other treatment group is significantly different from 50%.
 
 ```{r}
 set.seed(1)
-kwPerm <- kruskal_test(freshweight~treatment,lettuce,
-                       distribution=approximate(nresample=100000))
+kwPerm <- kruskal_test(freshweight ~ treatment, lettuce,
+  distribution = approximate(nresample = 100000)
+)
 kwPerm
 ```
 
@@ -246,7 +247,7 @@ is significantly different from 50%.
 
 ```{r}
 ## initial attempt to perform the analysis
-pairwise.wilcox.test(lettuce$freshweight,lettuce$treatment)
+pairwise.wilcox.test(lettuce$freshweight, lettuce$treatment)
 ```
 
 We get the following warning message:
@@ -271,20 +272,20 @@ with the `p.adjust()` function.
 treatments <- levels(lettuce$treatment)
 freshweight <- lettuce$freshweight
 
-pvalues <- combn(treatments,2,function(x){
+pvalues <- combn(treatments, 2, function(x) {
 
   ## Pairwise Wilcon test
-  test = wilcox_test(freshweight~treatment,subset(lettuce,treatment%in%x), distribution = 'exact')
+  test <- wilcox_test(freshweight ~ treatment, subset(lettuce, treatment %in% x), distribution = "exact")
 
   ## Get and store p-value of test
   pvalue(test)
 })
 
 ## Adjust for multiple testing
-pvalues_holm = p.adjust(pvalues,method = 'holm')
+pvalues_holm <- p.adjust(pvalues, method = "holm")
 
 ## link the p-value with the correct pairwise test
-names(pvalues_holm) <- combn(levels(lettuce$treatment),2,paste,collapse="_VS_")
+names(pvalues_holm) <- combn(levels(lettuce$treatment), 2, paste, collapse = "_VS_")
 pvalues_holm
 ```
 
@@ -303,16 +304,16 @@ nGroup <- table(lettuce$treatment)
 ## Compute the probabilistic index for each pairwise combination
 treatments <- levels(lettuce$treatment)
 
-probInd <- combn(treatments,2,function(x){
+probInd <- combn(treatments, 2, function(x) {
   ## Compute the U1 statistic
-  U1 <- wilcox.test(freshweight~treatment,subset(lettuce,treatment%in%x))$statistic
+  U1 <- wilcox.test(freshweight ~ treatment, subset(lettuce, treatment %in% x))$statistic
 
   ## Compute the probabilistic index
-  U1/prod(nGroup[x])
+  U1 / prod(nGroup[x])
 })
 
 ## link the probabilistic index with the correct pairwise test
-names(probInd) <- combn(levels(lettuce$treatment),2,paste,collapse="_VS_")
+names(probInd) <- combn(levels(lettuce$treatment), 2, paste, collapse = "_VS_")
 probInd
 ```
 

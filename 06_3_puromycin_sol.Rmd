@@ -22,17 +22,17 @@ Assess if there is an association between the substrate concentration and rate f
 ```{r}
 data(Puromycin)
 Puromycin <- Puromycin %>%
-  filter(state=="treated")
+  filter(state == "treated")
 ```
 
 ## Data Exploration
 
 ```{r}
-Puromycin  %>%
-  ggplot(aes(x=conc,y=rate)) +
+Puromycin %>%
+  ggplot(aes(x = conc, y = rate)) +
   geom_point() +
-  stat_smooth(method = "loess",col="red") + # fit een kromme door de punten (rode lijn)
-  stat_smooth(method='lm',col="black") + # fit een rechte door de punten aan de hand van de kleinstekwadratenmethode
+  stat_smooth(method = "loess", col = "red") + # fit een kromme door de punten (rode lijn)
+  stat_smooth(method = "lm", col = "black") + # fit een rechte door de punten aan de hand van de kleinstekwadratenmethode
   ylab("Reaction rate (counts/min)") +
   xlab("Substrate concentratie (ppm)")
 ```
@@ -42,11 +42,11 @@ The plot shows that there is a relation between the velocity and the concentrati
 We will assess the impact of log-transforming the concentration. Because the concentration is measured in ppm we will log$_{10}$ transform the data.
 
 ```{r}
-Puromycin  %>%
-  ggplot(aes(x=conc %>% log10,y=rate)) +
+Puromycin %>%
+  ggplot(aes(x = conc %>% log10(), y = rate)) +
   geom_point() +
-  stat_smooth(method = "loess",col="red") +
-  stat_smooth(method='lm',col="black") +
+  stat_smooth(method = "loess", col = "red") +
+  stat_smooth(method = "lm", col = "black") +
   ylab("Reaction Rate (counts/min)") +
   xlab("log10(Substrate concentration) (log10 ppm)")
 ```
@@ -64,7 +64,7 @@ with $Y_i$ the reaction rate, $x_i$ the adopted concentration, $\beta_0$ the **i
 Note, that we write the substrate concentratio with a small letter because the predictor is not random. The researchers have chosen the substrate concentrations in the design phase and it is thus no random variable.
 
 ```{r}
-mod1 <- lm(rate ~ conc %>% log10, Puromycin)
+mod1 <- lm(rate ~ conc %>% log10(), Puromycin)
 summary(mod1)
 ```
 
@@ -84,7 +84,7 @@ We assume that the experiment was well designed and that the different reactions
 We assess linearity in a residual analysis
 
 ```{r}
-plot(mod1, which=1)
+plot(mod1, which = 1)
 ```
 
 There seem to be small deviations for the residuals at high concentrations.
@@ -94,17 +94,17 @@ We will use simulation to assess if we can observe similar residual plots if all
 
 ```{r}
 set.seed(1031)
-sigma <- mod1 %>% sigma
+sigma <- mod1 %>% sigma()
 dataHlp <- Puromycin
 
 simModels <- list()
 
-par(mfrow=c(3,3))
+par(mfrow = c(3, 3))
 for (i in 1:9)
 {
-  nobs <- Puromycin %>% nrow
+  nobs <- Puromycin %>% nrow()
   dataHlp$ySim <- mod1$fit + rnorm(nobs, sd = sigma)
-  simModels[[i]] <- lm(ySim~conc %>% log10, dataHlp)
+  simModels[[i]] <- lm(ySim ~ conc %>% log10(), dataHlp)
   plot(simModels[[i]], which = 1)
 }
 ```
@@ -115,7 +115,7 @@ We observe that similar deviations might be generated for a model where all assu
 
 
 ```{r}
-plot(mod1,which=2)
+plot(mod1, which = 2)
 ```
 
 The QQ-plot does not show large deviations from normality.
@@ -125,16 +125,17 @@ The QQ-plot does not show large deviations from normality.
 We can again use the residual plot for assessing this assumption or the plot were we plot the square root of the standardized residuals in function of the fit.
 
 ```{r}
-plot(mod1, which=3)
+plot(mod1, which = 3)
 ```
 
 We see that the spread of the majority of the residuals is more or less similar. However, the two residuals at low concentrations are slightly higher.
 Again we can use our simulations to show that similar deviations might occur for models where all assumptions hold.
 
 ```{r}
-par(mfrow = c(3,3))
-for (i in 1:9)
+par(mfrow = c(3, 3))
+for (i in 1:9) {
   plot(simModels[[i]], which = 3)
+}
 ```
 
 ## Inference

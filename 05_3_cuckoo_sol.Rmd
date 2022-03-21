@@ -77,7 +77,7 @@ column rather than a factor. Let's fix this:
 
 ```{r}
 Cuckoo <- Cuckoo %>%
-  filter(type %in% c("4","6")) %>%
+  filter(type %in% c("4", "6")) %>%
   mutate(type = as.factor(type))
 ```
 
@@ -94,15 +94,15 @@ Visualize the data using a suitable strategy
 
 ```{r}
 Cuckoo %>%
-  ggplot(aes(x=type,y=length,fill=type)) +
-    geom_boxplot() +
-    theme_bw() +
-    geom_boxplot(outlier.shape=NA) +
-    geom_jitter(width = 0.2) +
-    scale_fill_manual(values=c("dimgrey","firebrick")) +
-    ggtitle("Boxplot of the length of eggs per type") +
-    ylab("length (mm)") +
-    stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
+  ggplot(aes(x = type, y = length, fill = type)) +
+  geom_boxplot() +
+  theme_bw() +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.2) +
+  scale_fill_manual(values = c("dimgrey", "firebrick")) +
+  ggtitle("Boxplot of the length of eggs per type") +
+  ylab("length (mm)") +
+  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
 ```
 
 We clearly see that, on average, the eggs laid in the
@@ -134,7 +134,7 @@ To check the normality assumption, we will use QQ plots.
 
 ```{r}
 Cuckoo %>%
-  ggplot(aes(sample=length)) +
+  ggplot(aes(sample = length)) +
   geom_qq() +
   geom_qq_line() +
   facet_grid(~type)

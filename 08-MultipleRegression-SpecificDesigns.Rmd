@@ -5,8 +5,10 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
-                      message = FALSE, warning = FALSE, cache = TRUE)
+knitr::opts_chunk$set(
+  include = TRUE, comment = NA, echo = TRUE,
+  message = FALSE, warning = FALSE, cache = TRUE
+)
 library(tidyverse)
 ```
 
@@ -38,7 +40,7 @@ library(faraway)
 data(rats)
 
 rats <- rats %>%
-  mutate(time=time * 10)
+  mutate(time = time * 10)
 
 library(GGally)
 rats %>%
@@ -51,8 +53,8 @@ The data exploration indicates that there seems to be an effect of both poison t
 
 ```{r}
 rats %>%
-  ggplot(aes(x=treat,y=time)) +
-  geom_boxplot(outlier.shape=NA) +
+  ggplot(aes(x = treat, y = time)) +
+  geom_boxplot(outlier.shape = NA) +
   geom_jitter() +
   facet_wrap(~poison) +
   ylab("time (h)")
@@ -78,7 +80,7 @@ $$
 with $i = 1, \ldots, n$, $n=48$, $x_{iII}$, $x_{iIII}$, $x_{iB}$, $x_{iC}$ and $x_{iD}$ dummy variables for poison II, III,  treatment B, C, and D, respectively.
 
 ```{r}
-rats1 <- lm(time~poison*treat, rats)
+rats1 <- lm(time ~ poison * treat, rats)
 summary(rats1)
 plot(rats1)
 ```
@@ -92,12 +94,12 @@ The errors, however, seem to be heteroscedastic and there seems to be a mean - v
 
 ```{r}
 rats %>%
-  ggplot(aes(x=treat,y=log2(time))) +
-  geom_boxplot(outlier.shape=NA) +
+  ggplot(aes(x = treat, y = log2(time))) +
+  geom_boxplot(outlier.shape = NA) +
   geom_jitter() +
   facet_wrap(~poison)
 
-rats2 <- lm(time %>% log2~poison*treat, rats)
+rats2 <- lm(time %>% log2() ~ poison * treat, rats)
 plot(rats2)
 ```
 
@@ -107,13 +109,13 @@ Log transformation does not remove the heteroscedasticity completely.
 
 ```{r}
 rats %>%
-  ggplot(aes(x=treat,y=1/time)) +
-  geom_boxplot(outlier.shape=NA) +
+  ggplot(aes(x = treat, y = 1 / time)) +
+  geom_boxplot(outlier.shape = NA) +
   geom_jitter() +
   facet_wrap(~poison) +
-  ylab ("rate of dying (1/h)")
+  ylab("rate of dying (1/h)")
 
-rats3 <- lm(1/time~poison*treat, rats)
+rats3 <- lm(1 / time ~ poison * treat, rats)
 plot(rats3)
 ```
 
@@ -126,7 +128,7 @@ We will first assess them together, which can be done using the anova table.
 
 ```{r}
 library(car)
-Anova(rats3, type="III")
+Anova(rats3, type = "III")
 ```
 
 ## Removing the non-significant interaction term
@@ -137,9 +139,9 @@ A common practice is to remove the interaction from the analysis.
 We then obtain an additive model and the effects of the two factors poison and treatment can be assessed separately.
 
 ```{r}
-rats4 <- lm(1/time~poison + treat, rats)
+rats4 <- lm(1 / time ~ poison + treat, rats)
 plot(rats4)
-Anova(rats4, type="III")
+Anova(rats4, type = "III")
 ```
 
 The anova table shows that the effect of the poison and the treatment are both extremely significant ($p<< 0.001$).
@@ -148,12 +150,12 @@ In the additive model we can assess the effect of the poison type and the treatm
 
 ```{r}
 library(multcomp)
-comparisons <- glht(rats4, linfct = mcp(poison = "Tukey", treat="Tukey"))
+comparisons <- glht(rats4, linfct = mcp(poison = "Tukey", treat = "Tukey"))
 summary(comparisons)
 confint(comparisons)
-plot(comparisons,yaxt="none")
-contrastNames <- c("II-I","III-I","III-II","B-A","C-A","D-A","C-B","D-B","D-C")
-axis(2,at=c(length(contrastNames):1), labels=contrastNames,las=2)
+plot(comparisons, yaxt = "none")
+contrastNames <- c("II-I", "III-I", "III-II", "B-A", "C-A", "D-A", "C-B", "D-B", "D-C")
+axis(2, at = c(length(contrastNames):1), labels = contrastNames, las = 2)
 ```
 
 ## Keeping the non-significant interaction term
@@ -166,7 +168,7 @@ If the interaction were to be significant, this would mean that the effect of th
 Then, we cannot study the poison effects and treatment effects separately.
 
 ```{r}
-ExploreModelMatrix::VisualizeDesign(rats,~poison*treat)$plot
+ExploreModelMatrix::VisualizeDesign(rats, ~ poison * treat)$plot
 ```
 
 Hence, in case of a significant interaction we should study the effect of the poison for each treatment separately:
@@ -255,15 +257,17 @@ comparisonsInt <- glht(rats3, linfct = c(
   "treatD + poisonIII:treatD = 0",
   "treatC + poisonIII:treatC - treatB - poisonIII:treatB = 0",
   "treatD + poisonIII:treatD - treatB - poisonIII:treatB = 0",
-  "treatD + poisonIII:treatD - treatC - poisonIII:treatC = 0")
-)
+  "treatD + poisonIII:treatD - treatC - poisonIII:treatC = 0"
+))
 
-contrastNames<-
-  c(paste(rep(LETTERS[1:4],each=3),rep(apply(combn(c("I","II","III"),2)[2:1,],2,paste,collapse="-") ,4),sep=": "),
-    paste(rep(c("I","II","III"),each=6),rep(apply(combn(c(LETTERS[1:4]),2)[2:1,],2,paste,collapse="-") ,3),sep=": "))
+contrastNames <-
+  c(
+    paste(rep(LETTERS[1:4], each = 3), rep(apply(combn(c("I", "II", "III"), 2)[2:1, ], 2, paste, collapse = "-"), 4), sep = ": "),
+    paste(rep(c("I", "II", "III"), each = 6), rep(apply(combn(c(LETTERS[1:4]), 2)[2:1, ], 2, paste, collapse = "-"), 3), sep = ": ")
+  )
 
-plot(comparisonsInt,yaxt="none")
-axis(2,at=c(length(contrastNames):1), labels=contrastNames,las=2)
+plot(comparisonsInt, yaxt = "none")
+axis(2, at = c(length(contrastNames):1), labels = contrastNames, las = 2)
 ```
 
 Here, the interaction was not significant. Hence, the average effect of the poison type on the rate of dying does not change significantly according to the treatment and vice versa. In this case, it would make sense to estimate
@@ -296,14 +300,14 @@ contrasts <- c(
   "treatD + 1/3*poisonII:treatD + 1/3*poisonIII:treatD = 0",
   "treatC + 1/3*poisonII:treatC + 1/3*poisonIII:treatC - treatB - 1/3*poisonII:treatB - 1/3*poisonIII:treatB = 0",
   "treatD + 1/3*poisonII:treatD + 1/3*poisonIII:treatD  - treatB - 1/3*poisonII:treatB - 1/3*poisonIII:treatB = 0",
-  "treatD + 1/3*poisonII:treatD + 1/3*poisonIII:treatD  - treatC - 1/3*poisonII:treatC - 1/3*poisonIII:treatC = 0")
-
-
-comparisonsInt2 <- glht(rats3, linfct = contrasts
+  "treatD + 1/3*poisonII:treatD + 1/3*poisonIII:treatD  - treatC - 1/3*poisonII:treatC - 1/3*poisonIII:treatC = 0"
 )
-plot(comparisonsInt2,yaxt="none")
-contrastNames <- c("II-I","III-I","III-II","B-A","C-A","D-A","C-B","D-B","D-C")
-axis(2,at=c(length(contrastNames):1), labels=contrastNames,las=2)
+
+
+comparisonsInt2 <- glht(rats3, linfct = contrasts)
+plot(comparisonsInt2, yaxt = "none")
+contrastNames <- c("II-I", "III-I", "III-II", "B-A", "C-A", "D-A", "C-B", "D-B", "D-C")
+axis(2, at = c(length(contrastNames):1), labels = contrastNames, las = 2)
 ```
 
 Indeed, the effect sizes are exactly the same because the experiment is balanced.
@@ -312,7 +316,7 @@ Note, that the standard errors differ slightly.
 Indeed the errors of both models will differ as well as the remaining degrees of freedom of the errors $n-p$.
 
 ```{r}
-data.frame(Additive_coef=summary(comparisons)$test$coef,Additive_se=summary(comparisons)$test$sigma,Int_coef=summary(comparisonsInt2)$test$coef,int_se=summary(comparisonsInt2)$test$sigma) %>% round(3)
+data.frame(Additive_coef = summary(comparisons)$test$coef, Additive_se = summary(comparisons)$test$sigma, Int_coef = summary(comparisonsInt2)$test$coef, int_se = summary(comparisonsInt2)$test$sigma) %>% round(3)
 ```
 
 # Conclusion

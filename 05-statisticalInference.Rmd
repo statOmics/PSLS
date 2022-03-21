@@ -7,14 +7,16 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
-                      message = FALSE, warning = FALSE, cache = TRUE)
+knitr::opts_chunk$set(
+  include = TRUE, comment = NA, echo = TRUE,
+  message = FALSE, warning = FALSE, cache = TRUE
+)
 library(tidyverse)
 ```
 
 
 ```{r include=FALSE}
-#Do not run during the lecture when we work interactively
+# Do not run during the lecture when we work interactively
 set.seed(1314)
 ```
 
@@ -53,50 +55,49 @@ set.seed(1314)
 - Disadvantage?
 
 ```{r pop2Samp2Pop,fig.asp=.8, fig.align='center',echo=FALSE}
-if ("pi"%in%ls()) rm("pi")
-kopvoeter<-function(x,y,angle=0,l=.2,cex.dot=.5,pch=19,col="black")
-{
-angle=angle/180*pi
-points(x,y,cex=cex.dot,pch=pch,col=col)
-lines(c(x,x+l*cos(-pi/2+angle)),c(y,y+l*sin(-pi/2+angle)),col=col)
-lines(c(x+l/2*cos(-pi/2+angle),x+l/2*cos(-pi/2+angle)+l/4*cos(angle)),c(y+l/2*sin(-pi/2+angle),y+l/2*sin(-pi/2+angle)+l/4*sin(angle)),col=col)
-lines(c(x+l/2*cos(-pi/2+angle),x+l/2*cos(-pi/2+angle)+l/4*cos(pi+angle)),c(y+l/2*sin(-pi/2+angle),y+l/2*sin(-pi/2+angle)+l/4*sin(pi+angle)),col=col)
-lines(c(x+l*cos(-pi/2+angle),x+l*cos(-pi/2+angle)+l/2*cos(-pi/2+pi/4+angle)),c(y+l*sin(-pi/2+angle),y+l*sin(-pi/2+angle)+l/2*sin(-pi/2+pi/4+angle)),col=col)
-lines(c(x+l*cos(-pi/2+angle),x+l*cos(-pi/2+angle)+l/2*cos(-pi/2-pi/4+angle)),c(y+l*sin(-pi/2+angle),y+l*sin(-pi/2+angle)+l/2*sin(-pi/2-pi/4+angle)),col=col)
+if ("pi" %in% ls()) rm("pi")
+kopvoeter <- function(x, y, angle = 0, l = .2, cex.dot = .5, pch = 19, col = "black") {
+  angle <- angle / 180 * pi
+  points(x, y, cex = cex.dot, pch = pch, col = col)
+  lines(c(x, x + l * cos(-pi / 2 + angle)), c(y, y + l * sin(-pi / 2 + angle)), col = col)
+  lines(c(x + l / 2 * cos(-pi / 2 + angle), x + l / 2 * cos(-pi / 2 + angle) + l / 4 * cos(angle)), c(y + l / 2 * sin(-pi / 2 + angle), y + l / 2 * sin(-pi / 2 + angle) + l / 4 * sin(angle)), col = col)
+  lines(c(x + l / 2 * cos(-pi / 2 + angle), x + l / 2 * cos(-pi / 2 + angle) + l / 4 * cos(pi + angle)), c(y + l / 2 * sin(-pi / 2 + angle), y + l / 2 * sin(-pi / 2 + angle) + l / 4 * sin(pi + angle)), col = col)
+  lines(c(x + l * cos(-pi / 2 + angle), x + l * cos(-pi / 2 + angle) + l / 2 * cos(-pi / 2 + pi / 4 + angle)), c(y + l * sin(-pi / 2 + angle), y + l * sin(-pi / 2 + angle) + l / 2 * sin(-pi / 2 + pi / 4 + angle)), col = col)
+  lines(c(x + l * cos(-pi / 2 + angle), x + l * cos(-pi / 2 + angle) + l / 2 * cos(-pi / 2 - pi / 4 + angle)), c(y + l * sin(-pi / 2 + angle), y + l * sin(-pi / 2 + angle) + l / 2 * sin(-pi / 2 - pi / 4 + angle)), col = col)
 }
 
-par(mar=c(0,0,0,0),mai=c(0,0,0,0))
-plot(0,0,xlab="",ylab="",xlim=c(0,10),ylim=c(0,10),col=0,xaxt="none",yaxt="none",axes=FALSE)
-rect(0,6,10,10,border="red",lwd=2)
-text(.5,8,"population",srt=90,col="red",cex=2)
-symbols (3, 8, circles=1.5, col="red",add=TRUE,fg="red",inches=FALSE,lwd=2)
-grid=seq(0,1.3,.01)
+par(mar = c(0, 0, 0, 0), mai = c(0, 0, 0, 0))
+plot(0, 0, xlab = "", ylab = "", xlim = c(0, 10), ylim = c(0, 10), col = 0, xaxt = "none", yaxt = "none", axes = FALSE)
+rect(0, 6, 10, 10, border = "red", lwd = 2)
+text(.5, 8, "population", srt = 90, col = "red", cex = 2)
+symbols(3, 8, circles = 1.5, col = "red", add = TRUE, fg = "red", inches = FALSE, lwd = 2)
+grid <- seq(0, 1.3, .01)
 
 for (i in 1:50)
 {
-	angle1=runif(n=1,min=0,max=360)
-	angle2=runif(n=1,min=0,max=360)
-	radius=sample(grid,prob=grid^2*pi/sum(grid^2*pi),size=1)
-	kopvoeter(3+radius*cos(angle1/180*pi),8+radius*sin(angle1/180*pi),angle=angle2)
+  angle1 <- runif(n = 1, min = 0, max = 360)
+  angle2 <- runif(n = 1, min = 0, max = 360)
+  radius <- sample(grid, prob = grid^2 * pi / sum(grid^2 * pi), size = 1)
+  kopvoeter(3 + radius * cos(angle1 / 180 * pi), 8 + radius * sin(angle1 / 180 * pi), angle = angle2)
 }
-text(7.5,8,"Effect of captopril in population",col="red",cex=1.2)
+text(7.5, 8, "Effect of captopril in population", col = "red", cex = 1.2)
 
-rect(0,0,10,4,border="blue",lwd=2)
-text(.5,2,"sample",srt=90,col="blue",cex=2)
-symbols (3, 2, circles=1.5, col="red",add=TRUE,fg="blue",inches=FALSE,lwd=2)
-for (i in 0:2)
-	for (j in 0:4)
-{
-
-	kopvoeter(2.1+j*(3.9-2.1)/4,1.1+i)
+rect(0, 0, 10, 4, border = "blue", lwd = 2)
+text(.5, 2, "sample", srt = 90, col = "blue", cex = 2)
+symbols(3, 2, circles = 1.5, col = "red", add = TRUE, fg = "blue", inches = FALSE, lwd = 2)
+for (i in 0:2) {
+  for (j in 0:4)
+  {
+    kopvoeter(2.1 + j * (3.9 - 2.1) / 4, 1.1 + i)
+  }
 }
-text(7.5,2,"Effect of captopril in sample",col="blue",cex=1.2)
+text(7.5, 2, "Effect of captopril in sample", col = "blue", cex = 1.2)
 
-arrows(3,5.9,3,4.1,col="black",lwd=3)
-arrows(7,4.1,7,5.9,col="black",lwd=3)
-text(1.5,5,"EXP. DESIGN (1)",col="black",cex=1.2)
-text(8.5,5,"ESTIMATION &\nINFERENCE (3)",col="black",cex=1.2)
-text(7.5,.5,"DATA EXPLORATION &\nDESCRIPTIVE STATISTICS (2)",col="black",cex=1.2)
+arrows(3, 5.9, 3, 4.1, col = "black", lwd = 3)
+arrows(7, 4.1, 7, 5.9, col = "black", lwd = 3)
+text(1.5, 5, "EXP. DESIGN (1)", col = "black", cex = 1.2)
+text(8.5, 5, "ESTIMATION &\nINFERENCE (3)", col = "black", cex = 1.2)
+text(7.5, .5, "DATA EXPLORATION &\nDESCRIPTIVE STATISTICS (2)", col = "black", cex = 1.2)
 ```
 
 ---
@@ -110,24 +111,38 @@ summary(captopril)
 ```
 
 ```{r}
-captoprilTidy <- captopril %>% gather(type,bp,-id)
+captoprilTidy <- captopril %>% gather(type, bp, -id)
 captoprilTidy %>%
   group_by(type) %>%
-  summarize_at("bp",list(mean=~mean(.,na.rm=TRUE),
-                    sd=~sd(.,na.rm=TRUE),
-                    n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
-  mutate(se=sd/sqrt(n))
+  summarize_at("bp", list(
+    mean = ~ mean(., na.rm = TRUE),
+    sd = ~ sd(., na.rm = TRUE),
+    n = function(x) {
+      x %>%
+        is.na() %>%
+        `!`() %>%
+        sum()
+    }
+  )) %>%
+  mutate(se = sd / sqrt(n))
 
 captoprilTidy %>%
   group_by(type) %>%
-  summarize_at("bp",list(mean=~mean(.,na.rm=TRUE),
-                    sd=~sd(.,na.rm=TRUE),
-                    n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
-  mutate(se=sd/sqrt(n)) %>%
-  ggplot(aes(x=type,y=mean)) +
-  geom_bar(stat="identity") +
-  geom_errorbar(aes(ymin=mean-se, ymax=mean+se),width=.2) +
-  ylim(0,210) +
+  summarize_at("bp", list(
+    mean = ~ mean(., na.rm = TRUE),
+    sd = ~ sd(., na.rm = TRUE),
+    n = function(x) {
+      x %>%
+        is.na() %>%
+        `!`() %>%
+        sum()
+    }
+  )) %>%
+  mutate(se = sd / sqrt(n)) %>%
+  ggplot(aes(x = type, y = mean)) +
+  geom_bar(stat = "identity") +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = .2) +
+  ylim(0, 210) +
   ylab("blood pressure (mmHg)")
 ```
 
@@ -135,19 +150,19 @@ captoprilTidy %>%
 
 ```{r}
 captoprilTidy %>%
-  ggplot(aes(x=type,y=bp)) +
-  geom_boxplot(outlier.shape=NA) +
-  geom_point(position="jitter") +
-  ylim(0,210)
+  ggplot(aes(x = type, y = bp)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = "jitter") +
+  ylim(0, 210)
 ```
 
 We see that a lot of the space that was taken by the barplot does not contain data!
 
 ```{r}
 captoprilTidy %>%
-  ggplot(aes(x=type,y=bp)) +
-  geom_boxplot(outlier.shape=NA) +
-  geom_point(position="jitter")
+  ggplot(aes(x = type, y = bp)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = "jitter")
 ```
 
 - This plot would have been informative if the data was gathered on different individuals.
@@ -158,9 +173,9 @@ captoprilTidy %>%
 
 ```{r}
 captoprilTidy %>%
-  filter(type%in%c("SBPa","SBPb")) %>%
-  mutate(type=factor(type,levels=c("SBPb","SBPa"))) %>%
-  ggplot(aes(x=type,y=bp)) +
+  filter(type %in% c("SBPa", "SBPb")) %>%
+  mutate(type = factor(type, levels = c("SBPb", "SBPa"))) %>%
+  ggplot(aes(x = type, y = bp)) +
   geom_line(aes(group = id)) +
   geom_point()
 ```
@@ -168,21 +183,28 @@ captoprilTidy %>%
 - We have paired data. So we might estimate the effect of the treatment directly by comparing the blood pressure after treatment to the blood pressure before the treatment.
 
 ```{r}
-captopril$deltaSBP<-captopril$SBPa-captopril$SBPb
-captopril%>%
-  ggplot(aes(x="Systolic blood pressure",y=deltaSBP)) +
-  geom_boxplot(outlier.shape=NA) +
-  geom_point(position="jitter")+
+captopril$deltaSBP <- captopril$SBPa - captopril$SBPb
+captopril %>%
+  ggplot(aes(x = "Systolic blood pressure", y = deltaSBP)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = "jitter") +
   ylab("Difference (mm mercury)") +
   xlab("")
 ```
 
 ```{r}
 captopril %>%
-  summarize_at("deltaSBP",list(mean=~mean(.,na.rm=TRUE),
-              sd=~sd(.,na.rm=TRUE),
-              n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
-  mutate(se=sd/sqrt(n))
+  summarize_at("deltaSBP", list(
+    mean = ~ mean(., na.rm = TRUE),
+    sd = ~ sd(., na.rm = TRUE),
+    n = function(x) {
+      x %>%
+        is.na() %>%
+        `!`() %>%
+        sum()
+    }
+  )) %>%
+  mutate(se = sd / sqrt(n))
 ```
 
 
@@ -191,8 +213,8 @@ captopril %>%
 - How will we model $X=\Delta_\text{after-na}$ and estimate the effect of captopril?
 
 ```{r}
-captopril%>%
-  ggplot(aes(sample=deltaSBP)) +
+captopril %>%
+  ggplot(aes(sample = deltaSBP)) +
   stat_qq() +
   stat_qq_line()
 ```
@@ -298,38 +320,38 @@ E(\bar X) &=& E \left(\frac{X_1+ X_2+ ... + X_n}{n}\right) \\
 library(NHANES)
 
 fem <- NHANES %>%
-  filter(Gender=="female" & !is.na(DirectChol)) %>%
+  filter(Gender == "female" & !is.na(DirectChol)) %>%
   select("DirectChol")
 
-n<-15 # number of subjects per sample
-nSim=50 # number of simulations
+n <- 15 # number of subjects per sample
+nSim <- 50 # number of simulations
 
-femSamp<-matrix(nrow=n,ncol=nSim)
+femSamp <- matrix(nrow = n, ncol = nSim)
 for (j in 1:nSim)
 {
-  femSamp[,j]<-sample(fem$DirectChol,15)
-  if (j<4) {
+  femSamp[, j] <- sample(fem$DirectChol, 15)
+  if (j < 4) {
     p <- femSamp %>%
-      log2 %>%
-      data.frame %>%
-      gather("sample","log2cholesterol") %>%
-      ggplot(aes(x=sample,y=log2cholesterol)) +
+      log2() %>%
+      data.frame() %>%
+      gather("sample", "log2cholesterol") %>%
+      ggplot(aes(x = sample, y = log2cholesterol)) +
       geom_boxplot() +
-      stat_summary(fun.y=mean, geom="point", shape=19, size=3, color="red", fill="red") +
-      geom_hline(yintercept = mean(fem$DirectChol %>% log2)) +
+      stat_summary(fun.y = mean, geom = "point", shape = 19, size = 3, color = "red", fill = "red") +
+      geom_hline(yintercept = mean(fem$DirectChol %>% log2())) +
       ylab("cholesterol (log2)")
     print(p)
   }
 }
 
 femSamp %>%
-  log2 %>%
-  data.frame %>%
-  gather("sample","log2cholesterol") %>%
-  ggplot(aes(x=sample,y=log2cholesterol)) +
+  log2() %>%
+  data.frame() %>%
+  gather("sample", "log2cholesterol") %>%
+  ggplot(aes(x = sample, y = log2cholesterol)) +
   geom_boxplot() +
-  stat_summary(fun.y=mean, geom="point", shape=19, size=3, color="red", fill="red") +
-  geom_hline(yintercept = mean(fem$DirectChol %>% log2)) +
+  stat_summary(fun.y = mean, geom = "point", shape = 19, size = 3, color = "red", fill = "red") +
+  geom_hline(yintercept = mean(fem$DirectChol %>% log2())) +
   ylab("cholesterol (log2)")
 ```
 
@@ -412,8 +434,8 @@ $$
 - For the captopril example we obtain:
 
 ```{r}
-n=length(captopril$deltaSBP)
-se=sd(captopril$deltaSBP)/sqrt(n)
+n <- length(captopril$deltaSBP)
+se <- sd(captopril$deltaSBP) / sqrt(n)
 se
 ```
 
@@ -433,48 +455,73 @@ se
 - Instead of using a for loop we will use the sapply function which is more efficient. It takes a vector or a list as input and applies a function on each element of the vector or on each list element.
 
 ```{r}
-femSamp10<-sapply(1:1000,function(j,x,size) sample(x,size),size=10,x=fem$DirectChol)
+femSamp10 <- sapply(1:1000, function(j, x, size) sample(x, size), size = 10, x = fem$DirectChol)
 
-femSamp50<-sapply(1:1000,function(j,x,size) sample(x,size),size=50,x=fem$DirectChol)
+femSamp50 <- sapply(1:1000, function(j, x, size) sample(x, size), size = 50, x = fem$DirectChol)
 
-femSamp100<-sapply(1:1000,function(j,x,size) sample(x,size),size=100,x=fem$DirectChol)
+femSamp100 <- sapply(1:1000, function(j, x, size) sample(x, size), size = 100, x = fem$DirectChol)
 
-res<-rbind(
-femSamp10 %>%
-  log2%>%
-  as.data.frame %>%
-  gather(sample,log2Chol) %>%
-  group_by(sample)%>%
-  summarize_at("log2Chol",
-               list(median=~median(.,na.rm=TRUE),
-                    mean=~mean(.,na.rm=TRUE),
-                    sd=~sd(.,na.rm=TRUE),
-                    n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
-  mutate(se=sd/sqrt(n)) ,
-
-femSamp50 %>%
-  log2 %>%
-  as.data.frame %>%
-  gather(sample,log2Chol) %>%
-  group_by(sample)%>%
-  summarize_at("log2Chol",
-               list(median=~median(.,na.rm=TRUE),
-                    mean=~mean(.,na.rm=TRUE),
-                    sd=~sd(.,na.rm=TRUE),
-                    n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
-  mutate(se=sd/sqrt(n)),
-
-femSamp100 %>%
-  log2 %>%
-  as.data.frame %>%
-  gather(sample,log2Chol) %>%
-  group_by(sample)%>%
-  summarize_at("log2Chol",
-               list(median=~median(.,na.rm=TRUE),
-                    mean=~mean(.,na.rm=TRUE),
-                    sd=~sd(.,na.rm=TRUE),
-                    n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
-  mutate(se=sd/sqrt(n))
+res <- rbind(
+  femSamp10 %>%
+    log2() %>%
+    as.data.frame() %>%
+    gather(sample, log2Chol) %>%
+    group_by(sample) %>%
+    summarize_at(
+      "log2Chol",
+      list(
+        median = ~ median(., na.rm = TRUE),
+        mean = ~ mean(., na.rm = TRUE),
+        sd = ~ sd(., na.rm = TRUE),
+        n = function(x) {
+          x %>%
+            is.na() %>%
+            `!`() %>%
+            sum()
+        }
+      )
+    ) %>%
+    mutate(se = sd / sqrt(n)),
+  femSamp50 %>%
+    log2() %>%
+    as.data.frame() %>%
+    gather(sample, log2Chol) %>%
+    group_by(sample) %>%
+    summarize_at(
+      "log2Chol",
+      list(
+        median = ~ median(., na.rm = TRUE),
+        mean = ~ mean(., na.rm = TRUE),
+        sd = ~ sd(., na.rm = TRUE),
+        n = function(x) {
+          x %>%
+            is.na() %>%
+            `!`() %>%
+            sum()
+        }
+      )
+    ) %>%
+    mutate(se = sd / sqrt(n)),
+  femSamp100 %>%
+    log2() %>%
+    as.data.frame() %>%
+    gather(sample, log2Chol) %>%
+    group_by(sample) %>%
+    summarize_at(
+      "log2Chol",
+      list(
+        median = ~ median(., na.rm = TRUE),
+        mean = ~ mean(., na.rm = TRUE),
+        sd = ~ sd(., na.rm = TRUE),
+        n = function(x) {
+          x %>%
+            is.na() %>%
+            `!`() %>%
+            sum()
+        }
+      )
+    ) %>%
+    mutate(se = sd / sqrt(n))
 )
 ```
 
@@ -484,10 +531,10 @@ We first illustrate the impact of sample size on the distribution of the means o
 
 ```{r}
 res %>%
-ggplot(aes(x=n%>%as.factor,y=mean)) +
-geom_boxplot() +
-ylab("Direct cholesterol (log2)") +
-xlab("sample size")
+  ggplot(aes(x = n %>% as.factor(), y = mean)) +
+  geom_boxplot() +
+  ylab("Direct cholesterol (log2)") +
+  xlab("sample size")
 ```
 
 - Note, that the variation of the sample means indeed reduces as the sample size increases. So the estimation gets more precise with increasing sample size.
@@ -500,10 +547,10 @@ We now illustrate the impact of sample size on the distribution of the standard 
 
 ```{r}
 res %>%
-ggplot(aes(x=n%>%as.factor,y=sd)) +
-geom_boxplot() +
-ylab("standard deviation") +
-xlab("sample size")
+  ggplot(aes(x = n %>% as.factor(), y = sd)) +
+  geom_boxplot() +
+  ylab("standard deviation") +
+  xlab("sample size")
 ```
 
 
@@ -520,10 +567,10 @@ Finally, we illustrate the impact of sample size on the distribution of the stan
 
 ```{r}
 res %>%
-ggplot(aes(x=n%>%as.factor,y=se)) +
-geom_boxplot() +
-ylab("standard error") +
-xlab("sample size")
+  ggplot(aes(x = n %>% as.factor(), y = se)) +
+  geom_boxplot() +
+  ylab("standard error") +
+  xlab("sample size")
 ```
 
 - The standard error, the estimator for the precision of the sample mean, however, reduces considerably with increasing sample size again confirming that the estimation of the sample mean gets more precise.
@@ -541,12 +588,12 @@ xlab("sample size")
 - We illustrate this for repeated sampling with sample size 10
 ```{r}
 res %>%
-  filter(n==10) %>%
-  select(mean,median) %>%
-  gather(type,estimate) %>%
-  ggplot(aes(x=type,y=estimate)) +
-  geom_boxplot()+
-  geom_hline(yintercept=fem$DirectChol%>%log2%>%mean) +
+  filter(n == 10) %>%
+  select(mean, median) %>%
+  gather(type, estimate) %>%
+  ggplot(aes(x = type, y = estimate)) +
+  geom_boxplot() +
+  geom_hline(yintercept = fem$DirectChol %>% log2() %>% mean()) +
   ggtitle("10 subjects")
 ```
 
@@ -554,12 +601,12 @@ Next, we compare the distribution of mean and median in repeated samples of samp
 
 ```{r}
 res %>%
-  filter(n==50) %>%
-  select(mean,median) %>%
-  gather(type,estimate) %>%
-  ggplot(aes(x=type,y=estimate)) +
-  geom_boxplot()+
-  geom_hline(yintercept=fem$DirectChol%>%log2%>%mean) +
+  filter(n == 50) %>%
+  select(mean, median) %>%
+  gather(type, estimate) %>%
+  ggplot(aes(x = type, y = estimate)) +
+  geom_boxplot() +
+  geom_hline(yintercept = fem$DirectChol %>% log2() %>% mean()) +
   ggtitle("50 subjects")
 ```
 
@@ -581,15 +628,15 @@ We illustrate this again with simulation using the NHANES study.
 The log2 cholesterol levels were normally distributed.
 
 ```{r}
- fem %>%
-  ggplot(aes(x=DirectChol%>%log2))+
-  geom_histogram(aes(y=..density.., fill=..count..)) +
+fem %>%
+  ggplot(aes(x = DirectChol %>% log2())) +
+  geom_histogram(aes(y = ..density.., fill = ..count..)) +
   xlab("Direct cholesterol (log2)") +
-  stat_function(fun=dnorm,color="red",args=list(mean=mean(fem$DirectChol%>%log2), sd=sd(fem$DirectChol%>%log2))) +
+  stat_function(fun = dnorm, color = "red", args = list(mean = mean(fem$DirectChol %>% log2()), sd = sd(fem$DirectChol %>% log2()))) +
   ggtitle("All females in Nhanes study")
 
 fem %>%
-  ggplot(aes(sample=DirectChol%>%log2)) +
+  ggplot(aes(sample = DirectChol %>% log2())) +
   stat_qq() +
   stat_qq_line() +
   ggtitle("All females in Nhanes study")
@@ -600,35 +647,36 @@ fem %>%
 ##### Evaluate distribution for samples with 5 subjects
 
 ```{r}
-femSamp5<-sapply(1:1000,function(j,x,size)
-  sample(x,size),size=5,x=fem$DirectChol)
+femSamp5 <- sapply(1:1000, function(j, x, size) {
+  sample(x, size)
+}, size = 5, x = fem$DirectChol)
 
-femSamp5[,1] %>%
-  log2 %>%
-  as.data.frame %>%
-  ggplot(aes(x=.))+
-  geom_histogram(aes(y=..density.., fill=..count..),bins=10) +
+femSamp5[, 1] %>%
+  log2() %>%
+  as.data.frame() %>%
+  ggplot(aes(x = .)) +
+  geom_histogram(aes(y = ..density.., fill = ..count..), bins = 10) +
   xlab("Direct cholesterol (log2)") +
-  stat_function(fun=dnorm,color="red",args=list(mean=femSamp5[,1]%>%log2%>%mean, sd=femSamp5[,1]%>%log2%>%sd)) +
+  stat_function(fun = dnorm, color = "red", args = list(mean = femSamp5[, 1] %>% log2() %>% mean(), sd = femSamp5[, 1] %>% log2() %>% sd())) +
   ggtitle("5 random females") +
-  xlim(fem$DirectChol %>% log2 %>% range)
+  xlim(fem$DirectChol %>% log2() %>% range())
 
 
 femSamp5 %>%
-  log2 %>%
-  colMeans %>%
-  as.data.frame %>%
-  ggplot(aes(x=.)) +
-  geom_histogram(aes(y=..density.., fill=..count..),bins=15) +
+  log2() %>%
+  colMeans() %>%
+  as.data.frame() %>%
+  ggplot(aes(x = .)) +
+  geom_histogram(aes(y = ..density.., fill = ..count..), bins = 15) +
   xlab("Mean cholesterol (log2)") +
-  stat_function(fun=dnorm,color="red",args=list(mean=femSamp5%>%log2%>% colMeans %>% mean, sd=femSamp5%>%log2%>% colMeans %>% sd)) +
-ggtitle("Means on 5 females")
+  stat_function(fun = dnorm, color = "red", args = list(mean = femSamp5 %>% log2() %>% colMeans() %>% mean(), sd = femSamp5 %>% log2() %>% colMeans() %>% sd())) +
+  ggtitle("Means on 5 females")
 
 femSamp5 %>%
-  log2 %>%
-  colMeans %>%
-  as.data.frame %>%
-  ggplot(aes(sample=.)) +
+  log2() %>%
+  colMeans() %>%
+  as.data.frame() %>%
+  ggplot(aes(sample = .)) +
   stat_qq() +
   stat_qq_line() +
   ggtitle("Means on 5 females")
@@ -643,28 +691,38 @@ Now we explore the results for the sample size of 10.
 We first illustrate the plot for the first sample.
 
 ```{r}
-femSamp10[,1] %>% log2 %>% as.data.frame %>%
-ggplot(aes(x=.))+
-  geom_histogram(aes(y=..density.., fill=..count..),bins=10) +
+femSamp10[, 1] %>%
+  log2() %>%
+  as.data.frame() %>%
+  ggplot(aes(x = .)) +
+  geom_histogram(aes(y = ..density.., fill = ..count..), bins = 10) +
   xlab("Direct cholesterol (log2)") +
-  stat_function(fun=dnorm,color="red",args=list(mean=femSamp10[,1]%>%log2%>%mean, sd=femSamp10[,1]%>%log2%>%sd)) +
-ggtitle("10 random females") +
-xlim(fem$DirectChol %>% log2 %>% range)
+  stat_function(fun = dnorm, color = "red", args = list(mean = femSamp10[, 1] %>% log2() %>% mean(), sd = femSamp10[, 1] %>% log2() %>% sd())) +
+  ggtitle("10 random females") +
+  xlim(fem$DirectChol %>% log2() %>% range())
 ```
 
 Next we look at the distribution of the sample mean over 1000 samples of sample size 10.
 
 ```{r}
-femSamp10 %>% log2 %>% colMeans %>% as.data.frame %>% ggplot(aes(x=.)) +
-  geom_histogram(aes(y=..density.., fill=..count..),bins=15) +
+femSamp10 %>%
+  log2() %>%
+  colMeans() %>%
+  as.data.frame() %>%
+  ggplot(aes(x = .)) +
+  geom_histogram(aes(y = ..density.., fill = ..count..), bins = 15) +
   xlab("Mean cholesterol (log2)") +
-  stat_function(fun=dnorm,color="red",args=list(mean=femSamp10%>%log2%>% colMeans %>% mean, sd=femSamp10%>%log2%>% colMeans %>% sd)) +
-ggtitle("Means on 10 females")
+  stat_function(fun = dnorm, color = "red", args = list(mean = femSamp10 %>% log2() %>% colMeans() %>% mean(), sd = femSamp10 %>% log2() %>% colMeans() %>% sd())) +
+  ggtitle("Means on 10 females")
 
-femSamp10 %>% log2%>% colMeans %>% as.data.frame %>%  ggplot(aes(sample=.)) +
-stat_qq() +
-stat_qq_line() +
-ggtitle("Means on 10 females")
+femSamp10 %>%
+  log2() %>%
+  colMeans() %>%
+  as.data.frame() %>%
+  ggplot(aes(sample = .)) +
+  stat_qq() +
+  stat_qq_line() +
+  ggtitle("Means on 10 females")
 ```
 
 **So we confirmed that the mean is approximately normally distributed for studies with 5 and 10 females when the original data are approximately normally distributed.**
@@ -697,16 +755,16 @@ when the number observations are large enough.
 - When can evaluated this in the NHanes study if we do not log2 transform the data.
 
 ```{r}
-fem %>% ggplot(aes(x=DirectChol))+
-   geom_histogram(aes(y=..density.., fill=..count..)) +
-   xlab("Direct cholesterol") +
-   stat_function(fun=dnorm,color="red",args=list(mean=mean(fem$DirectChol), sd=sd(fem$DirectChol))) +
-   ggtitle("All females in Nhanes study")
+fem %>% ggplot(aes(x = DirectChol)) +
+  geom_histogram(aes(y = ..density.., fill = ..count..)) +
+  xlab("Direct cholesterol") +
+  stat_function(fun = dnorm, color = "red", args = list(mean = mean(fem$DirectChol), sd = sd(fem$DirectChol))) +
+  ggtitle("All females in Nhanes study")
 
- fem %>% ggplot(aes(sample=DirectChol)) +
- stat_qq() +
- stat_qq_line() +
- ggtitle("All females in Nhanes study")
+fem %>% ggplot(aes(sample = DirectChol)) +
+  stat_qq() +
+  stat_qq_line() +
+  ggtitle("All females in Nhanes study")
 ```
 
 The cholesterol data is clearly non-Normally distributed.
@@ -714,38 +772,56 @@ The cholesterol data is clearly non-Normally distributed.
 ##### Distribution of the sample mean for different sample sizes
 
 ```{r}
-femSamp5 %>% colMeans %>% as.data.frame %>% ggplot(aes(x=.)) +
-  geom_histogram(aes(y=..density.., fill=..count..),bins=15) +
+femSamp5 %>%
+  colMeans() %>%
+  as.data.frame() %>%
+  ggplot(aes(x = .)) +
+  geom_histogram(aes(y = ..density.., fill = ..count..), bins = 15) +
   xlab("Mean cholesterol") +
-  stat_function(fun=dnorm,color="red",args=list(mean=femSamp5%>% colMeans %>% mean, sd=femSamp5%>% colMeans %>% sd)) +
-ggtitle("Means on 5 females")
+  stat_function(fun = dnorm, color = "red", args = list(mean = femSamp5 %>% colMeans() %>% mean(), sd = femSamp5 %>% colMeans() %>% sd())) +
+  ggtitle("Means on 5 females")
 
-femSamp5 %>% colMeans %>% as.data.frame %>%  ggplot(aes(sample=.)) +
-stat_qq() +
-stat_qq_line() +
-ggtitle("Means on 5 females")
+femSamp5 %>%
+  colMeans() %>%
+  as.data.frame() %>%
+  ggplot(aes(sample = .)) +
+  stat_qq() +
+  stat_qq_line() +
+  ggtitle("Means on 5 females")
 
 
-femSamp10 %>% colMeans %>% as.data.frame %>% ggplot(aes(x=.)) +
-  geom_histogram(aes(y=..density.., fill=..count..),bins=15) +
+femSamp10 %>%
+  colMeans() %>%
+  as.data.frame() %>%
+  ggplot(aes(x = .)) +
+  geom_histogram(aes(y = ..density.., fill = ..count..), bins = 15) +
   xlab("Mean cholesterol") +
-  stat_function(fun=dnorm,color="red",args=list(mean=femSamp10%>% colMeans %>% mean, sd=femSamp10%>% colMeans %>% sd)) +
-ggtitle("Means on 10 females")
+  stat_function(fun = dnorm, color = "red", args = list(mean = femSamp10 %>% colMeans() %>% mean(), sd = femSamp10 %>% colMeans() %>% sd())) +
+  ggtitle("Means on 10 females")
 
-femSamp10 %>% colMeans %>% as.data.frame %>%  ggplot(aes(sample=.)) +
-stat_qq() +
-stat_qq_line() +
-ggtitle("Means on 10 females")
+femSamp10 %>%
+  colMeans() %>%
+  as.data.frame() %>%
+  ggplot(aes(sample = .)) +
+  stat_qq() +
+  stat_qq_line() +
+  ggtitle("Means on 10 females")
 
-femSamp50 %>% colMeans %>% as.data.frame %>%  ggplot(aes(sample=.)) +
-stat_qq() +
-stat_qq_line() +
-ggtitle("Means on 50 females")
+femSamp50 %>%
+  colMeans() %>%
+  as.data.frame() %>%
+  ggplot(aes(sample = .)) +
+  stat_qq() +
+  stat_qq_line() +
+  ggtitle("Means on 50 females")
 
-femSamp100 %>% colMeans %>% as.data.frame %>%  ggplot(aes(sample=.)) +
-stat_qq() +
-stat_qq_line() +
-ggtitle("Means on 100 females")
+femSamp100 %>%
+  colMeans() %>%
+  as.data.frame() %>%
+  ggplot(aes(sample = .)) +
+  stat_qq() +
+  stat_qq_line() +
+  ggtitle("Means on 100 females")
 ```
 
 - **We observe that when the data are not normally distributed the distribution of the sample mean is not normally distributed in small samples**
@@ -837,26 +913,28 @@ Generally the standard deviation is unknown and has to be estimated e.g. by $S$
 
 #### One sample
 ```{r}
-samp50<-sample(fem$DirectChol,50)
+samp50 <- sample(fem$DirectChol, 50)
 
-ll<-mean(samp50 %>% log2) - 1.96*sd(samp50 %>% log2)/sqrt(50)
-ul<-mean(samp50 %>% log2) + 1.96*sd(samp50 %>% log2)/sqrt(50)
-popMean<-mean(fem$DirectChol%>%log2)
+ll <- mean(samp50 %>% log2()) - 1.96 * sd(samp50 %>% log2()) / sqrt(50)
+ul <- mean(samp50 %>% log2()) + 1.96 * sd(samp50 %>% log2()) / sqrt(50)
+popMean <- mean(fem$DirectChol %>% log2())
 
-c(ll=ll,ul=ul,popMean=popMean)
+c(ll = ll, ul = ul, popMean = popMean)
 ```
 
 #### Repeated sampling
 ```{r}
-res$ll<-res$mean-1.96*res$se
-res$ul<-res$mean+1.96*res$se
-mu<-fem$DirectChol%>%log2%>%mean
-res$inside<-res$ll<=mu & mu<=res$ul
+res$ll <- res$mean - 1.96 * res$se
+res$ul <- res$mean + 1.96 * res$se
+mu <- fem$DirectChol %>%
+  log2() %>%
+  mean()
+res$inside <- res$ll <= mu & mu <= res$ul
 res$n <- as.factor(res$n)
 res %>%
   group_by(n) %>%
-  summarize(coverage=mean(inside)) %>%
-  spread(n,coverage)
+  summarize(coverage = mean(inside)) %>%
+  spread(n, coverage)
 ```
 
 - Note, that the coverage in the samples with 10 observations is too low because we do not account for the uncertainty in the estimation of the standard deviation.
@@ -865,14 +943,14 @@ res %>%
 
 ```{r}
 res %>%
-  filter(n==10) %>%
+  filter(n == 10) %>%
   slice(1:20) %>%
-  ggplot(aes(x=sample,y=mean,color=inside)) +
+  ggplot(aes(x = sample, y = mean, color = inside)) +
   geom_point() +
-  geom_errorbar(aes(ymin=mean-1.96*se,ymax=mean+1.96*se))+
-  geom_hline(yintercept = fem$DirectChol%>% log2 %>% mean) +
+  geom_errorbar(aes(ymin = mean - 1.96 * se, ymax = mean + 1.96 * se)) +
+  geom_hline(yintercept = fem$DirectChol %>% log2() %>% mean()) +
   ggtitle("20 CI for N=10") +
-  ylim(range(fem$DirectChol %>% log2))
+  ylim(range(fem$DirectChol %>% log2()))
 ```
 
 ---
@@ -881,24 +959,24 @@ res %>%
 
 ```{r}
 res %>%
-  filter(n==50) %>%
+  filter(n == 50) %>%
   slice(1:20) %>%
-  ggplot(aes(x=sample,y=mean,color=inside)) +
+  ggplot(aes(x = sample, y = mean, color = inside)) +
   geom_point() +
-  geom_errorbar(aes(ymin=mean-1.96*se,ymax=mean+1.96*se))+
-  geom_hline(yintercept = fem$DirectChol%>% log2 %>% mean) +
+  geom_errorbar(aes(ymin = mean - 1.96 * se, ymax = mean + 1.96 * se)) +
+  geom_hline(yintercept = fem$DirectChol %>% log2() %>% mean()) +
   ggtitle("20 CI for N=50") +
-  ylim(range(fem$DirectChol %>% log2))
+  ylim(range(fem$DirectChol %>% log2()))
 
 res %>%
-  filter(n==100) %>%
+  filter(n == 100) %>%
   slice(1:20) %>%
-  ggplot(aes(x=sample,y=mean,color=inside)) +
+  ggplot(aes(x = sample, y = mean, color = inside)) +
   geom_point() +
-  geom_errorbar(aes(ymin=mean-1.96*se,ymax=mean+1.96*se))+
-  geom_hline(yintercept = fem$DirectChol%>% log2 %>% mean) +
+  geom_errorbar(aes(ymin = mean - 1.96 * se, ymax = mean + 1.96 * se)) +
+  geom_hline(yintercept = fem$DirectChol %>% log2() %>% mean()) +
   ggtitle("20 CI for N=100") +
-  ylim(range(fem$DirectChol %>% log2))
+  ylim(range(fem$DirectChol %>% log2()))
 ```
 
 - What have you observed for the interval width?
@@ -947,14 +1025,16 @@ More formally: Let $X_1, X_2, ..., X_n$ be an independent random sample from a N
 The density of a t-distribution can be calculated in R using the function `dt`. It has arguments `x` for the quantile and `df` for the degrees of freedom.
 
 ```{r eval=FALSE}
-grid <- seq(-5,5,.1)
-densDist<-cbind(grid,dnorm(grid), sapply(c(2,5,10),dt,x=grid))
-colnames(densDist)<-c("x","normal",paste0("t",c(2,5,10)))
+grid <- seq(-5, 5, .1)
+densDist <- cbind(grid, dnorm(grid), sapply(c(2, 5, 10), dt, x = grid))
+colnames(densDist) <- c("x", "normal", paste0("t", c(2, 5, 10)))
 
-densDist %>% as.data.frame %>% gather(dist,dens,-x) %>%
-ggplot(aes(x=x,y=dens,color=dist)) +
-geom_line() +
-ylab("Density")
+densDist %>%
+  as.data.frame() %>%
+  gather(dist, dens, -x) %>%
+  ggplot(aes(x = x, y = dens, color = dist)) +
+  geom_line() +
+  ylab("Density")
 ```
 
 
@@ -967,8 +1047,8 @@ t-distributions have heavier tails then the normal distribution $\rightarrow$ la
 
 - Quantiles of the $t$-distribution can be calculated in R using `qt`. e.g. 95%, 97.5%, 99.5% quantile for a t-distribution with 14 degrees of freedom:
 ```{r}
-qt(.975,df=14)
-qt(c(.95,.975,.995),df=14)
+qt(.975, df = 14)
+qt(c(.95, .975, .995), df = 14)
 ```
 
 - These quantiles can be used to calculate 90%, 95% and 99% CI.
@@ -995,14 +1075,14 @@ Normal distributed random variable $X$ with unknown variance is
 95% CI for the average blood pressure change becomes
 
 ```{r}
-mean(captopril$deltaSBP) -  qt(.975,df=14)*sd(captopril$deltaSBP)/sqrt(15)
-mean(captopril$deltaSBP) + qt(.975,df=14)*sd(captopril$deltaSBP)/sqrt(15)
+mean(captopril$deltaSBP) - qt(.975, df = 14) * sd(captopril$deltaSBP) / sqrt(15)
+mean(captopril$deltaSBP) + qt(.975, df = 14) * sd(captopril$deltaSBP) / sqrt(15)
 ```
 
 The 99% CI is given by
 ```{r}
-mean(captopril$deltaSBP) -  qt(.995,df=14)*sd(captopril$deltaSBP)/sqrt(15)
-mean(captopril$deltaSBP) + qt(.995,df=14)*sd(captopril$deltaSBP)/sqrt(15)
+mean(captopril$deltaSBP) - qt(.995, df = 14) * sd(captopril$deltaSBP) / sqrt(15)
+mean(captopril$deltaSBP) + qt(.995, df = 14) * sd(captopril$deltaSBP) / sqrt(15)
 ```
 
 Note, that zero is outside the interval and that the entire interval is negative indicating that there is on average a large effect by administrating captopril on the blood pressure of patients with hypertension.
@@ -1014,27 +1094,32 @@ Note, that zero is outside the interval and that the entire interval is negative
 - We will revisit the results for sampling log2 cholesterol levels from the large NHANES study. We first focus on the repeated experiments with sample size 10.
 
 ```{r}
-res$n<-as.character(res$n) %>% as.double(res$n)
-res$ll<-res$mean-qt(0.975,df=res$n-1)*res$se
-res$ul<-res$mean+qt(0.975,df=res$n-1)*res$se
-mu<-fem$DirectChol%>%log2%>%mean
-res$inside<-res$ll<=mu & mu<=res$ul
+res$n <- as.character(res$n) %>% as.double(res$n)
+res$ll <- res$mean - qt(0.975, df = res$n - 1) * res$se
+res$ul <- res$mean + qt(0.975, df = res$n - 1) * res$se
+mu <- fem$DirectChol %>%
+  log2() %>%
+  mean()
+res$inside <- res$ll <= mu & mu <= res$ul
 res$n <- as.factor(res$n)
-res %>% group_by(n) %>% summarize(coverage=mean(inside)) %>% spread(n,coverage)
+res %>%
+  group_by(n) %>%
+  summarize(coverage = mean(inside)) %>%
+  spread(n, coverage)
 ```
 
 We observe that all the coverages of the intervals are now controlled at their nominal 95% confidence level.
 
 ```{r}
 res %>%
-  filter(n==10) %>%
+  filter(n == 10) %>%
   slice(1:20) %>%
-  ggplot(aes(x=sample,y=mean,color=inside)) +
+  ggplot(aes(x = sample, y = mean, color = inside)) +
   geom_point() +
-  geom_errorbar(aes(ymin=mean-qt(0.975,df=9)*se,ymax=mean+qt(0.975,df=9)*se))+
-  geom_hline(yintercept = fem$DirectChol%>% log2 %>% mean) +
+  geom_errorbar(aes(ymin = mean - qt(0.975, df = 9) * se, ymax = mean + qt(0.975, df = 9) * se)) +
+  geom_hline(yintercept = fem$DirectChol %>% log2() %>% mean()) +
   ggtitle("20 CI for N=10") +
-  ylim(range(fem$DirectChol %>% log2))
+  ylim(range(fem$DirectChol %>% log2()))
 ```
 
 ![](https://www.nature.com/articles/nmeth.2659.pdf){width=100%}
@@ -1077,19 +1162,19 @@ Researchers want to assess if the drug captopril decreases the blood pressure fo
 
 ```{r}
 captoprilTidy %>%
-  filter(type%in%c("SBPa","SBPb")) %>%
-  mutate(type=factor(type,levels=c("SBPb","SBPa")))%>%
-  ggplot(aes(x=type,y=bp)) +
+  filter(type %in% c("SBPa", "SBPb")) %>%
+  mutate(type = factor(type, levels = c("SBPb", "SBPa"))) %>%
+  ggplot(aes(x = type, y = bp)) +
   geom_line(aes(group = id)) +
   geom_point()
 ```
 
 ```{r}
-captopril$deltaSBP<-captopril$SBPa-captopril$SBPb
-captopril%>%
-  ggplot(aes(x="Systolic blood pressure",y=deltaSBP)) +
-  geom_boxplot(outlier.shape=NA) +
-  geom_point(position="jitter")+
+captopril$deltaSBP <- captopril$SBPa - captopril$SBPb
+captopril %>%
+  ggplot(aes(x = "Systolic blood pressure", y = deltaSBP)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = "jitter") +
   ylab("Difference (mm mercury)") +
   xlab("")
 ```
@@ -1142,16 +1227,16 @@ $$\bar x\text{=`r round(mean(captopril$deltaSBP),2)` (s=`r round(sd(captopril$de
 
 
 ```{r}
-captoprilSamp<-captopril
-perm<-sample(c(FALSE,TRUE),15,replace=TRUE)
-captoprilSamp$SBPa[perm]<-captopril$SBPb[perm]
-captoprilSamp$SBPb[perm]<-captopril$SBPa[perm]
-captoprilSamp$deltaSBP <- captoprilSamp$SBPa-captoprilSamp$SBPb
+captoprilSamp <- captopril
+perm <- sample(c(FALSE, TRUE), 15, replace = TRUE)
+captoprilSamp$SBPa[perm] <- captopril$SBPb[perm]
+captoprilSamp$SBPb[perm] <- captopril$SBPa[perm]
+captoprilSamp$deltaSBP <- captoprilSamp$SBPa - captoprilSamp$SBPb
 captoprilSamp %>%
-  gather(type,bp,-id) %>%
-  filter(type%in%c("SBPa","SBPb")) %>%
-  mutate(type=factor(type,levels=c("SBPb","SBPa")))%>%
-  ggplot(aes(x=type,y=bp)) +
+  gather(type, bp, -id) %>%
+  filter(type %in% c("SBPa", "SBPb")) %>%
+  mutate(type = factor(type, levels = c("SBPb", "SBPa"))) %>%
+  ggplot(aes(x = type, y = bp)) +
   geom_line(aes(group = id)) +
   geom_point()
 ```
@@ -1160,11 +1245,11 @@ captoprilSamp %>%
 
 
 ```{r}
-data.frame(deltaSBP=c(captopril$deltaSBP,captoprilSamp$deltaSBP),shuffled=rep(c(FALSE,TRUE),each=15)) %>%
-  ggplot(aes(x=shuffled,y=deltaSBP)) +
-  geom_boxplot(outlier.shape=NA) +
-  geom_point(position="jitter")+
-  stat_summary(fun.y=mean, geom="point", shape=19, size=3, color="red", fill="red") +
+data.frame(deltaSBP = c(captopril$deltaSBP, captoprilSamp$deltaSBP), shuffled = rep(c(FALSE, TRUE), each = 15)) %>%
+  ggplot(aes(x = shuffled, y = deltaSBP)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = "jitter") +
+  stat_summary(fun.y = mean, geom = "point", shape = 19, size = 3, color = "red", fill = "red") +
   ylab("Difference (mm mercury)")
 ```
 
@@ -1172,25 +1257,25 @@ And we permute again
 
 
 ```{r}
-captoprilSamp<-captopril
-perm<-sample(c(FALSE,TRUE),15,replace=TRUE)
-captoprilSamp$SBPa[perm]<-captopril$SBPb[perm]
-captoprilSamp$SBPb[perm]<-captopril$SBPa[perm]
-captoprilSamp$deltaSBP <- captoprilSamp$SBPa-captoprilSamp$SBPb
+captoprilSamp <- captopril
+perm <- sample(c(FALSE, TRUE), 15, replace = TRUE)
+captoprilSamp$SBPa[perm] <- captopril$SBPb[perm]
+captoprilSamp$SBPb[perm] <- captopril$SBPa[perm]
+captoprilSamp$deltaSBP <- captoprilSamp$SBPa - captoprilSamp$SBPb
 
 captoprilSamp %>%
-  gather(type,bp,-id) %>%
-  filter(type%in%c("SBPa","SBPb")) %>%
-  mutate(type=factor(type,levels=c("SBPb","SBPa")))%>%
-  ggplot(aes(x=type,y=bp)) +
+  gather(type, bp, -id) %>%
+  filter(type %in% c("SBPa", "SBPb")) %>%
+  mutate(type = factor(type, levels = c("SBPb", "SBPa"))) %>%
+  ggplot(aes(x = type, y = bp)) +
   geom_line(aes(group = id)) +
   geom_point()
 
-data.frame(deltaSBP=c(captopril$deltaSBP,captoprilSamp$deltaSBP),shuffled=rep(c(FALSE,TRUE),each=15)) %>%
-  ggplot(aes(x=shuffled,y=deltaSBP)) +
-  geom_boxplot(outlier.shape=NA) +
-  geom_point(position="jitter")+
-  stat_summary(fun.y=mean, geom="point", shape=19, size=3, color="red", fill="red") +
+data.frame(deltaSBP = c(captopril$deltaSBP, captoprilSamp$deltaSBP), shuffled = rep(c(FALSE, TRUE), each = 15)) %>%
+  ggplot(aes(x = shuffled, y = deltaSBP)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = "jitter") +
+  stat_summary(fun.y = mean, geom = "point", shape = 19, size = 3, color = "red", fill = "red") +
   ylab("Difference (mm mercury)")
 ```
 
@@ -1199,17 +1284,17 @@ data.frame(deltaSBP=c(captopril$deltaSBP,captoprilSamp$deltaSBP),shuffled=rep(c(
 - We basically only have to swap the signs of the observed blood pressure differences $x$ when we shuffle.
 
 ```{r}
-#generate a matrix with 15 rows and 10000 columns which consist of -1 and 1
-permH<-sample(c(-1,1),150000,replace=TRUE)
-dim(permH)<-c(15,10000)
+# generate a matrix with 15 rows and 10000 columns which consist of -1 and 1
+permH <- sample(c(-1, 1), 150000, replace = TRUE)
+dim(permH) <- c(15, 10000)
 
-#calculate the means for the permuted data
-muPerm<-colMeans(permH*captopril$deltaSBP)
+# calculate the means for the permuted data
+muPerm <- colMeans(permH * captopril$deltaSBP)
 muPerm %>%
-  as.data.frame %>%
-  ggplot(aes(x=.)) +
+  as.data.frame() %>%
+  ggplot(aes(x = .)) +
   geom_histogram() +
-  geom_vline(xintercept=mean(captopril$deltaSBP),col="blue")
+  geom_vline(xintercept = mean(captopril$deltaSBP), col = "blue")
 ```
 
 - We observe that not one of the means that were obtained under $H_0$ (by permutation) were as extreme as the sample mean we observed in the captopril study.
@@ -1235,14 +1320,15 @@ $$\frac{`r round(mean(captopril$deltaSBP),2)`-0}{`r round(sd(captopril$deltaSBP)
 We now determine the null distribution of test statistic t with permutation.
 
 ```{r}
-deltaPerms<-permH*captopril$deltaSBP
-tPerm<-colMeans(deltaPerms)/(apply(deltaPerms,2,sd)/sqrt(15))
-tOrig<-mean(captopril$deltaSBP)/sd(captopril$deltaSBP)*sqrt(15)
+deltaPerms <- permH * captopril$deltaSBP
+tPerm <- colMeans(deltaPerms) / (apply(deltaPerms, 2, sd) / sqrt(15))
+tOrig <- mean(captopril$deltaSBP) / sd(captopril$deltaSBP) * sqrt(15)
 
-tPermPlot<- tPerm %>%
-  as.data.frame %>% ggplot(aes(x=.)) +
-  geom_histogram(aes(y=..density.., fill=..count..)) +
-  geom_vline(xintercept=tOrig,col="blue")
+tPermPlot <- tPerm %>%
+  as.data.frame() %>%
+  ggplot(aes(x = .)) +
+  geom_histogram(aes(y = ..density.., fill = ..count..)) +
+  geom_vline(xintercept = tOrig, col = "blue")
 tPermPlot
 ```
 
@@ -1285,7 +1371,7 @@ follows a t-distribution (with 14 df for the captopril example).
 
 ```{r}
 tPermPlot +
-  stat_function(fun=dt,color="red",args=list(df=14))
+  stat_function(fun = dt, color = "red", args = list(df = 14))
 ```
 
 - Note, the permutation null distribution indeed corresponds to a t-distribution with 14 degrees of freedom.
@@ -1419,9 +1505,9 @@ and $f_t(.;14)$ the density function of the t-distribution.
 
 ```{r}
 n <- length(captopril$deltaSBP)
-stat<-(mean(captopril$deltaSBP)-0)/(sd(captopril$deltaSBP)/sqrt(n))
+stat <- (mean(captopril$deltaSBP) - 0) / (sd(captopril$deltaSBP) / sqrt(n))
 stat
-pt(stat,n-1)
+pt(stat, n - 1)
 ```
 
 </p></details>
@@ -1473,23 +1559,23 @@ $$\begin{array}{cl}>0.10 & \text{ non significant (no evidence)}\\0.05-0.10 & \t
 ## Critical value
 
 ```{r  out.width='100%', fig.asp=.8, fig.align='center',echo=FALSE}
-par(mar=c(6,6,6,2))
-grid <-seq(-10,10,.01)
-tcrit <- qt(0.05,n-1)
-reject <- c(grid[grid<tcrit],tcrit)
-plot(grid,dt(grid,n-1),type="l",lwd=2,xlab="t-statistic",ylab="density",cex.lab=2,cex.axis=2,cex.main=2)
-abline(v=mean(captopril$deltaSBP)/se,col=2,lwd=2,lty=2)
-abline(v=qt(c(.05),n-1),col=2,lty=1,lwd=2)
-text(c(-5,-5,5,5),c(.21,.19,.21,.19),label=c("rejection-","region","acception-","region"),col=c(2,2,4,4))
-arrows(-100,.4,mean(captopril$deltaSBP)/se,.4,lwd=2,col=2,angle=20,length=.1)
-text(-10,.35,label="p-value",srt=90,col=2)
-arrows(-100,.2,tcrit,.2,lwd=2,col=2,angle=20,length=.1)
-text(pos=4,mean(captopril$deltaSBP)/se,.02,label=paste("t=",round(mean(captopril$deltaSBP)/se,2)),col=2)
-arrows(100,.2,tcrit,.2,lwd=2,col=4,angle=20,length=.1)
-text(pos=4,tcrit,.02,label=paste("t-crit=",round(tcrit,2)),col=2)
-polygon(c(reject,tcrit,-10),c(dt(reject,n-1),0,0),col=2,border=2)
-text(-3.5,.05,label=expression(paste(alpha,"=0.05")),col=2)
-arrows(-2,0.02,-3.5,.04,col=2,lwd=2,angle=20,length=.1)
+par(mar = c(6, 6, 6, 2))
+grid <- seq(-10, 10, .01)
+tcrit <- qt(0.05, n - 1)
+reject <- c(grid[grid < tcrit], tcrit)
+plot(grid, dt(grid, n - 1), type = "l", lwd = 2, xlab = "t-statistic", ylab = "density", cex.lab = 2, cex.axis = 2, cex.main = 2)
+abline(v = mean(captopril$deltaSBP) / se, col = 2, lwd = 2, lty = 2)
+abline(v = qt(c(.05), n - 1), col = 2, lty = 1, lwd = 2)
+text(c(-5, -5, 5, 5), c(.21, .19, .21, .19), label = c("rejection-", "region", "acception-", "region"), col = c(2, 2, 4, 4))
+arrows(-100, .4, mean(captopril$deltaSBP) / se, .4, lwd = 2, col = 2, angle = 20, length = .1)
+text(-10, .35, label = "p-value", srt = 90, col = 2)
+arrows(-100, .2, tcrit, .2, lwd = 2, col = 2, angle = 20, length = .1)
+text(pos = 4, mean(captopril$deltaSBP) / se, .02, label = paste("t=", round(mean(captopril$deltaSBP) / se, 2)), col = 2)
+arrows(100, .2, tcrit, .2, lwd = 2, col = 4, angle = 20, length = .1)
+text(pos = 4, tcrit, .02, label = paste("t-crit=", round(tcrit, 2)), col = 2)
+polygon(c(reject, tcrit, -10), c(dt(reject, n - 1), 0, 0), col = 2, border = 2)
+text(-3.5, .05, label = expression(paste(alpha, "=0.05")), col = 2)
+arrows(-2, 0.02, -3.5, .04, col = 2, lwd = 2, angle = 20, length = .1)
 ```
 
 ---
@@ -1501,9 +1587,9 @@ A wrong decision could have been made.
 
 ```{r,echo=FALSE}
 library("kableExtra")
-DecisionErrors=data.frame(Conclusion=c("Accept H0","Reject H0"),"H0"=c("OK","Type I ($\\alpha$)"),"H1"=c("Type II ($\\beta$)","OK"))
-knitr::kable(DecisionErrors,,align="c")%>%
-  kable_styling( position = "center") %>%
+DecisionErrors <- data.frame(Conclusion = c("Accept H0", "Reject H0"), "H0" = c("OK", "Type I ($\\alpha$)"), "H1" = c("Type II ($\\beta$)", "OK"))
+knitr::kable(DecisionErrors, , align = "c") %>%
+  kable_styling(position = "center") %>%
   add_header_above(c(" " = 1, "Reality" = 2))
 ```
  - Type I error, $\alpha$: wrongly reject the null hypothesis (false positive)
@@ -1553,18 +1639,18 @@ n <- 15
 sigma <- 9
 mu <- 0
 mu0 <- 0
-alpha=0.05
+alpha <- 0.05
 
-#simulate nsim samples of size n
-deltaSim <- matrix(rnorm(n*nsim,mu,sigma),nrow=n,ncol=nsim)
-pSim <- apply(deltaSim,2,function(x,mu,alternative) t.test(x,mu=mu,alternative=alternative)$p.value,mu=mu0,alternative="less")
+# simulate nsim samples of size n
+deltaSim <- matrix(rnorm(n * nsim, mu, sigma), nrow = n, ncol = nsim)
+pSim <- apply(deltaSim, 2, function(x, mu, alternative) t.test(x, mu = mu, alternative = alternative)$p.value, mu = mu0, alternative = "less")
 
-mean(pSim<alpha)
+mean(pSim < alpha)
 pSim %>%
-  as.data.frame %>%
-  ggplot(aes(x=.)) +
+  as.data.frame() %>%
+  ggplot(aes(x = .)) +
   geom_histogram() +
-  xlim(0,1)
+  xlim(0, 1)
 ```
 
 - The type I error is indeed about 0.05
@@ -1599,18 +1685,18 @@ n <- 15
 sigma <- 9
 mu <- -2
 mu0 <- 0
-alpha=0.05
+alpha <- 0.05
 
-#simulate nsim samples of size n
-deltaSim <- matrix(rnorm(n*nsim,mu,sigma),nrow=n,ncol=nsim)
-pSim <- apply(deltaSim,2,function(x,mu,alternative) t.test(x,mu=mu,alternative=alternative)$p.value,mu=mu0,alternative="less")
+# simulate nsim samples of size n
+deltaSim <- matrix(rnorm(n * nsim, mu, sigma), nrow = n, ncol = nsim)
+pSim <- apply(deltaSim, 2, function(x, mu, alternative) t.test(x, mu = mu, alternative = alternative)$p.value, mu = mu0, alternative = "less")
 
-mean(pSim<alpha)
+mean(pSim < alpha)
 pSim %>%
-  as.data.frame %>%
-  ggplot(aes(x=.)) +
+  as.data.frame() %>%
+  ggplot(aes(x = .)) +
   geom_histogram() +
-  xlim(0,1)
+  xlim(0, 1)
 ```
 - We observe that a power of `r mean(pSim<alpha)` or a type II error of `r 1-mean(pSim<alpha)`.
 
@@ -1624,18 +1710,18 @@ n <- 30
 sigma <- 9
 mu <- -2
 mu0 <- 0
-alpha=0.05
+alpha <- 0.05
 
-#simulate nsim samples of size n
-deltaSim <- matrix(rnorm(n*nsim,mu,sigma),nrow=n,ncol=nsim)
-pSim <- apply(deltaSim,2,function(x,mu,alternative) t.test(x,mu=mu,alternative=alternative)$p.value,mu=mu0,alternative="less")
+# simulate nsim samples of size n
+deltaSim <- matrix(rnorm(n * nsim, mu, sigma), nrow = n, ncol = nsim)
+pSim <- apply(deltaSim, 2, function(x, mu, alternative) t.test(x, mu = mu, alternative = alternative)$p.value, mu = mu0, alternative = "less")
 
-mean(pSim<alpha)
+mean(pSim < alpha)
 pSim %>%
-  as.data.frame %>%
-  ggplot(aes(x=.)) +
+  as.data.frame() %>%
+  ggplot(aes(x = .)) +
   geom_histogram() +
-  xlim(0,1)
+  xlim(0, 1)
 ```
 
 - Increasing the sample size leads to a higher power.
@@ -1698,11 +1784,11 @@ The test we have performed is referred to as
 - Both tests (one sample t-test on the difference and paired t-test) give the same results:
 
 ```{r}
-t.test(captopril$deltaSBP,alternative="less")
+t.test(captopril$deltaSBP, alternative = "less")
 ```
 
 ```{r}
-t.test(captopril$SBPa,captopril$SBPb,paired=TRUE,alternative="less")
+t.test(captopril$SBPa, captopril$SBPb, paired = TRUE, alternative = "less")
 ```
 
 ---
@@ -1738,7 +1824,7 @@ $$p=\text{P}_0\left[T\geq t\right].$$
 
 Analysis based on $X^\prime$: Argument `alternative="greater"` so that we use $H_1: \mu^\prime>0$:
 ```{r}
-t.test(captopril$SBPb-captopril$SBPa,alternative="greater")
+t.test(captopril$SBPb - captopril$SBPa, alternative = "greater")
 ```
 
 Of course we obtain the same results. Only the sign is swapped.
@@ -1766,32 +1852,32 @@ It can be positive as well as negative changes and we did not know upfront in wh
 We can conduct a two-sided test on the $\alpha=5\%$ significance level by
 
 ```{r out.width='100%', fig.asp=.8, fig.align='center',echo=FALSE}
-grid <-seq(-10,10,.01)
-tcrit <- qt(0.975,n-1)
-reject1 <- c(grid[grid< -tcrit],-tcrit)
-reject2 <- c(tcrit,grid[grid>tcrit])
+grid <- seq(-10, 10, .01)
+tcrit <- qt(0.975, n - 1)
+reject1 <- c(grid[grid < -tcrit], -tcrit)
+reject2 <- c(tcrit, grid[grid > tcrit])
 
-plot(grid,dt(grid,n-1),type="l",lwd=2,xlab="t-statistic",ylab="density",ylim=c(-.05,.4))
-abline(v=c(-1,1)*mean(captopril$deltaSBP)/se,col=2,lwd=2,lty=2)
-abline(v=c(-1,1)*tcrit,col=2,lty=1,lwd=2)
-text(c(-5,-5,5,5),c(-.03,-.05,-.03,-.05),label=c("rejection-","region","rejection-","region"),col=c(2,2,2,2))
-text(c(0,0),c(-.03,-.05),label=c("acception-","regio"),col=c(4,4))
+plot(grid, dt(grid, n - 1), type = "l", lwd = 2, xlab = "t-statistic", ylab = "density", ylim = c(-.05, .4))
+abline(v = c(-1, 1) * mean(captopril$deltaSBP) / se, col = 2, lwd = 2, lty = 2)
+abline(v = c(-1, 1) * tcrit, col = 2, lty = 1, lwd = 2)
+text(c(-5, -5, 5, 5), c(-.03, -.05, -.03, -.05), label = c("rejection-", "region", "rejection-", "region"), col = c(2, 2, 2, 2))
+text(c(0, 0), c(-.03, -.05), label = c("acception-", "regio"), col = c(4, 4))
 
-arrows(-100,.4,-abs(mean(captopril$deltaSBP)/se),.4,lwd=2,col=2,angle=20,length=.1)
-arrows(100,.4,abs(mean(captopril$deltaSBP)/se),.4,lwd=2,col=2,angle=20,length=.1)
-text(-10,.35,label="p-value",srt=90,col=2)
-text(10,.35,label="p-value",srt=90,col=2)
+arrows(-100, .4, -abs(mean(captopril$deltaSBP) / se), .4, lwd = 2, col = 2, angle = 20, length = .1)
+arrows(100, .4, abs(mean(captopril$deltaSBP) / se), .4, lwd = 2, col = 2, angle = 20, length = .1)
+text(-10, .35, label = "p-value", srt = 90, col = 2)
+text(10, .35, label = "p-value", srt = 90, col = 2)
 
-arrows(-100,-.04,-tcrit,-.04,lwd=2,col=2,angle=20,length=.1)
-arrows(100,-.04,tcrit,-.04,lwd=2,col=2,angle=20,length=.1)
+arrows(-100, -.04, -tcrit, -.04, lwd = 2, col = 2, angle = 20, length = .1)
+arrows(100, -.04, tcrit, -.04, lwd = 2, col = 2, angle = 20, length = .1)
 
-polygon(c(reject1,-tcrit,-10),c(dt(reject1,n-1),0,0),col=2,border=2)
-polygon(c(tcrit,reject2,tcrit),c(0,dt(reject2,n-1),0),col=2,border=2)
+polygon(c(reject1, -tcrit, -10), c(dt(reject1, n - 1), 0, 0), col = 2, border = 2)
+polygon(c(tcrit, reject2, tcrit), c(0, dt(reject2, n - 1), 0), col = 2, border = 2)
 
-text(-3.5,.05,label=expression(paste(alpha,"/2=2.5%")),col=2)
-text(3.6,.05,label=expression(paste(alpha,"/2=2.5%")),col=2)
-arrows(-3,0.02,-3.5,.04,col=2,lwd=2,angle=20,length=.1)
-arrows(3,0.02,3.5,.04,col=2,lwd=2,angle=20,length=.1)
+text(-3.5, .05, label = expression(paste(alpha, "/2=2.5%")), col = 2)
+text(3.6, .05, label = expression(paste(alpha, "/2=2.5%")), col = 2)
+arrows(-3, 0.02, -3.5, .04, col = 2, lwd = 2, angle = 20, length = .1)
+arrows(3, 0.02, 3.5, .04, col = 2, lwd = 2, angle = 20, length = .1)
 ```
 
 ---
@@ -1848,18 +1934,20 @@ sigma <- 9.0
 nSim <- 1000
 alpha <- 0.05
 n <- 15
-pvalsCor <- pvalsInCor<-array(0,nSim)
+pvalsCor <- pvalsInCor <- array(0, nSim)
 for (i in 1:nSim)
 {
-	x <- rnorm(n,mean=mu,sd=sigma)
-	pvalsCor[i] <- t.test(x)$p.value
-	if (mean(x)<0)
-		pvalsInCor[i] <- t.test(x,alternative="less")$p.value else
-		pvalsInCor[i] <- t.test(x,alternative="greater")$p.value
+  x <- rnorm(n, mean = mu, sd = sigma)
+  pvalsCor[i] <- t.test(x)$p.value
+  if (mean(x) < 0) {
+    pvalsInCor[i] <- t.test(x, alternative = "less")$p.value
+  } else {
+    pvalsInCor[i] <- t.test(x, alternative = "greater")$p.value
+  }
 }
 
-mean(pvalsCor<0.05)
-mean(pvalsInCor<0.05)
+mean(pvalsCor < 0.05)
+mean(pvalsInCor < 0.05)
 ```
 
 - Type I error correctly controlled at $\alpha$ for two-sided test.

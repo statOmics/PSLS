@@ -63,16 +63,16 @@ mouse
 
 ```{r}
 mouse %>%
-  ggplot(aes(x = mouse, y= intensity, col=celltype)) +
+  ggplot(aes(x = mouse, y = intensity, col = celltype)) +
   geom_point()
 ```
 
 ```{r}
 mouse %>%
-    ggplot(aes(x = celltype, y= intensity)) +
-    geom_boxplot(aes(col=celltype),outlier.shape = NA) +
-    geom_line(aes(group = mouse)) +
-    geom_point(aes(col=celltype))
+  ggplot(aes(x = celltype, y = intensity)) +
+  geom_boxplot(aes(col = celltype), outlier.shape = NA) +
+  geom_line(aes(group = mouse)) +
+  geom_point(aes(col = celltype))
 ```
 
 
@@ -88,7 +88,7 @@ In the introduction to statistical inference we would have analyzed the data by 
 
 ```{r}
 mouseWide <- mouse %>%
-  spread(celltype,intensity) %>%
+  spread(celltype, intensity) %>%
   mutate(delta = Treg - Tcon)
 mouseWide
 ```
@@ -99,7 +99,7 @@ mouseWide
 
 ```{r}
 mouseWide %>%
-  ggplot(aes(x="",y=delta)) +
+  ggplot(aes(x = "", y = delta)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter()
 ```
@@ -107,14 +107,17 @@ mouseWide %>%
 - Summary statistics
 ```{r}
 deltaSum <- mouseWide %>%
-  summarize_at("delta",
-               list(
-                    mean = ~ mean(.,na.rm = TRUE),
-                    sd = ~ sd(.,na.rm = TRUE),
-                    n = ~ is.na(.) %>% `!` %>% sum
-                   )
-               ) %>%
-  mutate(se = sd/sqrt(n))
+  summarize_at(
+    "delta",
+    list(
+      mean = ~ mean(., na.rm = TRUE),
+      sd = ~ sd(., na.rm = TRUE),
+      n = ~ is.na(.) %>%
+        `!`() %>%
+        sum()
+    )
+  ) %>%
+  mutate(se = sd / sqrt(n))
 deltaSum
 ```
 
@@ -124,11 +127,11 @@ Note, that the intensity data are not independent because we measured the expres
 - Covariance and correlation between expression in both celltypes
 
 ```{r}
-cor(mouseWide[,c("Tcon","Treg")])
-var(mouseWide[,c("Tcon","Treg")])
-var(mouseWide[,c("Tcon","Treg")]) %>%
-  diag %>%
-  sqrt
+cor(mouseWide[, c("Tcon", "Treg")])
+var(mouseWide[, c("Tcon", "Treg")])
+var(mouseWide[, c("Tcon", "Treg")]) %>%
+  diag() %>%
+  sqrt()
 ```
 
 - There is indeed a large correlation between the expression of the protein in conventional and regulatory T-cells.
@@ -145,8 +148,8 @@ $$
 $$
 
 ```{r}
-sdDelta2 <- (c(-1,1) %*% var(mouseWide[,c("Tcon","Treg")]) %*% c(-1,1)) %>%
-  sqrt
+sdDelta2 <- (c(-1, 1) %*% var(mouseWide[, c("Tcon", "Treg")]) %*% c(-1, 1)) %>%
+  sqrt()
 sdDelta2
 
 seDeltaBar <- sdDelta2 / sqrt(deltaSum$n)
@@ -169,25 +172,27 @@ Because we have measured the two cell types in every mouse, we can thus estimate
 
 ```{r}
 lmRCB <- lm(intensity ~ celltype + mouse, mouse)
-plot(lmRCB, which = c(1,2,3))
+plot(lmRCB, which = c(1, 2, 3))
 ```
 
 If you have doubts on that your data violates the assumptions you can always simulate data from a model with similar effects as yours but where are distributional assumptions hold and compare the residual plots.
 
 ```{r}
-design <-  model.matrix(intensity ~ celltype + mouse, mouse)
-sigmaMouse <- sqrt(car::Anova(lmRCB, type = "III")["mouse","Sum Sq"]/car::Anova(lmRCB, type = "III")["mouse","Df"])
+design <- model.matrix(intensity ~ celltype + mouse, mouse)
+sigmaMouse <- sqrt(car::Anova(lmRCB, type = "III")["mouse", "Sum Sq"] / car::Anova(lmRCB, type = "III")["mouse", "Df"])
 betas <- lmRCB$coefficients
-nMouse <- mouse$mouse %>% unique %>% length
+nMouse <- mouse$mouse %>%
+  unique() %>%
+  length()
 
-par(mfrow=c(3,3))
+par(mfrow = c(3, 3))
 for (i in 1:9)
 {
-    mouseEffect <- rnorm(nMouse, sd = sigmaMouse)
-    betasMouse <- mouseEffect[-1]-mouseEffect[1]
-    betas[-c(1:2)] <- betasMouse
-    ysim <- design %*% betas  + rnorm(nrow(design),sd=sigma(lmRCB))
-    plot(lm(ysim ~ -1 + design), which = 1)
+  mouseEffect <- rnorm(nMouse, sd = sigmaMouse)
+  betasMouse <- mouseEffect[-1] - mouseEffect[1]
+  betas[-c(1:2)] <- betasMouse
+  ysim <- design %*% betas + rnorm(nrow(design), sd = sigma(lmRCB))
+  plot(lm(ysim ~ -1 + design), which = 1)
 }
 ```
 
@@ -278,28 +283,29 @@ In this section we will subset the original data in two experiments:
 set.seed(859)
 mRcb <- mouse %>%
   pull(mouse) %>%
-  unique %>%
-  sample(size=3)
+  unique() %>%
+  sample(size = 3)
 
-rcbSmall <- mouse %>% filter(mouse%in%mRcb)
+rcbSmall <- mouse %>% filter(mouse %in% mRcb)
 rcbSmall
 ```
 
 ```{r}
 mCrd <- mouse %>%
   pull(mouse) %>%
-  unique %>%
-  sample(size=6)
+  unique() %>%
+  sample(size = 6)
 
 
 crdSmall <-
   bind_rows(
     mouse %>%
-      filter(mouse%in%mCrd[1:3]) %>%
-      filter(celltype=="Tcon"),
+      filter(mouse %in% mCrd[1:3]) %>%
+      filter(celltype == "Tcon"),
     mouse %>%
-      filter(mouse%in%mCrd[-(1:3)]) %>%
-      filter(celltype=="Treg"))
+      filter(mouse %in% mCrd[-(1:3)]) %>%
+      filter(celltype == "Treg")
+  )
 crdSmall
 ```
 
@@ -341,48 +347,48 @@ Of course, we are never allowed to analyse an RCB with a model for a CRD (withou
 ### Power for completely randomized design
 
 ```{r}
-varBetweenPlusWithin <- sum(car::Anova(lmRCB,type="III")[c("mouse","Residuals"),"Sum Sq"])/sum(car::Anova(lmRCB,type="III")[c("mouse","Residuals"),"Df"])
+varBetweenPlusWithin <- sum(car::Anova(lmRCB, type = "III")[c("mouse", "Residuals"), "Sum Sq"]) / sum(car::Anova(lmRCB, type = "III")[c("mouse", "Residuals"), "Df"])
 
 alpha <- 0.05
 nSim <- 20000
 b0 <- 0
 sd <- sqrt(varBetweenPlusWithin)
-ns <-  c(3,7)
+ns <- c(3, 7)
 deltas <- lmRCB$coefficients["celltypeTreg"]
 
-L <- limma::makeContrasts("celltypeTreg",levels=c("(Intercept)","celltypeTreg"))
+L <- limma::makeContrasts("celltypeTreg", levels = c("(Intercept)", "celltypeTreg"))
 
-powerFast <- matrix(NA,nrow=length(ns)*length(deltas),ncol=3) %>% as.data.frame
-names(powerFast) <- c("b1","n","power")
+powerFast <- matrix(NA, nrow = length(ns) * length(deltas), ncol = 3) %>% as.data.frame()
+names(powerFast) <- c("b1", "n", "power")
 
 i <- 0
 for (n in ns)
 {
-  n1 <- n2 <-  n
+  n1 <- n2 <- n
 
   ### Simulation
-  predictorData <- data.frame(celltype = rep(c("Tcon","Treg"),c(n1,n2)) %>% as.factor)
-  design <- model.matrix(~celltype,predictorData)
+  predictorData <- data.frame(celltype = rep(c("Tcon", "Treg"), c(n1, n2)) %>% as.factor())
+  design <- model.matrix(~celltype, predictorData)
 
   for (b1 in deltas)
   {
-    ySim <- rnorm(nrow(predictorData)*nSim,sd=sd)
-    dim(ySim) <-c(nrow(predictorData),nSim)
-    ySim <- ySim + c(design %*%c(b0,b1))
+    ySim <- rnorm(nrow(predictorData) * nSim, sd = sd)
+    dim(ySim) <- c(nrow(predictorData), nSim)
+    ySim <- ySim + c(design %*% c(b0, b1))
     ySim <- t(ySim)
 
     ### Fitting
-    fitAll <- limma::lmFit(ySim,design)
+    fitAll <- limma::lmFit(ySim, design)
 
     ### Inference
-    varUnscaled <- c(t(L)%*%fitAll$cov.coefficients%*%L)
-    contrasts <- fitAll$coefficients %*%L
-    seContrasts <- varUnscaled^.5*fitAll$sigma
-    tstats <- contrasts/seContrasts
-    pvals <- pt(abs(tstats),fitAll$df.residual,lower.tail = FALSE)*2
+    varUnscaled <- c(t(L) %*% fitAll$cov.coefficients %*% L)
+    contrasts <- fitAll$coefficients %*% L
+    seContrasts <- varUnscaled^.5 * fitAll$sigma
+    tstats <- contrasts / seContrasts
+    pvals <- pt(abs(tstats), fitAll$df.residual, lower.tail = FALSE) * 2
 
-    i <- i+1
-    powerFast[i,] <- c(b1,n,mean(pvals < alpha))
+    i <- i + 1
+    powerFast[i, ] <- c(b1, n, mean(pvals < alpha))
   }
 }
 powerFast
@@ -391,8 +397,8 @@ powerFast
 Because we have a simple 2 group comparison we can also calculate the power using the  `power.t.test` function.
 
 ```{r}
-power.t.test(n = 3,delta = lmRCB$coefficients["celltypeTreg"], sd = sqrt(varBetweenPlusWithin))
-power.t.test(n = 7,delta = lmRCB$coefficients["celltypeTreg"], sd = sqrt(varBetweenPlusWithin))
+power.t.test(n = 3, delta = lmRCB$coefficients["celltypeTreg"], sd = sqrt(varBetweenPlusWithin))
+power.t.test(n = 7, delta = lmRCB$coefficients["celltypeTreg"], sd = sqrt(varBetweenPlusWithin))
 ```
 
 ## Power for randomized complete block design
@@ -405,44 +411,44 @@ alpha <- 0.05
 nSim <- 20000
 b0 <- 0
 sd <- sigma(lmRCB)
-sdMouse<- sqrt(car::Anova(lmRCB)["mouse","Sum Sq"]/car::Anova(lmRCB)["mouse","Df"])
-ns <-  c(3,7)
+sdMouse <- sqrt(car::Anova(lmRCB)["mouse", "Sum Sq"] / car::Anova(lmRCB)["mouse", "Df"])
+ns <- c(3, 7)
 deltas <- lmRCB$coefficients["celltypeTreg"]
 
 
-powerFastBlocking <- matrix(NA,nrow=length(ns)*length(deltas),ncol=3) %>% as.data.frame
-names(powerFastBlocking) <- c("b1","n","power")
+powerFastBlocking <- matrix(NA, nrow = length(ns) * length(deltas), ncol = 3) %>% as.data.frame()
+names(powerFastBlocking) <- c("b1", "n", "power")
 
 i <- 0
 for (n in ns)
 {
 
   ### Simulation
-  predictorData <- data.frame(celltype = rep(c("Tcon","Treg"),each=n) %>% as.factor, mouse = paste0("m",rep(1:n,2)))
-  design <- model.matrix(~ celltype + mouse,predictorData)
-  L <- limma::makeContrasts("celltypeTreg",levels=colnames(design))
+  predictorData <- data.frame(celltype = rep(c("Tcon", "Treg"), each = n) %>% as.factor(), mouse = paste0("m", rep(1:n, 2)))
+  design <- model.matrix(~ celltype + mouse, predictorData)
+  L <- limma::makeContrasts("celltypeTreg", levels = colnames(design))
 
   for (b1 in deltas)
   {
-    ySim <- rnorm(nrow(predictorData)*nSim,sd=sd)
-    dim(ySim) <-c(nrow(predictorData),nSim)
+    ySim <- rnorm(nrow(predictorData) * nSim, sd = sd)
+    dim(ySim) <- c(nrow(predictorData), nSim)
     mouseEffect <- rnorm(n, sd = sdMouse)
-    betasMouse <- mouseEffect[-1]-mouseEffect[1]
-    ySim <- ySim + c(design %*%c(b0,b1,betasMouse))
+    betasMouse <- mouseEffect[-1] - mouseEffect[1]
+    ySim <- ySim + c(design %*% c(b0, b1, betasMouse))
     ySim <- t(ySim)
 
     ### Fitting
-    fitAll <- limma::lmFit(ySim,design)
+    fitAll <- limma::lmFit(ySim, design)
 
     ### Inference
-    varUnscaled <- c(t(L)%*%fitAll$cov.coefficients%*%L)
-    contrasts <- fitAll$coefficients %*%L
-    seContrasts <- varUnscaled^.5*fitAll$sigma
-    tstats <- contrasts/seContrasts
-    pvals <- pt(abs(tstats),fitAll$df.residual,lower.tail = FALSE)*2
+    varUnscaled <- c(t(L) %*% fitAll$cov.coefficients %*% L)
+    contrasts <- fitAll$coefficients %*% L
+    seContrasts <- varUnscaled^.5 * fitAll$sigma
+    tstats <- contrasts / seContrasts
+    pvals <- pt(abs(tstats), fitAll$df.residual, lower.tail = FALSE) * 2
 
-    i <- i+1
-    powerFastBlocking[i,] <- c(b1,n,mean(pvals < alpha))
+    i <- i + 1
+    powerFastBlocking[i, ] <- c(b1, n, mean(pvals < alpha))
   }
 }
 powerFastBlocking
@@ -455,8 +461,8 @@ Because we have an RCB with a block size of 2 (paired design) we can also calcul
 
 
 ```{r}
-power.t.test(n = 3,delta = mean(mouseWide$delta), sd = sd(mouseWide$delta))
-power.t.test(n = 7,delta = mean(mouseWide$delta), sd = sd(mouseWide$delta))
+power.t.test(n = 3, delta = mean(mouseWide$delta), sd = sd(mouseWide$delta))
+power.t.test(n = 7, delta = mean(mouseWide$delta), sd = sd(mouseWide$delta))
 ```
 
 Note, that the power is slightly different because for the power.t.test function we conditioned on the mice from our study. While in the simulation study we generated data for new mice by simulating the mouse effect from a normal distribution.
@@ -470,11 +476,11 @@ $$
 So in our example that is the ratio between the variability between the mice and the sum of the variability between and within the mice. Note, that the within mouse variability was the variance of the errors of the RCB. The ratio for our experiment equals
 
 ```{r}
-varBetweenPlusWithin <- sum(car::Anova(lmRCB,type="III")[c("mouse","Residuals"),"Sum Sq"])/sum(car::Anova(lmRCB,type="III")[c("mouse","Residuals"),"Df"])
-varWithin <- car::Anova(lmRCB)["Residuals","Sum Sq"]/car::Anova(lmRCB)["Residuals","Df"]
+varBetweenPlusWithin <- sum(car::Anova(lmRCB, type = "III")[c("mouse", "Residuals"), "Sum Sq"]) / sum(car::Anova(lmRCB, type = "III")[c("mouse", "Residuals"), "Df"])
+varWithin <- car::Anova(lmRCB)["Residuals", "Sum Sq"] / car::Anova(lmRCB)["Residuals", "Df"]
 varBetweenPlusWithin
 varWithin
-1- varWithin/varBetweenPlusWithin
+1 - varWithin / varBetweenPlusWithin
 ```
 
 
@@ -482,16 +488,16 @@ varWithin
 alpha <- 0.05
 nSim <- 20000
 b0 <- 0
-varBetweenPlusWithin <- sum(car::Anova(lmRCB,type="III")[c("mouse","Residuals"),"Sum Sq"])/sum(car::Anova(lmRCB,type="III")[c("mouse","Residuals"),"Df"])
+varBetweenPlusWithin <- sum(car::Anova(lmRCB, type = "III")[c("mouse", "Residuals"), "Sum Sq"]) / sum(car::Anova(lmRCB, type = "III")[c("mouse", "Residuals"), "Df"])
 
 
-ns <-  c(3,7)
+ns <- c(3, 7)
 deltas <- lmRCB$coefficients["celltypeTreg"]
 
-fracVars <- seq(0,.95,.05)
+fracVars <- seq(0, .95, .05)
 
-powerFastBlockingLow <- matrix(NA,nrow=length(ns)*length(fracVars),ncol=3) %>% as.data.frame
-names(powerFastBlockingLow) <- c("fracVars","n","power")
+powerFastBlockingLow <- matrix(NA, nrow = length(ns) * length(fracVars), ncol = 3) %>% as.data.frame()
+names(powerFastBlockingLow) <- c("fracVars", "n", "power")
 
 i <- 0
 
@@ -500,35 +506,35 @@ for (n in ns)
 {
 
   ### Simulation
-  predictorData <- data.frame(celltype = rep(c("Tcon","Treg"),each=n) %>% as.factor, mouse = paste0("m",rep(1:n,2)))
-  design <- model.matrix(~ celltype + mouse,predictorData)
-  L <- limma::makeContrasts("celltypeTreg",levels=colnames(design))
+  predictorData <- data.frame(celltype = rep(c("Tcon", "Treg"), each = n) %>% as.factor(), mouse = paste0("m", rep(1:n, 2)))
+  design <- model.matrix(~ celltype + mouse, predictorData)
+  L <- limma::makeContrasts("celltypeTreg", levels = colnames(design))
   for (fracVar in fracVars)
   {
-  sd <- sqrt(varBetweenPlusWithin*(1-fracVar))
-  sdMouse <- sqrt(varBetweenPlusWithin*fracVar)
-  for (b1 in deltas)
-  {
-    ySim <- rnorm(nrow(predictorData)*nSim,sd=sd)
-    dim(ySim) <-c(nrow(predictorData),nSim)
-    mouseEffect <- rnorm(n, sd = sdMouse)
-    betasMouse <- mouseEffect[-1]-mouseEffect[1]
-    ySim <- ySim + c(design %*%c(b0,b1,betasMouse))
-    ySim <- t(ySim)
+    sd <- sqrt(varBetweenPlusWithin * (1 - fracVar))
+    sdMouse <- sqrt(varBetweenPlusWithin * fracVar)
+    for (b1 in deltas)
+    {
+      ySim <- rnorm(nrow(predictorData) * nSim, sd = sd)
+      dim(ySim) <- c(nrow(predictorData), nSim)
+      mouseEffect <- rnorm(n, sd = sdMouse)
+      betasMouse <- mouseEffect[-1] - mouseEffect[1]
+      ySim <- ySim + c(design %*% c(b0, b1, betasMouse))
+      ySim <- t(ySim)
 
-    ### Fitting
-    fitAll <- limma::lmFit(ySim,design)
+      ### Fitting
+      fitAll <- limma::lmFit(ySim, design)
 
-    ### Inference
-    varUnscaled <- c(t(L)%*%fitAll$cov.coefficients%*%L)
-    contrasts <- fitAll$coefficients %*%L
-    seContrasts <- varUnscaled^.5*fitAll$sigma
-    tstats <- contrasts/seContrasts
-    pvals <- pt(abs(tstats),fitAll$df.residual,lower.tail = FALSE)*2
+      ### Inference
+      varUnscaled <- c(t(L) %*% fitAll$cov.coefficients %*% L)
+      contrasts <- fitAll$coefficients %*% L
+      seContrasts <- varUnscaled^.5 * fitAll$sigma
+      tstats <- contrasts / seContrasts
+      pvals <- pt(abs(tstats), fitAll$df.residual, lower.tail = FALSE) * 2
 
-    i <- i+1
-    powerFastBlockingLow[i,] <- c(fracVar,n,mean(pvals < alpha))
-  }
+      i <- i + 1
+      powerFastBlockingLow[i, ] <- c(fracVar, n, mean(pvals < alpha))
+    }
   }
 }
 powerFastBlockingLow
@@ -536,25 +542,29 @@ powerFastBlockingLow
 
 ```{r}
 gg_color_hue <- function(n) {
-  hues = seq(15, 375, length = n + 1)
+  hues <- seq(15, 375, length = n + 1)
   hcl(h = hues, l = 65, c = 100)[1:n]
 }
 cols <- gg_color_hue(2)
 
 powerFastBlockingLow %>%
-  as.data.frame %>%
+  as.data.frame() %>%
   mutate(n = as.factor(n)) %>%
-  ggplot(aes(fracVars,power,group=n,color=n)) +
+  ggplot(aes(fracVars, power, group = n, color = n)) +
   geom_line() +
-  geom_hline(yintercept = powerFast %>% filter(n==3) %>% pull(power),color=cols[1]) +
-  annotate("text", label = "CRD (n=3)",
-    x = 0.05, y = powerFast %>% filter(n==3) %>% pull(power) +.02, size = 3, colour = cols[1]) +
-    geom_hline(yintercept = powerFast %>% filter(n==7) %>% pull(power),color=cols[2]) +
-    annotate("text", label = "CRD (n=7)",
-    x = 0.05, y = powerFast %>% filter(n==7) %>% pull(power) +.02, size = 3, colour = cols[2]) +
-  xlab(expression(~sigma[between]^2/(sigma[between]^2+sigma[within]^2))) +
-  geom_vline(xintercept=1-varWithin/varBetweenPlusWithin) +
-  xlim(0,1)
+  geom_hline(yintercept = powerFast %>% filter(n == 3) %>% pull(power), color = cols[1]) +
+  annotate("text",
+    label = "CRD (n=3)",
+    x = 0.05, y = powerFast %>% filter(n == 3) %>% pull(power) + .02, size = 3, colour = cols[1]
+  ) +
+  geom_hline(yintercept = powerFast %>% filter(n == 7) %>% pull(power), color = cols[2]) +
+  annotate("text",
+    label = "CRD (n=7)",
+    x = 0.05, y = powerFast %>% filter(n == 7) %>% pull(power) + .02, size = 3, colour = cols[2]
+  ) +
+  xlab(expression(~ sigma[between]^2 / (sigma[between]^2 + sigma[within]^2))) +
+  geom_vline(xintercept = 1 - varWithin / varBetweenPlusWithin) +
+  xlim(0, 1)
 ```
 
 - So if the variance that is explained by the block effect is small you will loose power as compared to the analysis with a CRD design. Indeed, then
@@ -577,15 +587,15 @@ The production of penicillin corn steep liquor is used. Corn steep liquor is pro
 How would you assign the methods to the blends.
 
 ```{r}
-data(penicillin, package="faraway")
-table(penicillin$blend,penicillin$treat)
+data(penicillin, package = "faraway")
+table(penicillin$blend, penicillin$treat)
 ```
 
 ## Data
 
 ```{r}
 head(penicillin)
-matrix(penicillin$yield,nrow=5,ncol=4,byrow=TRUE,dimnames=list(levels(penicillin$blend),levels(penicillin$treat)))
+matrix(penicillin$yield, nrow = 5, ncol = 4, byrow = TRUE, dimnames = list(levels(penicillin$blend), levels(penicillin$treat)))
 ```
 
 ```{r}
@@ -610,9 +620,9 @@ We analyse the yield using
 - a factor for treatment.
 
 ```{r}
-lmPen <- lm(yield~treat + blend, data = penicillin)
+lmPen <- lm(yield ~ treat + blend, data = penicillin)
 plot(lmPen)
-car::Anova(lmPen,type="III")
+car::Anova(lmPen, type = "III")
 ```
 
 We conclude that the effect of the treatment on the penicillin yield is not significant at the 5% level of significance (p = `r car::Anova(lmPen,type="III")["treat","Pr(>F)"] %>% round(.,2)`.
@@ -669,7 +679,7 @@ lmBiorep
 ```
 
 ```{r}
-francSum <- data.frame(genotype = rep(c("D8","WT"),each=3) %>% as.factor %>% relevel("WT"), intensityLog2 = lmBiorep$coef)
+francSum <- data.frame(genotype = rep(c("D8", "WT"), each = 3) %>% as.factor() %>% relevel("WT"), intensityLog2 = lmBiorep$coef)
 francSum
 ```
 
@@ -692,14 +702,14 @@ Note, that the analysis where we ignore that we have multiple technical repeats 
 ```{r}
 sigmaWithin <- sigma(lmBiorep)
 sigmaBetween <- sigma(lmSum)
-xBiorep <- model.matrix(~-1+biorep,franc)
-xWrong <- model.matrix(~genotype,franc)
+xBiorep <- model.matrix(~ -1 + biorep, franc)
+xWrong <- model.matrix(~genotype, franc)
 
 
 set.seed(2523)
 nSim <- 1000
-resWrong <- matrix(NA,nSim,4) %>% as.data.frame
-names(resWrong) <- c("Estimate","Std. Error","t value","pvalue")
+resWrong <- matrix(NA, nSim, 4) %>% as.data.frame()
+names(resWrong) <- c("Estimate", "Std. Error", "t value", "pvalue")
 resCorrect <- resWrong
 genotype <- franc$genotype
 genotypeSum <- francSum$genotype
@@ -707,24 +717,24 @@ biorep <- franc$biorep
 
 for (i in 1:nSim)
 {
-biorepSim <- rnorm(ncol(xBiorep),sd=sigmaBetween)
-ySim <- xBiorep%*%biorepSim + rnorm(nrow(xBiorep),sd=sigmaWithin)
-ySum <- lm(ySim~biorep)$coefficient
-resWrong[i,] <- summary(lm(ySim~genotype))$coefficient[2,]
-resCorrect[i,]<-summary(lm(ySum~genotypeSum))$coefficient[2,]
+  biorepSim <- rnorm(ncol(xBiorep), sd = sigmaBetween)
+  ySim <- xBiorep %*% biorepSim + rnorm(nrow(xBiorep), sd = sigmaWithin)
+  ySum <- lm(ySim ~ biorep)$coefficient
+  resWrong[i, ] <- summary(lm(ySim ~ genotype))$coefficient[2, ]
+  resCorrect[i, ] <- summary(lm(ySum ~ genotypeSum))$coefficient[2, ]
 }
 mean(resCorrect$pvalue < 0.05)
 mean(resWrong$pvalue < 0.05)
 ```
 
 ```{r}
-qplot(resCorrect$pvalue,geom = "histogram",boundary=c(0,1)) +
-  stat_bin(breaks=seq(0,1,.1)) +
+qplot(resCorrect$pvalue, geom = "histogram", boundary = c(0, 1)) +
+  stat_bin(breaks = seq(0, 1, .1)) +
   xlab("pvalue") +
   ggtitle("Correct analysis")
 
-qplot(resWrong$pvalue,geom = "histogram",boundary=c(0,1)) +
-  stat_bin(breaks=seq(0,1,.1)) +
+qplot(resWrong$pvalue, geom = "histogram", boundary = c(0, 1)) +
+  stat_bin(breaks = seq(0, 1, .1)) +
   xlab("pvalue") +
   ggtitle("Wrong analysis")
 ```

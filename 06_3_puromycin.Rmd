@@ -58,18 +58,15 @@ between the substrate concentration and enzyme's rate.
 Puromycin %>%
   ggplot(...) + # select which elements of the dataset we need to visualize
   ... # use a relevant plotting geometry
-  stat_smooth(...) + # draw a smooth line through the data cloud
+stat_smooth(...) + # draw a smooth line through the data cloud
   stat_smooth(...) # draw a straight (linear regression) line through the data cloud
-  ... # you can add some extra elements like axis labels, title, ...
+... # you can add some extra elements like axis labels, title, ...
 ```
 
 Does the relationship look linear? Can you think of any other steps that we
 might take to assess this relationship?
 
 ```{r}
-
-
-
 
 ```
 

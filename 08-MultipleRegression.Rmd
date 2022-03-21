@@ -9,8 +9,10 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
-                      message = FALSE, warning = FALSE, cache = TRUE)
+knitr::opts_chunk$set(
+  include = TRUE, comment = NA, echo = TRUE,
+  message = FALSE, warning = FALSE, cache = TRUE
+)
 library(tidyverse)
 ```
 
@@ -45,16 +47,18 @@ $\rightarrow$ Extend simple linear regression to multiple predictors.
 ---
 
 ```{r}
-prostate<-read_csv("https://raw.githubusercontent.com/GTPB/PSLS20/master/data/prostate.csv")
+prostate <- read_csv("https://raw.githubusercontent.com/GTPB/PSLS20/master/data/prostate.csv")
 prostate
-prostate$svi<-as.factor(prostate$svi)
+prostate$svi <- as.factor(prostate$svi)
 ```
 
 ---
 
 ```{r , out.width='100%', fig.asp=.8, fig.align='center',echo=FALSE}
 library(GGally)
-prostate %>% select(-pgg45)  %>% ggpairs()
+prostate %>%
+  select(-pgg45) %>%
+  ggpairs()
 ```
 
 ---
@@ -118,14 +122,14 @@ or
 ### Prostate example
 
 ```{r}
-lmV <- lm(lpsa~lcavol,prostate)
+lmV <- lm(lpsa ~ lcavol, prostate)
 summary(lmV)
 ```
 
 ---
 
 ```{r}
-lmVWS <- lm(lpsa~lcavol + lweight + svi ,prostate)
+lmVWS <- lm(lpsa ~ lcavol + lweight + svi, prostate)
 summary(lmVWS)
 ```
 
@@ -133,31 +137,38 @@ summary(lmVWS)
 
 ```{r out.width='80%', fig.asp=.8, fig.align='center', message=FALSE,echo=FALSE}
 library(plot3D)
-grid.lines = 10
-x<-prostate$lcavol
-y<-prostate$lweight
-z<-prostate$lpsa
-fit<-lm(z~x+y+svi,data=prostate)
+grid.lines <- 10
+x <- prostate$lcavol
+y <- prostate$lweight
+z <- prostate$lpsa
+fit <- lm(z ~ x + y + svi, data = prostate)
 x.pred <- seq(min(x), max(x), length.out = grid.lines)
 y.pred <- seq(min(y), max(y), length.out = grid.lines)
 
 # fitted points for droplines to surface
-th=20
-ph=5
-scatter3D(x, y, z, pch = 16,col=c("darkblue","red")[as.double(prostate$svi)], cex = .75,
-    theta = th, phi = ph, ticktype = "detailed",
-    xlab = "lcavol", ylab = "lweight", zlab = "lpsa",
-   colvar=FALSE,bty = "g")
+th <- 20
+ph <- 5
+scatter3D(x, y, z,
+  pch = 16, col = c("darkblue", "red")[as.double(prostate$svi)], cex = .75,
+  theta = th, phi = ph, ticktype = "detailed",
+  xlab = "lcavol", ylab = "lweight", zlab = "lpsa",
+  colvar = FALSE, bty = "g"
+)
 
-for (i in 1:nrow(prostate))
-lines3D(x=rep(prostate$lcavol[i],2),y=rep(prostate$lweight[i],2),z=c(prostate$lpsa[i],lmVWS$fit[i]),col=c("darkblue","red")[as.double(prostate$svi)[i]],add=TRUE,lty=2)
+for (i in 1:nrow(prostate)) {
+  lines3D(x = rep(prostate$lcavol[i], 2), y = rep(prostate$lweight[i], 2), z = c(prostate$lpsa[i], lmVWS$fit[i]), col = c("darkblue", "red")[as.double(prostate$svi)[i]], add = TRUE, lty = 2)
+}
 
-z.pred3D <- outer(x.pred, y.pred, function(x,y) {lmVWS$coef[1]+lmVWS$coef[2]*x+lmVWS$coef[3]*y})
-x.pred3D <- outer(x.pred,y.pred,function(x,y) x)
-y.pred3D <- outer(x.pred,y.pred,function(x,y) y)
-surf3D(x.pred3D,y.pred3D,z.pred3D,col="blue",facets=NA,add=TRUE)
-z2.pred3D <- outer(x.pred, y.pred, function(x,y) {lmVWS$coef[1]+lmVWS$coef[4]+lmVWS$coef[2]*x+lmVWS$coef[3]*y})
-surf3D(x.pred3D,y.pred3D,z2.pred3D,col="red",facets=NA,add=TRUE)
+z.pred3D <- outer(x.pred, y.pred, function(x, y) {
+  lmVWS$coef[1] + lmVWS$coef[2] * x + lmVWS$coef[3] * y
+})
+x.pred3D <- outer(x.pred, y.pred, function(x, y) x)
+y.pred3D <- outer(x.pred, y.pred, function(x, y) y)
+surf3D(x.pred3D, y.pred3D, z.pred3D, col = "blue", facets = NA, add = TRUE)
+z2.pred3D <- outer(x.pred, y.pred, function(x, y) {
+  lmVWS$coef[1] + lmVWS$coef[4] + lmVWS$coef[2] * x + lmVWS$coef[3] * y
+})
+surf3D(x.pred3D, y.pred3D, z2.pred3D, col = "red", facets = NA, add = TRUE)
 ```
 
 ---
@@ -279,7 +290,7 @@ E(Y | X_v=x_v +1, X_w=x_w, X_s=x_s) - E(Y | X_v=x_v, X_w=x_w, X_s=x_s) \\
 ---
 
 ```{r}
-lmVWS_IntVW <- lm(lpsa~lcavol + lweight + svi + lcavol:lweight ,prostate)
+lmVWS_IntVW <- lm(lpsa ~ lcavol + lweight + svi + lcavol:lweight, prostate)
 summary(lmVWS_IntVW)
 ```
 
@@ -287,45 +298,55 @@ summary(lmVWS_IntVW)
 
 
 ```{r out.width='100%', fig.asp=.8, fig.align='center', message=FALSE,echo=FALSE}
-par(mfrow=c(1,2))
+par(mfrow = c(1, 2))
 library(plot3D)
-grid.lines = 10
-x<-prostate$lcavol
-y<-prostate$lweight
-z<-prostate$lpsa
-fit<-lm(z~x+y+svi,data=prostate)
+grid.lines <- 10
+x <- prostate$lcavol
+y <- prostate$lweight
+z <- prostate$lpsa
+fit <- lm(z ~ x + y + svi, data = prostate)
 x.pred <- seq(min(x), max(x), length.out = grid.lines)
 y.pred <- seq(min(y), max(y), length.out = grid.lines)
 
 # fitted points for droplines to surface
-th=-25
-ph=5
-scatter3D(x, y, z, pch = 16,col=c("darkblue","red")[as.double(prostate$svi)], cex = .75,
-    theta = th, phi = ph, ticktype = "detailed",
-    xlab = "lcavol", ylab = "lweight", zlab = "lpsa",
-   colvar=FALSE,bty = "g",main="Additive model")
+th <- -25
+ph <- 5
+scatter3D(x, y, z,
+  pch = 16, col = c("darkblue", "red")[as.double(prostate$svi)], cex = .75,
+  theta = th, phi = ph, ticktype = "detailed",
+  xlab = "lcavol", ylab = "lweight", zlab = "lpsa",
+  colvar = FALSE, bty = "g", main = "Additive model"
+)
 
-for (i in which(prostate$svi=="healthy"))
-lines3D(x=rep(prostate$lcavol[i],2),y=rep(prostate$lweight[i],2),z=c(prostate$lpsa[i],lmVWS$fit[i]),col=c("darkblue","red")[as.double(prostate$svi)[i]],add=TRUE,lty=2)
+for (i in which(prostate$svi == "healthy")) {
+  lines3D(x = rep(prostate$lcavol[i], 2), y = rep(prostate$lweight[i], 2), z = c(prostate$lpsa[i], lmVWS$fit[i]), col = c("darkblue", "red")[as.double(prostate$svi)[i]], add = TRUE, lty = 2)
+}
 
-z.pred3D <- outer(x.pred, y.pred, function(x,y) {lmVWS$coef[1]+lmVWS$coef[2]*x+lmVWS$coef[3]*y})
-x.pred3D <- outer(x.pred,y.pred,function(x,y) x)
-y.pred3D <- outer(x.pred,y.pred,function(x,y) y)
-surf3D(x.pred3D,y.pred3D,z.pred3D,col="blue",facets=NA,add=TRUE)
+z.pred3D <- outer(x.pred, y.pred, function(x, y) {
+  lmVWS$coef[1] + lmVWS$coef[2] * x + lmVWS$coef[3] * y
+})
+x.pred3D <- outer(x.pred, y.pred, function(x, y) x)
+y.pred3D <- outer(x.pred, y.pred, function(x, y) y)
+surf3D(x.pred3D, y.pred3D, z.pred3D, col = "blue", facets = NA, add = TRUE)
 
 
-scatter3D(x, y, z, pch = 16,col=c("darkblue","red")[as.double(prostate$svi)], cex = .75,
-    theta = th, phi = ph, ticktype = "detailed",
-    xlab = "lcavol", ylab = "lweight", zlab = "lpsa",
-   colvar=FALSE,bty = "g",main="Model met lcavol:lweight interactie")
+scatter3D(x, y, z,
+  pch = 16, col = c("darkblue", "red")[as.double(prostate$svi)], cex = .75,
+  theta = th, phi = ph, ticktype = "detailed",
+  xlab = "lcavol", ylab = "lweight", zlab = "lpsa",
+  colvar = FALSE, bty = "g", main = "Model met lcavol:lweight interactie"
+)
 
-for (i in which(prostate$svi=="healthy"))
-lines3D(x=rep(prostate$lcavol[i],2),y=rep(prostate$lweight[i],2),z=c(prostate$lpsa[i],lmVWS_IntVW$fit[i]),col=c("darkblue","red")[as.double(prostate$svi)[i]],add=TRUE,lty=2)
+for (i in which(prostate$svi == "healthy")) {
+  lines3D(x = rep(prostate$lcavol[i], 2), y = rep(prostate$lweight[i], 2), z = c(prostate$lpsa[i], lmVWS_IntVW$fit[i]), col = c("darkblue", "red")[as.double(prostate$svi)[i]], add = TRUE, lty = 2)
+}
 
-z.pred3D <- outer(x.pred, y.pred, function(x,y) {lmVWS_IntVW$coef[1]+lmVWS_IntVW$coef[2]*x+lmVWS_IntVW$coef[3]*y+lmVWS_IntVW$coef[5]*x*y})
-x.pred3D <- outer(x.pred,y.pred,function(x,y) x)
-y.pred3D <- outer(x.pred,y.pred,function(x,y) y)
-surf3D(x.pred3D,y.pred3D,z.pred3D,col="blue",facets=NA,add=TRUE)
+z.pred3D <- outer(x.pred, y.pred, function(x, y) {
+  lmVWS_IntVW$coef[1] + lmVWS_IntVW$coef[2] * x + lmVWS_IntVW$coef[3] * y + lmVWS_IntVW$coef[5] * x * y
+})
+x.pred3D <- outer(x.pred, y.pred, function(x, y) x)
+y.pred3D <- outer(x.pred, y.pred, function(x, y) y)
+surf3D(x.pred3D, y.pred3D, z.pred3D, col = "blue", facets = NA, add = TRUE)
 ```
 
 ---
@@ -348,7 +369,7 @@ $$Y=\beta_0+\beta_vX_v+\beta_wX_w+\beta_sX_s+\beta_{vs}X_vX_s + \beta_{ws}X_wX_s
 ---
 
 ```{r}
-lmVWS_IntVS_WS <- lm(lpsa ~ lcavol + lweight + svi + svi:lcavol + svi:lweight,data=prostate)
+lmVWS_IntVS_WS <- lm(lpsa ~ lcavol + lweight + svi + svi:lcavol + svi:lweight, data = prostate)
 summary(lmVWS_IntVS_WS)
 ```
 
@@ -367,49 +388,63 @@ with intercept $\beta_0+\beta_s$ and slopes $\beta_v+\beta_{vs}$ and $\beta_w+\b
 ---
 
 ```{r out.width='100%', fig.asp=.8, fig.align='center', message=FALSE,echo=FALSE}
-par(mfrow=c(1,2))
+par(mfrow = c(1, 2))
 library(plot3D)
-grid.lines = 10
-x<-prostate$lcavol
-y<-prostate$lweight
-z<-prostate$lpsa
-fit<-lm(z~x+y+svi,data=prostate)
+grid.lines <- 10
+x <- prostate$lcavol
+y <- prostate$lweight
+z <- prostate$lpsa
+fit <- lm(z ~ x + y + svi, data = prostate)
 x.pred <- seq(min(x), max(x), length.out = grid.lines)
 y.pred <- seq(min(y), max(y), length.out = grid.lines)
 
 # fitted points for droplines to surface
-th=-25
-ph=5
-scatter3D(x, y, z, pch = 16,col=c("darkblue","red")[as.double(prostate$svi)], cex = .75,
-    theta = th, phi = ph, ticktype = "detailed",
-    xlab = "lcavol", ylab = "lweight", zlab = "lpsa",
-   colvar=FALSE,bty = "g",main="Additive model")
+th <- -25
+ph <- 5
+scatter3D(x, y, z,
+  pch = 16, col = c("darkblue", "red")[as.double(prostate$svi)], cex = .75,
+  theta = th, phi = ph, ticktype = "detailed",
+  xlab = "lcavol", ylab = "lweight", zlab = "lpsa",
+  colvar = FALSE, bty = "g", main = "Additive model"
+)
 
-for (i in which(prostate$svi=="healthy"))
-lines3D(x=rep(prostate$lcavol[i],2),y=rep(prostate$lweight[i],2),z=c(prostate$lpsa[i],lmVWS$fit[i]),col=c("darkblue","red")[as.double(prostate$svi)[i]],add=TRUE,lty=2)
+for (i in which(prostate$svi == "healthy")) {
+  lines3D(x = rep(prostate$lcavol[i], 2), y = rep(prostate$lweight[i], 2), z = c(prostate$lpsa[i], lmVWS$fit[i]), col = c("darkblue", "red")[as.double(prostate$svi)[i]], add = TRUE, lty = 2)
+}
 
-z.pred3D <- outer(x.pred, y.pred, function(x,y) {lmVWS$coef[1]+lmVWS$coef[2]*x+lmVWS$coef[3]*y})
-x.pred3D <- outer(x.pred,y.pred,function(x,y) x)
-y.pred3D <- outer(x.pred,y.pred,function(x,y) y)
-surf3D(x.pred3D,y.pred3D,z.pred3D,col="blue",facets=NA,add=TRUE)
-z2.pred3D <- outer(x.pred, y.pred, function(x,y) {lmVWS$coef[1]+lmVWS$coef[4]+lmVWS$coef[2]*x+lmVWS$coef[3]*y})
-surf3D(x.pred3D,y.pred3D,z2.pred3D,col="orange",facets=NA,add=TRUE)
+z.pred3D <- outer(x.pred, y.pred, function(x, y) {
+  lmVWS$coef[1] + lmVWS$coef[2] * x + lmVWS$coef[3] * y
+})
+x.pred3D <- outer(x.pred, y.pred, function(x, y) x)
+y.pred3D <- outer(x.pred, y.pred, function(x, y) y)
+surf3D(x.pred3D, y.pred3D, z.pred3D, col = "blue", facets = NA, add = TRUE)
+z2.pred3D <- outer(x.pred, y.pred, function(x, y) {
+  lmVWS$coef[1] + lmVWS$coef[4] + lmVWS$coef[2] * x + lmVWS$coef[3] * y
+})
+surf3D(x.pred3D, y.pred3D, z2.pred3D, col = "orange", facets = NA, add = TRUE)
 
 
-scatter3D(x, y, z, pch = 16,col=c("darkblue","red")[as.double(prostate$svi)], cex = .75,
-    theta = th, phi = ph, ticktype = "detailed",
-    xlab = "lcavol", ylab = "lweight", zlab = "lpsa",
-   colvar=FALSE,bty = "g",main="Model met lcavol:lweight interactie")
+scatter3D(x, y, z,
+  pch = 16, col = c("darkblue", "red")[as.double(prostate$svi)], cex = .75,
+  theta = th, phi = ph, ticktype = "detailed",
+  xlab = "lcavol", ylab = "lweight", zlab = "lpsa",
+  colvar = FALSE, bty = "g", main = "Model met lcavol:lweight interactie"
+)
 
-for (i in which(prostate$svi=="healthy"))
-lines3D(x=rep(prostate$lcavol[i],2),y=rep(prostate$lweight[i],2),z=c(prostate$lpsa[i],lmVWS_IntVS_WS$fit[i]),col=c("darkblue","red")[as.double(prostate$svi)[i]],add=TRUE,lty=2)
+for (i in which(prostate$svi == "healthy")) {
+  lines3D(x = rep(prostate$lcavol[i], 2), y = rep(prostate$lweight[i], 2), z = c(prostate$lpsa[i], lmVWS_IntVS_WS$fit[i]), col = c("darkblue", "red")[as.double(prostate$svi)[i]], add = TRUE, lty = 2)
+}
 
-z.pred3D <- outer(x.pred, y.pred, function(x,y) {lmVWS_IntVS_WS$coef[1]+lmVWS_IntVS_WS$coef[2]*x+lmVWS_IntVS_WS$coef[3]*y})
-x.pred3D <- outer(x.pred,y.pred,function(x,y) x)
-y.pred3D <- outer(x.pred,y.pred,function(x,y) y)
-surf3D(x.pred3D,y.pred3D,z.pred3D,col="blue",facets=NA,add=TRUE)
-z2.pred3D <- outer(x.pred, y.pred, function(x,y) {lmVWS_IntVS_WS$coef[1]+lmVWS_IntVS_WS$coef[4]+lmVWS_IntVS_WS$coef[2]*x+lmVWS_IntVS_WS$coef[3]*y+lmVWS_IntVS_WS$coef[5]*x+lmVWS_IntVS_WS$coef[6]*y})
-surf3D(x.pred3D,y.pred3D,z2.pred3D,col="orange",facets=NA,add=TRUE)
+z.pred3D <- outer(x.pred, y.pred, function(x, y) {
+  lmVWS_IntVS_WS$coef[1] + lmVWS_IntVS_WS$coef[2] * x + lmVWS_IntVS_WS$coef[3] * y
+})
+x.pred3D <- outer(x.pred, y.pred, function(x, y) x)
+y.pred3D <- outer(x.pred, y.pred, function(x, y) y)
+surf3D(x.pred3D, y.pred3D, z.pred3D, col = "blue", facets = NA, add = TRUE)
+z2.pred3D <- outer(x.pred, y.pred, function(x, y) {
+  lmVWS_IntVS_WS$coef[1] + lmVWS_IntVS_WS$coef[4] + lmVWS_IntVS_WS$coef[2] * x + lmVWS_IntVS_WS$coef[3] * y + lmVWS_IntVS_WS$coef[5] * x + lmVWS_IntVS_WS$coef[6] * y
+})
+surf3D(x.pred3D, y.pred3D, z2.pred3D, col = "orange", facets = NA, add = TRUE)
 ```
 
 ---
@@ -581,7 +616,7 @@ We can obtain these sums of squares using the `Anova` function from the `car` pa
 
 ```{r}
 library(car)
-Anova(lmVWS,type=3)
+Anova(lmVWS, type = 3)
 ```
 
 The p-values are identical to those of two-sided t-tests
@@ -624,7 +659,7 @@ summary(lmVWS_IntVW)
 ---
 
 ```{r}
-cor(cbind(prostate$lcavol,prostate$lweight,prostate$lcavol*prostate$lweight))
+cor(cbind(prostate$lcavol, prostate$lweight, prostate$lcavol * prostate$lweight))
 ```
 
 - High correlation between log-tumor volume and interaction.
@@ -654,14 +689,14 @@ For parameter $j$ in de regression model
 ### Body fat example
 
 ```{r out.width='90%', fig.asp=.8, fig.align='center', message=FALSE,echo=FALSE}
-bodyfat <- read_delim("https://raw.githubusercontent.com/GTPB/PSLS20/master/data/bodyfat.txt",delim=" ")
+bodyfat <- read_delim("https://raw.githubusercontent.com/GTPB/PSLS20/master/data/bodyfat.txt", delim = " ")
 bodyfat %>% ggpairs()
 ```
 
 ---
 
 ```{r echo=FALSE}
-lmFat <- lm(Body_fat~Triceps+Thigh+Midarm ,data=bodyfat)
+lmFat <- lm(Body_fat ~ Triceps + Thigh + Midarm, data = bodyfat)
 summary(lmFat)
 ```
 
@@ -674,7 +709,7 @@ vif(lmFat)
 ---
 
 ```{r echo=FALSE}
-lmMidarm <- lm(Midarm ~ Triceps+Thigh,data=bodyfat)
+lmMidarm <- lm(Midarm ~ Triceps + Thigh, data = bodyfat)
 summary(lmMidarm)
 ```
 
@@ -697,23 +732,23 @@ vif(lmVWS_IntVW)
 
 ```{r}
 set.seed(112358)
-nobs<-20
-sdy<-1
-x<-seq(0,1,length=nobs)
-y<-10+5*x+rnorm(nobs,sd=sdy)
-x1<-c(x,0.5)
-y1 <- c(y,10+5*1.5+rnorm(1,sd=sdy))
-x2 <- c(x,1.5)
-y2 <- c(y,y1[21])
-x3 <- c(x,1.5)
-y3 <- c(y,11)
-plot(x,y,xlim=range(c(x1,x2,x3)),ylim=range(c(y1,y2,y3)))
-points(c(x1[21],x2[21],x3[21]),c(y1[21],y2[21],y3[21]),pch=as.character(1:3),col=2:4)
-abline(lm(y~x),lwd=2)
-abline(lm(y1~x1),col=2,lty=2,lwd=2)
-abline(lm(y2~x2),col=3,lty=3,lwd=2)
-abline(lm(y3~x3),col=4,lty=4,lwd=2)
-legend("topleft",col=1:4,lty=1:4,legend=paste("lm",c("",as.character(1:3))),text.col=1:4)
+nobs <- 20
+sdy <- 1
+x <- seq(0, 1, length = nobs)
+y <- 10 + 5 * x + rnorm(nobs, sd = sdy)
+x1 <- c(x, 0.5)
+y1 <- c(y, 10 + 5 * 1.5 + rnorm(1, sd = sdy))
+x2 <- c(x, 1.5)
+y2 <- c(y, y1[21])
+x3 <- c(x, 1.5)
+y3 <- c(y, 11)
+plot(x, y, xlim = range(c(x1, x2, x3)), ylim = range(c(y1, y2, y3)))
+points(c(x1[21], x2[21], x3[21]), c(y1[21], y2[21], y3[21]), pch = as.character(1:3), col = 2:4)
+abline(lm(y ~ x), lwd = 2)
+abline(lm(y1 ~ x1), col = 2, lty = 2, lwd = 2)
+abline(lm(y2 ~ x2), col = 3, lty = 3, lwd = 2)
+abline(lm(y3 ~ x3), col = 4, lty = 4, lwd = 2)
+legend("topleft", col = 1:4, lty = 1:4, legend = paste("lm", c("", as.character(1:3))), text.col = 1:4)
 ```
 
 ---
@@ -739,13 +774,13 @@ legend("topleft",col=1:4,lty=1:4,legend=paste("lm",c("",as.character(1:3))),text
 
 
 ```{r  out.width='100%', fig.asp=.8, fig.align='center', message=FALSE, echo=FALSE}
-par(mfrow=c(2,2))
-plot(lmVWS,which=5)
-plot(lmVWS_IntVW,which=5)
-plot(cooks.distance(lmVWS),type="h",ylim=c(0,1),main="Additive model")
-abline(h=qf(0.5,length(lmVWS$coef),nrow(prostate)-length(lmVWS$coef)),lty=2)
-plot(cooks.distance(lmVWS_IntVW),type="h",ylim=c(0,1), main="Model with lcavol:lweight interaction")
-abline(h=qf(0.5,length(lmVWS_IntVW$coef),nrow(prostate)-length(lmVWS_IntVW$coef)),lty=2)
+par(mfrow = c(2, 2))
+plot(lmVWS, which = 5)
+plot(lmVWS_IntVW, which = 5)
+plot(cooks.distance(lmVWS), type = "h", ylim = c(0, 1), main = "Additive model")
+abline(h = qf(0.5, length(lmVWS$coef), nrow(prostate) - length(lmVWS$coef)), lty = 2)
+plot(cooks.distance(lmVWS_IntVW), type = "h", ylim = c(0, 1), main = "Model with lcavol:lweight interaction")
+abline(h = qf(0.5, length(lmVWS_IntVW$coef), nrow(prostate) - length(lmVWS_IntVW$coef)), lty = 2)
 ```
 
 ---
@@ -759,21 +794,21 @@ $$\textrm{DFBETAS}_{j(i)}=\frac{\hat{\beta}_{j}-\hat{\beta}_{j(i)}}{\textrm{SD}(
 
 
 ```{r out.width='90%', fig.asp=.8, fig.align='center', message=FALSE, echo=FALSE}
-par(mfrow=c(2,2))
+par(mfrow = c(2, 2))
 dfbetasPlots(lmVWS)
 ```
 
 ---
 
 ```{r out.width='90%', fig.align='center', message=FALSE, echo=FALSE}
-par(mfrow=c(2,2))
+par(mfrow = c(2, 2))
 dfbetasPlots(lmVWS_IntVW)
 ```
 
 ---
 
 ```{r out.width='100%',fig.align='center', message=FALSE, echo=FALSE}
-boxplot(exp(prostate$lweight),ylab="Prostate Weight (g)")
+boxplot(exp(prostate$lweight), ylab = "Prostate Weight (g)")
 ```
 
 
@@ -802,14 +837,14 @@ We fit a model for the average systolic blood pressure (`BPSysAve`) using age, g
 ```{r}
 library(NHANES)
 bpData <- NHANES %>%
-filter(
-  Race1 =="White" &
-    Age >= 18 &
-    !is.na(BPSysAve)
-    )
+  filter(
+    Race1 == "White" &
+      Age >= 18 &
+      !is.na(BPSysAve)
+  )
 
-mBp1 <- lm(BPSysAve ~ Age*Gender, bpData)
-par(mfrow = c(2,2))
+mBp1 <- lm(BPSysAve ~ Age * Gender, bpData)
+par(mfrow = c(2, 2))
 plot(mBp1)
 ```
 
@@ -825,8 +860,8 @@ plot(mBp1)
 We fit a model using log2 transformed average systolic blood pressure (`BPSysAve`).
 
 ```{r}
-mBp2 <- lm(BPSysAve %>% log2 ~ Age*Gender, bpData)
-par(mfrow = c(2,2))
+mBp2 <- lm(BPSysAve %>% log2() ~ Age * Gender, bpData)
+par(mfrow = c(2, 2))
 plot(mBp2)
 ```
 
@@ -844,20 +879,20 @@ plot(mBp2)
 4. Inference remains valid asymptotically.
 
 ```{r}
-mSd <- lm(mBp1$res %>% abs ~ mBp2$fitted)
+mSd <- lm(mBp1$res %>% abs() ~ mBp2$fitted)
 ```
 
 We estimate the model again:
 
 ```{r}
-mBp3 <- lm(BPSysAve ~ Age*Gender, bpData, w = 1/mSd$fitted^2)
+mBp3 <- lm(BPSysAve ~ Age * Gender, bpData, w = 1 / mSd$fitted^2)
 ```
 
 Residuals are still heteroscedastic.
 
 ```{r}
 data.frame(residuals = mBp3$residuals, fit = mBp3$fitted) %>%
-  ggplot(aes(fit,residuals)) +
+  ggplot(aes(fit, residuals)) +
   geom_point()
 ```
 
@@ -873,8 +908,8 @@ with $w_i = 1/\hat \sigma^2_i$.
 Weighted regression will correct for heteroscedasticity.
 
 ```{r}
-data.frame(scaled_residuals = mBp3$residuals/mSd$fitted, fit = mBp3$fitted) %>%
-  ggplot(aes(fit,scaled_residuals)) +
+data.frame(scaled_residuals = mBp3$residuals / mSd$fitted, fit = mBp3$fitted) %>%
+  ggplot(aes(fit, scaled_residuals)) +
   geom_point()
 ```
 
@@ -916,7 +951,7 @@ We can again use an Anova approach.
 #### Omnibus test
 
 ```{r}
-mBp0 <- lm(BPSysAve ~ Gender, bpData, w = 1/mSd$fitted^2)
+mBp0 <- lm(BPSysAve ~ Gender, bpData, w = 1 / mSd$fitted^2)
 anova(mBp0, mBp3)
 ```
 
@@ -927,14 +962,14 @@ For the posthoc tests we will again build upon the `multcomp` package.
 
 ```{r}
 library(multcomp)
-bpPosthoc <- glht(mBp3, linfct=c(
+bpPosthoc <- glht(mBp3, linfct = c(
   "Age = 0",
   "Age + Age:Gendermale = 0",
-  "Age:Gendermale = 0")
-  )
-bpPosthoc %>% summary
+  "Age:Gendermale = 0"
+))
+bpPosthoc %>% summary()
 
-bpPosthocCI <- bpPosthoc %>% confint
+bpPosthocCI <- bpPosthoc %>% confint()
 bpPosthocCI
 ```
 

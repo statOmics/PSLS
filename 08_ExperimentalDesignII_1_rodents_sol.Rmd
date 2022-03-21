@@ -34,7 +34,7 @@ A biologist examined the effect of a fungal infection on the eating behavior of 
 Infected apples were offered to a group of eight rodents, and sterile apples were offered to a group of 4 rodents. The amount of grams of apples consumed per kg body weight are given in the dataset below.
 
 ```{r}
-rodents <- data.frame(weight=c(11,33,48,34,112,369,64,44,177,80,141,332),group=as.factor(c(rep("treat",8),rep("ctrl",4))))
+rodents <- data.frame(weight = c(11, 33, 48, 34, 112, 369, 64, 44, 177, 80, 141, 332), group = as.factor(c(rep("treat", 8), rep("ctrl", 4))))
 rodents
 ```
 
@@ -42,7 +42,7 @@ rodents
 
 ```{r}
 rodents %>%
-  ggplot(aes(x=group,y=weight)) +
+  ggplot(aes(x = group, y = weight)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter()
 
@@ -50,7 +50,7 @@ rodents %>%
   ggplot(aes(sample = weight)) +
   geom_qq() +
   geom_qq_line() +
-  facet_wrap(~ group)
+  facet_wrap(~group)
 ```
 
 In the data exploration we do not have enough data to evaluate the assumptions.
@@ -98,24 +98,23 @@ With the current study and when we assume that the assumptions of the model hold
 Function to simulate data similar to that of our experiment under our model assumptions.
 
 ```{r}
-simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
-{
-    ySim <- rnorm(nrow(data)*nSim,sd=sd)
-    dim(ySim) <-c(nrow(data),nSim)
-    design <- model.matrix(form, data)
-    ySim <- ySim + c(design %*%betas)
-    ySim <- t(ySim)
+simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000) {
+  ySim <- rnorm(nrow(data) * nSim, sd = sd)
+  dim(ySim) <- c(nrow(data), nSim)
+  design <- model.matrix(form, data)
+  ySim <- ySim + c(design %*% betas)
+  ySim <- t(ySim)
 
-    ### Fitting
-    fitAll <- limma::lmFit(ySim,design)
+  ### Fitting
+  fitAll <- limma::lmFit(ySim, design)
 
-    ### Inference
-    varUnscaled <- c(t(contrasts)%*%fitAll$cov.coefficients%*%contrasts)
-    contrasts <- fitAll$coefficients %*%contrasts
-    seContrasts <- varUnscaled^.5*fitAll$sigma
-    tstats <- contrasts/seContrasts
-    pvals <- pt(abs(tstats),fitAll$df.residual,lower.tail = FALSE)*2
-    return(mean(pvals < alpha))
+  ### Inference
+  varUnscaled <- c(t(contrasts) %*% fitAll$cov.coefficients %*% contrasts)
+  contrasts <- fitAll$coefficients %*% contrasts
+  seContrasts <- varUnscaled^.5 * fitAll$sigma
+  tstats <- contrasts / seContrasts
+  pvals <- pt(abs(tstats), fitAll$df.residual, lower.tail = FALSE) * 2
+  return(mean(pvals < alpha))
 }
 ```
 
@@ -125,9 +124,9 @@ simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
 betas <- lm1$coefficients
 
 nSim <- 10000
-form <- ~ group
+form <- ~group
 sd <- sigma(lm1)
-contrast <- limma::makeContrasts("grouptreat",levels = names(lm1$coefficients))
+contrast <- limma::makeContrasts("grouptreat", levels = names(lm1$coefficients))
 alpha <- 0.05
 
 power <- simFast(form, rodents, betas, sd, contrasts = contrast, alpha = alpha, nSim = nSim)
@@ -141,11 +140,11 @@ We observe that the experiment is severly underpowered. We only have a power of 
 ```{r}
 betas <- lm1$coefficients
 nSim <- 10000
-form <- ~ group
+form <- ~group
 sd <- sigma(lm1)
-contrast <- limma::makeContrasts("grouptreat",levels = names(lm1$coefficients))
-n1 <- n2 <- nrow(rodents)/2
-predictorData <- data.frame(group = rep(c("ctrl","treat"),c(n1,n2)) %>% as.factor)
+contrast <- limma::makeContrasts("grouptreat", levels = names(lm1$coefficients))
+n1 <- n2 <- nrow(rodents) / 2
+predictorData <- data.frame(group = rep(c("ctrl", "treat"), c(n1, n2)) %>% as.factor())
 
 powerBalanced <- simFast(form, predictorData, betas, sd, contrasts = contrast, alpha = alpha, nSim = nSim)
 powerBalanced
@@ -160,8 +159,8 @@ $$
 Indeed,
 
 ```{r}
-sqrt(1/sum(rodents$group=="treat") + 1/sum(rodents$group=="ctrl"))
-sqrt(1/n1 + 1/n1)
+sqrt(1 / sum(rodents$group == "treat") + 1 / sum(rodents$group == "ctrl"))
+sqrt(1 / n1 + 1 / n1)
 ```
 
 So the SE is larger when the design is not balanced.
@@ -173,16 +172,16 @@ So the SE is larger when the design is not balanced.
 set.seed(1400)
 betas <- lm1$coefficients
 nSim <- 10000
-form <- ~ group
+form <- ~group
 sd <- sigma(lm1)
-power <- data.frame(n=seq(5,50,5),power=NA)
+power <- data.frame(n = seq(5, 50, 5), power = NA)
 alpha <- 0.05
-contrast <- limma::makeContrasts("grouptreat",levels = names(lm1$coefficients))
+contrast <- limma::makeContrasts("grouptreat", levels = names(lm1$coefficients))
 
 for (i in 1:nrow(power))
 {
   n1 <- n2 <- power$n[i]
-  predictorData <- data.frame(group = rep(c("ctrl","treat"),c(n1,n2)) %>% as.factor)
+  predictorData <- data.frame(group = rep(c("ctrl", "treat"), c(n1, n2)) %>% as.factor())
   power$power[i] <- simFast(form, predictorData, betas, sd, contrasts = contrast, alpha = alpha, nSim = nSim)
 }
 power
@@ -190,7 +189,7 @@ power
 
 ```{r}
 power %>%
-  ggplot(aes(x=n,y=power)) +
+  ggplot(aes(x = n, y = power)) +
   geom_line()
 ```
 
@@ -200,7 +199,7 @@ Through simulations we show that we need about 32-33 observations to obtain a po
 This is similar to what we would obtain with the close form formula that can be applied for a two group design
 
 ```{r}
-power.t.test(delta = lm1$coef[2], sd = sigma(lm1),power=.9)
+power.t.test(delta = lm1$coef[2], sd = sigma(lm1), power = .9)
 ```
 
 
@@ -215,18 +214,18 @@ Note, that
 
 ```{r}
 set.seed(1400)
-betas <- c(0,60)
+betas <- c(0, 60)
 nSim <- 10000
-form <- ~ group
+form <- ~group
 sd <- sigma(lm1)
-power2 <- data.frame(n=seq(5,100,5),power=NA)
+power2 <- data.frame(n = seq(5, 100, 5), power = NA)
 alpha <- 0.05
-contrast <- limma::makeContrasts("grouptreat",levels = names(lm1$coefficients))
+contrast <- limma::makeContrasts("grouptreat", levels = names(lm1$coefficients))
 
 for (i in 1:nrow(power2))
 {
   n1 <- n2 <- power2$n[i]
-  predictorData <- data.frame(group = rep(c("ctrl","treat"),c(n1,n2)) %>% as.factor)
+  predictorData <- data.frame(group = rep(c("ctrl", "treat"), c(n1, n2)) %>% as.factor())
   power2$power[i] <- simFast(form, predictorData, betas, sd, contrasts = contrast, alpha = alpha, nSim = nSim)
 }
 power2
@@ -234,9 +233,9 @@ power2
 
 ```{r}
 power2 %>%
-  ggplot(aes(x=n,y=power)) +
+  ggplot(aes(x = n, y = power)) +
   geom_line() +
-  geom_hline(yintercept = .9, lty=2)
+  geom_hline(yintercept = .9, lty = 2)
 ```
 
 We observe that we need between 75-80 observations to obtain a power of 90%.
@@ -244,9 +243,9 @@ We observe that we need between 75-80 observations to obtain a power of 90%.
 This is confirmed with the power functions for the two sample t-test.
 
 ```{r}
-b1 = - 60
-power = .9
-power.t.test(d = b1, sd = sigma(lm1), type='two.sample',power = power)
+b1 <- -60
+power <- .9
+power.t.test(d = b1, sd = sigma(lm1), type = "two.sample", power = power)
 ```
 
 Note, that we would require a much larger sample size. This is because the

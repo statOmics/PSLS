@@ -43,7 +43,7 @@ for each patient.
 
 ```{r, eval=FALSE}
 captopril %>%
-  gather(type,bp,-id)
+  gather(type, bp, -id)
 ```
 
 ## Barplot
@@ -55,20 +55,29 @@ is provided below:
 
 ```{r, eval=FALSE}
 captopril %>%
-  gather(type,bp,-id) %>%
+  gather(type, bp, -id) %>%
   group_by(type) %>%
-     summarize_at("bp",
-               list(mean=~mean(.,na.rm=TRUE),
-                    sd=~sd(.,na.rm=TRUE),
-                    n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
-  mutate(se=sd/sqrt(n)) %>%
-  ggplot(aes(x=type,y=mean,fill=type)) +
-    scale_fill_brewer(palette="RdGy") +
-    theme_bw() +
-    geom_bar(stat="identity") +
-    geom_errorbar(aes(ymin=mean-se, ymax=mean+se),width=.2) +
-    ggtitle("Barplot of different blood pressure measures") +
-    ylab("blood pressure (mmHg)")
+  summarize_at(
+    "bp",
+    list(
+      mean = ~ mean(., na.rm = TRUE),
+      sd = ~ sd(., na.rm = TRUE),
+      n = function(x) {
+        x %>%
+          is.na() %>%
+          `!`() %>%
+          sum()
+      }
+    )
+  ) %>%
+  mutate(se = sd / sqrt(n)) %>%
+  ggplot(aes(x = type, y = mean, fill = type)) +
+  scale_fill_brewer(palette = "RdGy") +
+  theme_bw() +
+  geom_bar(stat = "identity") +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = .2) +
+  ggtitle("Barplot of different blood pressure measures") +
+  ylab("blood pressure (mmHg)")
 ```
 
 A barplot, however, is not very informative. The height of the

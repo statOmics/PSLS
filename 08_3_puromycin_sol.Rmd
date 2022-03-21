@@ -34,7 +34,7 @@ the untreated state enzymes the reference category.
 
 ```{r}
 Puromycin <- Puromycin %>%
-    mutate(state =fct_relevel(state,c("untreated","treated")))
+  mutate(state = fct_relevel(state, c("untreated", "treated")))
 ```
 
 ## Data Exploration
@@ -43,11 +43,11 @@ First, we visualize the association between the concentration and the enzyme
 rate, for both of the enzyme states.
 
 ```{r}
-Puromycin  %>%
-  ggplot(aes(x=conc,y=rate)) +
+Puromycin %>%
+  ggplot(aes(x = conc, y = rate)) +
   geom_point() +
-  stat_smooth(method = "loess",col="red") + # fit een kromme door de punten (rode lijn)
-  stat_smooth(method='lm',col="black") + # fit een rechte door de punten aan de hand van de kleinstekwadratenmethode
+  stat_smooth(method = "loess", col = "red") + # fit een kromme door de punten (rode lijn)
+  stat_smooth(method = "lm", col = "black") + # fit een rechte door de punten aan de hand van de kleinstekwadratenmethode
   ylab("Reaction rate (counts/min)") +
   xlab("Substrate concentratie (ppm)") +
   facet_grid(~state)
@@ -60,11 +60,11 @@ We will assess the impact of log-transforming the concentration. Because the
 concentration is measured in ppm we will log$_{10}$ transform the data.
 
 ```{r}
-Puromycin  %>%
-  ggplot(aes(x=conc %>% log10,y=rate)) +
+Puromycin %>%
+  ggplot(aes(x = conc %>% log10(), y = rate)) +
   geom_point() +
-  stat_smooth(method = "loess",col="red") +
-  stat_smooth(method='lm',col="black") +
+  stat_smooth(method = "loess", col = "red") +
+  stat_smooth(method = "lm", col = "black") +
   ylab("Reaction Rate (counts/min)") +
   xlab("log10(Substrate concentration) (log10 ppm)") +
   facet_grid(~state)
@@ -119,8 +119,8 @@ So the main effect for treatment has the interpretation as the change in interce
 The interaction term has the interpretation as the change in slope between treated and untreated samples.
 
 ```{r}
-Puromycin <-Puromycin %>%
-  mutate(log10conc = conc %>% log10)
+Puromycin <- Puromycin %>%
+  mutate(log10conc = conc %>% log10())
 mod1 <- lm(rate ~ log10conc * state, Puromycin)
 summary(mod1)
 ```
@@ -141,7 +141,7 @@ We assume that the experiment was well designed and that the different reactions
 We assess linearity in a residual analysis
 
 ```{r}
-plot(mod1, which=1)
+plot(mod1, which = 1)
 ```
 
 The assumption of linearity is met.
@@ -149,7 +149,7 @@ The assumption of linearity is met.
 ### Normality
 
 ```{r}
-plot(mod1,which=2)
+plot(mod1, which = 2)
 ```
 
 The QQ-plot does not show large deviations from normality.
@@ -161,7 +161,7 @@ were we plot the square root of the standardized residuals in function of
 the fit.
 
 ```{r}
-plot(mod1, which=3)
+plot(mod1, which = 3)
 ```
 
 We see that the spread of the majority of the residuals is more or less similar.
@@ -175,7 +175,7 @@ We first do an omnibus test to assess is there is an effect of the log10 concent
 
 ```{r}
 mod0 <- lm(rate ~ state, data = Puromycin)
-anova(mod0,mod1)
+anova(mod0, mod1)
 ```
 
 Next, we assess the interaction.

@@ -40,14 +40,16 @@ tail(NHANES) ## take a look at the last rows of the dataset
 ```
 
 ```{r}
-NHANES[c(1,4,5,6,7,8),c("ID",
-                        "Gender",
-                        "Age",
-                        "Race1",
-                        "Weight",
-                        "Height",
-                        "BMI",
-                        "BPSysAve")] # display a select set of variable and subjects
+NHANES[c(1, 4, 5, 6, 7, 8), c(
+  "ID",
+  "Gender",
+  "Age",
+  "Race1",
+  "Weight",
+  "Height",
+  "BMI",
+  "BPSysAve"
+)] # display a select set of variable and subjects
 ```
 
 ## Take a `glimpse()` at your data
@@ -58,7 +60,7 @@ is part of the `dplyr`, which we will explore in much
 more detail below!
 
 ```{r}
-dplyr::glimpse(NHANES[,1:10])
+dplyr::glimpse(NHANES[, 1:10])
 # or glimpse(NHANES) to see all the variables in the dataset
 ```
 
@@ -133,11 +135,13 @@ Let's say we want to investigate how many subjects are
 
 ```{r, message=FALSE, warning=FALSE}
 NHANES %>%
-  select(c("Gender","Age","Weight","Height")) %>% ## select the colums of interest
-  filter(Gender == "male",
-         Age > 18,
-         Height > 150,
-         Weight < 80) %>% ## filter observations (rows) based on the required values
+  select(c("Gender", "Age", "Weight", "Height")) %>% ## select the colums of interest
+  filter(
+    Gender == "male",
+    Age > 18,
+    Height > 150,
+    Weight < 80
+  ) %>% ## filter observations (rows) based on the required values
   nrow()
 ```
 
@@ -160,10 +164,10 @@ five.
 
 ```{r warning=FALSE,message=FALSE}
 NHANES %>%
-  select(c("Race1", "Gender","MaritalStatus","Height")) %>%
+  select(c("Race1", "Gender", "MaritalStatus", "Height")) %>%
   filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "male") %>%
   arrange(desc(Height)) %>%
-  head(n=5)
+  head(n = 5)
 ```
 
 We have successfully combined three of the main `dplyr`
@@ -182,9 +186,9 @@ in `dplyr`.
 
 ```{r}
 NHANES %>%
-  select(c("Race1", "Gender","MaritalStatus","Height","Weight","BMI")) %>%
+  select(c("Race1", "Gender", "MaritalStatus", "Height", "Weight", "BMI")) %>%
   filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "male") %>%
-  mutate(BMI_self = Weight/(Height/100)**2)
+  mutate(BMI_self = Weight / (Height / 100)**2)
 ```
 
 Note that now we need to include the _Weight_ and _BMI_
@@ -202,9 +206,9 @@ value of the `BMI_self` column.
 
 ```{r}
 NHANES %>%
-  select(c("Race1", "Gender","MaritalStatus","Height","Weight","BMI")) %>%
+  select(c("Race1", "Gender", "MaritalStatus", "Height", "Weight", "BMI")) %>%
   filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "male") %>%
-  mutate(BMI_self = Weight/(Height/100)**2) %>%
+  mutate(BMI_self = Weight / (Height / 100)**2) %>%
   summarise(avg_BMI_self = mean(BMI_self, na.rm = TRUE))
 ## the addition argument na.rm = TRUE makes sure to remove missing
 ## values for the purpose of calculating the mean
@@ -267,9 +271,9 @@ a summary data frame.
 
 ```{r}
 NHANES %>%
-  select(c("Race1", "Gender","MaritalStatus","Height","Weight","BMI")) %>%
+  select(c("Race1", "Gender", "MaritalStatus", "Height", "Weight", "BMI")) %>%
   filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "male") %>%
-  mutate(BMI_self = Weight/(Height/100)**2) %>%
+  mutate(BMI_self = Weight / (Height / 100)**2) %>%
   group_by(MaritalStatus) %>% ##  group the subjects by their marital status
   summarise(avg_BMI_self = mean(BMI_self, na.rm = TRUE)) ## calculate the mean BMI_self value of each group
 ```
@@ -313,8 +317,8 @@ a histogram and a boxplot.
 
 ```{r}
 NHANES %>%
-  head(NHANES, n=100) %>% ## to make the visualization more clear, we take only the first 100 subjects
-  ggplot(aes(x=BMI)) +
+  head(NHANES, n = 100) %>% ## to make the visualization more clear, we take only the first 100 subjects
+  ggplot(aes(x = BMI)) +
   geom_dotplot(method = "histodot")
 ```
 
@@ -333,8 +337,8 @@ of high interest.
 
 ```{r}
 NHANES %>%
-  head(NHANES, n=100) %>%
-  ggplot(aes(x=BMI)) +
+  head(NHANES, n = 100) %>%
+  ggplot(aes(x = BMI)) +
   geom_histogram()
 ```
 
@@ -351,14 +355,16 @@ its distribution.
 set.seed(2) ## to make the horizontal position of the jitter non-random
 
 NHANES %>%
-  head(NHANES, n=100) %>%
-  ggplot(aes(x="", y=BMI)) +
-  geom_boxplot(outlier.shape=NA) +
-  geom_jitter(width=0.2) +
-  stat_summary(geom="text", fun.y=quantile,
-               aes(label=sprintf("%1.1f", ..y..)),
-               position=position_nudge(x=0.5), size=4.5) +
-  annotate("text", x = c(1.5,1.5,1.5,1.5,1.5,1.05,1.05), y = c(12.5,19,24.5,28.5,45,18,35), label = c("(minimum)","(25%)","(median)","(75%)","(maximum)","whisker","whisker"),size=3)
+  head(NHANES, n = 100) %>%
+  ggplot(aes(x = "", y = BMI)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.2) +
+  stat_summary(
+    geom = "text", fun.y = quantile,
+    aes(label = sprintf("%1.1f", ..y..)),
+    position = position_nudge(x = 0.5), size = 4.5
+  ) +
+  annotate("text", x = c(1.5, 1.5, 1.5, 1.5, 1.5, 1.05, 1.05), y = c(12.5, 19, 24.5, 28.5, 45, 18, 35), label = c("(minimum)", "(25%)", "(median)", "(75%)", "(maximum)", "whisker", "whisker"), size = 3)
 ```
 
 Arguably, the boxplot is the most informative default
@@ -439,13 +445,13 @@ the ggplot functionalities!
 NHANES %>%
   filter(Age >= 18, Race1 == "White", MaritalStatus == "Married") %>% ## select the required data
   ggplot(aes(x = Height, y = Weight, color = Gender)) +
-  geom_point(shape=17, size = 1) + ## set to a different shape (triangle) and size
+  geom_point(shape = 17, size = 1) + ## set to a different shape (triangle) and size
   ggtitle("Height versus Weight") + ## for the main title
   xlab("Height (cm)") +
   ylab("Weight (kg)") +
-  xlim(0,220) + ## set limit of x-axis
-  ylim(0,220) + ## set limit of y-axis
-  scale_color_manual(values = c("red","blue")) + ## manually set colors
+  xlim(0, 220) + ## set limit of x-axis
+  ylim(0, 220) + ## set limit of y-axis
+  scale_color_manual(values = c("red", "blue")) + ## manually set colors
   theme_bw() ## set white background
 ```
 
@@ -486,9 +492,9 @@ the required data and that are between 40 and 65 years old.
 ## histogram of BPSysAve for subjects wit age between 40 and 65 years old
 NHANES %>%
   filter(!is.na(Race1), !is.na(Smoke100n), !is.na(BMI_WHO), !is.na(Age), !is.na(HardDrugs), !is.na(HealthGen), !is.na(Gender), !is.na(AlcoholYear), !is.na(BPSysAve), !is.na(SleepTrouble)) %>% ## retains 4660 subjects with the required data
-  filter(between(Age,40,65)) %>% ## filter the subjects on age, retains 2522 subjects
-  distinct(ID,.keep_all=TRUE) %>% ## removes duplicated IDs, retains 1467 subjects
-  ggplot(aes(x=BPSysAve)) +
+  filter(between(Age, 40, 65)) %>% ## filter the subjects on age, retains 2522 subjects
+  distinct(ID, .keep_all = TRUE) %>% ## removes duplicated IDs, retains 1467 subjects
+  ggplot(aes(x = BPSysAve)) +
   geom_histogram()
 ```
 
@@ -509,10 +515,10 @@ general health that is not considered poor and that has a BMI between
 ## histogram of BPSysAve for HEALTHY subjects wit age between 40 and 65 years old
 NHANES %>%
   filter(!is.na(Race1), !is.na(Smoke100n), !is.na(BMI_WHO), !is.na(Age), !is.na(HardDrugs), !is.na(HealthGen), !is.na(Gender), !is.na(AlcoholYear), !is.na(BPSysAve), !is.na(SleepTrouble)) %>% ## retains 4660 subjects with the required data
-  filter(between(Age,40,65)) %>% ## filter the subjects on age, retains 2522 subjects
-  distinct(ID,.keep_all=TRUE) %>% ## removes duplicated IDs, retains 1467 subjects
-  filter(Smoke100n == "Non-Smoker", Diabetes == "No", HardDrugs == "No", HealthGen != "Poor", SleepTrouble == "No", BMI_WHO%in%c("18.5_to_24.9","25.0_to_29.9")) %>% ## filter to have only healthy subjects, based on multiple health criteria. Retains 275 subjects.
-  ggplot(aes(x=BPSysAve)) +
+  filter(between(Age, 40, 65)) %>% ## filter the subjects on age, retains 2522 subjects
+  distinct(ID, .keep_all = TRUE) %>% ## removes duplicated IDs, retains 1467 subjects
+  filter(Smoke100n == "Non-Smoker", Diabetes == "No", HardDrugs == "No", HealthGen != "Poor", SleepTrouble == "No", BMI_WHO %in% c("18.5_to_24.9", "25.0_to_29.9")) %>% ## filter to have only healthy subjects, based on multiple health criteria. Retains 275 subjects.
+  ggplot(aes(x = BPSysAve)) +
   geom_histogram()
 ```
 
@@ -524,14 +530,14 @@ reference interval.
 ## to get the 95% reference interval for the healthy group;
 summary_NHANES <- NHANES %>%
   filter(!is.na(Race1), !is.na(Smoke100n), !is.na(BMI_WHO), !is.na(Age), !is.na(HardDrugs), !is.na(HealthGen), !is.na(Gender), !is.na(AlcoholYear), !is.na(BPSys1), !is.na(BPSys2), !is.na(BPSys3), !is.na(SleepTrouble)) %>% ## retains 4660 subjects with the required data
-  filter(between(Age,40,65)) %>% ## filter the subjects on age, retains 2522 subjects
-  distinct(ID,.keep_all=TRUE) %>% ## removes duplicated IDs, retains 1467 subjects
-  filter(Smoke100n == "Non-Smoker", Diabetes == "No", HardDrugs == "No", HealthGen != "Poor", SleepTrouble == "No", BMI_WHO%in%c("18.5_to_24.9","25.0_to_29.9")) %>% ## filter to have only healthy subjects, based on multiple health criteria. Retains 275 subjects.
-  Rmisc::summarySE(measurevar="BPSysAve") # calculate the summary statistics
+  filter(between(Age, 40, 65)) %>% ## filter the subjects on age, retains 2522 subjects
+  distinct(ID, .keep_all = TRUE) %>% ## removes duplicated IDs, retains 1467 subjects
+  filter(Smoke100n == "Non-Smoker", Diabetes == "No", HardDrugs == "No", HealthGen != "Poor", SleepTrouble == "No", BMI_WHO %in% c("18.5_to_24.9", "25.0_to_29.9")) %>% ## filter to have only healthy subjects, based on multiple health criteria. Retains 275 subjects.
+  Rmisc::summarySE(measurevar = "BPSysAve") # calculate the summary statistics
 
 paste("Mean value:", summary_NHANES$BPSysAve)
 paste("Standard deviation:", summary_NHANES$sd)
-paste0("Reference interval: [", summary_NHANES$BPSysAve - 2*summary_NHANES$sd, ";", summary_NHANES$BPSysAve + 2*summary_NHANES$sd, "]")
+paste0("Reference interval: [", summary_NHANES$BPSysAve - 2 * summary_NHANES$sd, ";", summary_NHANES$BPSysAve + 2 * summary_NHANES$sd, "]")
 ```
 
 The systolic blood pressure for healthy subjects is distributed

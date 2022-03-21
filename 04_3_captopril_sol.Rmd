@@ -43,7 +43,7 @@ for each patient.
 
 ```{r}
 captopril %>%
-  gather(type,bp,-id)
+  gather(type, bp, -id)
 ```
 
 ## Barplot
@@ -55,15 +55,15 @@ is provided below:
 
 ```{r}
 captopril %>%
-  gather(type,bp,-id) %>%
-  Rmisc::summarySE(measurevar="bp",groupvars="type") %>%
-  ggplot(aes(x=type,y=bp,fill=type)) +
-    scale_fill_brewer(palette="RdGy") +
-    theme_bw() +
-    geom_bar(stat="identity") +
-    geom_errorbar(aes(ymin=bp-se, ymax=bp+se),width=.2) +
-    ggtitle("Barplot of different blood pressure measures") +
-    ylab("blood pressure (mmHg)")
+  gather(type, bp, -id) %>%
+  Rmisc::summarySE(measurevar = "bp", groupvars = "type") %>%
+  ggplot(aes(x = type, y = bp, fill = type)) +
+  scale_fill_brewer(palette = "RdGy") +
+  theme_bw() +
+  geom_bar(stat = "identity") +
+  geom_errorbar(aes(ymin = bp - se, ymax = bp + se), width = .2) +
+  ggtitle("Barplot of different blood pressure measures") +
+  ylab("blood pressure (mmHg)")
 ```
 
 A barplot, however, is not very informative. The height of the
@@ -91,14 +91,15 @@ spread, such as the interquartile range.
 
 ```{r}
 captopril %>%
-  gather(type,bp,-id) %>%
-  ggplot(aes(x=type,y=bp,fill=type)) +
-    scale_fill_brewer(palette="RdGy") +
-    theme_bw() +
-    geom_boxplot(outlier.shape=NA) +
-    geom_jitter(width = 0.2) +
-    ggtitle("Boxplot of different blood pressure measures") +
-    ylab("blood pressure (mmHg)") + stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
+  gather(type, bp, -id) %>%
+  ggplot(aes(x = type, y = bp, fill = type)) +
+  scale_fill_brewer(palette = "RdGy") +
+  theme_bw() +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.2) +
+  ggtitle("Boxplot of different blood pressure measures") +
+  ylab("blood pressure (mmHg)") +
+  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
 ```
 
 With the boxplot, we get a lot of useful information.
@@ -124,23 +125,23 @@ We can visualize this as follows;
 
 ```{r}
 captopril %>%
-  gather(type,bp,-id) %>%
-  filter(type%in%c("SBPa","SBPb")) %>%
-  ggplot(aes(x=id,y=bp,color=type)) +
-    geom_point(size=2) +
-    scale_color_manual(values = c("blue","red")) +
-    theme_bw()
+  gather(type, bp, -id) %>%
+  filter(type %in% c("SBPa", "SBPb")) %>%
+  ggplot(aes(x = id, y = bp, color = type)) +
+  geom_point(size = 2) +
+  scale_color_manual(values = c("blue", "red")) +
+  theme_bw()
 ```
 
 Or, alternatively, by creating a `line plot`:
 
 ```{r}
 captopril %>%
-  gather(type,bp,-id) %>%
-  filter(type%in%c("SBPa","SBPb")) %>%
-  ggplot(aes(x=type,y=bp)) +
-    geom_line(aes(group=id)) +
-    theme_bw()
+  gather(type, bp, -id) %>%
+  filter(type %in% c("SBPa", "SBPb")) %>%
+  ggplot(aes(x = type, y = bp)) +
+  geom_line(aes(group = id)) +
+  theme_bw()
 ```
 
 We see that for all patients, the systolic blood
@@ -150,16 +151,16 @@ Note that we could not see this from the boxplot, directly;
 
 ```{r}
 captopril %>%
-  gather(type,bp,-id) %>%
-    filter(type%in%c("SBPa","SBPb")) %>%
-    ggplot(aes(x=type,y=bp,fill=type)) +
-    scale_fill_brewer(palette="RdGy") +
-    theme_bw() +
-    geom_boxplot(outlier.shape=NA) +
-    geom_jitter(width = 0.2) +
-    ggtitle("Boxplot of blood pressure measures before and after treatment") +
-    ylab("blood pressure (mmHg)") +
-    stat_summary(fun=mean, geom="point", shape=5, size=3, color="black", fill="black")
+  gather(type, bp, -id) %>%
+  filter(type %in% c("SBPa", "SBPb")) %>%
+  ggplot(aes(x = type, y = bp, fill = type)) +
+  scale_fill_brewer(palette = "RdGy") +
+  theme_bw() +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.2) +
+  ggtitle("Boxplot of blood pressure measures before and after treatment") +
+  ylab("blood pressure (mmHg)") +
+  stat_summary(fun = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
 ```
 
 A typical next step is to perform a test to find out
@@ -173,16 +174,17 @@ two sets of values is significantly different from zero.
 
 ```{r}
 captopril %>%
-  mutate(bp_diff = SBPa-SBPb) %>%
+  mutate(bp_diff = SBPa - SBPb) %>%
   select(bp_diff) %>%
-  ggplot(aes(x="",y=bp_diff)) +
-  geom_boxplot(outlier.shape=NA) +
+  ggplot(aes(x = "", y = bp_diff)) +
+  geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2) +
   ggtitle("Boxplot of the difference in blood pressure") +
-  ylab("blood pressure difference (mmHg)") + stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black") +
-  theme_bw()+
-  ylim(-40,10) +
-  geom_hline(yintercept = 0, color="red") ## adds horizontal line to plot
+  ylab("blood pressure difference (mmHg)") +
+  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black") +
+  theme_bw() +
+  ylim(-40, 10) +
+  geom_hline(yintercept = 0, color = "red") ## adds horizontal line to plot
 ```
 
 The mean difference is lower than zero. It seems that on average the captopril

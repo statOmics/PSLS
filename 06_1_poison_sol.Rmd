@@ -68,14 +68,14 @@ as a color to the plot.
 
 ```{r}
 poison %>%
-  ggplot(aes(x=Dose,y=Surv_time)) +
+  ggplot(aes(x = Dose, y = Surv_time)) +
   geom_point() +
   stat_smooth(method = "loess") +
-  geom_smooth(method='lm',col="black") +
+  geom_smooth(method = "lm", col = "black") +
   ylab("Survival time (min)") +
   xlab("Dose (mg)") +
-  geom_point(aes(col=Species)) + ## not necessary, additional layer of information
-  scale_color_manual(values = c("red","darkgoldenrod","black")) +
+  geom_point(aes(col = Species)) + ## not necessary, additional layer of information
+  scale_color_manual(values = c("red", "darkgoldenrod", "black")) +
   theme_bw()
 ```
 
@@ -112,7 +112,7 @@ it only contains observations for the Dojofish.
 ```{r}
 # filter the data so it only contains dojofish
 poison_dojo <- poison %>%
-    filter(Species == "Dojofish")
+  filter(Species == "Dojofish")
 ```
 
 Later in the course, we will come back to this dataset and perform a analysis
@@ -140,7 +140,8 @@ poison_dojo %>%
     col = "black",
     size = 4,
     shape = 24,
-    fill = "red")
+    fill = "red"
+  )
 ```
 
 In our dataset, there seems to be **no systematic bias**, i.e., no clear trend
@@ -158,20 +159,24 @@ library(gridExtra)
 ```{r}
 set.seed(1351)
 
-plots <- lapply(1:9,
-       function(x) poison_dojo %>%
-         mutate(Dose=sample(Dose))%>% # randomization
-         ggplot(aes(x = Dose, y = Weight)) +
-         geom_point() +
-         theme_bw()  +
-         stat_summary(
-            geom = "point",
-            fun = "mean",
-            col = "black",
-            size = 2,
-            shape = 24,
-            fill = "red")
-          )
+plots <- lapply(
+  1:9,
+  function(x) {
+    poison_dojo %>%
+      mutate(Dose = sample(Dose)) %>% # randomization
+      ggplot(aes(x = Dose, y = Weight)) +
+      geom_point() +
+      theme_bw() +
+      stat_summary(
+        geom = "point",
+        fun = "mean",
+        col = "black",
+        size = 2,
+        shape = 24,
+        fill = "red"
+      )
+  }
+)
 do.call(gridExtra::grid.arrange, plots)
 ```
 
@@ -205,7 +210,7 @@ required diagnostic plots.
 ```{r}
 # fit a linear regression model with 'Surv_time' as response variable and
 # 'Dose' as predictor variabele
-model <- lm(Surv_time~Dose, data=poison_dojo)
+model <- lm(Surv_time ~ Dose, data = poison_dojo)
 
 ## display the diagnostic plots of the model
 plot(model)
@@ -256,7 +261,7 @@ Fit a (log-)linear model by log-transforming the response.Generate diagnostic
 plots and assess the assumptions.
 
 ```{r}
-log.model <- lm(Surv_time %>% log10 ~ Dose, data = poison_dojo)
+log.model <- lm(Surv_time %>% log10() ~ Dose, data = poison_dojo)
 plot(log.model)
 ```
 
@@ -270,19 +275,24 @@ set.seed(1406)
 nobs <- nrow(poison_dojo)
 
 data.frame(
-  y = c(log.model$res,
-        rnorm(nobs*8,
-              sd = sigma(log.model)
-             )
-      ),
+  y = c(
+    log.model$res,
+    rnorm(nobs * 8,
+      sd = sigma(log.model)
+    )
+  ),
   label = rep(
-              c("orig",
-                paste0("sim",1:8)),
-              each = nobs)) %>%
+    c(
+      "orig",
+      paste0("sim", 1:8)
+    ),
+    each = nobs
+  )
+) %>%
   ggplot(aes(sample = y)) +
   geom_qq() +
   geom_qq_line() +
-  facet_wrap(~ label)
+  facet_wrap(~label)
 ```
 
 1. The independence assumption is met.
@@ -333,7 +343,7 @@ the interpretation, we will backtransform the results to the original
 scale (time in minutes). This we can do by
 
 ```{r}
-10^(summary(log.model)$coefficients[,"Estimate"])
+10^(summary(log.model)$coefficients[, "Estimate"])
 ```
 
 and of their confidence intervals:
@@ -365,16 +375,18 @@ because we extrapolated considerably because all fish in the experiment were
 exposed to poison.
 
 ```{r}
-plot(x=poison_dojo$Dose,
-     y=poison_dojo$Surv_time,
-     xlab="Dose (mg)",
-     ylab="Survival time (min)",
-     xlim=c(0,2.2))
-abline(lsfit(poison_dojo$Dose,poison_dojo$Surv_time), lty=2) ## lty=2 draws a dashed line
+plot(
+  x = poison_dojo$Dose,
+  y = poison_dojo$Surv_time,
+  xlab = "Dose (mg)",
+  ylab = "Survival time (min)",
+  xlim = c(0, 2.2)
+)
+abline(lsfit(poison_dojo$Dose, poison_dojo$Surv_time), lty = 2) ## lty=2 draws a dashed line
 
 ## add the intercept as a point
 summary_model <- summary(model)
-points(0,summary_model$coefficients["(Intercept)","Estimate"],col="red", pch=16)
+points(0, summary_model$coefficients["(Intercept)", "Estimate"], col = "red", pch = 16)
 ```
 
 We can see that the dose value of 0 mg does not fall within

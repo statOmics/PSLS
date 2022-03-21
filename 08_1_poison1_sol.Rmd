@@ -30,7 +30,7 @@ Load libraries
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(ggplot2)
-#install.packages("GGally")
+# install.packages("GGally")
 library(GGally)
 library(car)
 library(multcomp)
@@ -67,9 +67,9 @@ poison <- poison %>%
   rename("Species" = "species") %>%
   mutate(Species = as.factor(Species)) %>%
   mutate(Species = fct_recode(Species, Dojofish = "0", Goldfish = "1", Zebrafish = "2")) %>%
-  mutate(log2Surv_time = Surv_time %>% log2) %>%
+  mutate(log2Surv_time = Surv_time %>% log2()) %>%
   dplyr::select(-Surv_time) %>%
-  filter(Species=="Dojofish")
+  filter(Species == "Dojofish")
 
 poison
 ```
@@ -85,7 +85,7 @@ the different variables.
 
 ```{r, message=FALSE}
 poison %>%
-  ggpairs + theme_bw()
+  ggpairs() + theme_bw()
 ```
 
 Based on these plots, we observe that:
@@ -107,7 +107,8 @@ poison %>%
     col = "black",
     size = 4,
     shape = 24,
-    fill = "red")
+    fill = "red"
+  )
 ```
 
 # Simple linear regression
@@ -119,10 +120,10 @@ variable for `log2Surv_time`.
 ```{r}
 # fit a linear regression model with 'Surv_time' as response variable and
 # 'Dose' as predictor variabele
-lm_simple <- lm(log2Surv_time ~ Dose, data=poison)
+lm_simple <- lm(log2Surv_time ~ Dose, data = poison)
 
 ## display the diagnostic plots of the model
-par(mfrow=c(2,2))
+par(mfrow = c(2, 2))
 plot(lm_simple)
 ```
 
@@ -143,7 +144,7 @@ minutes):
 
 ```{r}
 2^(lm_simple$coef)["Dose"]
-2^(confint(lm_simple))[2,]
+2^(confint(lm_simple))[2, ]
 ```
 
 There is a very significant effect of the poison on survival of Dojofish
@@ -172,7 +173,7 @@ The model will again be fit to allow for assessing the model assumptions
 
 ```{r}
 lm_additive <- lm(log2Surv_time ~ Dose + Weight, data = poison)
-par(mfrow=c(2,2))
+par(mfrow = c(2, 2))
 plot(lm_additive)
 ```
 
@@ -186,17 +187,17 @@ residual plots if all assumptions for the linear model hold.
 
 ```{r}
 set.seed(1031)
-sigma <- lm_additive %>% sigma
+sigma <- lm_additive %>% sigma()
 
 dataHlp <- poison
 simModels <- list()
 
-par(mfrow=c(3,3))
+par(mfrow = c(3, 3))
 for (i in 1:9)
 {
-  nobs <- poison %>% nrow
+  nobs <- poison %>% nrow()
   dataHlp$ySim <- lm_additive$fit + rnorm(nobs, sd = sigma)
-  simModels[[i]] <- lm(ySim~Dose + Weight, dataHlp)
+  simModels[[i]] <- lm(ySim ~ Dose + Weight, dataHlp)
   plot(simModels[[i]], which = 2)
 }
 ```

@@ -41,14 +41,14 @@ glimpse(NHANES[1:10])
 
 ```{r}
 NHANES %>%
-  ggplot(aes(x=HealthGen,y=BPSys1,fill=HealthGen)) +
-  scale_fill_brewer(palette="RdGy") +
+  ggplot(aes(x = HealthGen, y = BPSys1, fill = HealthGen)) +
+  scale_fill_brewer(palette = "RdGy") +
   theme_bw() +
-  geom_boxplot(outlier.shape=NA) +
-  #geom_jitter(width = 0.2,size=0.01) + ## omitted as it makes the plot messy
+  geom_boxplot(outlier.shape = NA) +
+  # geom_jitter(width = 0.2,size=0.01) + ## omitted as it makes the plot messy
   ggtitle("Boxplot of the systolic bloodpressure for each health category") +
   ylab("Systolic blood pressure (mmHg)") +
-  stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
+  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
 ```
 
 This plot is not ideal; it would be far more intuitive if
@@ -65,20 +65,20 @@ To get a more informative and intuitive visualization, you can:
 
 ```{r}
 NHANES <- NHANES %>%
-  filter(!is.na(HealthGen),!is.na(BPSys1)) %>%
+  filter(!is.na(HealthGen), !is.na(BPSys1)) %>%
   mutate(HealthGen = as.factor(HealthGen)) %>%
-  mutate(HealthGen =fct_relevel(HealthGen,c("Poor","Fair","Good","Vgood","Excellent")))
+  mutate(HealthGen = fct_relevel(HealthGen, c("Poor", "Fair", "Good", "Vgood", "Excellent")))
 ```
 
 ```{r}
 NHANES %>%
-  ggplot(aes(x=HealthGen,y=BPSys1,fill=HealthGen)) +
-  scale_fill_brewer(palette="RdGy") +
+  ggplot(aes(x = HealthGen, y = BPSys1, fill = HealthGen)) +
+  scale_fill_brewer(palette = "RdGy") +
   theme_bw() +
-  geom_boxplot(outlier.shape=NA) +
+  geom_boxplot(outlier.shape = NA) +
   ggtitle("Boxplot of the systolic bloodpressure for each health category") +
   ylab("Systolic blood pressure (mmHg)") +
-  stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
+  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
 ```
 
 # ANOVA
@@ -115,7 +115,7 @@ For the second assumption, we must check normality in each group.
 
 ```{r}
 NHANES %>%
-  ggplot(aes(sample=BPSys1)) +
+  ggplot(aes(sample = BPSys1)) +
   geom_qq() +
   geom_qq_line() +
   facet_grid(~HealthGen)
@@ -128,7 +128,7 @@ perform a log transformation on the data.
 ```{r}
 NHANES %>%
   mutate(BPSys1_log = log(BPSys1)) %>%
-  ggplot(aes(sample=BPSys1_log)) +
+  ggplot(aes(sample = BPSys1_log)) +
   geom_qq() +
   geom_qq_line() +
   facet_grid(~HealthGen)
@@ -155,7 +155,7 @@ data is not normally distributed.
 ## ANOVA model
 
 ```{r}
-fit <- lm(log(BPSys1)~HealthGen, NHANES)
+fit <- lm(log(BPSys1) ~ HealthGen, NHANES)
 fit_anova <- anova(fit)
 fit_anova
 print(paste("Not-rounded p-value:", fit_anova$`Pr(>F)`[1]))

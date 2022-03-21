@@ -47,7 +47,8 @@ library(tidyverse)
 
 ```{r}
 diet <- read.table("https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt",
-                   header=TRUE)
+  header = TRUE
+)
 head(diet)
 ```
 
@@ -55,9 +56,11 @@ head(diet)
 
 ```{r}
 diet <- diet %>%
-  mutate(block = as.factor(block),
-         protSource = as.factor(protSource),
-         protLevel = as.factor(protLevel)) %>%
+  mutate(
+    block = as.factor(block),
+    protSource = as.factor(protSource),
+    protLevel = as.factor(protLevel)
+  ) %>%
   mutate(protLevel = fct_relevel(protLevel, "l"))
 ```
 
@@ -111,7 +114,7 @@ case is specified as a `~` followed by the explanatory variables in our model.
 
 ```{r, eval = FALSE}
 library(ExploreModelMatrix)
-ExploreModelMatrix::VisualizeDesign(..., ~ ...)$plotlist
+ExploreModelMatrix::VisualizeDesign(..., ~...)$plotlist
 ```
 
 After seeing this, again think about the meaning of the parameters in our model.

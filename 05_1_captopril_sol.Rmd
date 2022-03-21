@@ -26,8 +26,9 @@ library(tidyverse)
 
 ```{r}
 (captopril <- read.table("https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt",
-                         header = TRUE,
-                         sep = ","))
+  header = TRUE,
+  sep = ","
+))
 ```
 
 # Data exploration
@@ -48,26 +49,26 @@ the following code.
 
 ```{r}
 captopril %>%
-    gather(type,bp,-id) %>%
-    filter(type%in%c("SBPa","SBPb")) %>%
-    mutate(id = as.factor(id))
-    # we are only interested in the systolic blood pressure
+  gather(type, bp, -id) %>%
+  filter(type %in% c("SBPa", "SBPb")) %>%
+  mutate(id = as.factor(id))
+# we are only interested in the systolic blood pressure
 ```
 
 We can visualize the dataframe using boxplots;
 
 ```{r}
 captopril %>%
-  gather(type,bp,-id) %>%
-  filter(type%in%c("SBPa","SBPb")) %>%
-  ggplot(aes(x=type, y=bp, fill=type)) +
-      scale_fill_brewer(palette="RdGy") +
-      theme_bw() +
-      geom_boxplot(outlier.shape=NA) +
-      geom_jitter(width = 0.2) +
-      ggtitle("Boxplot of blood pressure measures before and after treatment") +
-      ylab("blood pressure (mmHg)") +
-      stat_summary(fun=mean, geom="point", shape=5, size=3, color="black", fill="black")
+  gather(type, bp, -id) %>%
+  filter(type %in% c("SBPa", "SBPb")) %>%
+  ggplot(aes(x = type, y = bp, fill = type)) +
+  scale_fill_brewer(palette = "RdGy") +
+  theme_bw() +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.2) +
+  ggtitle("Boxplot of blood pressure measures before and after treatment") +
+  ylab("blood pressure (mmHg)") +
+  stat_summary(fun = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
 ```
 
 Clearly, it seems that on average the measurements
@@ -79,9 +80,9 @@ However, to assess the question if there is an affect of administering captopril
 
 ```{r}
 captopril %>%
-  gather(type,bp,-id) %>%
-  filter(type%in%c("SBPa","SBPb")) %>%
-  ggplot(aes(x=type, y=bp, group=id)) +
+  gather(type, bp, -id) %>%
+  filter(type %in% c("SBPa", "SBPb")) %>%
+  ggplot(aes(x = type, y = bp, group = id)) +
   geom_line() +
   geom_point() +
   ylab("Systolic blood pressure (mmHg)")
@@ -123,20 +124,20 @@ We can assess the second assumption with a quantile-quantile plot.
 
 ```{r}
 captopril %>%
-  ggplot(aes(sample=SBPa)) +
+  ggplot(aes(sample = SBPa)) +
   geom_qq() +
   geom_qq_line()
 
 captopril %>%
-  ggplot(aes(sample=SBPb)) +
+  ggplot(aes(sample = SBPb)) +
   geom_qq() +
   geom_qq_line()
 
 # or, equivalently
-captoprilTidy <- captopril %>% gather(type,bp,-id)
+captoprilTidy <- captopril %>% gather(type, bp, -id)
 captoprilTidy %>%
-  filter(type%in%c("SBPa","SBPb")) %>%
-  ggplot(aes(sample=bp)) +
+  filter(type %in% c("SBPa", "SBPb")) %>%
+  ggplot(aes(sample = bp)) +
   geom_qq() +
   geom_qq_line() +
   facet_wrap(~type)
@@ -159,9 +160,10 @@ $H_1:$ the mean SBPb is greater than 140 mmHg
 
 ```{r}
 output1 <- t.test(captopril$SBPb,
-                  mu=140,
-                  alternative = "greater",
-                  conf.level = 0.95)
+  mu = 140,
+  alternative = "greater",
+  conf.level = 0.95
+)
 output1
 ```
 
@@ -195,11 +197,11 @@ with a scatterplot.
 
 ```{r}
 captopril %>%
-  ggplot(aes(x=SBPb,y=SBPa)) +
-    geom_point() +
-    ggtitle("correlation between SBPb and SBPa") +
-    ylab("SBPa (mmHg)") +
-    xlab("SBPb (mmHg)")
+  ggplot(aes(x = SBPb, y = SBPa)) +
+  geom_point() +
+  ggtitle("correlation between SBPb and SBPa") +
+  ylab("SBPa (mmHg)") +
+  xlab("SBPb (mmHg)")
 ```
 
 We clearly see that if a patient's SBPb value is high, its
@@ -209,12 +211,12 @@ We can immediately calculate the impact of the treatment for every patient by ca
 
 ```{r}
 captopril <-
-  captopril %>% mutate(deltaSBP = SBPa-SBPb)
+  captopril %>% mutate(deltaSBP = SBPa - SBPb)
 
-captopril%>%
-  ggplot(aes(x="Systolic blood pressure",y=deltaSBP)) +
-  geom_boxplot(outlier.shape=NA) +
-  geom_point(position="jitter")+
+captopril %>%
+  ggplot(aes(x = "Systolic blood pressure", y = deltaSBP)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = "jitter") +
   ylab("Difference (mm mercury)") +
   xlab("")
 ```
@@ -233,7 +235,7 @@ Secondly, we assess if the data are normally distributed.
 
 ```{r}
 captopril %>%
-  ggplot(aes(sample=deltaSBP)) +
+  ggplot(aes(sample = deltaSBP)) +
   geom_qq() +
   geom_qq_line()
 ```
@@ -276,7 +278,7 @@ check whether or not the true mean difference is equal to 0.
 We can also set this up manually.
 
 ```{r}
-t.test(captopril$deltaSBP, mu=0)
+t.test(captopril$deltaSBP, mu = 0)
 ```
 
 Indeed, the output is equivalent to that of the  paired t-test.

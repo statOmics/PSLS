@@ -70,7 +70,7 @@ assumptions are met!
 
 ```{r, eval=FALSE}
 ... %>%
-  ... +
+  ...() +
   geom_qq() +
   geom_qq_line()
 ```
@@ -94,7 +94,7 @@ $H_1:$ ...
 
 
 ```{r, eval=FALSE}
-output1 <- t.test(...,mu=...,alternative = ...,conf.level = ...,data=...)
+output1 <- t.test(..., mu = ..., alternative = ..., conf.level = ..., data = ...)
 output1
 ```
 
@@ -144,7 +144,7 @@ If all assumptions are met, we may continue with
 performing the paired two-sample t-test.
 
 ```{r, eval=FALSE}
-output2 <- t.test(...,..., paired = ...,data=)
+output2 <- t.test(..., ..., paired = ..., data = )
 output2
 ```
 
@@ -171,7 +171,7 @@ We can also set this up manually.
 ```{r, eval=FALSE}
 captopril %>%
   mutate(bp_diff = ...) %>%
-  t.test(...,mu=...)
+  t.test(..., mu = ...)
 ```
 
 Indeed, the output is equivalent to that of the paired t-test.

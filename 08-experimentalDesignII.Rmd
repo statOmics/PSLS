@@ -284,12 +284,12 @@ Suppose that we have access to the data of a preliminary experiment (e.g. provid
 mice <- read.csv("https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv")
 
 mice %>%
-  ggplot(aes(x=Diet,y=Bodyweight)) +
-  geom_boxplot(outlier.shape=FALSE) +
+  ggplot(aes(x = Diet, y = Bodyweight)) +
+  geom_boxplot(outlier.shape = FALSE) +
   geom_jitter()
 
 mice %>%
-  ggplot(aes(sample=Bodyweight)) +
+  ggplot(aes(sample = Bodyweight)) +
   geom_qq() +
   geom_qq_line() +
   facet_wrap(~Diet)
@@ -298,11 +298,18 @@ mice %>%
 ```{r}
 mice <- mice %>% mutate(Diet = as.factor(Diet))
 miceSum <- mice %>%
-  group_by(Diet)  %>%
-  summarize_at("Bodyweight",list(mean=~mean(.,na.rm=TRUE),
-                    sd=~sd(.,na.rm=TRUE),
-                    n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
-  mutate(se=sd/sqrt(n))
+  group_by(Diet) %>%
+  summarize_at("Bodyweight", list(
+    mean = ~ mean(., na.rm = TRUE),
+    sd = ~ sd(., na.rm = TRUE),
+    n = function(x) {
+      x %>%
+        is.na() %>%
+        `!`() %>%
+        sum()
+    }
+  )) %>%
+  mutate(se = sd / sqrt(n))
 miceSum
 ```
 In the experiment we have data from two diets:
@@ -325,7 +332,7 @@ Effect size?
 - Suppose that we would like to detect if the weight of the rats difference $\delta$ of at least 10%.
 
 ```{r}
-delta <- - round(miceSum$mean[2] *.1,1)
+delta <- -round(miceSum$mean[2] * .1, 1)
 delta
 ```
 
@@ -338,17 +345,17 @@ We can set up a simulation study to assess the power of an experiment with 8 mic
 ```{r}
 set.seed(1423)
 n1 <- n2 <- 8
-b0 <- round(miceSum$mean[2],1)
-b1 <- - delta
-sd <- round(miceSum$sd[2],1)
+b0 <- round(miceSum$mean[2], 1)
+b1 <- -delta
+sd <- round(miceSum$sd[2], 1)
 alpha <- 0.05
 
-x <- rep(0:1,c(n1,n2))
-y <- b0 + b1 * x + rnorm(n1+n2,0, sd = sd)
-fit <- lm(y~x)
+x <- rep(0:1, c(n1, n2))
+y <- b0 + b1 * x + rnorm(n1 + n2, 0, sd = sd)
+fit <- lm(y ~ x)
 bhat <- fit$coef
 stat <- summary(fit)
-summary(fit)$coef[2,]
+summary(fit)$coef[2, ]
 ```
 
 For this simulated experiment we would `r ifelse(summary(fit)$coef[2,"Pr(>|t|)"] < alpha,"","not")` have been able to pick up the effect of the treatment at the significance level $\alpha$=`r alpha` (p = `r` round(summary(fit)$coef[2,"Pr(>|t|)"],2)`)!
@@ -362,31 +369,31 @@ For this simulated experiment we would `r ifelse(summary(fit)$coef[2,"Pr(>|t|)"]
 library(multcomp)
 n1 <- n2 <- 8
 
-b0 <- round(miceSum$mean[2],1)
-b1 <- - delta
+b0 <- round(miceSum$mean[2], 1)
+b1 <- -delta
 
-sd <- round(miceSum$sd[2],1)
-predictorData <- data.frame(Diet = rep(c("c","hf"),c(n1,n2)) %>% as.factor)
+sd <- round(miceSum$sd[2], 1)
+predictorData <- data.frame(Diet = rep(c("c", "hf"), c(n1, n2)) %>% as.factor())
 
 alpha <- 0.05
 
-simLm <- function(form, data, betas, sd, contrasts, simIndex = NA)
-{
+simLm <- function(form, data, betas, sd, contrasts, simIndex = NA) {
   dataSim <- data
-  X <- model.matrix(form,dataSim)
-  dataSim$ySim <- X%*%betas + rnorm(nrow(dataSim),0,sd)
-  form <- formula(paste("ySim ~",form[[2]]))
-  fitSim <- lm(form,dataSim)
-  mcp <- glht(fitSim,linfct = contrasts)
-  return(summary(mcp)$test[c("coefficients","sigma","tstat","pvalues")]%>% unlist)
+  X <- model.matrix(form, dataSim)
+  dataSim$ySim <- X %*% betas + rnorm(nrow(dataSim), 0, sd)
+  form <- formula(paste("ySim ~", form[[2]]))
+  fitSim <- lm(form, dataSim)
+  mcp <- glht(fitSim, linfct = contrasts)
+  return(summary(mcp)$test[c("coefficients", "sigma", "tstat", "pvalues")] %>% unlist())
 }
 
 simLm(
   form = ~Diet,
   data = predictorData,
-  betas = c(b0,b1),
+  betas = c(b0, b1),
   sd = sd,
-  contrasts = "Diethf = 0")
+  contrasts = "Diethf = 0"
+)
 ```
 
 We now have a generic function that can simulate data from a normal distribution for every design.
@@ -405,8 +412,8 @@ Simulate nSim = 1000 repeated experiments:
 set.seed(1425)
 nSim <- 1000
 
-simResults  <- t(sapply(1:nSim,simLm,form = ~Diet,data = predictorData,betas = c(b0,b1),sd = sd,contrasts = "Diethf = 0"))
-power <- mean(simResults[,4] < alpha)
+simResults <- t(sapply(1:nSim, simLm, form = ~Diet, data = predictorData, betas = c(b0, b1), sd = sd, contrasts = "Diethf = 0"))
+power <- mean(simResults[, 4] < alpha)
 power
 ```
 
@@ -417,21 +424,21 @@ We have a power of `r power*100`% to pick up the treatment effect when using 8 b
 We can now calculate the power for multiple sample sizes.
 
 ```{r}
-power <- data.frame(n=c(3,5,10,25,50,75,100),power=NA)
+power <- data.frame(n = c(3, 5, 10, 25, 50, 75, 100), power = NA)
 
 for (i in 1:nrow(power))
 {
   n1 <- n2 <- power$n[i]
-  predictorData <- data.frame(Diet = rep(c("c","hf"),c(n1,n2)) %>% as.factor)
-  simResults  <- t(sapply(1:nSim,simLm,form = ~Diet,data = predictorData,betas = c(b0,b1),sd = sd,contrasts = "Diethf = 0"))
-  power$power[i] <- mean(simResults[,"pvalues"] < alpha)
+  predictorData <- data.frame(Diet = rep(c("c", "hf"), c(n1, n2)) %>% as.factor())
+  simResults <- t(sapply(1:nSim, simLm, form = ~Diet, data = predictorData, betas = c(b0, b1), sd = sd, contrasts = "Diethf = 0"))
+  power$power[i] <- mean(simResults[, "pvalues"] < alpha)
 }
 power
 ```
 
 ```{r}
 power %>%
-  ggplot(aes(x=n,y=power)) +
+  ggplot(aes(x = n, y = power)) +
   geom_line()
 ```
 
@@ -445,27 +452,29 @@ Note, that
 ```{r}
 nSim <- 1000
 b0 <- 0
-deltas <- c(1,2,3,5,10)
-sd <- round(miceSum$sd[2],1)
-ns <-  c(3,5,10,20,25,50,75,100)
+deltas <- c(1, 2, 3, 5, 10)
+sd <- round(miceSum$sd[2], 1)
+ns <- c(3, 5, 10, 20, 25, 50, 75, 100)
 
-power <- data.frame(b1=rep(deltas,each=length(ns)),
-                    n=rep(ns,length(deltas)),
-                    power=NA)
+power <- data.frame(
+  b1 = rep(deltas, each = length(ns)),
+  n = rep(ns, length(deltas)),
+  power = NA
+)
 
 for (i in 1:nrow(power))
 {
-  b1 <-power$b1[i]
-  n1 <- n2 <-  power$n[i]
-  predictorData <- data.frame(Diet = rep(c("c","hf"),c(n1,n2)) %>% as.factor)
-  simResults  <- t(sapply(1:nSim,simLm,form = ~Diet,data = predictorData,betas = c(b0,b1),sd = sd,contrasts = "Diethf = 0"))
-  power$power[i] <- mean(simResults[,"pvalues"] < alpha)
+  b1 <- power$b1[i]
+  n1 <- n2 <- power$n[i]
+  predictorData <- data.frame(Diet = rep(c("c", "hf"), c(n1, n2)) %>% as.factor())
+  simResults <- t(sapply(1:nSim, simLm, form = ~Diet, data = predictorData, betas = c(b0, b1), sd = sd, contrasts = "Diethf = 0"))
+  power$power[i] <- mean(simResults[, "pvalues"] < alpha)
 }
 ```
 
 ```{r}
 power %>%
-  ggplot(aes(x=n,y=power,col=b1%>%as.factor)) +
+  ggplot(aes(x = n, y = power, col = b1 %>% as.factor())) +
   geom_line()
 ```
 
@@ -492,61 +501,60 @@ Note, that the power curves are still a bit choppy because we selected a limited
 Code runs much faster. We now simulate 20 times more experiments in a much shorter time!
 
 ```{r}
-simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
-{
-    ySim <- rnorm(nrow(data)*nSim,sd=sd)
-    dim(ySim) <-c(nrow(data),nSim)
-    design <- model.matrix(form, data)
-    ySim <- ySim + c(design %*%betas)
-    ySim <- t(ySim)
+simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000) {
+  ySim <- rnorm(nrow(data) * nSim, sd = sd)
+  dim(ySim) <- c(nrow(data), nSim)
+  design <- model.matrix(form, data)
+  ySim <- ySim + c(design %*% betas)
+  ySim <- t(ySim)
 
-    ### Fitting
-    fitAll <- limma::lmFit(ySim,design)
+  ### Fitting
+  fitAll <- limma::lmFit(ySim, design)
 
-    ### Inference
-    varUnscaled <- c(t(contrasts)%*%fitAll$cov.coefficients%*%contrasts)
-    contrasts <- fitAll$coefficients %*%contrasts
-    seContrasts <- varUnscaled^.5*fitAll$sigma
-    tstats <- contrasts/seContrasts
-    pvals <- pt(abs(tstats),fitAll$df.residual,lower.tail = FALSE)*2
-    return(mean(pvals < alpha))
+  ### Inference
+  varUnscaled <- c(t(contrasts) %*% fitAll$cov.coefficients %*% contrasts)
+  contrasts <- fitAll$coefficients %*% contrasts
+  seContrasts <- varUnscaled^.5 * fitAll$sigma
+  tstats <- contrasts / seContrasts
+  pvals <- pt(abs(tstats), fitAll$df.residual, lower.tail = FALSE) * 2
+  return(mean(pvals < alpha))
 }
 ```
 
 ```{r}
 nSim <- 20000
 b0 <- 0
-sd <- round(miceSum$sd[2],1)
-ns <-  c(3,5,10,20,25,50,75,100)
-deltas <- c(1,2,3,5,10)
+sd <- round(miceSum$sd[2], 1)
+ns <- c(3, 5, 10, 20, 25, 50, 75, 100)
+deltas <- c(1, 2, 3, 5, 10)
 
-contrast <- limma::makeContrasts("Diethf",levels=c("(Intercept)","Diethf"))
+contrast <- limma::makeContrasts("Diethf", levels = c("(Intercept)", "Diethf"))
 
-powerFast <- matrix(NA,nrow=length(ns)*length(deltas),ncol=3) %>% as.data.frame
-names(powerFast) <- c("b1","n","power")
+powerFast <- matrix(NA, nrow = length(ns) * length(deltas), ncol = 3) %>% as.data.frame()
+names(powerFast) <- c("b1", "n", "power")
 form <- ~Diet
 
 i <- 0
 
 for (n in ns)
 {
-  n1 <- n2 <-  n
+  n1 <- n2 <- n
 
   ### Simulation
-  predictorData <- data.frame(Diet = rep(c("c","hf"),c(n1,n2)) %>% as.factor)
+  predictorData <- data.frame(Diet = rep(c("c", "hf"), c(n1, n2)) %>% as.factor())
 
   for (b1 in deltas)
   {
-    i <- i+1
+    i <- i + 1
     betas <- c(b0, b1)
-    powerFast[i,] <- c(b1,n,simFast(form, predictorData, betas, sd, contrasts = contrast, alpha = alpha, nSim = nSim))
+    powerFast[i, ] <- c(b1, n, simFast(form, predictorData, betas, sd, contrasts = contrast, alpha = alpha, nSim = nSim))
   }
 }
 ```
 
 ```{r}
 powerFast %>%
-  ggplot(aes(x=n,y=power,col=b1%>%as.factor)) +
+  ggplot(aes(x = n, y = power, col = b1 %>% as.factor())) +
   geom_line()
 ```
 
@@ -559,28 +567,30 @@ $D = \frac{\delta}{SD}$
 
 
 ```{r}
-power.t.test(n=8, delta = delta, sd = sd, type='two.sample')
+power.t.test(n = 8, delta = delta, sd = sd, type = "two.sample")
 ```
 
 Note, that this is very similar to the power that we calculated using the simulations!
 
 ```{r}
 b0 <- 0
-sd <- round(miceSum$sd[2],1)
-ns <-  c(3,5,10,20,25,50,75,100)
-deltas <- c(1,2,3,5,10)
+sd <- round(miceSum$sd[2], 1)
+ns <- c(3, 5, 10, 20, 25, 50, 75, 100)
+deltas <- c(1, 2, 3, 5, 10)
 
 
-powerTheo <- data.frame(deltas=rep(deltas,each=length(ns)),
-                    n=rep(ns,length(deltas)),
-                    power=NA)
+powerTheo <- data.frame(
+  deltas = rep(deltas, each = length(ns)),
+  n = rep(ns, length(deltas)),
+  power = NA
+)
 
-powerTheo$power <- apply(powerTheo[,1:2],1,function(x) power.t.test(delta=x[1],n=x[2],sd=sd,type="two.sample")$power)
+powerTheo$power <- apply(powerTheo[, 1:2], 1, function(x) power.t.test(delta = x[1], n = x[2], sd = sd, type = "two.sample")$power)
 ```
 
 
 ```{r}
 powerTheo %>%
-  ggplot(aes(x=n,y=power,col=deltas%>%as.factor)) +
+  ggplot(aes(x = n, y = power, col = deltas %>% as.factor())) +
   geom_line()
 ```

@@ -34,8 +34,10 @@ A biologist examined the effect of a fungal infection on the eating behavior of 
 Infected apples were offered to a group of eight rodents, and sterile apples were offered to a group of 4 rodents. The amount of grams of apples consumed per kg body weight are given in the dataset below.
 
 ```{r}
-rodents <- data.frame(weight = c(11,33,48,34,112,369,64,44,177,80,141,332),
-                      group = as.factor(c(rep("treat",8), rep("ctrl",4))))
+rodents <- data.frame(
+  weight = c(11, 33, 48, 34, 112, 369, 64, 44, 177, 80, 141, 332),
+  group = as.factor(c(rep("treat", 8), rep("ctrl", 4)))
+)
 rodents
 ```
 
@@ -44,7 +46,7 @@ rodents
 
 ```{r}
 rodents %>%
-  ggplot(aes(x=group,y=weight)) +
+  ggplot(aes(x = group, y = weight)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter()
 
@@ -52,7 +54,7 @@ rodents %>%
   ggplot(aes(sample = weight)) +
   geom_qq() +
   geom_qq_line() +
-  facet_wrap(~ group)
+  facet_wrap(~group)
 ```
 
 In the data exploration we do not have enough data to evaluate the assumptions.
@@ -106,24 +108,23 @@ We provide you with a function to simulate data similar to that of our
 experiment under our model assumptions.
 
 ```{r}
-simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
-{
-    ySim <- rnorm(nrow(data)*nSim,sd=sd)
-    dim(ySim) <-c(nrow(data),nSim)
-    design <- model.matrix(form, data)
-    ySim <- ySim + c(design %*%betas)
-    ySim <- t(ySim)
+simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000) {
+  ySim <- rnorm(nrow(data) * nSim, sd = sd)
+  dim(ySim) <- c(nrow(data), nSim)
+  design <- model.matrix(form, data)
+  ySim <- ySim + c(design %*% betas)
+  ySim <- t(ySim)
 
-    ### Fitting
-    fitAll <- limma::lmFit(ySim,design)
+  ### Fitting
+  fitAll <- limma::lmFit(ySim, design)
 
-    ### Inference
-    varUnscaled <- c(t(contrasts)%*%fitAll$cov.coefficients%*%contrasts)
-    contrasts <- fitAll$coefficients %*%contrasts
-    seContrasts <- varUnscaled^.5*fitAll$sigma
-    tstats <- contrasts/seContrasts
-    pvals <- pt(abs(tstats),fitAll$df.residual,lower.tail = FALSE)*2
-    return(mean(pvals < alpha))
+  ### Inference
+  varUnscaled <- c(t(contrasts) %*% fitAll$cov.coefficients %*% contrasts)
+  contrasts <- fitAll$coefficients %*% contrasts
+  seContrasts <- varUnscaled^.5 * fitAll$sigma
+  tstats <- contrasts / seContrasts
+  pvals <- pt(abs(tstats), fitAll$df.residual, lower.tail = FALSE) * 2
+  return(mean(pvals < alpha))
 }
 ```
 
@@ -147,13 +148,15 @@ fill in all the arguments to the `simFast` function.
 **Hint: for the betas and sd, we will need to fit a linear model first!**
 
 ```{r, eval=FALSE}
-power1 <- simFast(form = ...,
-                  data = ...,
-                  betas = ...,
-                  sd = ...,
-                  contrasts = ...,
-                  alpha = ...,
-                  nSim = ...)
+power1 <- simFast(
+  form = ...,
+  data = ...,
+  betas = ...,
+  sd = ...,
+  contrasts = ...,
+  alpha = ...,
+  nSim = ...
+)
 power1
 ```
 
@@ -166,13 +169,15 @@ Again, we simulate a large number of new experiments. Adjust one more more
 of the inputs to the `simFast` to allow for addressing this question.
 
 ```{r, eval=FALSE}
-power2 <- simFast(form = ...,
-                  data = ...,
-                  betas = ...,
-                  sd = ...,
-                  contrasts = ...,
-                  alpha = ...,
-                  nSim = ...)
+power2 <- simFast(
+  form = ...,
+  data = ...,
+  betas = ...,
+  sd = ...,
+  contrasts = ...,
+  alpha = ...,
+  nSim = ...
+)
 power2
 ```
 

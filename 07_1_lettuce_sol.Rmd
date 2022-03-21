@@ -50,7 +50,7 @@ library(car)
 
 ```{r,message=FALSE}
 lettuce <- read_csv("https://raw.githubusercontent.com/statOmics/PSLS21/data/freshweight_lettuce.txt")
-#Take a glimpse at the data
+# Take a glimpse at the data
 glimpse(lettuce)
 ```
 
@@ -74,14 +74,14 @@ Now let's make a boxplot displaying the freshweight of each treatment condition:
 
 ```{r}
 lettuce %>%
-  ggplot(aes(x=treatment,y=freshweight,fill=treatment)) +
-    scale_fill_brewer(palette="RdGy") +
-    theme_bw() +
-    geom_boxplot(outlier.shape=NA) +
-    geom_jitter(width = 0.2) +
-    ggtitle("Boxplot of the freshweigth for each treatment condition") +
-    ylab("freshweight (gram)") +
-    stat_summary(fun=mean, geom="point", shape=5, size=3, color="black", fill="black")
+  ggplot(aes(x = treatment, y = freshweight, fill = treatment)) +
+  scale_fill_brewer(palette = "RdGy") +
+  theme_bw() +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.2) +
+  ggtitle("Boxplot of the freshweigth for each treatment condition") +
+  ylab("freshweight (gram)") +
+  stat_summary(fun = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
 ```
 
 Note that there are no clear outliers in the data.
@@ -129,9 +129,9 @@ For the second assumption, we must check normality in each group.
 
 ```{r}
 ## get qqplots for each individual treatment group
-par(mfrow = c(2,2))
-for(i in levels(lettuce$treatment)){
-  qqPlot(subset(lettuce,treatment == i)$freshweight, main = i, ylab = "")
+par(mfrow = c(2, 2))
+for (i in levels(lettuce$treatment)) {
+  qqPlot(subset(lettuce, treatment == i)$freshweight, main = i, ylab = "")
 }
 ```
 
@@ -150,10 +150,10 @@ Simulate from uniform distribution:
 
 ```{r}
 set.seed(5)
-par(mfrow = c(3,2),mar=c(2, 4, 2, 0.2))
+par(mfrow = c(3, 2), mar = c(2, 4, 2, 0.2))
 for (i in 1:6) {
   x <- runif(7) ## sample 7 observations from a uniform distribution
-  qqPlot(x,ylab = "")
+  qqPlot(x, ylab = "")
 }
 ```
 
@@ -164,10 +164,10 @@ Sample from normal distribution:
 
 ```{r}
 set.seed(5)
-par(mfrow = c(3,2),mar=c(2, 4, 2, 0.2))
+par(mfrow = c(3, 2), mar = c(2, 4, 2, 0.2))
 for (i in 1:6) {
   x <- rnorm(7) ## sample 7 sobservations from a normal distribution
-  qqPlot(x,ylab = "")
+  qqPlot(x, ylab = "")
 }
 ```
 
@@ -179,9 +179,9 @@ of a linear model. These residuals should be normally distributed
 if the data for each treatment condition is normally distributed.
 
 ```{r}
-fit <- lm(freshweight~treatment, lettuce)
-plot(fit, which = 2,col = fit$model$treatment)
-legend('bottomright', levels(fit$model$treatment), text.col = 1:4)
+fit <- lm(freshweight ~ treatment, lettuce)
+plot(fit, which = 2, col = fit$model$treatment)
+legend("bottomright", levels(fit$model$treatment), text.col = 1:4)
 ```
 
 The data seems to be approximately normally distributed,
@@ -193,14 +193,14 @@ We can check the assumption of equal variance with a boxplot:
 
 ```{r}
 lettuce %>%
-  ggplot(aes(x=treatment,y=freshweight,fill=treatment)) +
-  scale_fill_brewer(palette="RdGy") +
+  ggplot(aes(x = treatment, y = freshweight, fill = treatment)) +
+  scale_fill_brewer(palette = "RdGy") +
   theme_bw() +
-  geom_boxplot(outlier.shape=NA) +
+  geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2) +
   ggtitle("Boxplot of the freshweigth for each treatment condition") +
   ylab("freshweight (gram)") +
-  stat_summary(fun=mean, geom="point", shape=5, size=3, color="black", fill="black")
+  stat_summary(fun = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
 ```
 
 As a measure of variability, we may take the height
@@ -220,7 +220,7 @@ In this tutorial, we will assume that all assumptions are met.
 ## Modeling
 
 ```{r}
-fit <- lm(freshweight~treatment, data=lettuce)
+fit <- lm(freshweight ~ treatment, data = lettuce)
 fit_anova <- anova(fit)
 fit_anova
 ```
@@ -257,7 +257,7 @@ mcp <- glht(fit, linfct = mcp(treatment = "Tukey"))
 mcp_summary <- summary(mcp)
 mcp_summary
 
-#We will also calculate the confidence interval on the mean differences.
+# We will also calculate the confidence interval on the mean differences.
 mcp_confint <- confint(mcp)
 mcp_confint
 ```

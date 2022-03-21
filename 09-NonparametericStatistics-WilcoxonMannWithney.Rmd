@@ -7,8 +7,10 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
-                      message = FALSE, warning = FALSE, cache = TRUE)
+knitr::opts_chunk$set(
+  include = TRUE, comment = NA, echo = TRUE,
+  message = FALSE, warning = FALSE, cache = TRUE
+)
 library(tidyverse)
 library(Rmisc)
 set.seed(140)
@@ -58,9 +60,11 @@ chol
 
 
 ```{r, echo=FALSE, fig.align='center'}
-chol %>%  ggplot(aes(x=group,y=cholest)) + geom_boxplot(outlier.shape=NA) + geom_point(position="jitter")
+chol %>% ggplot(aes(x = group, y = cholest)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = "jitter")
 
-chol %>% ggplot(aes(sample=cholest)) +
+chol %>% ggplot(aes(sample = cholest)) +
   geom_qq() +
   geom_qq_line() +
   facet_wrap(~group)
@@ -102,7 +106,7 @@ rank(chol$cholest)
 Sometimes *ties* occur: two observations with identical values
 
 ```{r}
-withTies=c(403,507,507,610,651,651,651,830,900)
+withTies <- c(403, 507, 507, 610, 651, 651, 651, 830, 900)
 rank(withTies)
 ```
 
@@ -123,7 +127,7 @@ rank(withTies)
 
 ```{r}
 t(chol)
-z=chol$cholest
+z <- chol$cholest
 z
 rank(z)
 ```
@@ -208,7 +212,7 @@ Asymptotically the standardised statistic follows a standard normal distribution
 
 We illustrate the result for the cholesterol example using the R function `wilcox.test`.
 ```{r}
-wilcox.test(cholest~group,data=chol)
+wilcox.test(cholest ~ group, data = chol)
 ```
 
 - We reject $H_0$ ($p=$ `r format(wilcox.test(cholest~group,data=chol)$p.value,digits=2)` $<0.05$)
@@ -217,9 +221,9 @@ wilcox.test(cholest~group,data=chol)
 
 - Lets calculate
 ```{r}
-S1 <- sum(rank(chol$cholest)[chol$group==1])
+S1 <- sum(rank(chol$cholest)[chol$group == 1])
 S1
-S2 <- sum(rank(chol$cholest)[chol$group==2])
+S2 <- sum(rank(chol$cholest)[chol$group == 2])
 S2
 ```
 
@@ -239,21 +243,25 @@ Mann and Whitney test in absence of ties:
 - U counts how many times an observation of the first group is larger or equal to an observation from the second group.
 
 ```{r}
-y1=subset(chol,group==1)$cholest
-y2=subset(chol,group==2)$cholest
-u1Hlp=sapply(y1,function(y1i,y2) {y1i>=y2},y2=y2)
-colnames(u1Hlp)=y1;rownames(u1Hlp)=y2
+y1 <- subset(chol, group == 1)$cholest
+y2 <- subset(chol, group == 2)$cholest
+u1Hlp <- sapply(y1, function(y1i, y2) {
+  y1i >= y2
+}, y2 = y2)
+colnames(u1Hlp) <- y1
+rownames(u1Hlp) <- y2
 ```
 
 ```{r}
 u1Hlp
-U1=sum(u1Hlp); U1
+U1 <- sum(u1Hlp)
+U1
 ```
 
 It can be shown that $U_1 = S_1 - \frac{1}{2}n_1(n_1+1).$
 
 ```{r}
-S1-nGroups[1]*(nGroups[1]+1)/2
+S1 - nGroups[1] * (nGroups[1] + 1) / 2
 ```
 
 1. $U_1$ en $S_1$ contain the same information
@@ -275,7 +283,7 @@ So we can estimate the probability by calculating the mean of all indicator vari
 
 ```{r}
 mean(u1Hlp)
-U1/(nGroups[1]*nGroups[2])
+U1 / (nGroups[1] * nGroups[2])
 ```
 
 - Probability $\text{P}\left[Y_1 \geq Y_2\right]$ is referred to as the *probabilistic index*.
@@ -285,10 +293,10 @@ U1/(nGroups[1]*nGroups[2])
 - R function `wilcox.test` does not return the Wilcoxon rank sum statistic. It returns the Mann-Whitney statistic $U_1$.
 - Lets revisit the result
 ```{r}
-wTest<-wilcox.test(cholest~group,data=chol)
+wTest <- wilcox.test(cholest ~ group, data = chol)
 wTest
 U1
-probInd=wTest$statistic/prod(nGroups)
+probInd <- wTest$statistic / prod(nGroups)
 probInd
 ```
 

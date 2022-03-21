@@ -7,8 +7,10 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
-                      message = FALSE, warning = FALSE, cache = TRUE)
+knitr::opts_chunk$set(
+  include = TRUE, comment = NA, echo = TRUE,
+  message = FALSE, warning = FALSE, cache = TRUE
+)
 ```
 
 ```{r libraries}
@@ -79,12 +81,12 @@ $$\text{Var}[X_i]=\pi (1-\pi).$$
 Some Bernoulli probability mass functions
 
 ```{r, out.width='100%', fig.asp=1, fig.align='center',echo=FALSE}
-par(mfrow=c(1,3),pty="s")
-probs=c(0.25,.5,.75)
+par(mfrow = c(1, 3), pty = "s")
+probs <- c(0.25, .5, .75)
 for (i in 1:length(probs))
 {
-plot(c(0,1),c(1-probs[i],probs[i]),ylim=c(0,1),type="h",xaxt="n",xlab="X",ylab="Probability",main= as.expression(substitute(pi == val,list(val=probs[i]))),lwd=3)
-axis(1,at=c(0,1))
+  plot(c(0, 1), c(1 - probs[i], probs[i]), ylim = c(0, 1), type = "h", xaxt = "n", xlab = "X", ylab = "Probability", main = as.expression(substitute(pi == val, list(val = probs[i]))), lwd = 3)
+  axis(1, at = c(0, 1))
 }
 ```
 
@@ -95,7 +97,7 @@ axis(1,at=c(0,1))
 $$\hat \pi = \bar X = \frac{\sum\limits_{i=1}^n X_i}{n},$$
 
 ```{r}
-pi=boys/n
+pi <- boys / n
 pi
 ```
 
@@ -189,13 +191,13 @@ S is a:
 ### Some Binomial probability mass functions.
 
 ```{r binoms,fig.cap='Binomiale verdelingen.', out.width='80%', fig.asp=.8, fig.align='center',echo=FALSE}
-par(mfrow=c(2,2))
-probs=c(0.25,.5,.75)
+par(mfrow = c(2, 2))
+probs <- c(0.25, .5, .75)
 for (i in 1:length(probs))
 {
-plot(0:10,dbinom(0:10,prob=probs[i],size=10),ylim=c(0,1),type="h",xlab="X",ylab="Kans (Dichtheid)",main= as.expression(substitute(pi == val,list(val=paste(probs[i],", nobs=10")))),lwd=3)
+  plot(0:10, dbinom(0:10, prob = probs[i], size = 10), ylim = c(0, 1), type = "h", xlab = "X", ylab = "Kans (Dichtheid)", main = as.expression(substitute(pi == val, list(val = paste(probs[i], ", nobs=10")))), lwd = 3)
 }
-plot(2925:3225,dbinom(2925:3225,prob=.5,size=n),type="h",xlab="X",ylab="Kans (Dichtheid)",main= as.expression(substitute(pi == val,list(val=paste0("0.5, nobs=",n)))))
+plot(2925:3225, dbinom(2925:3225, prob = .5, size = n), type = "h", xlab = "X", ylab = "Kans (Dichtheid)", main = as.expression(substitute(pi == val, list(val = paste0("0.5, nobs=", n)))))
 ```
 
 ---
@@ -233,18 +235,19 @@ $$\text{P}_0\left[S\geq s_0+ \vert \delta\vert \right] = \text{P}_0\left[S \leq 
 
 
 ```{r}
-pi0 <- 0.5; s0 <- pi0 *n
-delta <- abs(boys- s0)
+pi0 <- 0.5
+s0 <- pi0 * n
+delta <- abs(boys - s0)
 delta
 
 sUp <- s0 + delta
-sDown <- s0 -delta
-c(sDown,sUp)
+sDown <- s0 - delta
+c(sDown, sUp)
 
-pUp <- 1-pbinom(sUp-1,n,pi0)
-pDown <- pbinom(sDown,n,pi0)
-p <- pUp+pDown
-c(pUp,pDown, p)
+pUp <- 1 - pbinom(sUp - 1, n, pi0)
+pDown <- pbinom(sDown, n, pi0)
+p <- pUp + pDown
+c(pUp, pDown, p)
 ```
 
 ---
@@ -257,15 +260,15 @@ c(pUp,pDown, p)
 ---
 
 ```{r, out.width='100%', fig.asp=.8, fig.align='center',echo=FALSE}
-plot(s0+seq(-150.5,150.5,1),dbinom(s0+seq(-150.5,150.5,1),prob=.5,size=n),type="h",xlab="X",ylab="Probability",main= as.expression(substitute(pi == val,list(val=paste0("0.5, nobs=",n)))),ylim=c(-.0009,0.011))
-abline(v=s0,lwd=2,col=4)
-abline(v=boys,lwd=2,col=2)
-abline(v=sDown,lwd=1,col=2,lty=2)
-text(c(sDown,s0,boys,boys),c(rep(0.011,3),0.01),labels=c(expression(paste(s[0]-delta)),expression(s[0]),expression(s==s[0]+delta),as.expression(substitute(s==val,list(val=boys)))),pos=4,col=c(2,4,2))
-text(sDown-50,-.0005,label="p-value",col=2,pos=4)
-text(sUp,-.0005,label="p-value",col=2,pos=4)
-arrows(s0+1500.5,-.0009,sUp,-.0009,col=2,lwd=2,angle=20,length=.1)
-arrows(s0-1500.5,-.0009,sDown,-.0009,col=2,lwd=2,angle=20,length=.1)
+plot(s0 + seq(-150.5, 150.5, 1), dbinom(s0 + seq(-150.5, 150.5, 1), prob = .5, size = n), type = "h", xlab = "X", ylab = "Probability", main = as.expression(substitute(pi == val, list(val = paste0("0.5, nobs=", n)))), ylim = c(-.0009, 0.011))
+abline(v = s0, lwd = 2, col = 4)
+abline(v = boys, lwd = 2, col = 2)
+abline(v = sDown, lwd = 1, col = 2, lty = 2)
+text(c(sDown, s0, boys, boys), c(rep(0.011, 3), 0.01), labels = c(expression(paste(s[0] - delta)), expression(s[0]), expression(s == s[0] + delta), as.expression(substitute(s == val, list(val = boys)))), pos = 4, col = c(2, 4, 2))
+text(sDown - 50, -.0005, label = "p-value", col = 2, pos = 4)
+text(sUp, -.0005, label = "p-value", col = 2, pos = 4)
+arrows(s0 + 1500.5, -.0009, sUp, -.0009, col = 2, lwd = 2, angle = 20, length = .1)
+arrows(s0 - 1500.5, -.0009, sDown, -.0009, col = 2, lwd = 2, angle = 20, length = .1)
 ```
 
 ---
@@ -273,7 +276,7 @@ arrows(s0-1500.5,-.0009,sDown,-.0009,col=2,lwd=2,angle=20,length=.1)
 The test can immediately be conducted using the `binomial.test` function in R.
 
 ```{r}
-binom.test(x=boys,n=n,p=pi0)
+binom.test(x = boys, n = n, p = pi0)
 ```
 
 On the 5% significance-level we conclude that there is on average a higher probability on a unborn male child than an unborn female child.
@@ -289,8 +292,8 @@ $$SE_{\bar x}=\sqrt{\frac{\text{Var}[X]}{n}}=\sqrt{\frac{\pi(1-\pi)}{n}}$$
 - 95% CI via CLT: $\hat\pi \pm 1.96 SE_{\hat\pi}.$
 
 ```{r}
-se=sqrt(pi*(1-pi)/n)
-pi+c(-1,1)*qnorm(0.975)*se
+se <- sqrt(pi * (1 - pi) / n)
+pi + c(-1, 1) * qnorm(0.975) * se
 ```
 
 ---
@@ -298,7 +301,7 @@ pi+c(-1,1)*qnorm(0.975)*se
 ### CI on proportion in small sample?
 
 ```{r}
-CI <- binom.test(x=boys,n=n,p=pi0)$conf.int
+CI <- binom.test(x = boys, n = n, p = pi0)$conf.int
 CI
 ```
 
@@ -329,28 +332,28 @@ The probability that an unborn child is male equals `r format(pi*100,digits=3)`%
 
 ```{r, out.width='70%', fig.asp=1, fig.align='center',echo=FALSE}
 library(plotrix)
-par(mar=c(0,0,0,0),mai=c(0,0,0,0))
-plot(0,0,axes=FALSE,xlab="",ylab="",col=0,xlim=c(0,3),ylim=c(0,3))
-rect(0,0,3,3)
-lines(c(1,1),c(0,3))
-lines(c(2,2),c(0,3))
-lines(c(1,1),c(1,2),lwd=2)
-lines(c(1,1),c(1,2),lwd=4)
-lines(c(2,2),c(1,2),lwd=4)
-rect(1.45,1,1.55,1.3)
-draw.circle(1.5,1.36,0.05)
-lines(c(1.5,1.5),c(1,.85))
-text(1.5,1.15,"\\VE",vfont=c("sans serif","bold"),cex=1.3)
-rect(0.5,1.05,0.8,1.15)
-draw.circle(0.86,1.1,0.05)
-lines(c(0.5,0.35),c(1.1,1.1))
-lines(c(0.8,0),c(1.1,1.5),lty=2)
-text(0.65,1.1,"\\MA",vfont=c("sans serif","bold"),cex=1.3)
-rect(2.5,1.95,2.2,1.85)
-draw.circle(2.14,1.9,0.05)
-lines(c(2.5,2.65),c(1.9,1.9))
-lines(c(2.2,3),c(1.9,1.5),lty=2)
-text(2.35,1.9,"\\MA",vfont=c("sans serif","bold"),cex=1.3)
+par(mar = c(0, 0, 0, 0), mai = c(0, 0, 0, 0))
+plot(0, 0, axes = FALSE, xlab = "", ylab = "", col = 0, xlim = c(0, 3), ylim = c(0, 3))
+rect(0, 0, 3, 3)
+lines(c(1, 1), c(0, 3))
+lines(c(2, 2), c(0, 3))
+lines(c(1, 1), c(1, 2), lwd = 2)
+lines(c(1, 1), c(1, 2), lwd = 4)
+lines(c(2, 2), c(1, 2), lwd = 4)
+rect(1.45, 1, 1.55, 1.3)
+draw.circle(1.5, 1.36, 0.05)
+lines(c(1.5, 1.5), c(1, .85))
+text(1.5, 1.15, "\\VE", vfont = c("sans serif", "bold"), cex = 1.3)
+rect(0.5, 1.05, 0.8, 1.15)
+draw.circle(0.86, 1.1, 0.05)
+lines(c(0.5, 0.35), c(1.1, 1.1))
+lines(c(0.8, 0), c(1.1, 1.5), lty = 2)
+text(0.65, 1.1, "\\MA", vfont = c("sans serif", "bold"), cex = 1.3)
+rect(2.5, 1.95, 2.2, 1.85)
+draw.circle(2.14, 1.9, 0.05)
+lines(c(2.5, 2.65), c(1.9, 1.9))
+lines(c(2.2, 3), c(1.9, 1.5), lty = 2)
+text(2.35, 1.9, "\\MA", vfont = c("sans serif", "bold"), cex = 1.3)
 ```
 
 ---
@@ -364,18 +367,18 @@ text(2.35,1.9,"\\MA",vfont=c("sans serif","bold"),cex=1.3)
 
 
 ```{r catHamster, echo=FALSE}
-hamster <- matrix(c(3,17,1,13),ncol=2,byrow=TRUE)
+hamster <- matrix(c(3, 17, 1, 13), ncol = 2, byrow = TRUE)
 rownames(hamster) <- c("hostile_agressive", "hostile_non-agressive")
-colnames(hamster) <- c("friendly_agressive","friendly_non-agressive")
-hamsterTot=matrix(0,nrow=3,ncol=3)
-hamsterTot[1:2,1:2]=hamster
-hamsterTot[3,1:2]=colSums(hamster)
-hamsterTot[,3]=rowSums(hamsterTot[,1:2])
-hamsterLetters=matrix(c(" (e)"," (f)",""," (g)"," (h)","","","",""),ncol=3,byrow=TRUE)
-hamsterTot=matrix(paste0(hamsterTot,hamsterLetters),byrow=FALSE,ncol=3)
-colnames(hamsterTot)<-c(colnames(hamster),"total")
-rownames(hamsterTot)<-c(rownames(hamster),"total")
-knitr::kable(hamsterTot,booktabs = TRUE)
+colnames(hamster) <- c("friendly_agressive", "friendly_non-agressive")
+hamsterTot <- matrix(0, nrow = 3, ncol = 3)
+hamsterTot[1:2, 1:2] <- hamster
+hamsterTot[3, 1:2] <- colSums(hamster)
+hamsterTot[, 3] <- rowSums(hamsterTot[, 1:2])
+hamsterLetters <- matrix(c(" (e)", " (f)", "", " (g)", " (h)", "", "", "", ""), ncol = 3, byrow = TRUE)
+hamsterTot <- matrix(paste0(hamsterTot, hamsterLetters), byrow = FALSE, ncol = 3)
+colnames(hamsterTot) <- c(colnames(hamster), "total")
+rownames(hamsterTot) <- c(rownames(hamster), "total")
+knitr::kable(hamsterTot, booktabs = TRUE)
 ```
 
 ---
@@ -407,16 +410,18 @@ $$\left[\frac{f-g}{n}-\frac{z_{\alpha/2}}{n}\sqrt{f+g-\frac{(f-g)^2}{n}},\frac{f
 ---
 
 ```{r}
-hamster <- matrix(c(3,17,1,13),ncol=2,byrow=TRUE)
+hamster <- matrix(c(3, 17, 1, 13), ncol = 2, byrow = TRUE)
 rownames(hamster) <- c("hostile-agressive", "hostile-non-agressive")
-colnames(hamster) <- c("friendly-agressive","friendly-non-agressive")
+colnames(hamster) <- c("friendly-agressive", "friendly-non-agressive")
 
-f=hamster[1,2]; g=hamster[2,1] ;n=sum(hamster)
-riskdiff=(f-g)/n
+f <- hamster[1, 2]
+g <- hamster[2, 1]
+n <- sum(hamster)
+riskdiff <- (f - g) / n
 riskdiff
-se=sqrt(f+g-(f-g)^2/n)/n
+se <- sqrt(f + g - (f - g)^2 / n) / n
 se
-ci<-riskdiff+c(-1,1)*qnorm(0.975)*se
+ci <- riskdiff + c(-1, 1) * qnorm(0.975) * se
 ci
 ```
 
@@ -439,7 +444,7 @@ The absolute risk difference on choosing for an agressive male is 47.1% larger u
 
 ## McNemar test
 ```{r,echo=FALSE}
-knitr::kable(hamsterTot,booktabs = TRUE)
+knitr::kable(hamsterTot, booktabs = TRUE)
 ```
 
 - Assess if risk on choice for agressive male differs between residing in hostile and friendly environment.
@@ -485,7 +490,7 @@ mcnemar.test(hamster)
 - Normale approximation is not optimal and we can perform an exact test using the binomiale test
 
 ```{r}
-binom.test(x=f,n=f+g,p=0.5)
+binom.test(x = f, n = f + g, p = 0.5)
 ```
 
 ---
@@ -504,7 +509,7 @@ binom.test(x=f,n=f+g,p=0.5)
 - Retrospective case-control study with 800 breast cancer cases en 572 controls
 
 ```{r}
-brca<-read_csv("https://raw.githubusercontent.com/GTPB/PSLS20/master/data/brca.csv")
+brca <- read_csv("https://raw.githubusercontent.com/GTPB/PSLS20/master/data/brca.csv")
 head(brca)
 summary(brca)
 ```
@@ -512,7 +517,7 @@ summary(brca)
 ---
 
 ```{r echo=FALSE}
-brcaHlp <- data.frame(Genotype=c("Pro/Pro","Pro/Leu","Leu/Leu","Totaal"),Control=c("266 (a)","250 (b)","56 (c)","572 (a+b+c)"),Cases=c("342 (d)","369 (e)","89 (f)","800 (d+e+f)"),Total=c("608 (a+d)","619 (b+e)","145 (c+f)","1372 (n)"))
+brcaHlp <- data.frame(Genotype = c("Pro/Pro", "Pro/Leu", "Leu/Leu", "Totaal"), Control = c("266 (a)", "250 (b)", "56 (c)", "572 (a+b+c)"), Cases = c("342 (d)", "369 (e)", "89 (f)", "800 (d+e+f)"), Total = c("608 (a+d)", "619 (b+e)", "145 (c+f)", "1372 (n)"))
 knitr::kable(brcaHlp,
   booktabs = TRUE
 )
@@ -648,12 +653,13 @@ X^2 &=& \frac{\left (|O_{11} - E_{11}| - .5 \right)^2 }{ E_{11}} + \frac{
 ---
 
 ```{r echo=FALSE}
-grid <- seq(0,10,.1)
-plot(grid,dchisq(grid,1),type="l",lwd=2)
-dfs <- c(1,2,5)
-for (i in 2:3)
-	lines(grid,dchisq(grid,dfs[i]),col=i,lwd=2)
-legend("topright",lty=1,lwd=2,col=1:3,legend=sapply(dfs, function(d) as.expression(substitute(chi[df==val]^2,list(val=d)))))
+grid <- seq(0, 10, .1)
+plot(grid, dchisq(grid, 1), type = "l", lwd = 2)
+dfs <- c(1, 2, 5)
+for (i in 2:3) {
+  lines(grid, dchisq(grid, dfs[i]), col = i, lwd = 2)
+}
+legend("topright", lty = 1, lwd = 2, col = 1:3, legend = sapply(dfs, function(d) as.expression(substitute(chi[df == val]^2, list(val = d)))))
 ```
 
 ---
@@ -669,14 +675,16 @@ $$p=P_0[\chi^2_1 \geq x^2]$$.
 ---
 
 ```{r}
-expected <- matrix(0,nrow=2,ncol=2)
-for (i in 1:2)
-	for (j in 1:2)
-		expected[i,j] <-
-			sum(brcaTab2[i,])*sum(brcaTab2[,j])/sum(brcaTab2)
+expected <- matrix(0, nrow = 2, ncol = 2)
+for (i in 1:2) {
+  for (j in 1:2) {
+    expected[i, j] <-
+      sum(brcaTab2[i, ]) * sum(brcaTab2[, j]) / sum(brcaTab2)
+  }
+}
 expected
-x2 <- sum((abs(brcaTab2-expected) - .5)^2/expected)
-1-pchisq(x2,1)
+x2 <- sum((abs(brcaTab2 - expected) - .5)^2 / expected)
+1 - pchisq(x2, 1)
 ```
 
 ---
@@ -693,7 +701,7 @@ In R you can switch the correction on or off by setting the argument `correct` o
 
 ```{r}
 chisq.test(brcaTab2)
-chisq.test(brcaTab2,correct=FALSE)
+chisq.test(brcaTab2, correct = FALSE)
 ```
 
 ---
@@ -736,7 +744,7 @@ X^2 = \sum_{ij} \frac{\left (O_{ij} - E_{ij}\right)^2 }{ E_{ij}}
 
 
 ```{r}
-brcaTab <- table(brca$variant,brca$cancer)
+brcaTab <- table(brca$variant, brca$cancer)
 chisq.test(brcaTab)
 ```
 
@@ -792,9 +800,13 @@ We fit the model in R.
 
 - Note that we use the function `as.factor` to convert the cancer variable to a factor variable. - We further use the function `relevel` to specify the control treatment as the reference group.
 ```{r}
-brca$cancer<-brca$cancer %>% as.factor %>% relevel("control")
-brca$variant<-brca$variant %>% as.factor %>% relevel("pro/pro")
-brcaLogit <- glm(cancer~variant,data=brca,family=binomial)
+brca$cancer <- brca$cancer %>%
+  as.factor() %>%
+  relevel("control")
+brca$variant <- brca$variant %>%
+  as.factor() %>%
+  relevel("pro/pro")
+brcaLogit <- glm(cancer ~ variant, data = brca, family = binomial)
 summary(brcaLogit)
 ```
 
@@ -813,7 +825,7 @@ The intercept is the log-odds on cancer in the reference class (Pro/Pro) and the
 ---
 
 ```{r}
-anova(brcaLogit,test="Chisq")
+anova(brcaLogit, test = "Chisq")
 ```
 
 The $\chi^2$-test on the logsitic regression model also indicates that there is no significant association between cancer status and the genetic variant of the BRCA gene ($p=$ `r format(anova(brcaLogit,test="Chisq")[2,"Pr(>Chi)"],digits=3)`).
@@ -830,8 +842,10 @@ De p-value is almost equivalent to the one of the  $\chi^2$-test (see previous s
 ---
 
 ```{r}
-suppressPackageStartupMessages({library(multcomp)})
-posthoc <- glht(brcaLogit,linfct=mcp(variant = "Tukey"))
+suppressPackageStartupMessages({
+  library(multcomp)
+})
+posthoc <- glht(brcaLogit, linfct = mcp(variant = "Tukey"))
 posthocTests <- summary(posthoc)
 posthocTests
 ```
@@ -872,9 +886,9 @@ Design:
 - The outcome: mortality ($y=1$) or survival ($y=0$).
 
 ```{r}
-beetles<-read_csv("https://raw.githubusercontent.com/GTPB/PSLS20/master/data/beetles.csv")
+beetles <- read_csv("https://raw.githubusercontent.com/GTPB/PSLS20/master/data/beetles.csv")
 head(beetles)
-table(beetles$dose,beetles$status)
+table(beetles$dose, beetles$status)
 ```
 
 ---
@@ -883,7 +897,7 @@ We build a model for the log odds in function of the dose $x_i$:
 $$\log \frac{\pi_i}{1-\pi_i}=\beta_0+\beta_1 \times x_i.$$
 
 ```{r}
-beatleModel<-glm(status~dose,data=beetles,family=binomial)
+beatleModel <- glm(status ~ dose, data = beetles, family = binomial)
 summary(beatleModel)
 ```
 
@@ -905,16 +919,17 @@ summary(beatleModel)
 
 ```{r}
 
-beetlesTab<-table(beetles) %>% data.frame
+beetlesTab <- table(beetles) %>% data.frame()
 
-data.frame(grid=seq(min(beetles$dose),max(beetles$dose),.1)) %>%
-  mutate(piHat=predict(beatleModel,
-	      newdata=data.frame(dose=grid),
-	      type="response")) %>%
-  ggplot(aes(grid,piHat))+
+data.frame(grid = seq(min(beetles$dose), max(beetles$dose), .1)) %>%
+  mutate(piHat = predict(beatleModel,
+    newdata = data.frame(dose = grid),
+    type = "response"
+  )) %>%
+  ggplot(aes(grid, piHat)) +
   geom_line() +
   xlab("dose") +
   ylab("probability (dead)") +
-  geom_text(aes(x=dose%>%as.character%>%as.double,y=status%>%as.character%>%as.double,label=Freq),beetlesTab%>%filter(status==0)) +
-geom_text(aes(x=dose%>%as.character%>%as.double,y=status%>%as.character%>%as.double,label=Freq),beetlesTab%>%filter(status==1))
+  geom_text(aes(x = dose %>% as.character() %>% as.double(), y = status %>% as.character() %>% as.double(), label = Freq), beetlesTab %>% filter(status == 0)) +
+  geom_text(aes(x = dose %>% as.character() %>% as.double(), y = status %>% as.character() %>% as.double(), label = Freq), beetlesTab %>% filter(status == 1))
 ```

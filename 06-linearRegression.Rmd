@@ -7,8 +7,10 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
-                      message = FALSE, warning = FALSE, cache = TRUE)
+knitr::opts_chunk$set(
+  include = TRUE, comment = NA, echo = TRUE,
+  message = FALSE, warning = FALSE, cache = TRUE
+)
 library(Rmisc)
 library(tidyverse)
 ```
@@ -37,16 +39,16 @@ brca
 
 
 ```{r out.width='70%', fig.align='center',warnings=FALSE}
-brca %>% ggplot(aes(x="",y=S100A8)) +
-geom_boxplot()
+brca %>% ggplot(aes(x = "", y = S100A8)) +
+  geom_boxplot()
 ```
 
 ---
 
 ```{r}
 library(GGally)
-brcaSubset<-brca %>% filter(S100A8<2000)
-brcaSubset[,-(1:4)] %>% ggpairs()
+brcaSubset <- brca %>% filter(S100A8 < 2000)
+brcaSubset[, -(1:4)] %>% ggpairs()
 ```
 
 ## Association between ESR1 and S100A8 expressie
@@ -69,7 +71,7 @@ brcaSubset[,-(1:4)] %>% ggpairs()
 
 ```{r fig.align='center'}
 brcaSubset %>%
-  ggplot(aes(x=ESR1,y=S100A8)) +
+  ggplot(aes(x = ESR1, y = S100A8)) +
   geom_point() +
   geom_smooth()
 ```
@@ -85,10 +87,10 @@ brcaSubset %>%
 
 ```{r fig.align='center'}
 brcaSubset %>%
-  ggplot(aes(x=ESR1,y=S100A8)) +
+  ggplot(aes(x = ESR1, y = S100A8)) +
   geom_point() +
-  geom_smooth(se=FALSE,col="grey") +
-  geom_smooth(method="lm",se=FALSE)
+  geom_smooth(se = FALSE, col = "grey") +
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
 ## Model
@@ -141,10 +143,10 @@ $\beta_1=$ difference in mean outcome for subjects that differ in one unit of th
 
 ```{r fig.align='center'}
 brcaSubset %>%
-  ggplot(aes(x=ESR1,y=S100A8)) +
+  ggplot(aes(x = ESR1, y = S100A8)) +
   geom_point() +
-  geom_smooth(se=FALSE,col="grey") +
-  geom_smooth(method="lm",se=FALSE)
+  geom_smooth(se = FALSE, col = "grey") +
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
 - Parameters $\beta_0$ en $\beta_1$ are unknown.
@@ -180,7 +182,7 @@ $$\text{E}\left[Y|X=x+\delta\right]-\text{E}\left[Y|X=x\right]= \hat{\beta}_1\de
 ### Breast cancer example
 
 ```{r}
-lm1 <- lm(S100A8~ESR1,brcaSubset)
+lm1 <- lm(S100A8 ~ ESR1, brcaSubset)
 summary(lm1)
 ```
 
@@ -307,10 +309,10 @@ summary(lm1)
 
 ```{r fig.align='center'}
 brcaSubset %>%
-  ggplot(aes(x=ESR1,y=S100A8)) +
+  ggplot(aes(x = ESR1, y = S100A8)) +
   geom_point() +
-  geom_smooth(se=FALSE,col="grey") +
-  geom_smooth(method="lm",se=FALSE)
+  geom_smooth(se = FALSE, col = "grey") +
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
 
@@ -344,20 +346,20 @@ $$Y_i\vert X_i\sim N(\beta_0+\beta_1X_i,\sigma^2)$$
 - QQ-plot of the residuals $e_i$
 
 ```{r echo=FALSE}
-set.seed=200
-par(mfrow=c(1,3))
-x=rep(1:10,each=20)
-y=x+rnorm(length(x))
-boxplot(y~x)
-qqnorm(y, main="Original observations")
+set.seed <- 200
+par(mfrow = c(1, 3))
+x <- rep(1:10, each = 20)
+y <- x + rnorm(length(x))
+boxplot(y ~ x)
+qqnorm(y, main = "Original observations")
 qqline(y)
-lmH<-lm(y~x)
-plot(lmH,which=2,main="Residuals")
+lmH <- lm(y ~ x)
+plot(lmH, which = 2, main = "Residuals")
 ```
 
 
 ```{r}
-plot(lm1,which=2)
+plot(lm1, which = 2)
 ```
 
 
@@ -394,19 +396,19 @@ This is often the case for concentration and intensity measurements
 
 
 ```{r}
-brca %>% ggplot(aes(x=ESR1,y=S100A8)) +
+brca %>% ggplot(aes(x = ESR1, y = S100A8)) +
   geom_point() +
   geom_smooth()
 ```
 
 ```{r}
-brca %>% ggplot(aes(x=ESR1%>%log2,y=S100A8%>%log2)) +
+brca %>% ggplot(aes(x = ESR1 %>% log2(), y = S100A8 %>% log2())) +
   geom_point() +
   geom_smooth()
 ```
 
 ```{r}
-lm2<-lm(S100A8%>%log2 ~ ESR1 %>% log2, brca)
+lm2 <- lm(S100A8 %>% log2() ~ ESR1 %>% log2(), brca)
 plot(lm2)
 summary(lm2)
 ```
@@ -441,7 +443,7 @@ Model on log-scale: upon back-transformation we obtain geometric means
 ```{r}
 2^lm2$coef[2]
 2^-lm2$coef[2]
-2^-confint(lm2)[2,]
+2^-confint(lm2)[2, ]
 ```
 
 A patient with an ESR1 expression that is 2 times the expression of that of another patient will on average have an  S100A8 expression that is `r round(2^-lm2$coef[2]
@@ -488,26 +490,26 @@ $$T=\frac{\hat{g}(x)-g(x)}{SE_{\hat{g}(x)}}\sim t_{n-2}$$
 
 ```{r}
 grid <- 140:4000
-g <- predict(lm2,newdata=data.frame(ESR1=grid), interval="confidence")
+g <- predict(lm2, newdata = data.frame(ESR1 = grid), interval = "confidence")
 head(g)
 ```
 
 Note, that we do not have to transform the new data that we specified for the ESR1 expression because we fitted the model with a call to the `lm` function and specified the transformation within the lm formula using the pipe command!
 
 ```{r}
-brca %>% ggplot(aes(x=ESR1%>%log2,y=S100A8%>%log2)) +
+brca %>% ggplot(aes(x = ESR1 %>% log2(), y = S100A8 %>% log2())) +
   geom_point() +
-  geom_smooth(method="lm")
+  geom_smooth(method = "lm")
 ```
 
 ## Back-transformation
 ```{r}
-newdata<-data.frame(cbind(grid,2^g))
-brca %>% ggplot(aes(x=ESR1,y=S100A8)) +
+newdata <- data.frame(cbind(grid, 2^g))
+brca %>% ggplot(aes(x = ESR1, y = S100A8)) +
   geom_point() +
-  geom_line(aes(x=grid,y=fit),newdata) +
-  geom_line(aes(x=grid,y=lwr),newdata,color="grey") +
-  geom_line(aes(x=grid,y=upr),newdata,color="grey")
+  geom_line(aes(x = grid, y = fit), newdata) +
+  geom_line(aes(x = grid, y = lwr), newdata, color = "grey") +
+  geom_line(aes(x = grid, y = upr), newdata, color = "grey")
 ```
 
 # Prediction-intervals
@@ -543,28 +545,28 @@ $$\frac{\hat{Y}(x)-Y}{\text{SE}_{\hat{Y}(x)}}\sim t_{n-2}$$
 
 
 ```{r}
-p <- predict(lm2,newdata=data.frame(ESR1=grid), interval="prediction")
+p <- predict(lm2, newdata = data.frame(ESR1 = grid), interval = "prediction")
 head(p)
 ```
 
 ```{r}
-preddata<-data.frame(cbind(grid=grid%>%log2,p))
-brca %>% ggplot(aes(x=ESR1%>%log2,y=S100A8%>%log2)) +
+preddata <- data.frame(cbind(grid = grid %>% log2(), p))
+brca %>% ggplot(aes(x = ESR1 %>% log2(), y = S100A8 %>% log2())) +
   geom_point() +
-  geom_smooth(method="lm") +
-     geom_line(aes(x=grid,y=lwr),preddata,color="blue") +
-  geom_line(aes(x=grid,y=upr),preddata,color="blue")
+  geom_smooth(method = "lm") +
+  geom_line(aes(x = grid, y = lwr), preddata, color = "blue") +
+  geom_line(aes(x = grid, y = upr), preddata, color = "blue")
 ```
 
 ```{r}
-preddata<-data.frame(cbind(grid,2^p))
-brca %>% ggplot(aes(x=ESR1,y=S100A8)) +
+preddata <- data.frame(cbind(grid, 2^p))
+brca %>% ggplot(aes(x = ESR1, y = S100A8)) +
   geom_point() +
-  geom_line(aes(x=grid,y=fit),newdata) +
-  geom_line(aes(x=grid,y=lwr),newdata,color="grey") +
-  geom_line(aes(x=grid,y=upr),newdata,color="grey") +
-    geom_line(aes(x=grid,y=lwr),preddata,color="blue") +
-  geom_line(aes(x=grid,y=upr),preddata,color="blue")
+  geom_line(aes(x = grid, y = fit), newdata) +
+  geom_line(aes(x = grid, y = lwr), newdata, color = "grey") +
+  geom_line(aes(x = grid, y = upr), newdata, color = "grey") +
+  geom_line(aes(x = grid, y = lwr), preddata, color = "blue") +
+  geom_line(aes(x = grid, y = upr), preddata, color = "blue")
 ```
 
 
@@ -577,17 +579,17 @@ brca %>% ggplot(aes(x=ESR1,y=S100A8)) +
 
 ```{r}
 library(NHANES)
-fem <- NHANES %>% filter(Gender=="female"&!is.na(DirectChol))
+fem <- NHANES %>% filter(Gender == "female" & !is.na(DirectChol))
 
-exp(fem$DirectChol%>%log%>%mean + c(-1,1)* qnorm(0.975) * (fem$DirectChol%>%log%>%sd))
+exp(fem$DirectChol %>% log() %>% mean() + c(-1, 1) * qnorm(0.975) * (fem$DirectChol %>% log() %>% sd()))
 ```
 
 - prediction interval
 
 ```{r}
-lmChol <- lm(DirectChol %>% log2~1,data=fem)
-predInt <- predict(lmChol,interval="prediction",newdata=data.frame(noPred=1))
-round(2^predInt,2)
+lmChol <- lm(DirectChol %>% log2() ~ 1, data = fem)
+predInt <- predict(lmChol, interval = "prediction", newdata = data.frame(noPred = 1))
+round(2^predInt, 2)
 ```
 
 
@@ -599,17 +601,19 @@ We will do the same thing for the small sample size of 10 patients.
 
 ```{r}
 set.seed(1)
-fem10<- NHANES %>% filter(Gender=="female"&!is.na(DirectChol)) %>% sample_n(size=10)
+fem10 <- NHANES %>%
+  filter(Gender == "female" & !is.na(DirectChol)) %>%
+  sample_n(size = 10)
 
-2^(fem10$DirectChol%>%log2%>%mean + c(-1,1)* qnorm(0.975) * (fem10$DirectChol%>%log2%>%sd))
+2^(fem10$DirectChol %>% log2() %>% mean() + c(-1, 1) * qnorm(0.975) * (fem10$DirectChol %>% log2() %>% sd()))
 ```
 
 - Prediction interval
 
 ```{r}
-lmChol10 <- lm(DirectChol %>% log2~1,data=fem10)
-predInt10 <- predict(lmChol10,interval="prediction",newdata=data.frame(noPred=1))
-round(2^predInt10,2)
+lmChol10 <- lm(DirectChol %>% log2() ~ 1, data = fem10)
+predInt10 <- predict(lmChol10, interval = "prediction", newdata = data.frame(noPred = 1))
+round(2^predInt10, 2)
 ```
 
 - Note, that the PI now captures uncertainty in parameter estimators (mean and standard error).
@@ -632,11 +636,11 @@ $$\text{SSTot} = \sum_{i=1}^n (Y_i-\bar{Y})^2.$$
 
 
 ```{r out.width='100%', fig.asp=.8, fig.align='center', echo=FALSE}
-brca$log2ESR1<-log2(brca$ESR1)
-brca$log2S100A8<-log2(brca$S100A8)
-plot(log2S100A8~log2ESR1,data=brca,xlab="ESR1 expressie (log2)",ylab="S100A8 expressie (log2)",cex.axis=1.5,cex.main=1.5,cex.lab=1.5,col=4)
-abline(h=mean(brca$log2S100A8))
-for (i in 1:length(brca$log2S100A8)) lines(rep(brca$log2ESR1[i],2),c(mean(brca$log2S100A8),brca$log2S100A8[i]),lty=2,col=4)
+brca$log2ESR1 <- log2(brca$ESR1)
+brca$log2S100A8 <- log2(brca$S100A8)
+plot(log2S100A8 ~ log2ESR1, data = brca, xlab = "ESR1 expressie (log2)", ylab = "S100A8 expressie (log2)", cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5, col = 4)
+abline(h = mean(brca$log2S100A8))
+for (i in 1:length(brca$log2S100A8)) lines(rep(brca$log2ESR1[i], 2), c(mean(brca$log2S100A8), brca$log2S100A8[i]), lty = 2, col = 4)
 ```
 
 ## Sum of squares of the regression SSR
@@ -653,11 +657,11 @@ $$\text{SSR} = \sum_{i=1}^n (\hat{Y}_i - \bar{Y})^2 = \sum_{i=1}^n (\hat{g}(x_i)
 - SSR measures the size of the effect of the predictor
 
 ```{r out.width='100%', fig.asp=.8, fig.align='center',echo=FALSE}
-plot(log2S100A8~log2ESR1,brca,xlab="ESR1 expressie (log2)",ylab="S100A8 expressie (log2)",cex.axis=1.5,cex.main=1.5,cex.lab=1.5)
-abline(h=mean(brca$log2S100A8))
-abline(lm2,col=2)
-points(brca$log2ESR1,lm2$fitted,pch=2,col=2)
-for (i in 1:length(brca$log2S100A8)) lines(rep(brca$log2ESR1[i],2),c(mean(brca$log2S100A8),lm2$fitted[i]),lty=2,col=2)
+plot(log2S100A8 ~ log2ESR1, brca, xlab = "ESR1 expressie (log2)", ylab = "S100A8 expressie (log2)", cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)
+abline(h = mean(brca$log2S100A8))
+abline(lm2, col = 2)
+points(brca$log2ESR1, lm2$fitted, pch = 2, col = 2)
+for (i in 1:length(brca$log2S100A8)) lines(rep(brca$log2ESR1[i], 2), c(mean(brca$log2S100A8), lm2$fitted[i]), lty = 2, col = 2)
 ```
 
 
@@ -673,10 +677,10 @@ $$ \text{SSE} = \sum_{i=1}^n (Y_i-\hat{Y}_i )^2 = \sum_{i=1}^n \left\{Y_i-\hat{g
 ---
 
 ```{r out.width='100%', fig.asp=.8, fig.align='center',echo=FALSE}
-plot(log2S100A8~log2ESR1,brca,xlab="ESR1 expressie (log2)",ylab="S100A8 expressie (log2)",cex.axis=1.5,cex.main=1.5,cex.lab=1.5)
-abline(lm2,col=2)
-points(brca$log2ESR1,lm2$fitted,pch=2,col=2)
-for (i in 1:length(brca$log2S100A8)) lines(rep(brca$log2ESR1[i],2),c(brca$log2S100A8[i],lm2$fitted[i]),lty=2)
+plot(log2S100A8 ~ log2ESR1, brca, xlab = "ESR1 expressie (log2)", ylab = "S100A8 expressie (log2)", cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)
+abline(lm2, col = 2)
+points(brca$log2ESR1, lm2$fitted, pch = 2, col = 2)
+for (i in 1:length(brca$log2S100A8)) lines(rep(brca$log2ESR1[i], 2), c(brca$log2S100A8[i], lm2$fitted[i]), lty = 2)
 ```
 
 We can show that SST can be decomposed in
@@ -735,8 +739,8 @@ summary(lm2)
 
 
 ```{r, echo=FALSE}
-grid<-seq(0,10,.1)
-plot(grid,df(grid,1,30),type="l",xlab="F",ylab="Density",main="F-distribution with 1 df in the nominator and 30 in the denominator",cex.main=1.5,cex.axis=1.5,cex.lab=1.5)
+grid <- seq(0, 10, .1)
+plot(grid, df(grid, 1, 30), type = "l", xlab = "F", ylab = "Density", main = "F-distribution with 1 df in the nominator and 30 in the denominator", cex.main = 1.5, cex.axis = 1.5, cex.lab = 1.5)
 ```
 
 
@@ -804,11 +808,11 @@ Tests $H_0:\beta_1=0$ vs.  $H_1:\beta_1\neq0$ can be used to assess the null hyp
 
 ```{r}
 brca$node <- as.factor(brca$node)
-t.test(age~node,brca,var.equal=TRUE)
+t.test(age ~ node, brca, var.equal = TRUE)
 ```
 
 ```{r}
-lm3 <- lm(age~node,brca)
+lm3 <- lm(age ~ node, brca)
 summary(lm3)
 ```
 
@@ -819,15 +823,15 @@ plot(lm3)
 
 
 ```{r}
-brca %>% ggplot(aes(x=node%>%as.factor,y=age)) +
+brca %>% ggplot(aes(x = node %>% as.factor(), y = age)) +
   geom_boxplot()
 ```
 
 
 ```{r out.width='100%', fig.asp=.8, fig.align='center'}
-par(mfrow=c(3,3))
+par(mfrow = c(3, 3))
 set.seed(354)
-for(i in 1:9) plot(rnorm(32)~node,brca,ylab="iid N(0,1)")
+for (i in 1:9) plot(rnorm(32) ~ node, brca, ylab = "iid N(0,1)")
 ```
 
 

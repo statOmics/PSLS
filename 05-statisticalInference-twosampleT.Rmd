@@ -7,8 +7,10 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
-                      message = FALSE, warning = FALSE, cache = TRUE)
+knitr::opts_chunk$set(
+  include = TRUE, comment = NA, echo = TRUE,
+  message = FALSE, warning = FALSE, cache = TRUE
+)
 library(tidyverse)
 ```
 
@@ -36,7 +38,7 @@ Another group of abundant bacteria are the *Staphylococcus spp.*, these bacteria
 ## Import the data
 
 ```{r}
-ap<-read_csv("https://raw.githubusercontent.com/GTPB/PSLS20/master/data/armpit.csv")
+ap <- read_csv("https://raw.githubusercontent.com/GTPB/PSLS20/master/data/armpit.csv")
 ap
 ```
 
@@ -45,9 +47,11 @@ ap
 We plot the direct relative abundances in function of the treatment group. With the ggplot2 library we can easily build plots by adding layers.
 
 ```{r}
-ap %>%  ggplot(aes(x=trt,y=rel)) + geom_boxplot(outlier.shape=NA) + geom_point(position="jitter")
+ap %>% ggplot(aes(x = trt, y = rel)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = "jitter")
 
-ap %>% ggplot(aes(sample=rel)) +
+ap %>% ggplot(aes(sample = rel)) +
   geom_qq() +
   geom_qq_line() +
   facet_wrap(~trt)
@@ -135,7 +139,7 @@ The statistic T follows a t-distribution with $n_1+n_2-2$ under $H_0$ is all dat
 We can implement the test in R:
 
 ```{r}
-t.test(rel~trt,data=ap,var.equal=TRUE)
+t.test(rel ~ trt, data = ap, var.equal = TRUE)
 ```
 
 On the $5\%$ significance level we reject the null hypothesis in favor of the alternative hypothesis and conclude that the relative abundance of  *Staphylococcus spp.* is on average extreme significant larger is in transplantation group than in the placebo group.
@@ -223,7 +227,7 @@ This statistic follows approximately a t-distribution with a number of degrees o
 In R the degrees of freedom are estimated using the Welch- Satterthwaite approximation. You can do this by using the `t.test` function with argument `var.equal=FALSE`.
 
 ```{r}
-t.test(rel~trt,data=ap,var.equal=FALSE)
+t.test(rel ~ trt, data = ap, var.equal = FALSE)
 ```
 
 Note that you can see that the Welch T-test is adopted in the title. The adjusted degrees of freedom are $df = 17.876$ $\pm$ to that of the conventional T-test, because the variances are approximately equal.
@@ -244,7 +248,7 @@ Report an estimate together with its  confidence interval (and its p-value)
 2. It allows the reader to judge **scientific relevance**.
 
 ```{r}
-t.test(rel~trt,data=ap)
+t.test(rel ~ trt, data = ap)
 ```
 
 The result of an $\alpha$-level t-test is equivalent with comparing the effect size under $H_0$ with the $1-\alpha$ CI.

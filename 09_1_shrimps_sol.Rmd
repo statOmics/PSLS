@@ -30,7 +30,8 @@ library(tidyverse)
 
 ```{r}
 shrimps <- read.table("https://raw.githubusercontent.com/statOmics/PSLS21/data/shrimps.txt",
-                      header = TRUE)
+  header = TRUE
+)
 glimpse(shrimps)
 ```
 
@@ -54,14 +55,14 @@ Visualize the data:
 
 ```{r}
 shrimps %>%
-  ggplot(aes(x=group,y=PCB.conc,fill=group)) +
-  scale_fill_brewer(palette="RdGy") +
+  ggplot(aes(x = group, y = PCB.conc, fill = group)) +
+  scale_fill_brewer(palette = "RdGy") +
   theme_bw() +
-  geom_boxplot(outlier.shape=NA) +
+  geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2) +
   ggtitle("Boxplot of the PCB concentrations in two groups of shrimps") +
   ylab("PCB concentration (pg/g)") +
-  stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
+  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
 ```
 
 We can see that for group 1 we have four very clear outliers
@@ -92,7 +93,7 @@ We can check the second assumption with a QQ-plot.
 
 ```{r}
 shrimps %>%
-  ggplot(aes(sample=PCB.conc)) +
+  ggplot(aes(sample = PCB.conc)) +
   geom_qq() +
   geom_qq_line() +
   facet_grid(~group)
@@ -145,7 +146,7 @@ wilcox.test(PCB_1, PCB_2)
 or, equivalently;
 
 ```{r}
-wilcox.test(PCB.conc~group, data = shrimps)
+wilcox.test(PCB.conc ~ group, data = shrimps)
 ```
 
 We find that the test is significant on the 5%
@@ -183,9 +184,9 @@ the other condition *is not equal to 50%*.
 We can estimate this probability based on the observed test statistic.
 
 ```{r}
-n1 <- n2 <- 18 #18 observations in each group
-WObs <- wilcox.test(PCB.conc~group, data=shrimps)$statistic # get the observed test statistic
-WObs/(n1*n2)
+n1 <- n2 <- 18 # 18 observations in each group
+WObs <- wilcox.test(PCB.conc ~ group, data = shrimps)$statistic # get the observed test statistic
+WObs / (n1 * n2)
 ```
 
 We can see that the point estimate of this probability

@@ -74,7 +74,7 @@ column rather than a factor. Let's fix this:
 
 ```{r, eval=FALSE}
 Cuckoo <- Cuckoo %>%
-  filter(type %in% c("4","6")) %>%
+  filter(type %in% c("4", "6")) %>%
   mutate(type = as.factor(type))
 ```
 

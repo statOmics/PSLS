@@ -152,15 +152,17 @@ tail(NHANES)
 ```
 
 ```{r}
-#knitr::kable(NHANES[c(1,4,5,6,7,8),c(1,3,4,7,17,20,21,25)],format = "markdown")
-NHANES[c(1,4,5,6,7,8),c("ID",
-                        "Gender",
-                        "Age",
-                        "Race1",
-                        "Weight",
-                        "Height",
-                        "BMI",
-                        "BPSysAve")] # display a select set of variable and subjects
+# knitr::kable(NHANES[c(1,4,5,6,7,8),c(1,3,4,7,17,20,21,25)],format = "markdown")
+NHANES[c(1, 4, 5, 6, 7, 8), c(
+  "ID",
+  "Gender",
+  "Age",
+  "Race1",
+  "Weight",
+  "Height",
+  "BMI",
+  "BPSysAve"
+)] # display a select set of variable and subjects
 ```
 
 ## Take a `glimpse()` at your data
@@ -183,7 +185,7 @@ It's kind of like `print()` where it shows you
 columns running down the page. Let's try it out.
 
 ```{r}
-glimpse(NHANES[,1:10])
+glimpse(NHANES[, 1:10])
 # or glimpse(NHANES) to see all the variables in the dataset
 ```
 
@@ -338,9 +340,10 @@ Note that:
 ```{r}
 library(tidyverse)
 NHANES <- NHANES %>%
-              unite(United,
-                    ID:SurveyYr,
-                    sep = "-")
+  unite(United,
+    ID:SurveyYr,
+    sep = "-"
+  )
 
 head(NHANES)
 ```
@@ -364,9 +367,10 @@ The `separate()` function performs the exact opposite operation of the
 
 ```{r}
 NHANES <- NHANES %>%
-              separate(United,
-                       sep = "-",
-                       into=c("ID", "SurveyYear"))
+  separate(United,
+    sep = "-",
+    into = c("ID", "SurveyYear")
+  )
 
 head(NHANES)
 ```
@@ -418,10 +422,12 @@ Let's say we want to investigate weight of
 
 ```{r warning=FALSE,message=FALSE}
 NHANES %>%
-  select(c("Gender","Age","Weight","Height")) %>% ## select four colums
-  filter(Gender == "male",
-         Age > 18,
-         Height > 120) ## filter observations (rows) based on the required values
+  select(c("Gender", "Age", "Weight", "Height")) %>% ## select four colums
+  filter(
+    Gender == "male",
+    Age > 18,
+    Height > 120
+  ) ## filter observations (rows) based on the required values
 ```
 
 ### Arrange or re-order rows using `arrange()`
@@ -432,7 +438,7 @@ a particular column you'll use the `arrange()` function:
 
 ```{r warning=FALSE,message=FALSE}
 NHANES %>%
-    arrange(Age)
+  arrange(Age)
 ```
 
 With this suite of _tidyr_ fucntions, in combination with
@@ -448,10 +454,10 @@ by descending height.
 
 ```{r warning=FALSE,message=FALSE}
 NHANES %>%
-  select(c("Race1", "Gender","MaritalStatus","Height")) %>%
+  select(c("Race1", "Gender", "MaritalStatus", "Height")) %>%
   filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "female") %>%
   arrange(desc(Height)) %>%
-  head(n=5)
+  head(n = 5)
 ```
 
 ### Add columns using `mutate()`
@@ -467,8 +473,8 @@ the `mutate()` function in `dplyr`.
 
 ```{r}
 NHANES %>%
-  select(c("Weight", "Height","BMI")) %>%
-  mutate(BMI_self = Weight/(Height/100)**2)
+  select(c("Weight", "Height", "BMI")) %>%
+  mutate(BMI_self = Weight / (Height / 100)**2)
 ```
 
 ### Create summaries of columns using `summarise()`
@@ -613,15 +619,15 @@ p <- ggplot()
 A ggplot object associated with a dataset
 ```{r}
 p <- NHANES %>%
-        filter(Gender=="male") %>%
-        ggplot()
+  filter(Gender == "male") %>%
+  ggplot()
 ```
 
 or a ggplot object with a dataset and `x` and `y` defined
 ```{r}
 p <- NHANES %>%
-      filter(Gender=="male") %>%
-      ggplot(aes(x = Height, y = Weight))
+  filter(Gender == "male") %>%
+  ggplot(aes(x = Height, y = Weight))
 ```
 
 The function `aes()` is an aesthetic mapping

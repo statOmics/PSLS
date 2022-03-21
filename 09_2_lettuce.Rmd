@@ -62,7 +62,6 @@ glimpse(lettuce)
 
 ```{r}
 ## Count the number of observations per treatment
-
 ```
 
 Now let's make a boxplot displaying the freshweight
@@ -92,9 +91,9 @@ Formulate a correct null and alternative hypothesis for the Kruskal-Wallis test 
 ## Analysis
 
 ```{r}
-#set.seed(1)
-#kw <- kruskal_test(...)
-#kw
+# set.seed(1)
+# kw <- kruskal_test(...)
+# kw
 ```
 
 Interpret the results!

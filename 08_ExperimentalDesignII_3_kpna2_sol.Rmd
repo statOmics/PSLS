@@ -33,7 +33,7 @@ The lymph nodes were not affected (0) or chirugically removed (1).
 # Data analysis
 ## Import KPNA2 data in R
 ```{r}
-kpna2 <- read.table("https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt",header=TRUE)
+kpna2 <- read.table("https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt", header = TRUE)
 kpna2
 ```
 
@@ -42,12 +42,11 @@ Because histolic grade and lymph node status are both categorical variables, we 
 ```{r}
 kpna2$grade <- as.factor(kpna2$grade)
 kpna2$node <- as.factor(kpna2$node)
-
 ```
 
 ```{r}
 kpna2 %>%
-  ggplot(aes(x=node:grade,y=gene,fill=node:grade)) +
+  ggplot(aes(x = node:grade, y = gene, fill = node:grade)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter()
 ```
@@ -58,14 +57,14 @@ As we saw before, we can model this with a model that contains both histologic g
 
 
 ```{r}
-#Model with main effects for histological grade and node and grade x node interaction
-fit <- lm(gene~grade*node,data=kpna2)
+# Model with main effects for histological grade and node and grade x node interaction
+fit <- lm(gene ~ grade * node, data = kpna2)
 summary(fit)
 plot(fit)
 ```
 
 ```{r}
-fit <- lm(gene %>% log2~grade*node,data=kpna2)
+fit <- lm(gene %>% log2() ~ grade * node, data = kpna2)
 plot(fit)
 ```
 
@@ -73,13 +72,13 @@ When checking the significance of the interaction term, we see that it is signif
 
 ```{r}
 library(car)
-Anova(fit,type="III")
+Anova(fit, type = "III")
 ```
 
 As we are dealing with a factorial design, we can calculate the mean gene expression for each group by the following parameter summations.
 
 ```{r}
-ExploreModelMatrix::VisualizeDesign(kpna2,~grade*node)$plotlist
+ExploreModelMatrix::VisualizeDesign(kpna2, ~ grade * node)$plotlist
 ```
 
 The researchers want to know the power for testing following hypotheses (remark that we will have to adjust for multiple testing):
@@ -109,7 +108,7 @@ We can test this using multcomp, which controls for multiple testing.
 ```{r}
 library(multcomp)
 
-mcp <- glht(fit,linfct = c("grade3 = 0","grade3 + grade3:node1 = 0", "node1 = 0","node1 + grade3:node1 = 0", "grade3:node1 = 0"))
+mcp <- glht(fit, linfct = c("grade3 = 0", "grade3 + grade3:node1 = 0", "node1 = 0", "node1 + grade3:node1 = 0", "grade3:node1 = 0"))
 summary(mcp)
 ```
 
@@ -122,26 +121,25 @@ We get a significant p-value for the first, second, third and fifth hypothesis. 
 Function to simulate data similar to that of our experiment under our model assumptions.
 
 ```{r}
-simFastMultipleContrasts <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000, adjust = "holm")
-{
-    ySim <- rnorm(nrow(data)*nSim,sd=sd)
-    dim(ySim) <-c(nrow(data),nSim)
-    design <- model.matrix(form, data)
-    ySim <- ySim + c(design %*%betas)
-    ySim <- t(ySim)
+simFastMultipleContrasts <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000, adjust = "holm") {
+  ySim <- rnorm(nrow(data) * nSim, sd = sd)
+  dim(ySim) <- c(nrow(data), nSim)
+  design <- model.matrix(form, data)
+  ySim <- ySim + c(design %*% betas)
+  ySim <- t(ySim)
 
-    ### Fitting
-    fitAll <- limma::lmFit(ySim,design)
+  ### Fitting
+  fitAll <- limma::lmFit(ySim, design)
 
-    ### Inference
-    varUnscaled <- t(contrasts)%*%fitAll$cov.coefficients%*%contrasts
-    contrasts <- fitAll$coefficients %*%contrasts
-    seContrasts <- matrix(diag(varUnscaled)^.5,nrow=nSim,ncol=5,byrow = TRUE)*fitAll$sigma
-    tstats <- contrasts/seContrasts
-    pvals <- pt(abs(tstats),fitAll$df.residual,lower.tail = FALSE)*2
-    pvals <- t(apply(pvals, 1, p.adjust, method = adjust))
+  ### Inference
+  varUnscaled <- t(contrasts) %*% fitAll$cov.coefficients %*% contrasts
+  contrasts <- fitAll$coefficients %*% contrasts
+  seContrasts <- matrix(diag(varUnscaled)^.5, nrow = nSim, ncol = 5, byrow = TRUE) * fitAll$sigma
+  tstats <- contrasts / seContrasts
+  pvals <- pt(abs(tstats), fitAll$df.residual, lower.tail = FALSE) * 2
+  pvals <- t(apply(pvals, 1, p.adjust, method = adjust))
 
-    return(colMeans(pvals < alpha))
+  return(colMeans(pvals < alpha))
 }
 ```
 
@@ -152,16 +150,16 @@ nSim <- 20000
 betas <- fit$coefficients
 sd <- sigma(fit)
 
-contrasts <- matrix(0,nrow=4,ncol=5)
+contrasts <- matrix(0, nrow = 4, ncol = 5)
 rownames(contrasts) <- names(fit$coefficients)
-colnames(contrasts) <- c("graden0","graden1","nodeg1","nodeg3","interaction")
-contrasts[2,1] <- 1
-contrasts[c(2,4),2] <- 1
-contrasts[3,3] <- 1
-contrasts[c(3,4),4] <- 1
-contrasts[4,5] <- 1
+colnames(contrasts) <- c("graden0", "graden1", "nodeg1", "nodeg3", "interaction")
+contrasts[2, 1] <- 1
+contrasts[c(2, 4), 2] <- 1
+contrasts[3, 3] <- 1
+contrasts[c(3, 4), 4] <- 1
+contrasts[4, 5] <- 1
 
-form <- ~ grade*node
+form <- ~ grade * node
 
 power1 <- simFastMultipleContrasts(form, kpna2, betas, sd, contrasts, nSim = nSim)
 power1
@@ -176,38 +174,42 @@ nSim <- 20000
 betas <- fit$coefficients
 sd <- sigma(fit)
 
-contrasts <- matrix(0,nrow=4,ncol=5)
+contrasts <- matrix(0, nrow = 4, ncol = 5)
 rownames(contrasts) <- names(fit$coefficients)
-colnames(contrasts) <- c("graden0","graden1","nodeg1","nodeg3","interaction")
-contrasts[2,1] <- 1
-contrasts[c(2,4),2] <- 1
-contrasts[3,3] <- 1
-contrasts[c(3,4),4] <- 1
-contrasts[4,5] <- 1
+colnames(contrasts) <- c("graden0", "graden1", "nodeg1", "nodeg3", "interaction")
+contrasts[2, 1] <- 1
+contrasts[c(2, 4), 2] <- 1
+contrasts[3, 3] <- 1
+contrasts[c(3, 4), 4] <- 1
+contrasts[4, 5] <- 1
 
-form <- ~ grade*node
+form <- ~ grade * node
 
-powers <- matrix(NA,nrow=9, ncol=6)
-colnames(powers) <- c("n",colnames(contrasts))
-powers[,1] <- 2:10
+powers <- matrix(NA, nrow = 9, ncol = 6)
+colnames(powers) <- c("n", colnames(contrasts))
+powers[, 1] <- 2:10
 
-dataAllComb <- data.frame(grade = rep(c(1,3),each=2)%>% as.factor,
-                          node = rep(c(0,1),2)%>%as.factor)
+dataAllComb <- data.frame(
+  grade = rep(c(1, 3), each = 2) %>% as.factor(),
+  node = rep(c(0, 1), 2) %>% as.factor()
+)
 
 for (i in 1:nrow(powers))
 {
-predData <- data.frame(grade = rep(dataAllComb$grade, powers[i,1]),
-                       node = rep(dataAllComb$node, powers[i,1]))
-powers[i,-1] <- simFastMultipleContrasts(form, predData, betas, sd, contrasts, nSim = nSim)
+  predData <- data.frame(
+    grade = rep(dataAllComb$grade, powers[i, 1]),
+    node = rep(dataAllComb$node, powers[i, 1])
+  )
+  powers[i, -1] <- simFastMultipleContrasts(form, predData, betas, sd, contrasts, nSim = nSim)
 }
 powers
 ```
 
 ```{r}
 powers %>%
-  as.data.frame %>%
+  as.data.frame() %>%
   gather(contrast, power, -n) %>%
-  ggplot(aes(n,power,color=contrast)) +
+  ggplot(aes(n, power, color = contrast)) +
   geom_line()
 ```
 
@@ -219,18 +221,18 @@ betas2 <- fit$coefficients
 betas2["grade3"] <- log2(1.5)
 sd <- sigma(fit)
 
-contrasts <- matrix(0,nrow=4,ncol=5)
+contrasts <- matrix(0, nrow = 4, ncol = 5)
 rownames(contrasts) <- names(fit$coefficients)
-colnames(contrasts) <- c("graden0","graden1","nodeg1","nodeg3","interaction")
-contrasts[2,1] <- 1
-contrasts[c(2,4),2] <- 1
-contrasts[3,3] <- 1
-contrasts[c(3,4),4] <- 1
-contrasts[4,5] <- 1
+colnames(contrasts) <- c("graden0", "graden1", "nodeg1", "nodeg3", "interaction")
+contrasts[2, 1] <- 1
+contrasts[c(2, 4), 2] <- 1
+contrasts[3, 3] <- 1
+contrasts[c(3, 4), 4] <- 1
+contrasts[4, 5] <- 1
 
-form <- ~ grade*node
+form <- ~ grade * node
 
-power3 <- simFastMultipleContrasts(form, kpna2, betas2, sd, contrasts,nSim = nSim)
+power3 <- simFastMultipleContrasts(form, kpna2, betas2, sd, contrasts, nSim = nSim)
 power3
 ```
 

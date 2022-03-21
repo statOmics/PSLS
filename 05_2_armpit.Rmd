@@ -55,7 +55,7 @@ generalize the results from the sample to that of the population.
 # Import the dataset
 
 ```{r, message=FALSE}
-#Load the libraries
+# Load the libraries
 library(tidyverse)
 ```
 
@@ -75,12 +75,12 @@ A crucial first step in a data analysis is to visualize and to explore the raw
 data.
 
 ```{r}
-ap %>% ggplot(aes(x=trt,y=rel,fill=trt)) + 
-  geom_boxplot(outlier.shape=NA) + 
-  geom_point(position="jitter") +
+ap %>% ggplot(aes(x = trt, y = rel, fill = trt)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = "jitter") +
   ylab("relative abundance (%)") +
-  xlab("treatment group") + 
-  stat_summary(fun.y=mean, geom="point", shape=5, size=3, color="black", fill="black")
+  xlab("treatment group") +
+  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
 ```
 
 We clearly see that, on average, the subjects who had a
@@ -112,7 +112,7 @@ To check the normality assumption, we will use QQ plots.
 
 ```{r,eval=FALSE}
 ap %>%
-  ...
+  ...()
 ```
 
 Interpret the QQ plot.
@@ -122,7 +122,7 @@ variability of both groups. We can do this visually based on the boxplots.
 
 ```{r,eval=FALSE}
 ap %>%
-  ...
+  ...()
 ```
 
 Interpret the boxplot.
@@ -152,29 +152,42 @@ ap <- read_csv("https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.c
 
 nSamp <- 9
 ## descriptive statistics
-apRelSum<-ap %>%
-  group_by(trt)%>%
-  summarize_at("rel",
-               list(mean=~mean(.,na.rm=TRUE),
-                    sd=~sd(.,na.rm=TRUE),
-                    n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
-  mutate(se=sd/sqrt(n))
+apRelSum <- ap %>%
+  group_by(trt) %>%
+  summarize_at(
+    "rel",
+    list(
+      mean = ~ mean(., na.rm = TRUE),
+      sd = ~ sd(., na.rm = TRUE),
+      n = function(x) {
+        x %>%
+          is.na() %>%
+          `!`() %>%
+          sum()
+      }
+    )
+  ) %>%
+  mutate(se = sd / sqrt(n))
 
-sigma <- sqrt(sum(apRelSum$sd^2*(apRelSum$n-1))/(sum(apRelSum$n)-2)) 
+sigma <- sqrt(sum(apRelSum$sd^2 * (apRelSum$n - 1)) / (sum(apRelSum$n) - 2))
 
-normSim <- matrix(rnorm(sum(apRelSum$n)*nSamp,
-              mean=c(rep(apRelSum$mean[1],apRelSum$n[1]),
-                     rep(apRelSum$mean[2],apRelSum$n[2])),
-                     sd=sigma),nrow=sum(apRelSum$n)) %>%
-  as.data.frame %>% 
-  mutate(trt=ap$trt)
+normSim <- matrix(rnorm(sum(apRelSum$n) * nSamp,
+  mean = c(
+    rep(apRelSum$mean[1], apRelSum$n[1]),
+    rep(apRelSum$mean[2], apRelSum$n[2])
+  ),
+  sd = sigma
+), nrow = sum(apRelSum$n)) %>%
+  as.data.frame() %>%
+  mutate(trt = ap$trt)
 ```
 
 ## Comparisons of variances
 
 ```{r}
-normSim %>% gather(samp,data,-trt) %>%
-  ggplot(aes(x=trt,y=data)) +
+normSim %>%
+  gather(samp, data, -trt) %>%
+  ggplot(aes(x = trt, y = data)) +
   geom_boxplot() +
   facet_wrap(~samp)
 ```
@@ -184,10 +197,10 @@ normSim %>% gather(samp,data,-trt) %>%
 ### Placebo group
 
 ```{r}
-normSim %>% 
-  gather(samp,data,-trt) %>%
-  filter(trt=="placebo") %>%
-  ggplot(aes(sample=data)) +
+normSim %>%
+  gather(samp, data, -trt) %>%
+  filter(trt == "placebo") %>%
+  ggplot(aes(sample = data)) +
   geom_qq() +
   geom_qq_line() +
   facet_wrap(~samp)
@@ -196,10 +209,10 @@ normSim %>%
 ### Transplant group
 
 ```{r}
-normSim %>% 
-  gather(samp,data,-trt) %>%
-  filter(trt=="transplant") %>%
-  ggplot(aes(sample=data)) +
+normSim %>%
+  gather(samp, data, -trt) %>%
+  filter(trt == "transplant") %>%
+  ggplot(aes(sample = data)) +
   geom_qq() +
   geom_qq_line() +
   facet_wrap(~samp)

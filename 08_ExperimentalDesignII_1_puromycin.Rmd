@@ -52,9 +52,9 @@ that allows for reproducing this finding.
 Puromycin %>%
   ggplot(...) + # select which elements of the dataset we need to visualize
   ... # use a relevant plotting geometry
-  stat_smooth(...) + # draw a smooth line through the data cloud
+stat_smooth(...) + # draw a smooth line through the data cloud
   stat_smooth(...) # draw a straight (linear regression) line through the data cloud
-  ... # you can add some extra elements like axis labels, title, ...
+... # you can add some extra elements like axis labels, title, ...
 ```
 
 Note, that the researchers have chosen 6 different substrate concentrations and
@@ -74,24 +74,23 @@ similar to that of our experiment under our model assumptions. We provide this
 function for you:
 
 ```{r}
-simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000)
-{
-    ySim <- rnorm(nrow(data)*nSim,sd=sd)
-    dim(ySim) <-c(nrow(data),nSim)
-    design <- model.matrix(form, data)
-    ySim <- ySim + c(design %*%betas)
-    ySim <- t(ySim)
+simFast <- function(form, data, betas, sd, contrasts, alpha = .05, nSim = 10000) {
+  ySim <- rnorm(nrow(data) * nSim, sd = sd)
+  dim(ySim) <- c(nrow(data), nSim)
+  design <- model.matrix(form, data)
+  ySim <- ySim + c(design %*% betas)
+  ySim <- t(ySim)
 
-    ### Fitting
-    fitAll <- limma::lmFit(ySim,design)
+  ### Fitting
+  fitAll <- limma::lmFit(ySim, design)
 
-    ### Inference
-    varUnscaled <- c(t(contrasts)%*%fitAll$cov.coefficients%*%contrasts)
-    contrasts <- fitAll$coefficients %*%contrasts
-    seContrasts <- varUnscaled^.5*fitAll$sigma
-    tstats <- contrasts/seContrasts
-    pvals <- pt(abs(tstats),fitAll$df.residual,lower.tail = FALSE)*2
-    return(mean(pvals < alpha))
+  ### Inference
+  varUnscaled <- c(t(contrasts) %*% fitAll$cov.coefficients %*% contrasts)
+  contrasts <- fitAll$coefficients %*% contrasts
+  seContrasts <- varUnscaled^.5 * fitAll$sigma
+  tstats <- contrasts / seContrasts
+  pvals <- pt(abs(tstats), fitAll$df.residual, lower.tail = FALSE) * 2
+  return(mean(pvals < alpha))
 }
 ```
 
@@ -115,13 +114,15 @@ fill in all the arguments to the `simFast` function.
 **Hint: for the betas and sd, we will need to fit a linear model first!**
 
 ```{r, eval=FALSE}
-power1 <- simFast(form = ...,
-                  data = ...,
-                  betas = ...,
-                  sd = ...,
-                  contrasts = ...,
-                  alpha = ...,
-                  nSim = ...)
+power1 <- simFast(
+  form = ...,
+  data = ...,
+  betas = ...,
+  sd = ...,
+  contrasts = ...,
+  alpha = ...,
+  nSim = ...
+)
 power1
 ```
 
@@ -136,13 +137,15 @@ This time, however, the question is slightly different from question 1.
 Adjust the inputs accordingly!
 
 ```{r, eval=FALSE}
-power2 <- simFast(form = ...,
-                  data = ...,
-                  betas = ...,
-                  sd = ...,
-                  contrasts = ...,
-                  alpha = ...,
-                  nSim = ...)
+power2 <- simFast(
+  form = ...,
+  data = ...,
+  betas = ...,
+  sd = ...,
+  contrasts = ...,
+  alpha = ...,
+  nSim = ...
+)
 power2
 ```
 
@@ -161,20 +164,22 @@ average with 10 counts/min when the substrate concentration is 10 times higher
 ```{r, eval=FALSE}
 concentrations <- Puromycin %>%
   pull(conc) %>%
-  unique
+  unique()
 
-powers <- data.frame(n = 1:10, power=NA) # to later store our results
+powers <- data.frame(n = 1:10, power = NA) # to later store our results
 
 for (i in 1:10)
 {
-  simData <- data.frame(conc = rep(concentrations,each=i))
-  powers[i,2] <- simFast(form = ...,
-                         data = ...,
-                         betas = ...,
-                         sd = ...,
-                         contrasts = ...,
-                         alpha = ...,
-                         nSim = ...)
+  simData <- data.frame(conc = rep(concentrations, each = i))
+  powers[i, 2] <- simFast(
+    form = ...,
+    data = ...,
+    betas = ...,
+    sd = ...,
+    contrasts = ...,
+    alpha = ...,
+    nSim = ...
+  )
 }
 ```
 
@@ -201,16 +206,20 @@ the substrate concentration ($\beta_1=10$).
 concentrations <- ...
 
 
-simData <- data.frame(conc = c(concentrations,rep(min(concentrations),3),
-                               rep(max(concentrations),3)))
+simData <- data.frame(conc = c(
+  concentrations, rep(min(concentrations), 3),
+  rep(max(concentrations), 3)
+))
 
-powerOpt <- simFast(form = ...,
-                    data = ...,
-                    betas = ...,
-                    sd = ...,
-                    contrasts = ...,
-                    alpha = ...,
-                    nSim = ...)
+powerOpt <- simFast(
+  form = ...,
+  data = ...,
+  betas = ...,
+  sd = ...,
+  contrasts = ...,
+  alpha = ...,
+  nSim = ...
+)
 
 simData
 powerOpt

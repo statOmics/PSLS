@@ -47,7 +47,7 @@ converted to centimeter using the `mutate` function.
 fev <- fev %>%
   mutate(gender = as.factor(gender)) %>%
   mutate(smoking = as.factor(smoking)) %>%
-  mutate(height_cm = height*2.54)
+  mutate(height_cm = height * 2.54)
 
 head(fev)
 ```
@@ -59,11 +59,11 @@ only the FEV for both smoking categories.
 
 ```{r}
 fev %>%
-  ggplot(aes(x=smoking,y=fev,fill=smoking)) +
-  scale_fill_manual(values=c("dimgrey","firebrick")) +
+  ggplot(aes(x = smoking, y = fev, fill = smoking)) +
+  scale_fill_manual(values = c("dimgrey", "firebrick")) +
   theme_bw() +
-  geom_boxplot(outlier.shape=NA) +
-  geom_jitter(width = 0.2, size=0.1) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.2, size = 0.1) +
   ggtitle("Boxplot of FEV versus smoking") +
   ylab("fev (l)") +
   xlab("smoking status")
@@ -86,10 +86,11 @@ fev %>%
     x = age,
     y = fev,
     color = smoking,
-    pch = smoking)) +
-  facet_grid(cols = vars(smoking))+
+    pch = smoking
+  )) +
+  facet_grid(cols = vars(smoking)) +
   theme_bw() +
-  scale_color_manual(values=c("dimgrey","firebrick")) +
+  scale_color_manual(values = c("dimgrey", "firebrick")) +
   geom_point(fill = "white") +
   ggtitle("Boxplot of FEV versus smoking, stratified on age") +
   ylab("fev (l)") +
@@ -119,10 +120,11 @@ fev %>%
     x = age,
     y = fev,
     color = smoking,
-    pch = smoking)) +
-  facet_grid(cols = vars(smoking), rows = vars(gender))+
+    pch = smoking
+  )) +
+  facet_grid(cols = vars(smoking), rows = vars(gender)) +
   theme_bw() +
-  scale_color_manual(values=c("dimgrey","firebrick")) +
+  scale_color_manual(values = c("dimgrey", "firebrick")) +
   geom_point(fill = "white") +
   ggtitle("Boxplot of FEV versus smoking, stratified on age") +
   ylab("fev (l)") +
@@ -141,9 +143,9 @@ on gender.
 
 ```{r}
 fev %>%
-  ggplot(aes(x=height_cm,y=fev,color=gender)) +
+  ggplot(aes(x = height_cm, y = fev, color = gender)) +
   geom_point() +
-  scale_color_manual(values=c("darkorchid","olivedrab4")) +
+  scale_color_manual(values = c("darkorchid", "olivedrab4")) +
   theme_bw() +
   ggtitle("Boxplot of FEV versus height") +
   ylab("fev (l)") +
@@ -169,7 +171,7 @@ The subjects are sampled randomly from the population and can be assumed to be
 independent.
 
 ```{r}
-model <- lm(fev~smoking, data=fev)
+model <- lm(fev ~ smoking, data = fev)
 
 ## display the diagnostic plots of the model
 plot(model)
@@ -221,7 +223,7 @@ Here, we fit the log-linear model and generate diagnostic plots in order to
 assess the assumptions for linear regression.
 
 ```{r}
-log.model <- lm(fev %>% log2 ~ smoking,data=fev)
+log.model <- lm(fev %>% log2() ~ smoking, data = fev)
 plot(log.model)
 ```
 

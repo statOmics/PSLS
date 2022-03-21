@@ -47,7 +47,8 @@ library(tidyverse)
 
 ```{r}
 diet <- read.table("https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt",
-                   header=TRUE)
+  header = TRUE
+)
 head(diet)
 ```
 
@@ -55,9 +56,11 @@ head(diet)
 
 ```{r}
 diet <- diet %>%
-  mutate(block = as.factor(block),
-         protSource = as.factor(protSource),
-         protLevel = as.factor(protLevel)) %>%
+  mutate(
+    block = as.factor(block),
+    protSource = as.factor(protSource),
+    protLevel = as.factor(protLevel)
+  ) %>%
   mutate(protLevel = fct_relevel(protLevel, "l"))
 ```
 
@@ -67,29 +70,29 @@ diet <- diet %>%
 
 ```{r}
 diet %>%
-  ggplot(aes(x=protLevel, y=weightGain)) +
-    scale_fill_brewer(palette="RdGy") +
-    theme_bw() +
-    geom_boxplot(outlier.shape=NA) +
-    geom_jitter(aes(color=block)) +
-    ggtitle("Weight gain dependence on protein source") +
-    ylab("Weigth gain (g)") +
-    #stat_summary(fun = mean, geom="point", shape=5, size=3, color="black", fill="black") +
-    facet_wrap(.~protSource)
+  ggplot(aes(x = protLevel, y = weightGain)) +
+  scale_fill_brewer(palette = "RdGy") +
+  theme_bw() +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(aes(color = block)) +
+  ggtitle("Weight gain dependence on protein source") +
+  ylab("Weigth gain (g)") +
+  # stat_summary(fun = mean, geom="point", shape=5, size=3, color="black", fill="black") +
+  facet_wrap(. ~ protSource)
 ```
 
 - Lineplot of the weight gain against protein source, protein level with coloring and grouping according to block
 
 ```{r}
 diet %>%
-  ggplot(aes(x=protSource:protLevel, y=weightGain)) +
-    scale_fill_brewer(palette="RdGy") +
-    theme_bw() +
-    geom_line(aes(group=block, color=block)) +
-    geom_point(aes(color=block))+
-    ggtitle("Weight gain dependence on protein source") +
-    ylab("Weigth gain (g)")
-    #stat_summary(fun = mean, geom="point", shape=5, size=3, color="black", fill="black")
+  ggplot(aes(x = protSource:protLevel, y = weightGain)) +
+  scale_fill_brewer(palette = "RdGy") +
+  theme_bw() +
+  geom_line(aes(group = block, color = block)) +
+  geom_point(aes(color = block)) +
+  ggtitle("Weight gain dependence on protein source") +
+  ylab("Weigth gain (g)")
+# stat_summary(fun = mean, geom="point", shape=5, size=3, color="black", fill="black")
 ```
 
 - An increase in the weight of the rats seems to depend on the protein source
@@ -129,7 +132,7 @@ can be assessed by fitting the linear model and calling the `plot()` function
 as follows.
 
 ```{r}
-lm1 <- lm(weightGain ~ block + protSource*protLevel, data=diet.bc)
+lm1 <- lm(weightGain ~ block + protSource * protLevel, data = diet.bc)
 plot(lm1)
 ```
 
@@ -217,7 +220,7 @@ the alternative hyptohesis $H_1:$ that at least two treatment means are
 different.
 
 ```{r}
-lm0 <- lm(weightGain ~ block, data=diet.bc)
+lm0 <- lm(weightGain ~ block, data = diet.bc)
 anova(lm0, lm1)
 ```
 
@@ -230,7 +233,7 @@ interaction) on the weight gain of rats (p = `r format(anova(lm0, lm1)$"Pr(>F)"[
 ```{r, message=FALSE, warning=FALSE}
 library(car)
 summary(lm1)
-Anova(lm1,type="III")
+Anova(lm1, type = "III")
 ```
 
 There is a very significant interaction between the protein source and
@@ -268,12 +271,14 @@ descriptions to the `linfct` argument of the `glht` function.
 library(multcomp)
 set.seed(75468) # to get reproducible results (small effect if removed)
 lm1MultComp <- glht(
-    model = lm1,
-    linfct = c("protSourcec = 0",
-               "protSourcec + protSourcec:protLevelh = 0",
-               "protLevelh = 0",
-               "protLevelh +  protSourcec:protLevelh = 0",
-               "protSourcec:protLevelh = 0")
+  model = lm1,
+  linfct = c(
+    "protSourcec = 0",
+    "protSourcec + protSourcec:protLevelh = 0",
+    "protLevelh = 0",
+    "protLevelh +  protSourcec:protLevelh = 0",
+    "protSourcec:protLevelh = 0"
+  )
 )
 ```
 

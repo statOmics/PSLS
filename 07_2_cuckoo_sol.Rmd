@@ -64,12 +64,13 @@ Let's fix this:
 Cuckoo <- Cuckoo %>%
   mutate(type = as.factor(type)) %>%
   mutate(type = recode(type,
-           "1" = "meadow",
-           "2" = "tree",
-           "3" = "dunnock",
-           "4" = "robin",
-           "5" = "wagtail",
-           "6" = "wren"))
+    "1" = "meadow",
+    "2" = "tree",
+    "3" = "dunnock",
+    "4" = "robin",
+    "5" = "wagtail",
+    "6" = "wren"
+  ))
 ```
 
 
@@ -86,14 +87,14 @@ Visualize the data
 
 ```{r}
 Cuckoo %>%
-  ggplot(aes(x=type,y=length,fill=type)) +
-    theme_bw() +
-    scale_fill_brewer(palette="RdGy") +
-    geom_boxplot() +
-    geom_jitter(width = 0.2) +
-    ggtitle("Boxplot of the length of eggs per type") +
-    ylab("length (mm)") +
-    stat_summary(fun=mean, geom="point", shape=5, size=3, color="black", fill="black")
+  ggplot(aes(x = type, y = length, fill = type)) +
+  theme_bw() +
+  scale_fill_brewer(palette = "RdGy") +
+  geom_boxplot() +
+  geom_jitter(width = 0.2) +
+  ggtitle("Boxplot of the length of eggs per type") +
+  ylab("length (mm)") +
+  stat_summary(fun = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
 ```
 
 # ANOVA
@@ -114,7 +115,7 @@ from the mean egg length in at least one other bird type.
 ## Parameter estimation
 
 ```{r}
-mod1 <- lm(length~type, Cuckoo)
+mod1 <- lm(length ~ type, Cuckoo)
 ```
 
 ## Check assumptions
@@ -137,7 +138,7 @@ plot(mod1, which = 2)
 
 ```{r}
 Cuckoo %>%
-  ggplot(aes(sample=length)) +
+  ggplot(aes(sample = length)) +
   geom_qq() +
   geom_qq_line() +
   facet_grid(~type)
@@ -155,26 +156,26 @@ As such, we may proceed with the ANOVA analysis.
 
 ```{r}
 set.seed(1031)
-sigma <- mod1 %>% sigma
+sigma <- mod1 %>% sigma()
 dataHlp <- Cuckoo
 
 simModels <- list()
 plotList <- list()
 plotListQQ1 <- list()
 
-par(mfrow=c(3,3))
+par(mfrow = c(3, 3))
 for (i in 1:9)
 {
-  nobs <- Cuckoo %>% nrow
+  nobs <- Cuckoo %>% nrow()
   dataHlp$ySim <- mod1$fit + rnorm(nobs, sd = sigma)
-  simModels[[i]] <- lm(ySim~type, dataHlp)
+  simModels[[i]] <- lm(ySim ~ type, dataHlp)
   plot(simModels[[i]], which = 2)
   plotList[[i]] <- dataHlp %>%
-    ggplot(aes(type,ySim)) +
+    ggplot(aes(type, ySim)) +
     geom_boxplot(outlier.shape = NA) +
     geom_jitter()
   plotListQQ1[[i]] <- dataHlp %>%
-    filter(type == "meadow")  %>%
+    filter(type == "meadow") %>%
     ggplot(aes(sample = ySim)) +
     geom_qq() +
     geom_qq_line() +
@@ -187,7 +188,7 @@ do.call(gridExtra::grid.arrange, plotListQQ1)
 
 The most deviating QQ-plot of the residuals in the nine simulation runs:
 ```{r}
-par(mfrow=c(1,1))
+par(mfrow = c(1, 1))
 plot(simModels[[8]], which = 2)
 ```
 

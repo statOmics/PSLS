@@ -8,8 +8,10 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
-                      message = FALSE, warning = FALSE, cache = TRUE)
+knitr::opts_chunk$set(
+  include = TRUE, comment = NA, echo = TRUE,
+  message = FALSE, warning = FALSE, cache = TRUE
+)
 ```
 
 # Background
@@ -27,7 +29,7 @@ library(tidyverse)
 # Data analysis
 ## Import KPNA2 data in R
 ```{r}
-kpna2 <- read.table("https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt",header=TRUE)
+kpna2 <- read.table("https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt", header = TRUE)
 kpna2
 ```
 
@@ -42,7 +44,7 @@ Histologic grade and lymph node status can be associated with the kpna2 gene exp
 
 ```{r}
 kpna2 %>%
-  ggplot(aes(x=node:grade,y=gene,fill=node:grade)) +
+  ggplot(aes(x = node:grade, y = gene, fill = node:grade)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter()
 ```
@@ -59,8 +61,8 @@ The plot suggests
 Histologic grade and lymph node status can be associated with the kpna2 gene expression. Moreover, it is also possible that the differential expression associated with histological grade is different in patients that have unaffected lymph nodes and patients for which the lymph nodes had to be removed. Hence, we will have to model the gene expression by using main effects for grade, node and a grade x node interaction.
 
 ```{r}
-#Model with main effects for histological grade and node and grade x node interaction
-fit <- lm(gene~grade*node,data=kpna2)
+# Model with main effects for histological grade and node and grade x node interaction
+fit <- lm(gene ~ grade * node, data = kpna2)
 plot(fit)
 ```
 
@@ -71,7 +73,7 @@ We will first log transform the data.
 
 
 ```{r}
-fit <- lm(gene %>% log2~grade*node,data=kpna2)
+fit <- lm(gene %>% log2() ~ grade * node, data = kpna2)
 plot(fit)
 ```
 
@@ -81,7 +83,7 @@ plot(fit)
 
 ```{r}
 library(car)
-Anova(fit,type="III")
+Anova(fit, type = "III")
 ```
 
 The output shows that there is a very significant interaction ($p=$ `r format(Anova(fit,type="III")["grade:node",4],digits=2)`). Hence, the association of the histological grade on the gene expression differs according to the lymph node status and vice versa.
@@ -103,22 +105,22 @@ The researchers are therefore interested in studying and reporting on the follow
 # Interpretation of model parameters and statistical tests
 
 ```{r}
-ExploreModelMatrix::VisualizeDesign(kpna2,~grade*node)$plotlist
+ExploreModelMatrix::VisualizeDesign(kpna2, ~ grade * node)$plotlist
 ```
 
 
 ```{r}
 summary(fit)
-#Calculate confidence intervals for parameters of model
+# Calculate confidence intervals for parameters of model
 CIfit <- confint(fit)
-#log_2 FC between g3n0-g1n0, g1n1-g1n0
-#and log_2 difference in FC g3n1-g1n1 and FC g3n0-g1n0
+# log_2 FC between g3n0-g1n0, g1n1-g1n0
+# and log_2 difference in FC g3n1-g1n1 and FC g3n0-g1n0
 CIfit
-#Transform parameters and the CI back to the original scale
+# Transform parameters and the CI back to the original scale
 2^fit$coef
 2^CIfit
 2^-fit$coef["grade3:node1"]
-2^-CIfit["grade3:node1",]
+2^-CIfit["grade3:node1", ]
 ```
 
 We model the log$_2$-transformed intensities with the following model:
@@ -166,11 +168,11 @@ We can assess all contrasts of interest using the multcomp package. This will al
 
 ```{r}
 library(multcomp)
-fitGlht<- glht(fit, linfct = c("grade3 = 0","grade3+grade3:node1 = 0","node1 = 0","node1+grade3:node1 = 0","grade3:node1 = 0"))
+fitGlht <- glht(fit, linfct = c("grade3 = 0", "grade3+grade3:node1 = 0", "node1 = 0", "node1+grade3:node1 = 0", "grade3:node1 = 0"))
 summary(fitGlht)
 confint(fitGlht)
 2^confint(fitGlht)$confint
-2^-confint(fitGlht)$confint["grade3:node1",]
+2^-confint(fitGlht)$confint["grade3:node1", ]
 ```
 
 # Conclusion
