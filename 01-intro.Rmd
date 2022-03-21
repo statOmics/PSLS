@@ -215,25 +215,17 @@ ap
 We first summarize the data and calculate the mean, standard deviation, number of observations and standard error and store the result in an object apRelSum via `apRelSum<-`
 
 1. We pipe the `ap` dataframe to the group_by function to group the data by treatment trt `group_by(trt)`
-2. We pipe the result to the `summarize_at` function to summarize the "rel" variable and calculate the mean, standard deviation and the number of observations
+2. We pipe the result to the `summarize` function to summarize the "rel" variable and calculate the mean, standard deviation and the number of observations
 3. We pipe the result to the `mutate` function to make a new variable in the data frame `se` for which we calculate the standard error
 
 
 ```{r}
 apRelSum <- ap %>%
   group_by(trt) %>%
-  summarize_at(
-    "rel",
-    list(
-      mean = ~ mean(., na.rm = TRUE),
-      sd = ~ sd(., na.rm = TRUE),
-      n = function(x) {
-        x %>%
-          is.na() %>%
-          `!`() %>%
-          sum()
-      }
-    )
+  summarize(
+    mean = mean(rel, na.rm = TRUE),
+    sd = sd(rel, na.rm = TRUE),
+    n = n()
   ) %>%
   mutate(se = sd / sqrt(n))
 
@@ -243,6 +235,7 @@ apRelSum
 ---
 
 ### Plots
+
 We will use ggplot2 to make our plots.
 With the ggplot2 library we can easily build plots by adding layers.
 
@@ -487,18 +480,10 @@ So we group by Gender
 ```{r}
 cholLogSum <- nhanesSub %>%
   group_by(Gender) %>%
-  summarize_at(
-    "cholLog",
-    list(
-      mean = ~ mean(., na.rm = TRUE),
-      sd = ~ sd(., na.rm = TRUE),
-      n = function(x) {
-        x %>%
-          is.na() %>%
-          `!`() %>%
-          sum()
-      }
-    )
+  summarize(
+    mean = mean(cholLog, na.rm = TRUE),
+    sd = sd(cholLog, na.rm = TRUE),
+    n = n()
   ) %>%
   mutate(se = sd / sqrt(n))
 
@@ -549,18 +534,10 @@ We summarize the data
 ```{r}
 samp %>%
   group_by(Gender) %>%
-  summarize_at(
-    "cholLog",
-    list(
-      mean = ~ mean(., na.rm = TRUE),
-      sd = ~ sd(., na.rm = TRUE),
-      n = function(x) {
-        x %>%
-          is.na() %>%
-          `!`() %>%
-          sum()
-      }
-    )
+  summarize(
+    mean = mean(cholLog, na.rm = TRUE),
+    sd = sd(cholLog, na.rm = TRUE),
+    n = n()
   ) %>%
   mutate(se = sd / sqrt(n))
 ```
@@ -602,18 +579,10 @@ samp2 %>%
 
 samp2 %>%
   group_by(Gender) %>%
-  summarize_at(
-    "cholLog",
-    list(
-      mean = ~ mean(., na.rm = TRUE),
-      sd = ~ sd(., na.rm = TRUE),
-      n = function(x) {
-        x %>%
-          is.na() %>%
-          `!`() %>%
-          sum()
-      }
-    )
+  summarize(
+    mean = mean(cholLog, na.rm = TRUE),
+    sd = sd(cholLog, na.rm = TRUE),
+    n = n()
   ) %>%
   mutate(se = sd / sqrt(n))
 
@@ -648,18 +617,10 @@ samp3 %>%
 
 samp3 %>%
   group_by(Gender) %>%
-  summarize_at(
-    "cholLog",
-    list(
-      mean = ~ mean(., na.rm = TRUE),
-      sd = ~ sd(., na.rm = TRUE),
-      n = function(x) {
-        x %>%
-          is.na() %>%
-          `!`() %>%
-          sum()
-      }
-    )
+  summarize(
+    mean = mean(cholLog, na.rm = TRUE),
+    sd = sd(cholLog, na.rm = TRUE),
+    n = n()
   ) %>%
   mutate(se = sd / sqrt(n))
 
