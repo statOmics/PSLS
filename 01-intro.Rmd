@@ -5,8 +5,10 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
-                      message = FALSE, warning = FALSE, cache = TRUE)
+knitr::opts_chunk$set(
+  include = TRUE, comment = NA, echo = TRUE,
+  message = FALSE, warning = FALSE, cache = TRUE
+)
 library(tidyverse)
 ```
 
@@ -27,13 +29,7 @@ Statistics is the science to learn from empirical data.
 
 Statistical literacy is key to interpret results from scientific publications.
 
-
-
-## There are three types of lies: lies, damn lies and statistics {-}
-
----
-
-## There are three types of lies: lies, damn lies and bad statistics {-}
+> There are three types of lies: lies, damn lies and bad statistics
 
 ---
 
@@ -132,57 +128,56 @@ Another group of abundant bacteria are the *Staphylococcus spp.*, these bacteria
 
 
 ```{r out.width='80%',fig.asp=.8, fig.align='center',echo=FALSE}
-if ("pi"%in%ls()) rm("pi")
-kopvoeter<-function(x,y,angle=0,l=.2,cex.dot=.5,pch=19,col="black")
-{
-angle=angle/180*pi
-points(x,y,cex=cex.dot,pch=pch,col=col)
-lines(c(x,x+l*cos(-pi/2+angle)),c(y,y+l*sin(-pi/2+angle)),col=col)
-lines(c(x+l/2*cos(-pi/2+angle),x+l/2*cos(-pi/2+angle)+l/4*cos(angle)),c(y+l/2*sin(-pi/2+angle),y+l/2*sin(-pi/2+angle)+l/4*sin(angle)),col=col)
-lines(c(x+l/2*cos(-pi/2+angle),x+l/2*cos(-pi/2+angle)+l/4*cos(pi+angle)),c(y+l/2*sin(-pi/2+angle),y+l/2*sin(-pi/2+angle)+l/4*sin(pi+angle)),col=col)
-lines(c(x+l*cos(-pi/2+angle),x+l*cos(-pi/2+angle)+l/2*cos(-pi/2+pi/4+angle)),c(y+l*sin(-pi/2+angle),y+l*sin(-pi/2+angle)+l/2*sin(-pi/2+pi/4+angle)),col=col)
-lines(c(x+l*cos(-pi/2+angle),x+l*cos(-pi/2+angle)+l/2*cos(-pi/2-pi/4+angle)),c(y+l*sin(-pi/2+angle),y+l*sin(-pi/2+angle)+l/2*sin(-pi/2-pi/4+angle)),col=col)
+if ("pi" %in% ls()) rm("pi")
+kopvoeter <- function(x, y, angle = 0, l = .2, cex.dot = .5, pch = 19, col = "black") {
+  angle <- angle / 180 * pi
+  points(x, y, cex = cex.dot, pch = pch, col = col)
+  lines(c(x, x + l * cos(-pi / 2 + angle)), c(y, y + l * sin(-pi / 2 + angle)), col = col)
+  lines(c(x + l / 2 * cos(-pi / 2 + angle), x + l / 2 * cos(-pi / 2 + angle) + l / 4 * cos(angle)), c(y + l / 2 * sin(-pi / 2 + angle), y + l / 2 * sin(-pi / 2 + angle) + l / 4 * sin(angle)), col = col)
+  lines(c(x + l / 2 * cos(-pi / 2 + angle), x + l / 2 * cos(-pi / 2 + angle) + l / 4 * cos(pi + angle)), c(y + l / 2 * sin(-pi / 2 + angle), y + l / 2 * sin(-pi / 2 + angle) + l / 4 * sin(pi + angle)), col = col)
+  lines(c(x + l * cos(-pi / 2 + angle), x + l * cos(-pi / 2 + angle) + l / 2 * cos(-pi / 2 + pi / 4 + angle)), c(y + l * sin(-pi / 2 + angle), y + l * sin(-pi / 2 + angle) + l / 2 * sin(-pi / 2 + pi / 4 + angle)), col = col)
+  lines(c(x + l * cos(-pi / 2 + angle), x + l * cos(-pi / 2 + angle) + l / 2 * cos(-pi / 2 - pi / 4 + angle)), c(y + l * sin(-pi / 2 + angle), y + l * sin(-pi / 2 + angle) + l / 2 * sin(-pi / 2 - pi / 4 + angle)), col = col)
 }
 
-par(mar=c(0,0,0,0),mai=c(0,0,0,0))
-plot(0,0,xlab="",ylab="",xlim=c(0,10),ylim=c(0,10),col=0,xaxt="none",yaxt="none",axes=FALSE)
-rect(0,6,10,10,border="red",lwd=2)
-text(.5,8,"population",srt=90,col="red",cex=2)
-symbols (3, 8, circles=1.5, col="red",add=TRUE,fg="red",inches=FALSE,lwd=2)
+par(mar = c(0, 0, 0, 0), mai = c(0, 0, 0, 0))
+plot(0, 0, xlab = "", ylab = "", xlim = c(0, 10), ylim = c(0, 10), col = 0, xaxt = "none", yaxt = "none", axes = FALSE)
+rect(0, 6, 10, 10, border = "red", lwd = 2)
+text(.5, 8, "population", srt = 90, col = "red", cex = 2)
+symbols(3, 8, circles = 1.5, col = "red", add = TRUE, fg = "red", inches = FALSE, lwd = 2)
 set.seed(330)
-grid=seq(0,1.3,.01)
+grid <- seq(0, 1.3, .01)
 
 for (i in 1:50)
 {
-	angle1=runif(n=1,min=0,max=360)
-	angle2=runif(n=1,min=0,max=360)
-	radius=sample(grid,prob=grid^2*pi/sum(grid^2*pi),size=1)
-	kopvoeter(3+radius*cos(angle1/180*pi),8+radius*sin(angle1/180*pi),angle=angle2)
+  angle1 <- runif(n = 1, min = 0, max = 360)
+  angle2 <- runif(n = 1, min = 0, max = 360)
+  radius <- sample(grid, prob = grid^2 * pi / sum(grid^2 * pi), size = 1)
+  kopvoeter(3 + radius * cos(angle1 / 180 * pi), 8 + radius * sin(angle1 / 180 * pi), angle = angle2)
 }
-text(7.5,8,"Microbiome in population",col="red",cex=1.2)
+text(7.5, 8, "Microbiome in population", col = "red", cex = 1.2)
 
-rect(0,0,10,4,border="blue",lwd=2)
-text(.5,2,"sample",srt=90,col="blue",cex=2)
-symbols (3, 2, circles=1.5, col="red",add=TRUE,fg="blue",inches=FALSE,lwd=2)
-for (i in 0:1)
-	for (j in 0:4)
-{
-
-	kopvoeter(2.1+j*(3.9-2.1)/4,1.1+i/2,col="purple")
+rect(0, 0, 10, 4, border = "blue", lwd = 2)
+text(.5, 2, "sample", srt = 90, col = "blue", cex = 2)
+symbols(3, 2, circles = 1.5, col = "red", add = TRUE, fg = "blue", inches = FALSE, lwd = 2)
+for (i in 0:1) {
+  for (j in 0:4)
+  {
+    kopvoeter(2.1 + j * (3.9 - 2.1) / 4, 1.1 + i / 2, col = "purple")
+  }
 }
-for (i in 2:3)
-	for (j in 0:4)
-{
-
-	kopvoeter(2.1+j*(3.9-2.1)/4,1.6+i/2,col="orange")
+for (i in 2:3) {
+  for (j in 0:4)
+  {
+    kopvoeter(2.1 + j * (3.9 - 2.1) / 4, 1.6 + i / 2, col = "orange")
+  }
 }
-text(7.5,2,"Microbiome in sample",col="blue",cex=1.2)
+text(7.5, 2, "Microbiome in sample", col = "blue", cex = 1.2)
 
-arrows(3,5.9,3,4.1,col="black",lwd=3)
-text(1.5,5,"EXP. DESIGN (1)",col="black",cex=1.2)
-text(7.5,.5,"DATA EXPLORATION &\nDESCRIPTIVE STATISTICS (2)",col="black",cex=1.2)
-arrows(7,4.1,7,5.9,col="black",lwd=3)
-text(8.5,5,"ESTIMATION &\nINFERENCE (3)",col="black",cex=1.2)
+arrows(3, 5.9, 3, 4.1, col = "black", lwd = 3)
+text(1.5, 5, "EXP. DESIGN (1)", col = "black", cex = 1.2)
+text(7.5, .5, "DATA EXPLORATION &\nDESCRIPTIVE STATISTICS (2)", col = "black", cex = 1.2)
+arrows(7, 4.1, 7, 5.9, col = "black", lwd = 3)
+text(8.5, 5, "ESTIMATION &\nINFERENCE (3)", col = "black", cex = 1.2)
 ```
 
 
@@ -204,7 +199,7 @@ read_lines("https://raw.githubusercontent.com/GTPB/PSLS20/master/data/armpit.csv
 The file is comma separated and in tidy format
 
 ```{r}
-ap<-read_csv("https://raw.githubusercontent.com/GTPB/PSLS20/master/data/armpit.csv")
+ap <- read_csv("https://raw.githubusercontent.com/GTPB/PSLS20/master/data/armpit.csv")
 ap
 ```
 
@@ -217,7 +212,7 @@ ap
 
 ### Descriptive statistics
 
-We first summarize the data and calculate the mean, standard deviation, number of observations and standard error and store the result in an object apRelSum via 'apRelSum<-`
+We first summarize the data and calculate the mean, standard deviation, number of observations and standard error and store the result in an object apRelSum via `apRelSum<-`
 
 1. We pipe the `ap` dataframe to the group_by function to group the data by treatment trt `group_by(trt)`
 2. We pipe the result to the `summarize_at` function to summarize the "rel" variable and calculate the mean, standard deviation and the number of observations
@@ -225,13 +220,22 @@ We first summarize the data and calculate the mean, standard deviation, number o
 
 
 ```{r}
-apRelSum<-ap%>%
-  group_by(trt)%>%
-  summarize_at("rel",
-               list(mean=~mean(.,na.rm=TRUE),
-                    sd=~sd(.,na.rm=TRUE),
-                    n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
-  mutate(se=sd/sqrt(n))
+apRelSum <- ap %>%
+  group_by(trt) %>%
+  summarize_at(
+    "rel",
+    list(
+      mean = ~ mean(., na.rm = TRUE),
+      sd = ~ sd(., na.rm = TRUE),
+      n = function(x) {
+        x %>%
+          is.na() %>%
+          `!`() %>%
+          sum()
+      }
+    )
+  ) %>%
+  mutate(se = sd / sqrt(n))
 
 apRelSum
 ```
@@ -249,9 +253,9 @@ With the ggplot2 library we can easily build plots by adding layers.
 2. We make a barplot based on this data using the `geom_bar` function. The statistic is `stat="identity"` because the bar height should be equal the value for the mean of the relative abundance.
 
 ```{r}
-apRelSum%>%
-  ggplot(aes(x=trt,y=mean)) +
-  geom_bar(stat="identity")
+apRelSum %>%
+  ggplot(aes(x = trt, y = mean)) +
+  geom_bar(stat = "identity")
 ```
 
 - Is this plot informative??
@@ -262,10 +266,10 @@ We will now add standard errors to the plot
 using `geom_errorbar` function and specify the minimum and maximum value for of the error bar, the width command is used to set the width of the error bar smaller than the width of the bar.
 
 ```{r}
-apRelSum%>%
-  ggplot(aes(x=trt,y=mean)) +
-  geom_bar(stat="identity") +
-  geom_errorbar(aes(ymin=mean-se,ymax=mean+se),width=.2)
+apRelSum %>%
+  ggplot(aes(x = trt, y = mean)) +
+  geom_bar(stat = "identity") +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = .2)
 ```
 
 - Is this plot informative??
@@ -286,12 +290,14 @@ We first explain what a boxplot.
 ---
 
 ```{r fig.align='center',echo=FALSE}
-fem <- NHANES::NHANES %>% filter(Gender=="female" & !is.na(DirectChol)) %>% select(DirectChol)
-boxplot(fem$DirectChol, ylab="Direct cholesterol",cex.lab=1.5,cex.axis=1.5,cex.main=1.5)
-rangeCl<-quantile(fem$DirectChol,c(.25,.75))+c(-1,1)*diff(quantile(fem$DirectChol,c(.25,.75)))*1.5
-boxYs<-c(range(fem$DirectChol[fem$DirectChol<=rangeCl[2]&fem$DirectChol>=rangeCl[1]]),quantile(fem$DirectChol,c(.25,.5,.75)),rangeCl[2]+(max(fem$DirectChol)-rangeCl[2])/2)
-text(1.3,boxYs,labels=c("wisker","wisker","x25","mediaan","x75","outliers"),pos=4,cex=1.3)
-lines(c(1.1,1.3,1.3,1.1),c(rangeCl[2],rangeCl[2]+(max(fem$DirectChol)-rangeCl[2])/2,rangeCl[2]+(max(fem$DirectChol)-rangeCl[2])/2,max(fem$DirectChol)),lty=2)
+fem <- NHANES::NHANES %>%
+  filter(Gender == "female" & !is.na(DirectChol)) %>%
+  select(DirectChol)
+boxplot(fem$DirectChol, ylab = "Direct cholesterol", cex.lab = 1.5, cex.axis = 1.5, cex.main = 1.5)
+rangeCl <- quantile(fem$DirectChol, c(.25, .75)) + c(-1, 1) * diff(quantile(fem$DirectChol, c(.25, .75))) * 1.5
+boxYs <- c(range(fem$DirectChol[fem$DirectChol <= rangeCl[2] & fem$DirectChol >= rangeCl[1]]), quantile(fem$DirectChol, c(.25, .5, .75)), rangeCl[2] + (max(fem$DirectChol) - rangeCl[2]) / 2)
+text(1.3, boxYs, labels = c("wisker", "wisker", "x25", "mediaan", "x75", "outliers"), pos = 4, cex = 1.3)
+lines(c(1.1, 1.3, 1.3, 1.1), c(rangeCl[2], rangeCl[2] + (max(fem$DirectChol) - rangeCl[2]) / 2, rangeCl[2] + (max(fem$DirectChol) - rangeCl[2]) / 2, max(fem$DirectChol)), lty = 2)
 ```
 
 ---
@@ -304,7 +310,7 @@ We will now make a boxplot for the ap data
 
 ```{r}
 ap %>%
-  ggplot(aes(x=trt,y=rel)) +
+  ggplot(aes(x = trt, y = rel)) +
   geom_boxplot()
 ```
 
@@ -321,9 +327,9 @@ We will now add the raw data to the plot.
 
 ```{r}
 ap %>%
-  ggplot(aes(x=trt,y=rel)) +
-  geom_boxplot(outlier.shape=NA) +
-  geom_point(position="jitter")
+  ggplot(aes(x = trt, y = rel)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = "jitter")
 ```
 
 This is an informative plot!
@@ -367,7 +373,7 @@ This is an informative plot!
 In chapter 5 we will learn that we can use a two-sample t-test to generalise what we observe in the microbiome dataset towards the population.
 
 ```{r}
-t.test(rel~trt,data=ap)
+t.test(rel ~ trt, data = ap)
 ```
 
 Conclusion:
@@ -433,10 +439,11 @@ Suppose that we are interested in assessing the difference in direct cholesterol
     - We customize the label of the x-axis with the `xlab` command.
 
 ```{r}
-NHANES%>%filter(Age>25)%>%
-  ggplot(aes(x=DirectChol))+
+NHANES %>%
+  filter(Age > 25) %>%
+  ggplot(aes(x = DirectChol)) +
   geom_histogram() +
-  facet_grid(Gender~.) +
+  facet_grid(Gender ~ .) +
   xlab("Direct cholesterol (mg/dl)")
 ```
 
@@ -447,11 +454,11 @@ NHANES%>%filter(Age>25)%>%
 - They are often log transformed.
 
 ```{r}
-NHANES%>%
-  filter(Age>25)%>%
-  ggplot(aes(x=DirectChol%>%log2))+
+NHANES %>%
+  filter(Age > 25) %>%
+  ggplot(aes(x = DirectChol %>% log2())) +
   geom_histogram() +
-  facet_grid(Gender~.) +
+  facet_grid(Gender ~ .) +
   xlab("Direct cholesterol (log2)")
 ```
 
@@ -466,10 +473,10 @@ We will now create a subset of the data that we will use to sample from in the n
   3. With the mutate function we can add a new variable logChol with log transformed direct cholesterol levels.
 
 ```{r}
-nhanesSub<- NHANES%>%
-  filter(Age>25&!is.na(DirectChol)) %>%
-  select(c("Gender","DirectChol")) %>%
-  mutate(cholLog=log2(DirectChol))
+nhanesSub <- NHANES %>%
+  filter(Age > 25 & !is.na(DirectChol)) %>%
+  select(c("Gender", "DirectChol")) %>%
+  mutate(cholLog = log2(DirectChol))
 ```
 
 ---
@@ -478,13 +485,22 @@ We will calculate the summary statistics for the cholLog variable for males and 
 So we group by Gender
 
 ```{r}
-cholLogSum<- nhanesSub %>%
+cholLogSum <- nhanesSub %>%
   group_by(Gender) %>%
-   summarize_at("cholLog",
-               list(mean=~mean(.,na.rm=TRUE),
-                    sd=~sd(.,na.rm=TRUE),
-                    n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
-  mutate(se=sd/sqrt(n))
+  summarize_at(
+    "cholLog",
+    list(
+      mean = ~ mean(., na.rm = TRUE),
+      sd = ~ sd(., na.rm = TRUE),
+      n = function(x) {
+        x %>%
+          is.na() %>%
+          `!`() %>%
+          sum()
+      }
+    )
+  ) %>%
+  mutate(se = sd / sqrt(n))
 
 cholLogSum
 ```
@@ -499,10 +515,14 @@ cholLogSum
 - we will subset 10 females and 10 males at random from the American population and measure their direct cholesterol levels.
 
 ```{r}
-fem<-nhanesSub%>%filter(Gender=="female")%>%sample_n(size=10)
-mal<-nhanesSub%>%filter(Gender=="male")%>%sample_n(size=10)
+fem <- nhanesSub %>%
+  filter(Gender == "female") %>%
+  sample_n(size = 10)
+mal <- nhanesSub %>%
+  filter(Gender == "male") %>%
+  sample_n(size = 10)
 
-samp<-rbind(fem,mal)
+samp <- rbind(fem, mal)
 samp
 ```
 
@@ -512,15 +532,15 @@ We will now plot the data with a histogram and boxplots
 
 ```{r}
 samp %>%
-  ggplot(aes(x=cholLog))+
+  ggplot(aes(x = cholLog)) +
   geom_histogram(binwidth = .1) +
-  facet_grid(Gender~.) +
+  facet_grid(Gender ~ .) +
   xlab("Direct cholesterol (log2)")
 
-samp%>%
-  ggplot(aes(x=Gender,y=cholLog)) +
-  geom_boxplot(outlier.shape=NA) +
-  geom_point(position="jitter")
+samp %>%
+  ggplot(aes(x = Gender, y = cholLog)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = "jitter")
 ```
 
 ---
@@ -529,11 +549,20 @@ We summarize the data
 ```{r}
 samp %>%
   group_by(Gender) %>%
-   summarize_at("cholLog",
-               list(mean=~mean(.,na.rm=TRUE),
-                    sd=~sd(.,na.rm=TRUE),
-                    n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
-  mutate(se=sd/sqrt(n))
+  summarize_at(
+    "cholLog",
+    list(
+      mean = ~ mean(., na.rm = TRUE),
+      sd = ~ sd(., na.rm = TRUE),
+      n = function(x) {
+        x %>%
+          is.na() %>%
+          `!`() %>%
+          sum()
+      }
+    )
+  ) %>%
+  mutate(se = sd / sqrt(n))
 ```
 
 Note that the sample mean is different from that of the large experiment ("population") we sampled from.
@@ -541,7 +570,7 @@ Note that the sample mean is different from that of the large experiment ("popul
 We test for the difference between Males and females
 
 ```{r}
-t.test(cholLog~Gender,samp,var.equal=TRUE)
+t.test(cholLog ~ Gender, samp, var.equal = TRUE)
 ```
 
 ---
@@ -552,30 +581,43 @@ If we do the experiment again we select other people and we obtain different res
 
 
 ```{r}
-fem<-nhanesSub%>%filter(Gender=="female")%>%sample_n(size=10)
-mal<-nhanesSub%>%filter(Gender=="male")%>%sample_n(size=10)
+fem <- nhanesSub %>%
+  filter(Gender == "female") %>%
+  sample_n(size = 10)
+mal <- nhanesSub %>%
+  filter(Gender == "male") %>%
+  sample_n(size = 10)
 
-samp2<-rbind(fem,mal)
-samp2%>%
-  ggplot(aes(x=DirectChol%>%log))+
+samp2 <- rbind(fem, mal)
+samp2 %>%
+  ggplot(aes(x = DirectChol %>% log())) +
   geom_histogram(binwidth = .1) +
-  facet_grid(Gender~.) +
+  facet_grid(Gender ~ .) +
   xlab("Direct cholesterol (log)")
 
-samp2%>%
-  ggplot(aes(x=Gender,y=cholLog)) +
-  geom_boxplot(outlier.shape=NA) +
-  geom_point(position="jitter")
+samp2 %>%
+  ggplot(aes(x = Gender, y = cholLog)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = "jitter")
 
 samp2 %>%
   group_by(Gender) %>%
-   summarize_at("cholLog",
-               list(mean=~mean(.,na.rm=TRUE),
-                    sd=~sd(.,na.rm=TRUE),
-                    n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
-  mutate(se=sd/sqrt(n))
+  summarize_at(
+    "cholLog",
+    list(
+      mean = ~ mean(., na.rm = TRUE),
+      sd = ~ sd(., na.rm = TRUE),
+      n = function(x) {
+        x %>%
+          is.na() %>%
+          `!`() %>%
+          sum()
+      }
+    )
+  ) %>%
+  mutate(se = sd / sqrt(n))
 
-t.test(cholLog~Gender,samp2,var.equal=TRUE)
+t.test(cholLog ~ Gender, samp2, var.equal = TRUE)
 ```
 
 ---
@@ -584,31 +626,44 @@ t.test(cholLog~Gender,samp2,var.equal=TRUE)
 
 ```{r}
 set.seed(12857)
-fem<-nhanesSub%>%filter(Gender=="female")%>%sample_n(size=10)
-mal<-nhanesSub%>%filter(Gender=="male")%>%sample_n(size=10)
+fem <- nhanesSub %>%
+  filter(Gender == "female") %>%
+  sample_n(size = 10)
+mal <- nhanesSub %>%
+  filter(Gender == "male") %>%
+  sample_n(size = 10)
 
-samp3<-rbind(fem,mal)
-samp3%>%
-  ggplot(aes(x=DirectChol%>%log))+
+samp3 <- rbind(fem, mal)
+samp3 %>%
+  ggplot(aes(x = DirectChol %>% log())) +
   geom_histogram(binwidth = .1) +
-  facet_grid(Gender~.) +
+  facet_grid(Gender ~ .) +
   xlab("Direct cholesterol (log)")
 
-samp3%>%
-  ggplot(aes(x=Gender,y=cholLog)) +
-  geom_boxplot(outlier.shape=NA) +
-  geom_point(position="jitter")
+samp3 %>%
+  ggplot(aes(x = Gender, y = cholLog)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = "jitter")
 
 
 samp3 %>%
   group_by(Gender) %>%
-   summarize_at("cholLog",
-               list(mean=~mean(.,na.rm=TRUE),
-                    sd=~sd(.,na.rm=TRUE),
-                    n=function(x) x%>%is.na%>%`!`%>%sum)) %>%
-  mutate(se=sd/sqrt(n))
+  summarize_at(
+    "cholLog",
+    list(
+      mean = ~ mean(., na.rm = TRUE),
+      sd = ~ sd(., na.rm = TRUE),
+      n = function(x) {
+        x %>%
+          is.na() %>%
+          `!`() %>%
+          sum()
+      }
+    )
+  ) %>%
+  mutate(se = sd / sqrt(n))
 
-t.test(cholLog~Gender,samp3,var.equal=TRUE)
+t.test(cholLog ~ Gender, samp3, var.equal = TRUE)
 ```
 
 ---
@@ -625,46 +680,46 @@ t.test(cholLog~Gender,samp3,var.equal=TRUE)
 - This is illustrated with the code below, where we will draw 20000 repeated samples with sample size 10 for females and males from the NHanes study.
 
 ```{r}
-nsim<-20000
-nSamp<-10
-res<-matrix(0,nrow=nsim,ncol=2)
-fem<-nhanesSub%>%filter(Gender=="female")
-mal<-nhanesSub%>%filter(Gender=="male")
+nsim <- 20000
+nSamp <- 10
+res <- matrix(0, nrow = nsim, ncol = 2)
+fem <- nhanesSub %>% filter(Gender == "female")
+mal <- nhanesSub %>% filter(Gender == "male")
 
 for (i in 1:nsim)
 {
- femSamp<-sample(fem$cholLog,nSamp)
- malSamp<-sample(mal$cholLog,nSamp)
+  femSamp <- sample(fem$cholLog, nSamp)
+  malSamp <- sample(mal$cholLog, nSamp)
 
-meanFem<-mean(femSamp)
- meanMal<-mean(malSamp)
- delta<-meanFem-meanMal
- sdFem<-sd(femSamp)
- sdMal<-sd(malSamp)
- seFem<-sdFem/sqrt(nSamp)
- seFem<-sdFem/sqrt(nSamp)
- sdPool<-sqrt((sdFem^2*(nSamp-1) + sdMal^2*(nSamp-1))/(2*nSamp-2))
-tvalue<-(delta)/(sdPool*sqrt(1/nSamp+1/nSamp))
-pvalue<-pt(abs(tvalue),lower.tail = FALSE,df=2*nSamp-2)*2
- res[i,]<-c(delta,pvalue)
+  meanFem <- mean(femSamp)
+  meanMal <- mean(malSamp)
+  delta <- meanFem - meanMal
+  sdFem <- sd(femSamp)
+  sdMal <- sd(malSamp)
+  seFem <- sdFem / sqrt(nSamp)
+  seFem <- sdFem / sqrt(nSamp)
+  sdPool <- sqrt((sdFem^2 * (nSamp - 1) + sdMal^2 * (nSamp - 1)) / (2 * nSamp - 2))
+  tvalue <- (delta) / (sdPool * sqrt(1 / nSamp + 1 / nSamp))
+  pvalue <- pt(abs(tvalue), lower.tail = FALSE, df = 2 * nSamp - 2) * 2
+  res[i, ] <- c(delta, pvalue)
 }
-sum(res[,2]<0.05&res[,1]>0)
-sum(res[,2]>0.05)
-sum(res[,2]<0.05&res[,1]<0)
+sum(res[, 2] < 0.05 & res[, 1] > 0)
+sum(res[, 2] > 0.05)
+sum(res[, 2] < 0.05 & res[, 1] < 0)
 
-res<-res %>% as.data.frame
-names(res) <- c("delta","pvalue")
+res <- res %>% as.data.frame()
+names(res) <- c("delta", "pvalue")
 res %>%
-  ggplot(aes(x=delta,y=-log10(pvalue),color=pvalue<0.05)) +
+  ggplot(aes(x = delta, y = -log10(pvalue), color = pvalue < 0.05)) +
   geom_point() +
   xlab("Average cholesterol difference") +
   ylab("- log10(pvalue)") +
-  scale_color_manual(values=c("black","red"))
+  scale_color_manual(values = c("black", "red"))
 
 res %>%
-  ggplot(aes(y=delta)) +
+  ggplot(aes(y = delta)) +
   geom_boxplot() +
-  geom_point(aes(x=0,y=c(mean(fem$cholLog)-mean(mal$cholLog)),color="pop. diff")) +
+  geom_point(aes(x = 0, y = c(mean(fem$cholLog) - mean(mal$cholLog)), color = "pop. diff")) +
   xlab("")
 ```
 
@@ -695,46 +750,46 @@ Wat happens when there is no difference between both groups?
 
 
 ```{r}
-nsim<-20000
-nSamp<-10
-res<-matrix(0,nrow=nsim,ncol=2)
-fem<-nhanesSub%>%filter(Gender=="female")
-mal<-nhanesSub%>%filter(Gender=="male")
+nsim <- 20000
+nSamp <- 10
+res <- matrix(0, nrow = nsim, ncol = 2)
+fem <- nhanesSub %>% filter(Gender == "female")
+mal <- nhanesSub %>% filter(Gender == "male")
 
 for (i in 1:nsim)
 {
- femSamp<-sample(fem$cholLog,nSamp)
- fem2Samp<-sample(fem$cholLog,nSamp)
+  femSamp <- sample(fem$cholLog, nSamp)
+  fem2Samp <- sample(fem$cholLog, nSamp)
 
-meanFem<-mean(femSamp)
- meanFem2<-mean(fem2Samp)
- delta<-meanFem-meanFem2
- sdFem<-sd(femSamp)
- sdFem2<-sd(fem2Samp)
- seFem<-sdFem/sqrt(nSamp)
- seFem<-sdFem2/sqrt(nSamp)
- sdPool<-sqrt((sdFem^2*(nSamp-1) + sdFem2^2*(nSamp-1))/(2*nSamp-2))
-tvalue<-(delta)/(sdPool*sqrt(1/nSamp+1/nSamp))
-pvalue<-pt(abs(tvalue),lower.tail = FALSE,df=2*nSamp-2)*2
- res[i,]<-c(delta,pvalue)
+  meanFem <- mean(femSamp)
+  meanFem2 <- mean(fem2Samp)
+  delta <- meanFem - meanFem2
+  sdFem <- sd(femSamp)
+  sdFem2 <- sd(fem2Samp)
+  seFem <- sdFem / sqrt(nSamp)
+  seFem <- sdFem2 / sqrt(nSamp)
+  sdPool <- sqrt((sdFem^2 * (nSamp - 1) + sdFem2^2 * (nSamp - 1)) / (2 * nSamp - 2))
+  tvalue <- (delta) / (sdPool * sqrt(1 / nSamp + 1 / nSamp))
+  pvalue <- pt(abs(tvalue), lower.tail = FALSE, df = 2 * nSamp - 2) * 2
+  res[i, ] <- c(delta, pvalue)
 }
-sum(res[,2]<0.05&res[,1]>0)
-sum(res[,2]>=0.05)
-sum(res[,2]<0.05&res[,1]<0)
+sum(res[, 2] < 0.05 & res[, 1] > 0)
+sum(res[, 2] >= 0.05)
+sum(res[, 2] < 0.05 & res[, 1] < 0)
 
-res<-res %>% as.data.frame
-names(res) <- c("delta","pvalue")
+res <- res %>% as.data.frame()
+names(res) <- c("delta", "pvalue")
 res %>%
-  ggplot(aes(x=delta,y=-log10(pvalue),color=pvalue<0.05)) +
+  ggplot(aes(x = delta, y = -log10(pvalue), color = pvalue < 0.05)) +
   geom_point() +
   xlab("Average cholesterol difference") +
   ylab("- log10(pvalue)") +
-  scale_color_manual(values=c("black","red"))
+  scale_color_manual(values = c("black", "red"))
 
 res %>%
-  ggplot(aes(y=delta)) +
+  ggplot(aes(y = delta)) +
   geom_boxplot() +
-  geom_point(aes(x=0,y=0,color="pop. diff")) +
+  geom_point(aes(x = 0, y = 0, color = "pop. diff")) +
   xlab("")
 ```
 
@@ -756,6 +811,7 @@ for Infantile Paralysis (NFIP) has setup a large study to assess the effectivene
 ---
 
 ## NFIP Study
+
 ### Design
 
 - Large simultaneous study with cases, vaccinated children, and controls,  non-vaccinated children.
@@ -764,16 +820,17 @@ for Infantile Paralysis (NFIP) has setup a large study to assess the effectivene
 - Controls: children from  first and third grade.
 
 ### Data
+
 ```{r}
-nfip<-data.frame(group=c("cases","control","noConcent"),grade=c("g2","g1g3","g2"),vaccin=c("yes","no","no"),total=c(221998,725173,123605),polio=c(54,391,56))
-nfip$noPolio<-nfip$total-nfip$polio
+nfip <- data.frame(group = c("cases", "control", "noConcent"), grade = c("g2", "g1g3", "g2"), vaccin = c("yes", "no", "no"), total = c(221998, 725173, 123605), polio = c(54, 391, 56))
+nfip$noPolio <- nfip$total - nfip$polio
 knitr::kable(nfip)
 ```
 
 Compare polio incidence?
 
 ```{r, echo=FALSE, eval=FALSE}
-nfip$incidencePM<-round(nfip$polio/nfip$total*1e6,0)
+nfip$incidencePM <- round(nfip$polio / nfip$total * 1e6, 0)
 knitr::kable(nfip)
 ```
 
@@ -783,12 +840,11 @@ What can we conclude?
 
 ## Confounding
 
-
 ```{r,echo=FALSE, fig.align = "center",out.width = '50%'}
-plot(c(0,0,1),c(-2,2,0),pch=c("S","V","P"),xaxt="none",yaxt="none",axes=FALSE,xlab="",ylab="",cex=4,ylim=c(-2.2,2.2))
-arrows(x0=0.1,x1=.9,y0=1.8,y1=0.1,lwd=4)
-arrows(x0=0.1,x1=.9,y0=-1.8,y1=-0.2,lwd=4)
-arrows(x0=0,x1=0,y0=-1.4,y1=1.4,lwd=4)
+plot(c(0, 0, 1), c(-2, 2, 0), pch = c("S", "V", "P"), xaxt = "none", yaxt = "none", axes = FALSE, xlab = "", ylab = "", cex = 4, ylim = c(-2.2, 2.2))
+arrows(x0 = 0.1, x1 = .9, y0 = 1.8, y1 = 0.1, lwd = 4)
+arrows(x0 = 0.1, x1 = .9, y0 = -1.8, y1 = -0.2, lwd = 4)
+arrows(x0 = 0, x1 = 0, y0 = -1.4, y1 = 1.4, lwd = 4)
 ```
 
 
@@ -808,6 +864,7 @@ arrows(x0=0,x1=0,y0=-1.4,y1=1.4,lwd=4)
 ## Salk Study
 
 ### Design
+
 A new study was conducted: Randomized double blind study
 
   - Children are assigned at random to the control or case treatment arm after consent was given by the parents.
@@ -822,10 +879,12 @@ A new study was conducted: Randomized double blind study
 ### Data
 
 ```{r}
-salk<-data.frame(group=c("cases","control","noConcent"),treatment=c("vaccine","placebo","none"),total=c(200745,
-201229, 338778),polio=c(57,142,157))
-salk$noPolio<-salk$total-salk$polio
-salk$incidencePM<-round(salk$polio/salk$total*1e6,0)
+salk <- data.frame(group = c("cases", "control", "noConcent"), treatment = c("vaccine", "placebo", "none"), total = c(
+  200745,
+  201229, 338778
+), polio = c(57, 142, 157))
+salk$noPolio <- salk$total - salk$polio
+salk$incidencePM <- round(salk$polio / salk$total * 1e6, 0)
 knitr::kable(salk)
 ```
 
@@ -847,9 +906,6 @@ $\rightarrow$ Good experimental design is crucial!
 
 - We also observed that there is variability in the population and because we can only sample a small part of the population our results and conclusions are subjected to uncertainty.
 
-
-
-
 - Statistics is the science on
     1. collecting (experimental design),
     2. exploring (data exploration) and
@@ -860,49 +916,48 @@ $\rightarrow$ Good experimental design is crucial!
 ---
 
 ```{r pop2Samp2Pop, out.width='80%',fig.asp=.8, fig.align='center',echo=FALSE}
-if ("pi"%in%ls()) rm("pi")
-kopvoeter<-function(x,y,angle=0,l=.2,cex.dot=.5,pch=19,col="black")
-{
-angle=angle/180*pi
-points(x,y,cex=cex.dot,pch=pch,col=col)
-lines(c(x,x+l*cos(-pi/2+angle)),c(y,y+l*sin(-pi/2+angle)),col=col)
-lines(c(x+l/2*cos(-pi/2+angle),x+l/2*cos(-pi/2+angle)+l/4*cos(angle)),c(y+l/2*sin(-pi/2+angle),y+l/2*sin(-pi/2+angle)+l/4*sin(angle)),col=col)
-lines(c(x+l/2*cos(-pi/2+angle),x+l/2*cos(-pi/2+angle)+l/4*cos(pi+angle)),c(y+l/2*sin(-pi/2+angle),y+l/2*sin(-pi/2+angle)+l/4*sin(pi+angle)),col=col)
-lines(c(x+l*cos(-pi/2+angle),x+l*cos(-pi/2+angle)+l/2*cos(-pi/2+pi/4+angle)),c(y+l*sin(-pi/2+angle),y+l*sin(-pi/2+angle)+l/2*sin(-pi/2+pi/4+angle)),col=col)
-lines(c(x+l*cos(-pi/2+angle),x+l*cos(-pi/2+angle)+l/2*cos(-pi/2-pi/4+angle)),c(y+l*sin(-pi/2+angle),y+l*sin(-pi/2+angle)+l/2*sin(-pi/2-pi/4+angle)),col=col)
+if ("pi" %in% ls()) rm("pi")
+kopvoeter <- function(x, y, angle = 0, l = .2, cex.dot = .5, pch = 19, col = "black") {
+  angle <- angle / 180 * pi
+  points(x, y, cex = cex.dot, pch = pch, col = col)
+  lines(c(x, x + l * cos(-pi / 2 + angle)), c(y, y + l * sin(-pi / 2 + angle)), col = col)
+  lines(c(x + l / 2 * cos(-pi / 2 + angle), x + l / 2 * cos(-pi / 2 + angle) + l / 4 * cos(angle)), c(y + l / 2 * sin(-pi / 2 + angle), y + l / 2 * sin(-pi / 2 + angle) + l / 4 * sin(angle)), col = col)
+  lines(c(x + l / 2 * cos(-pi / 2 + angle), x + l / 2 * cos(-pi / 2 + angle) + l / 4 * cos(pi + angle)), c(y + l / 2 * sin(-pi / 2 + angle), y + l / 2 * sin(-pi / 2 + angle) + l / 4 * sin(pi + angle)), col = col)
+  lines(c(x + l * cos(-pi / 2 + angle), x + l * cos(-pi / 2 + angle) + l / 2 * cos(-pi / 2 + pi / 4 + angle)), c(y + l * sin(-pi / 2 + angle), y + l * sin(-pi / 2 + angle) + l / 2 * sin(-pi / 2 + pi / 4 + angle)), col = col)
+  lines(c(x + l * cos(-pi / 2 + angle), x + l * cos(-pi / 2 + angle) + l / 2 * cos(-pi / 2 - pi / 4 + angle)), c(y + l * sin(-pi / 2 + angle), y + l * sin(-pi / 2 + angle) + l / 2 * sin(-pi / 2 - pi / 4 + angle)), col = col)
 }
 
-par(mar=c(0,0,0,0),mai=c(0,0,0,0))
-plot(0,0,xlab="",ylab="",xlim=c(0,10),ylim=c(0,10),col=0,xaxt="none",yaxt="none",axes=FALSE)
-rect(0,6,10,10,border="red",lwd=2)
-text(.5,8,"population",srt=90,col="red",cex=2)
-symbols (3, 8, circles=1.5, col="red",add=TRUE,fg="red",inches=FALSE,lwd=2)
+par(mar = c(0, 0, 0, 0), mai = c(0, 0, 0, 0))
+plot(0, 0, xlab = "", ylab = "", xlim = c(0, 10), ylim = c(0, 10), col = 0, xaxt = "none", yaxt = "none", axes = FALSE)
+rect(0, 6, 10, 10, border = "red", lwd = 2)
+text(.5, 8, "population", srt = 90, col = "red", cex = 2)
+symbols(3, 8, circles = 1.5, col = "red", add = TRUE, fg = "red", inches = FALSE, lwd = 2)
 set.seed(330)
-grid=seq(0,1.3,.01)
+grid <- seq(0, 1.3, .01)
 
 for (i in 1:50)
 {
-	angle1=runif(n=1,min=0,max=360)
-	angle2=runif(n=1,min=0,max=360)
-	radius=sample(grid,prob=grid^2*pi/sum(grid^2*pi),size=1)
-	kopvoeter(3+radius*cos(angle1/180*pi),8+radius*sin(angle1/180*pi),angle=angle2)
+  angle1 <- runif(n = 1, min = 0, max = 360)
+  angle2 <- runif(n = 1, min = 0, max = 360)
+  radius <- sample(grid, prob = grid^2 * pi / sum(grid^2 * pi), size = 1)
+  kopvoeter(3 + radius * cos(angle1 / 180 * pi), 8 + radius * sin(angle1 / 180 * pi), angle = angle2)
 }
-text(7.5,8,"cholesterol in population",col="red",cex=1.2)
+text(7.5, 8, "cholesterol in population", col = "red", cex = 1.2)
 
-rect(0,0,10,4,border="blue",lwd=2)
-text(.5,2,"sample",srt=90,col="blue",cex=2)
-symbols (3, 2, circles=1.5, col="red",add=TRUE,fg="blue",inches=FALSE,lwd=2)
-for (i in 0:2)
-	for (j in 0:4)
-{
-
-	kopvoeter(2.1+j*(3.9-2.1)/4,1.1+i)
+rect(0, 0, 10, 4, border = "blue", lwd = 2)
+text(.5, 2, "sample", srt = 90, col = "blue", cex = 2)
+symbols(3, 2, circles = 1.5, col = "red", add = TRUE, fg = "blue", inches = FALSE, lwd = 2)
+for (i in 0:2) {
+  for (j in 0:4)
+  {
+    kopvoeter(2.1 + j * (3.9 - 2.1) / 4, 1.1 + i)
+  }
 }
-text(7.5,2,"cholesterol in sample",col="blue",cex=1.2)
+text(7.5, 2, "cholesterol in sample", col = "blue", cex = 1.2)
 
-arrows(3,5.9,3,4.1,col="black",lwd=3)
-arrows(7,4.1,7,5.9,col="black",lwd=3)
-text(1.5,5,"EXP. DESIGN (1)",col="black",cex=1.2)
-text(8.5,5,"ESTIMATION &\nINFERENCE (3)",col="black",cex=1.2)
-text(7.5,.5,"DATA EXPLORATION &\nDESCRIPTIVE STATISTICS (2)",col="black",cex=1.2)
+arrows(3, 5.9, 3, 4.1, col = "black", lwd = 3)
+arrows(7, 4.1, 7, 5.9, col = "black", lwd = 3)
+text(1.5, 5, "EXP. DESIGN (1)", col = "black", cex = 1.2)
+text(8.5, 5, "ESTIMATION &\nINFERENCE (3)", col = "black", cex = 1.2)
+text(7.5, .5, "DATA EXPLORATION &\nDESCRIPTIVE STATISTICS (2)", col = "black", cex = 1.2)
 ```
