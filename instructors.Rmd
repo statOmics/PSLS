@@ -1,10 +1,9 @@
 ---
 title: "Instructors"
-author: "Lieven Clement"
-date: "statOmics, Ghent University (https://statomics.github.io)"
 output:
     html_document:
         number_sections: false
+        toc: false
 ---
 
 ### Lieven Clement
@@ -27,7 +26,5 @@ knitr::include_graphics("./figures/milan.jpg")
 ```
 
 Milan Malfait is a PhD student in the [statOmics](https://statomics.github.io/) Group at Ghent University, headed by prof. Lieven Clement. He has a background in bioengineering and bioinformatics and is currently pursuing a PhD in statistical data analysis in collaboration with Janssen Pharmaceutica. His main research topic is to develop robust and scalable statistical methods for differential expression analysis with single-cell transcriptomics data.
-
-<br/>
 
 Affiliation: Department of Applied Mathematics, Computer Science and Statistics, Ghent University, Ghent, BE

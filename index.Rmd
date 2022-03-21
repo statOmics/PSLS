@@ -149,5 +149,5 @@ source("https://raw.githubusercontent.com/statOmics/PSLS/master/install.R")
 
 #### Instructors
 
- - [Lieven Clement](./instructors.html)
- - [Jeroen Gilis](./instructors.html)
+ - [Lieven Clement](./instructors.html#Lieven_Clement)
+ - [Milan Malfait](./instructors.html#Milan_Malfait)
