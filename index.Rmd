@@ -95,8 +95,8 @@ source("https://raw.githubusercontent.com/statOmics/PSLS/master/install.R")
     - [Rmarkdown](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
     - [Other](https://www.rstudio.com/resources/cheatsheets/)
 
-- All data can be downloaded locally through
-[data](assets/data.zip)
+<!-- - All data can be downloaded locally through -->
+<!-- [data](assets/data.zip) -->
 
 #### Learning materials
 
