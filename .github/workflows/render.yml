@@ -48,10 +48,24 @@ jobs:
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
 
-      - name: Render site
+      - name: Render complete site
+        if: "contains(github.event.head_commit.message, '/complete')"
         run: |
-          rmarkdown::render_site()
-        shell: Rscript {0}
+          Rscript -e 'rmarkdown::render_site()'
+          git config --local user.name "$GITHUB_ACTOR"
+          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git commit -a -m 'Re-build Rmarkdown files' || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
+
+      - name: Render updated files only
+        if: "!contains(github.event.head_commit.message, '/complete')"
+        run: |
+          RMD_PATH=($(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '[.]Rmd$')) || echo "No files to render."
+          Rscript -e 'for (f in commandArgs(TRUE)) if (file.exists(f)) rmarkdown::render_site(f)' ${RMD_PATH[*]}
+          git config --local user.name "$GITHUB_ACTOR"
+          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git commit -a -m 'Re-build Rmarkdown files' || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
 
       - name: Deploy 🚀
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'

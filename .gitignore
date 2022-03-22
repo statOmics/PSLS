@@ -4,11 +4,11 @@
 .Ruserdata
 
 # Rmd output
-*.html
-*_files/
 *_cache/
-_site/
-site_libs/
+*_files/
+!_site/*_files/
+*.html
+!_site/*.html
 
 # Don't ignore these specific files
 !footer.html

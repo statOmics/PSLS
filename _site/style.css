@@ -1,0 +1,33 @@
+/*------------FOOTER----------*/
+
+/* To make the footer stick to the bottom */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: 60px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 90%;
+    height: 60px;
+    padding: 20px 10px;
+    color: #808080;
+    margin: 3rem auto;
+    left: 50%;
+    margin-left: -45%;
+    font-size: 12px;
+    font-weight: 300;
+    text-align: center;
+}
+
+/* Divider line above footer */
+.footer hr{
+    width: 100%;
+}
+
+.tocify-extend-page {
+    height: 60px !important;
+}

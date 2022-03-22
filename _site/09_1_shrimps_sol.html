@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement and Jeroen Gilis" />
+
+
+<title>Exercise 9.1: Non-parametric statistics on the shrimps dataset - solution</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Exercise 9.1: Non-parametric statistics on
+the shrimps dataset - solution</h1>
+<h4 class="author">Lieven Clement and Jeroen Gilis</h4>
+<h4 class="date">statOmics, Ghent University (<a
+href="https://statomics.github.io"
+class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<div id="the-shrimps-dataset" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> The shrimps
+dataset</h1>
+<p>Dataset on the accumulation of PCBs (Polychlorinated biphenyls) in
+the adipose tissue of shrimps. PCBs are often present in coolants, and
+are know to accumulate easily in the adipose tissue of shrimps. In this
+experiment, two groups of 18 samples (each 100 grams) of shrimps each
+were cultivated in different conditions, one control condition and one
+condition where the medium was poluted with PCBs. Note that the PCB
+concentrations were measured in pg/g adipose tissue.</p>
+</div>
+<div id="goal" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Goal</h1>
+<p>The research question is; is there an effect of the growth condition
+on the PCB concentration in the adipose tissue of shrimps?</p>
+<p>Load libraries:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<pre><code>## ── Attaching packages ──────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.3.5     ✔ purrr   0.3.4
+## ✔ tibble  3.1.6     ✔ dplyr   1.0.8
+## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
+## ✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ─────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+</div>
+<div id="import-the-data" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Import the data</h1>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>shrimps <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/shrimps.txt&quot;</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(shrimps)</span></code></pre></div>
+<pre><code>## Rows: 36
+## Columns: 2
+## $ PCB.conc &lt;dbl&gt; 29.7, 24.5, 97.7, 39.1, 22.6, 32.4, 27.7, 100.1, 40.1, 23.3, …
+## $ group    &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2…</code></pre>
+</div>
+<div id="data-tidying" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Data tidying</h1>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>shrimps <span class="ot">&lt;-</span> shrimps <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">as.factor</span>(group))</span></code></pre></div>
+</div>
+<div id="data-exploration" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Data exploration</h1>
+<p>The first step is to explore the data.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>shrimps <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(group)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["group"],"name":[1],"type":["fct"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"18"},{"1":"2","2":"18"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Visualize the data:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>shrimps <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>group,<span class="at">y=</span>PCB.conc,<span class="at">fill=</span>group)) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;RdGy&quot;</span>) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape=</span><span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Boxplot of the PCB concentrations in two groups of shrimps&quot;</span>) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;PCB concentration (pg/g)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y=</span>mean, <span class="at">geom=</span><span class="st">&quot;point&quot;</span>, <span class="at">shape=</span><span class="dv">5</span>, <span class="at">size=</span><span class="dv">3</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>, <span class="at">fill=</span><span class="st">&quot;black&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: `fun.y` is deprecated. Use `fun` instead.</code></pre>
+<p><img src="09_1_shrimps_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>We can see that for group 1 we have four very clear outliers in the
+data. These values were double-checked (i.e for typing errors), but
+there was no reason found to believe that these values are
+incorrect.</p>
+</div>
+<div id="analysis" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Analysis</h1>
+<p>A good way for testing the research hypothesis is to perform an
+unpaired two-sample t-test to find out whether there is a significant
+difference in the mean PCB concentrations between both groups of
+samples. Before we can do this, we must check if all the required
+assumptions are met.</p>
+<div id="assumptions" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Assumptions</h2>
+<ol style="list-style-type: decimal">
+<li>The observations are independent of each other (in both groups)</li>
+<li>The data (PCB.conc) must be normally distributed (in both
+groups)</li>
+<li>The variance is equal in the two groups.</li>
+</ol>
+<p>The first assumption is met, as we randomly selected shrimps and
+submitted them to one of two growth conditions. No underlying
+correlation patterns are expected.</p>
+<p>We can check the second assumption with a QQ-plot.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>shrimps <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample=</span>PCB.conc)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>group)</span></code></pre></div>
+<p><img src="09_1_shrimps_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>We clearly see that we have strong deviations from normality. Many
+datapoints do not lie near the quantile-quantile line. As such, we may
+conclude that our data are not normally distributed. In addition, the
+boxplots suggest that the variability differs between the two
+groups.</p>
+<p>As such, we are not allowed to perform the t-test. Given the location
+of the outliers transformation will not help, so we will resort to
+non-parametric tests, i.e. to the Wilcoxon rank-sum test.</p>
+</div>
+<div id="wilcoxon-rank-sum-test" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Wilcoxon rank-sum
+test</h2>
+<p>The Wilcoxon rank-sum test (or the Mann-Whitney U test) is an
+important non-parametric data analysis method. In rank-based tests, the
+data <span class="math inline">\(Y_i\)</span> are first transformed to
+its ranked equivalent <span class="math display">\[ R_i=R(Y_i) =
+\#\{Y_j: Y_j\leq Y_i; j=1,\ldots, n\}. \]</span></p>
+<p>Ranks are very robust to outliers. For instance, it does not matter
+if the highest value in an hypothetical dataset has a value of 10 or
+100; it will keep the same rank (highest rank).</p>
+<p>Note, that there might be ties in the data, e.g., if two samples of
+shrimps have an equal concentration of PCBs. In this case, the Wilcoxon
+rank-sum test will compute mid-ranks, which are calculated as follows;
+<span class="math display">\[R(Y_i) = \frac{\sum\limits_{\forall j :
+Y_j=Y_i}R(Y_j)}{\#{\forall j:Y_j=Y_i}}  \]</span> i.e., the midrank is
+equal to the mean of the ranks of equal observations.</p>
+<p>After computing the ranks and midranks, the Wilcoxon test will
+compare the mean rank between both treatment groups:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>PCB_1 <span class="ot">&lt;-</span> shrimps <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(group <span class="sc">==</span> <span class="st">&quot;1&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(PCB.conc)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>PCB_2 <span class="ot">&lt;-</span> shrimps <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(group <span class="sc">==</span> <span class="st">&quot;2&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(PCB.conc)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(PCB_1, PCB_2)</span></code></pre></div>
+<pre><code>## 
+##  Wilcoxon rank sum exact test
+## 
+## data:  PCB_1 and PCB_2
+## W = 88, p-value = 0.01871
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<p>or, equivalently;</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(PCB.conc<span class="sc">~</span>group, <span class="at">data =</span> shrimps)</span></code></pre></div>
+<pre><code>## 
+##  Wilcoxon rank sum exact test
+## 
+## data:  PCB.conc by group
+## W = 88, p-value = 0.01871
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<p>We find that the test is significant on the 5% significance level (p
+= 0.01871). The value W=88 could be calculated manually as the
+Mann-Withney statistic that counts how many times a value from group 1
+is larger or equal than values of group 2.</p>
+<div id="interpretation" class="section level3" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> Interpretation</h3>
+<p>The interpretation of the Wilcoxon rank-sum test is slightly more
+challenging than that of a t-test. Since we are no longer interpreting
+differences in the distributions between the groups in terms of the
+average differences but in in terms of the <em>probabilistic
+index</em>.</p>
+<p>The null hypothesis of the Wilcoxon test states that the
+distributions are equal for both groups:</p>
+<p><span class="math display">\[ H_0: f_1 = f_2 \]</span></p>
+<p>In words: the distribution of PCB concentrations in shrimps are equal
+for both treatment conditions.</p>
+<p>against the alternative hypothesis that</p>
+<p><span class="math display">\[ H_1: P(Y_{1} \geq Y_{2}) \ne 1/2
+\]</span></p>
+<p>In words: The probability that a random observation of a PCB
+concentration derived from shrimps that was grown in the control
+condition <em>is larger than or equal to</em> than a random observation
+of a PCB concentration derived from a shrimps that was grown in the
+other condition <em>is not equal to 50%</em>.</p>
+<p>We can estimate this probability based on the observed test
+statistic.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> n2 <span class="ot">&lt;-</span> <span class="dv">18</span> <span class="co">#18 observations in each group</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>WObs <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(PCB.conc<span class="sc">~</span>group, <span class="at">data=</span>shrimps)<span class="sc">$</span>statistic <span class="co"># get the observed test statistic</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>WObs<span class="sc">/</span>(n1<span class="sc">*</span>n2)</span></code></pre></div>
+<pre><code>##         W 
+## 0.2716049</code></pre>
+<p>We can see that the point estimate of this probability is 27.2%.</p>
+<p>We can interpret it as follows;</p>
+<p>There is a probability of 27.2% that the PCB concentration in a
+random shrimp that was grown in the control condition is greater than or
+equal to the PCB concentration in a random shrimp that was grown in the
+treatment condition. This probability is significantly different from
+50% on the 5% significance level (p = 0.01871).</p>
+</div>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgOS4xOiBOb24tcGFyYW1ldHJpYyBzdGF0aXN0aWNzIG9uIHRoZSBzaHJpbXBzIGRhdGFzZXQgLSBzb2x1dGlvbiIKYXV0aG9yOiAiTGlldmVuIENsZW1lbnQgYW5kIEplcm9lbiBHaWxpcyIKZGF0ZTogInN0YXRPbWljcywgR2hlbnQgVW5pdmVyc2l0eSAoaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSIKLS0tCgojIFRoZSBzaHJpbXBzIGRhdGFzZXQKCkRhdGFzZXQgb24gdGhlIGFjY3VtdWxhdGlvbiBvZiBQQ0JzIChQb2x5Y2hsb3JpbmF0ZWQgYmlwaGVueWxzKQppbiB0aGUgYWRpcG9zZSB0aXNzdWUgb2Ygc2hyaW1wcy4gUENCcyBhcmUgb2Z0ZW4gcHJlc2VudCBpbiBjb29sYW50cywgYW5kIGFyZQprbm93IHRvIGFjY3VtdWxhdGUgZWFzaWx5IGluIHRoZSBhZGlwb3NlIHRpc3N1ZSBvZiBzaHJpbXBzLiBJbiB0aGlzIGV4cGVyaW1lbnQsCnR3byBncm91cHMgb2YgMTggc2FtcGxlcyAoZWFjaCAxMDAgZ3JhbXMpIG9mIHNocmltcHMgZWFjaCB3ZXJlIGN1bHRpdmF0ZWQKaW4gZGlmZmVyZW50IGNvbmRpdGlvbnMsIG9uZSBjb250cm9sIGNvbmRpdGlvbiBhbmQgb25lIGNvbmRpdGlvbgp3aGVyZSB0aGUgbWVkaXVtIHdhcyBwb2x1dGVkIHdpdGggUENCcy4gTm90ZSB0aGF0IHRoZSBQQ0IgY29uY2VudHJhdGlvbnMgd2VyZQptZWFzdXJlZCBpbiBwZy9nIGFkaXBvc2UgdGlzc3VlLgoKIyBHb2FsCgpUaGUgcmVzZWFyY2ggcXVlc3Rpb24gaXM7IGlzIHRoZXJlIGFuIGVmZmVjdCBvZiB0aGUKZ3Jvd3RoIGNvbmRpdGlvbiBvbiB0aGUgUENCIGNvbmNlbnRyYXRpb24gaW4gdGhlIGFkaXBvc2UKdGlzc3VlIG9mIHNocmltcHM/CgpMb2FkIGxpYnJhcmllczoKCmBgYHtyfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKYGBgCgojIEltcG9ydCB0aGUgZGF0YQoKYGBge3J9CnNocmltcHMgPC0gcmVhZC50YWJsZSgiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9zaHJpbXBzLnR4dCIsCiAgICAgICAgICAgICAgICAgICAgICBoZWFkZXIgPSBUUlVFKQpnbGltcHNlKHNocmltcHMpCmBgYAoKIyBEYXRhIHRpZHlpbmcKCmBgYHtyfQpzaHJpbXBzIDwtIHNocmltcHMgJT4lCiAgbXV0YXRlKGdyb3VwID0gYXMuZmFjdG9yKGdyb3VwKSkKYGBgCgojIERhdGEgZXhwbG9yYXRpb24KClRoZSBmaXJzdCBzdGVwIGlzIHRvIGV4cGxvcmUgdGhlIGRhdGEuCgpgYGB7cn0Kc2hyaW1wcyAlPiUKICBjb3VudChncm91cCkKYGBgCgpWaXN1YWxpemUgdGhlIGRhdGE6CgpgYGB7cn0Kc2hyaW1wcyAlPiUKICBnZ3Bsb3QoYWVzKHg9Z3JvdXAseT1QQ0IuY29uYyxmaWxsPWdyb3VwKSkgKwogIHNjYWxlX2ZpbGxfYnJld2VyKHBhbGV0dGU9IlJkR3kiKSArCiAgdGhlbWVfYncoKSArCiAgZ2VvbV9ib3hwbG90KG91dGxpZXIuc2hhcGU9TkEpICsKICBnZW9tX2ppdHRlcih3aWR0aCA9IDAuMikgKwogIGdndGl0bGUoIkJveHBsb3Qgb2YgdGhlIFBDQiBjb25jZW50cmF0aW9ucyBpbiB0d28gZ3JvdXBzIG9mIHNocmltcHMiKSArCiAgeWxhYigiUENCIGNvbmNlbnRyYXRpb24gKHBnL2cpIikgKwogIHN0YXRfc3VtbWFyeShmdW4ueT1tZWFuLCBnZW9tPSJwb2ludCIsIHNoYXBlPTUsIHNpemU9MywgY29sb3I9ImJsYWNrIiwgZmlsbD0iYmxhY2siKQpgYGAKCldlIGNhbiBzZWUgdGhhdCBmb3IgZ3JvdXAgMSB3ZSBoYXZlIGZvdXIgdmVyeSBjbGVhciBvdXRsaWVycwppbiB0aGUgZGF0YS4gVGhlc2UgdmFsdWVzIHdlcmUgZG91YmxlLWNoZWNrZWQgKGkuZSBmb3IKdHlwaW5nIGVycm9ycyksIGJ1dCB0aGVyZSB3YXMgbm8gcmVhc29uIGZvdW5kIHRvIGJlbGlldmUKdGhhdCB0aGVzZSB2YWx1ZXMgYXJlIGluY29ycmVjdC4KCiMgQW5hbHlzaXMKCkEgZ29vZCB3YXkgZm9yCnRlc3RpbmcgdGhlIHJlc2VhcmNoIGh5cG90aGVzaXMgaXMgdG8gcGVyZm9ybSBhbiB1bnBhaXJlZAp0d28tc2FtcGxlIHQtdGVzdCB0byBmaW5kIG91dCB3aGV0aGVyIHRoZXJlIGlzIGEgc2lnbmlmaWNhbnQKZGlmZmVyZW5jZSBpbiB0aGUgbWVhbiBQQ0IgY29uY2VudHJhdGlvbnMgYmV0d2VlbiBib3RoIGdyb3VwcwpvZiBzYW1wbGVzLiBCZWZvcmUgd2UgY2FuIGRvIHRoaXMsIHdlIG11c3QgY2hlY2sgaWYgYWxsIHRoZQpyZXF1aXJlZCBhc3N1bXB0aW9ucyBhcmUgbWV0LgoKIyMgQXNzdW1wdGlvbnMKCjEuIFRoZSBvYnNlcnZhdGlvbnMgYXJlIGluZGVwZW5kZW50IG9mIGVhY2ggb3RoZXIgKGluIGJvdGggZ3JvdXBzKQoyLiBUaGUgZGF0YSAoUENCLmNvbmMpIG11c3QgYmUgbm9ybWFsbHkgZGlzdHJpYnV0ZWQgKGluIGJvdGggZ3JvdXBzKQozLiBUaGUgdmFyaWFuY2UgaXMgZXF1YWwgaW4gdGhlIHR3byBncm91cHMuCgpUaGUgZmlyc3QgYXNzdW1wdGlvbiBpcyBtZXQsIGFzIHdlIHJhbmRvbWx5IHNlbGVjdGVkIHNocmltcHMgYW5kCnN1Ym1pdHRlZCB0aGVtIHRvIG9uZSBvZiB0d28gZ3Jvd3RoIGNvbmRpdGlvbnMuIE5vIHVuZGVybHlpbmcKY29ycmVsYXRpb24gcGF0dGVybnMgYXJlIGV4cGVjdGVkLgoKV2UgY2FuIGNoZWNrIHRoZSBzZWNvbmQgYXNzdW1wdGlvbiB3aXRoIGEgUVEtcGxvdC4KCmBgYHtyfQpzaHJpbXBzICU+JQogIGdncGxvdChhZXMoc2FtcGxlPVBDQi5jb25jKSkgKwogIGdlb21fcXEoKSArCiAgZ2VvbV9xcV9saW5lKCkgKwogIGZhY2V0X2dyaWQofmdyb3VwKQpgYGAKCldlIGNsZWFybHkgc2VlIHRoYXQgd2UgaGF2ZSBzdHJvbmcgZGV2aWF0aW9ucyBmcm9tCm5vcm1hbGl0eS4gTWFueSBkYXRhcG9pbnRzIGRvIG5vdCBsaWUgbmVhciB0aGUgcXVhbnRpbGUtcXVhbnRpbGUKbGluZS4gQXMgc3VjaCwgd2UgbWF5IGNvbmNsdWRlIHRoYXQgb3VyIGRhdGEgYXJlIG5vdCBub3JtYWxseSBkaXN0cmlidXRlZC4KSW4gYWRkaXRpb24sIHRoZSBib3hwbG90cyBzdWdnZXN0IHRoYXQgdGhlCnZhcmlhYmlsaXR5IGRpZmZlcnMgYmV0d2VlbiB0aGUgdHdvIGdyb3Vwcy4KCkFzIHN1Y2gsIHdlIGFyZSBub3QgYWxsb3dlZCB0byBwZXJmb3JtIHRoZSB0LXRlc3QuCkdpdmVuIHRoZSBsb2NhdGlvbiBvZiB0aGUgb3V0bGllcnMgdHJhbnNmb3JtYXRpb24gd2lsbCBub3QgaGVscCwgc28gd2Ugd2lsbCByZXNvcnQgdG8gbm9uLXBhcmFtZXRyaWMKdGVzdHMsIGkuZS4gdG8gdGhlIFdpbGNveG9uIHJhbmstc3VtIHRlc3QuCgojIyBXaWxjb3hvbiByYW5rLXN1bSB0ZXN0CgpUaGUgV2lsY294b24gcmFuay1zdW0gdGVzdCAob3IgdGhlIE1hbm4tV2hpdG5leSBVIHRlc3QpIGlzIGFuIGltcG9ydGFudApub24tcGFyYW1ldHJpYyBkYXRhIGFuYWx5c2lzIG1ldGhvZC4gSW4gcmFuay1iYXNlZCB0ZXN0cywgdGhlIGRhdGEKJFlfaSQgYXJlIGZpcnN0IHRyYW5zZm9ybWVkIHRvIGl0cyByYW5rZWQgZXF1aXZhbGVudApcWyBSX2k9UihZX2kpID0gXCNce1lfajogWV9qXGxlcSBZX2k7IGo9MSxcbGRvdHMsIG5cfS4gXF0KClJhbmtzIGFyZSB2ZXJ5IHJvYnVzdCB0byBvdXRsaWVycy4gRm9yIGluc3RhbmNlLCBpdCBkb2VzIG5vdAptYXR0ZXIgaWYgdGhlIGhpZ2hlc3QgdmFsdWUgaW4gYW4gaHlwb3RoZXRpY2FsIGRhdGFzZXQgaGFzIGEKdmFsdWUgb2YgMTAgb3IgMTAwOyBpdCB3aWxsIGtlZXAgdGhlIHNhbWUgcmFuayAoaGlnaGVzdCByYW5rKS4KCk5vdGUsIHRoYXQgdGhlcmUgbWlnaHQgYmUgdGllcyBpbiB0aGUgZGF0YSwgZS5nLiwgaWYKdHdvIHNhbXBsZXMgb2Ygc2hyaW1wcyBoYXZlIGFuIGVxdWFsIGNvbmNlbnRyYXRpb24gb2YgUENCcy4KSW4gdGhpcyBjYXNlLCB0aGUgV2lsY294b24gcmFuay1zdW0gdGVzdCB3aWxsIGNvbXB1dGUKbWlkLXJhbmtzLCB3aGljaCBhcmUgY2FsY3VsYXRlZCBhcyBmb2xsb3dzOwpcW1IoWV9pKSA9IFxmcmFje1xzdW1cbGltaXRzX3tcZm9yYWxsIGogOiBZX2o9WV9pfVIoWV9qKX17XCN7XGZvcmFsbCBqOllfaj1ZX2l9fSAgXF0KaS5lLiwgdGhlIG1pZHJhbmsgaXMgZXF1YWwgdG8gdGhlIG1lYW4gb2YgdGhlIHJhbmtzIG9mIGVxdWFsCm9ic2VydmF0aW9ucy4KCkFmdGVyIGNvbXB1dGluZyB0aGUgcmFua3MgYW5kIG1pZHJhbmtzLCB0aGUgV2lsY294b24gdGVzdCB3aWxsCmNvbXBhcmUgdGhlIG1lYW4gcmFuayBiZXR3ZWVuIGJvdGggdHJlYXRtZW50IGdyb3VwczoKCmBgYHtyfQpQQ0JfMSA8LSBzaHJpbXBzICU+JQogIGZpbHRlcihncm91cCA9PSAiMSIpICU+JQogIHB1bGwoUENCLmNvbmMpCgpQQ0JfMiA8LSBzaHJpbXBzICU+JQogIGZpbHRlcihncm91cCA9PSAiMiIpICU+JQogIHB1bGwoUENCLmNvbmMpCgp3aWxjb3gudGVzdChQQ0JfMSwgUENCXzIpCmBgYAoKb3IsIGVxdWl2YWxlbnRseTsKCmBgYHtyfQp3aWxjb3gudGVzdChQQ0IuY29uY35ncm91cCwgZGF0YSA9IHNocmltcHMpCmBgYAoKV2UgZmluZCB0aGF0IHRoZSB0ZXN0IGlzIHNpZ25pZmljYW50IG9uIHRoZSA1JQpzaWduaWZpY2FuY2UgbGV2ZWwgKHAgPSAwLjAxODcxKS4gVGhlIHZhbHVlIFc9ODgKY291bGQgYmUgY2FsY3VsYXRlZCBtYW51YWxseSBhcyB0aGUgTWFubi1XaXRobmV5IHN0YXRpc3RpYwp0aGF0IGNvdW50cyBob3cgbWFueSB0aW1lcyBhIHZhbHVlIGZyb20gZ3JvdXAgMSBpcyBsYXJnZXIgb3IgZXF1YWwgdGhhbiB2YWx1ZXMgb2YgZ3JvdXAgMi4KCiMjIyBJbnRlcnByZXRhdGlvbgoKVGhlIGludGVycHJldGF0aW9uIG9mIHRoZSBXaWxjb3hvbiByYW5rLXN1bSB0ZXN0IGlzCnNsaWdodGx5IG1vcmUgY2hhbGxlbmdpbmcgdGhhbiB0aGF0IG9mIGEgdC10ZXN0LgpTaW5jZSB3ZSBhcmUgbm8gbG9uZ2VyIGludGVycHJldGluZyBkaWZmZXJlbmNlcyBpbiB0aGUgZGlzdHJpYnV0aW9ucyBiZXR3ZWVuIHRoZSBncm91cHMgaW4gdGVybXMgb2YgdGhlIGF2ZXJhZ2UgZGlmZmVyZW5jZXMgYnV0IGluIGluIHRlcm1zIG9mIHRoZQoqcHJvYmFiaWxpc3RpYyBpbmRleCouCgpUaGUgbnVsbCBoeXBvdGhlc2lzIG9mIHRoZSBXaWxjb3hvbiB0ZXN0IHN0YXRlcyB0aGF0CnRoZSBkaXN0cmlidXRpb25zCmFyZSBlcXVhbCBmb3IgYm90aCBncm91cHM6CgpcWyBIXzA6IGZfMSA9IGZfMiBcXQoKSW4gd29yZHM6IHRoZSBkaXN0cmlidXRpb24gb2YgUENCIGNvbmNlbnRyYXRpb25zIGluCnNocmltcHMgYXJlIGVxdWFsIGZvciBib3RoIHRyZWF0bWVudCBjb25kaXRpb25zLgoKYWdhaW5zdCB0aGUgYWx0ZXJuYXRpdmUgaHlwb3RoZXNpcyB0aGF0CgpcWyBIXzE6IFAoWV97MX0gXGdlcSBZX3syfSkgXG5lIDEvMiBcXQoKSW4gd29yZHM6IFRoZSBwcm9iYWJpbGl0eSB0aGF0IGEgcmFuZG9tIG9ic2VydmF0aW9uIG9mIGEKUENCIGNvbmNlbnRyYXRpb24gZGVyaXZlZCBmcm9tIHNocmltcHMgdGhhdAp3YXMgZ3Jvd24gaW4gdGhlIGNvbnRyb2wgY29uZGl0aW9uICppcyBsYXJnZXIgdGhhbiBvciBlcXVhbCB0byoKdGhhbiBhIHJhbmRvbSBvYnNlcnZhdGlvbiBvZiBhIFBDQiBjb25jZW50cmF0aW9uCmRlcml2ZWQgZnJvbSBhIHNocmltcHMgdGhhdCB3YXMgZ3Jvd24gaW4KdGhlIG90aGVyIGNvbmRpdGlvbiAqaXMgbm90IGVxdWFsIHRvIDUwJSouCgpXZSBjYW4gZXN0aW1hdGUgdGhpcyBwcm9iYWJpbGl0eSBiYXNlZCBvbiB0aGUgb2JzZXJ2ZWQgdGVzdCBzdGF0aXN0aWMuCgpgYGB7cn0KbjEgPC0gbjIgPC0gMTggIzE4IG9ic2VydmF0aW9ucyBpbiBlYWNoIGdyb3VwCldPYnMgPC0gd2lsY294LnRlc3QoUENCLmNvbmN+Z3JvdXAsIGRhdGE9c2hyaW1wcykkc3RhdGlzdGljICMgZ2V0IHRoZSBvYnNlcnZlZCB0ZXN0IHN0YXRpc3RpYwpXT2JzLyhuMSpuMikKYGBgCgpXZSBjYW4gc2VlIHRoYXQgdGhlIHBvaW50IGVzdGltYXRlIG9mIHRoaXMgcHJvYmFiaWxpdHkKaXMgYHIgcm91bmQoV09icy8objEqbjIpLDMpKjEwMGAlLgoKV2UgY2FuIGludGVycHJldCBpdCBhcyBmb2xsb3dzOwoKVGhlcmUgaXMgYSBwcm9iYWJpbGl0eSBvZiAyNy4yJSB0aGF0IHRoZSBQQ0IgY29uY2VudHJhdGlvbiBpbiBhIHJhbmRvbQpzaHJpbXAgdGhhdCB3YXMgZ3Jvd24gaW4gdGhlIGNvbnRyb2wgY29uZGl0aW9uIGlzCmdyZWF0ZXIgdGhhbiBvciBlcXVhbCB0byB0aGUgUENCIGNvbmNlbnRyYXRpb24gaW4gYSByYW5kb20Kc2hyaW1wIHRoYXQgd2FzIGdyb3duIGluIHRoZSB0cmVhdG1lbnQgY29uZGl0aW9uLiBUaGlzIHByb2JhYmlsaXR5IGlzIHNpZ25pZmljYW50bHkgZGlmZmVyZW50IGZyb20gNTAlIG9uIHRoZSA1JSBzaWduaWZpY2FuY2UgbGV2ZWwgKHAgPSAwLjAxODcxKS4K</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("09_1_shrimps_sol.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
