@@ -11,7 +11,6 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ***
 
-
 ```{r out.width='80%',fig.asp=.8, fig.align='center',echo=FALSE}
 if ("pi" %in% ls()) rm("pi")
 kopvoeter <- function(x, y, angle = 0, l = .2, cex.dot = .5, pch = 19, col = "black") {
@@ -59,7 +58,6 @@ text(8.5, 5, "ESTIMATION &\nINFERENCE (3)", col = "black", cex = 1.2)
 text(7.5, .5, "DATA EXPLORATION &\nDESCRIPTIVE STATISTICS (2)", col = "black", cex = 1.2)
 ```
 
-
 ## Course Description
 
 This intermediate level course is one of our Foundations courses. It covers essential statistical concepts and methods for extracting insights from empirical data in the life sciences. The course positions applied statistics, starting from important aspects of experimental design and data exploration. We then move into statistical modeling and data analysis. We will focus on the link between linear regression and analysis of variance. Together, these methods contribute to the study of General Linear Models. The course also introduces the basics of non-parametric testing, and addresses categorical data analysis and logistic regression.
@@ -99,8 +97,6 @@ source("https://raw.githubusercontent.com/statOmics/PSLS/master/install.R")
 
 - All data can be downloaded locally through
 [data](assets/data.zip)
-
-
 
 #### Learning materials
 
@@ -142,7 +138,6 @@ source("https://raw.githubusercontent.com/statOmics/PSLS/master/install.R")
     - [Exercises](./049_exercises.html)
 
 10. [Categorical Data Analysis](./10-categoricalDataAnalysis.html)
-
 
 ---
 
