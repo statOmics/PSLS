@@ -48,16 +48,6 @@ jobs:
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
 
-      - name: Cache knitr results
-        if: "!contains(github.event.head_commit.message, '/nocache')"
-        uses: actions/cache@v2
-        with:
-          path: |
-            '**/*_cache'
-            '**/*_files'
-          key: cache-version-${{ env.cache-version }}-knitr-${{ runner.os }}
-          restore-keys: cache-version-${{ env.cache-version }}-knitr-
-
       - name: Render site
         run: |
           rmarkdown::render_site()
