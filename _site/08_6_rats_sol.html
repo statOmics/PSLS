@@ -549,42 +549,26 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 8.6: Blocking on the rat diet
-dataset - solution</h1>
+<h1 class="title toc-ignore">Exercise 8.6: Blocking on the rat diet dataset - solution</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="background" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Background</h1>
-<p>Researchers are studying the impact of protein sources and protein
-levels in the diet on the weight of rats. They feed the rats with diets
-of beef, cereal and pork and use a low and high protein level for each
-diet type. The researchers can include 60 rats in the experiment. Prior
-to the experiment, the rats were divided in 10 homogeneous groups of 6
-rats based on characteristics such as initial weight, appetite, etc.</p>
-<p>Within each group a rat is randomly assigned to a diet. The rats are
-fed during a month and the weight gain in grams is recorded for each
-rat.</p>
+<p>Researchers are studying the impact of protein sources and protein levels in the diet on the weight of rats. They feed the rats with diets of beef, cereal and pork and use a low and high protein level for each diet type. The researchers can include 60 rats in the experiment. Prior to the experiment, the rats were divided in 10 homogeneous groups of 6 rats based on characteristics such as initial weight, appetite, etc.</p>
+<p>Within each group a rat is randomly assigned to a diet. The rats are fed during a month and the weight gain in grams is recorded for each rat.</p>
 </div>
 <div id="experimental-design" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Experimental
-design</h1>
+<h1><span class="header-section-number">2</span> Experimental design</h1>
 <ul>
-<li><p>There are three explanatory variables in the experiment: the
-factor diet type with three levels (beef, cereal and pork), factor
-protein level with levels (low and high) and a group blocking factor
-with 10 levels.</p></li>
-<li><p>There are 6 treatments: beef-high, cereal-high, pork-high,
-beef-low, cereal-low, pork-low protein.</p></li>
+<li><p>There are three explanatory variables in the experiment: the factor diet type with three levels (beef, cereal and pork), factor protein level with levels (low and high) and a group blocking factor with 10 levels.</p></li>
+<li><p>There are 6 treatments: beef-high, cereal-high, pork-high, beef-low, cereal-low, pork-low protein.</p></li>
 <li><p>The rats are the experimental and observational units.</p></li>
 <li><p>The weight gain is the response variable.</p></li>
-<li><p>The experiment is a randomized complete block (RCB)
-design</p></li>
+<li><p>The experiment is a randomized complete block (RCB) design</p></li>
 </ul>
 <p>Load libraries</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
@@ -614,8 +598,7 @@ design</p></li>
 <div id="data-exploration" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Data exploration</h1>
 <ul>
-<li>Boxplot of the weight gain against protein source, protein level
-with coloring according to block</li>
+<li>Boxplot of the weight gain against protein source, protein level with coloring according to block</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>diet <span class="sc">%&gt;%</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> protLevel, <span class="at">y =</span> weightGain)) <span class="sc">+</span></span>
@@ -629,8 +612,7 @@ with coloring according to block</li>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(. <span class="sc">~</span> protSource)</span></code></pre></div>
 <p><img src="08_6_rats_sol_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <ul>
-<li>Lineplot of the weight gain against protein source, protein level
-with coloring and grouping according to block</li>
+<li>Lineplot of the weight gain against protein source, protein level with coloring and grouping according to block</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>diet <span class="sc">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> protSource<span class="sc">:</span>protLevel, <span class="at">y =</span> weightGain)) <span class="sc">+</span></span>
@@ -643,23 +625,14 @@ with coloring and grouping according to block</li>
 <p><img src="08_6_rats_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># stat_summary(fun = mean, geom=&quot;point&quot;, shape=5, size=3, color=&quot;black&quot;, fill=&quot;black&quot;)</span></span></code></pre></div>
 <ul>
-<li><p>An increase in the weight of the rats seems to depend on the
-protein source received in the diet.</p></li>
-<li><p>The increase in the weight of the rats seems to depend on the
-level of protein received in the diet</p></li>
-<li><p>There also seems to be an interaction effect between the protein
-level and the protein source on the gain in weight of the rats. For the
-beef and the pork diets the effect of high protein levels in the data
-seems to be much stronger than in the cereal diet.</p></li>
-<li><p>There is also a strong effect of the block. Blocking implies a
-randomisation restriction, hence, we will have to include the block
-effect anyway.</p></li>
+<li><p>An increase in the weight of the rats seems to depend on the protein source received in the diet.</p></li>
+<li><p>The increase in the weight of the rats seems to depend on the level of protein received in the diet</p></li>
+<li><p>There also seems to be an interaction effect between the protein level and the protein source on the gain in weight of the rats. For the beef and the pork diets the effect of high protein levels in the data seems to be much stronger than in the cereal diet.</p></li>
+<li><p>There is also a strong effect of the block. Blocking implies a randomisation restriction, hence, we will have to include the block effect anyway.</p></li>
 </ul>
 </div>
-<div id="multivariate-linear-regression-analysis" class="section level1"
-number="6">
-<h1><span class="header-section-number">6</span> Multivariate linear
-regression analysis</h1>
+<div id="multivariate-linear-regression-analysis" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Multivariate linear regression analysis</h1>
 <div id="assumptions" class="section level2" number="6.1">
 <h2><span class="header-section-number">6.1</span> Assumptions</h2>
 <p>List assumptions:</p>
@@ -669,21 +642,15 @@ regression analysis</h1>
 <li>The residuals of the model must be normally distributed</li>
 <li>Homoscedasticity of the data</li>
 </ol>
-<p>The first assumption is met if we correct for block in the model
-because the rats were randomized to the treatment within block. The
-other three assumptions can be assessed by fitting the linear model and
-calling the <code>plot()</code> function as follows.</p>
+<p>The first assumption is met if we correct for block in the model because the rats were randomized to the treatment within block. The other three assumptions can be assessed by fitting the linear model and calling the <code>plot()</code> function as follows.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(weightGain <span class="sc">~</span> block <span class="sc">+</span> protSource <span class="sc">*</span> protLevel, <span class="at">data =</span> diet)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm1)</span></code></pre></div>
 <p><img src="08_6_rats_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="08_6_rats_sol_files/figure-html/unnamed-chunk-6-2.png" width="672" /><img src="08_6_rats_sol_files/figure-html/unnamed-chunk-6-3.png" width="672" /><img src="08_6_rats_sol_files/figure-html/unnamed-chunk-6-4.png" width="672" /></p>
 <p>All assumptions are met for this dataset.</p>
 </div>
 <div id="hypothesis-testing" class="section level2" number="6.2">
-<h2><span class="header-section-number">6.2</span> Hypothesis
-testing</h2>
-<p>We here fit a linear model with a blocking factor for
-<code>block</code> and main and interaction effects for protein source
-and protein level.</p>
+<h2><span class="header-section-number">6.2</span> Hypothesis testing</h2>
+<p>We here fit a linear model with a blocking factor for <code>block</code> and main and interaction effects for protein source and protein level.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div>
 <pre><code>## 
 ## Call:
@@ -717,10 +684,8 @@ and protein level.</p>
 ## Multiple R-squared:  0.7712, Adjusted R-squared:    0.7 
 ## F-statistic: 10.83 on 14 and 45 DF,  p-value: 3.726e-10</code></pre>
 </div>
-<div id="interpretation-of-the-regression-parameters"
-class="section level2" number="6.3">
-<h2><span class="header-section-number">6.3</span> Interpretation of the
-regression parameters</h2>
+<div id="interpretation-of-the-regression-parameters" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Interpretation of the regression parameters</h2>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ExploreModelMatrix)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ExploreModelMatrix<span class="sc">::</span><span class="fu">VisualizeDesign</span>(diet, <span class="sc">~</span> block <span class="sc">+</span> protSource <span class="sc">*</span> protLevel)<span class="sc">$</span>plotlist</span></code></pre></div>
 <pre><code>## $`block = 1`</code></pre>
@@ -752,142 +717,31 @@ regression parameters</h2>
 <pre><code>## 
 ## $`block = 9`</code></pre>
 <p><img src="08_6_rats_sol_files/figure-html/unnamed-chunk-8-10.png" width="672" /></p>
-<p>There are 3 levels for protein source, 2 levels for protein level and
-10 levels for the blocking variable. We will have one reference level
-for each respective variable: beef, low, block 1. So we need 2, 1 and 9
-dummy variables to introduce the factors protein source, protein level
-and block in the linear model, respectively.</p>
+<p>There are 3 levels for protein source, 2 levels for protein level and 10 levels for the blocking variable. We will have one reference level for each respective variable: beef, low, block 1. So we need 2, 1 and 9 dummy variables to introduce the factors protein source, protein level and block in the linear model, respectively.</p>
 <p>Hence, we can write down the linear model as follows:</p>
-<p><span class="math inline">\(y_i=\beta_0+\beta_cx_{i,c}
-+\beta_px_{i,p}+\beta_hx_{i,h}+\beta_{ch}x_{i,c}x_{i,h}+\beta_{ph}x_{i,p}x_{i,h}+\beta_{b2}x_{i,b2}+\ldots+\beta_{b10}x_{i,b10}+\epsilon_{i}\)</span></p>
-<p>with: <span class="math inline">\(y_i\)</span> the observed weight
-gain for rat i, <span class="math inline">\(x_{i,h}\)</span> a dummy
-variable which is 1 if rat i receives a high protein diet and is 0
-otherwise, <span class="math inline">\(x_{i,c}\)</span> a dummy variable
-which is 1 if rat i receives a cereal diet and is 0 otherwise, <span
-class="math inline">\(x_{i,p}\)</span> a dummy variable which is 1 if
-rat i receives a pork diet and is 0 otherwise and <span
-class="math inline">\(x_{i,bk}\)</span> is a dummy variable which is 1
-if rat i belongs to block <span class="math inline">\(bk\)</span> and is
-0 otherwise, with <span class="math inline">\(k \in 2,\ldots,
-10\)</span>, and <span class="math inline">\(\epsilon_i\)</span> an
-error term which is normally distributed with mean 0 and variance <span
-class="math inline">\(\sigma^2\)</span>, i.e. <span
-class="math inline">\(\epsilon_i \sim N(0,\sigma^2)\)</span>.</p>
+<p><span class="math inline">\(y_i=\beta_0+\beta_cx_{i,c} +\beta_px_{i,p}+\beta_hx_{i,h}+\beta_{ch}x_{i,c}x_{i,h}+\beta_{ph}x_{i,p}x_{i,h}+\beta_{b2}x_{i,b2}+\ldots+\beta_{b10}x_{i,b10}+\epsilon_{i}\)</span></p>
+<p>with: <span class="math inline">\(y_i\)</span> the observed weight gain for rat i, <span class="math inline">\(x_{i,h}\)</span> a dummy variable which is 1 if rat i receives a high protein diet and is 0 otherwise, <span class="math inline">\(x_{i,c}\)</span> a dummy variable which is 1 if rat i receives a cereal diet and is 0 otherwise, <span class="math inline">\(x_{i,p}\)</span> a dummy variable which is 1 if rat i receives a pork diet and is 0 otherwise and <span class="math inline">\(x_{i,bk}\)</span> is a dummy variable which is 1 if rat i belongs to block <span class="math inline">\(bk\)</span> and is 0 otherwise, with <span class="math inline">\(k \in 2,\ldots, 10\)</span>, and <span class="math inline">\(\epsilon_i\)</span> an error term which is normally distributed with mean 0 and variance <span class="math inline">\(\sigma^2\)</span>, i.e. <span class="math inline">\(\epsilon_i \sim N(0,\sigma^2)\)</span>.</p>
 <ul>
-<li><p>Rats that are assigned to block <span
-class="math inline">\(k\)</span> and receive a beef based low protein
-diet have a covariate pattern <span
-class="math inline">\(x_{i,h}=0\)</span>, <span
-class="math inline">\(x_{i,c}=0\)</span>, <span
-class="math inline">\(x_{i,p}=0\)</span>, <span
-class="math inline">\(x_{i,bm}=0\)</span> with <span
-class="math inline">\(m\neq k\)</span> and <span
-class="math inline">\(x_{i,bk}=1\)</span>. Their mean weight gain is
-thus equal to <span
-class="math inline">\(\mu_{l,b,bk}=\beta_0+\beta_{bk}\)</span></p></li>
-<li><p>Rats that are assigned to block <span
-class="math inline">\(k\)</span> and receive a beef based high protein
-diet have a covariate pattern <span
-class="math inline">\(x_{i,h}=1\)</span>, <span
-class="math inline">\(x_{i,c}=0\)</span>, <span
-class="math inline">\(x_{i,p}=0\)</span>, <span
-class="math inline">\(x_{i,bm}=0\)</span> with <span
-class="math inline">\(m\neq k\)</span> and <span
-class="math inline">\(x_{i,bk}=1\)</span>. Their mean weight gain is
-thus equal to <span
-class="math inline">\(\mu_{h,b,bk}=\beta_0+\beta_h+\beta_{bk}\)</span></p></li>
-<li><p>Rats that are assigned to block <span
-class="math inline">\(k\)</span> and receive a cereal based low protein
-diet have a covariate pattern <span
-class="math inline">\(x_{i,h}=0\)</span>, <span
-class="math inline">\(x_{i,c}=1\)</span>, <span
-class="math inline">\(x_{i,p}=0\)</span>, <span
-class="math inline">\(x_{i,bm}=0\)</span> with <span
-class="math inline">\(m\neq k\)</span> and <span
-class="math inline">\(x_{i,bk}=1\)</span>. Their mean weight gain is
-thus equal to <span
-class="math inline">\(\mu_{h,c,bk}=\beta_0+\beta_c+\beta_{bk}\)</span></p></li>
-<li><p>Rats that are assigned to block <span
-class="math inline">\(k\)</span> and receive a cereal based heigh
-protein diet have a covariate pattern <span
-class="math inline">\(x_{i,h}=1\)</span>, <span
-class="math inline">\(x_{i,c}=1\)</span>, <span
-class="math inline">\(x_{i,p}=0\)</span>, <span
-class="math inline">\(x_{i,bm}=0\)</span> with <span
-class="math inline">\(m\neq k\)</span> and <span
-class="math inline">\(x_{i,bk}=1\)</span>. Their mean weight gain is
-thus equal to <span
-class="math inline">\(\mu_{h,c,bk}=\beta_0+\beta_h+\beta_c+\beta_{ch}+\beta_{bk}\)</span></p></li>
-<li><p>Rats that are assigned to block <span
-class="math inline">\(k\)</span> and receive a pork based low protein
-diet have a covariate pattern <span
-class="math inline">\(x_{i,h}=0\)</span>, <span
-class="math inline">\(x_{i,c}=0\)</span>, <span
-class="math inline">\(x_{i,p}=1\)</span>, <span
-class="math inline">\(x_{i,bm}=0\)</span> with <span
-class="math inline">\(m\neq k\)</span> and <span
-class="math inline">\(x_{i,bk}=1\)</span>. Their mean weight gain is
-thus equal to <span
-class="math inline">\(\mu_{l,p,bk}=\beta_0+\beta_p+\beta_{bk}\)</span></p></li>
-<li><p>Rats that are assigned to block <span
-class="math inline">\(k\)</span> and receive a pork based heigh protein
-diet have a covariate pattern <span
-class="math inline">\(x_{i,h}=1\)</span>, <span
-class="math inline">\(x_{i,c}=0\)</span>, <span
-class="math inline">\(x_{i,p}=1\)</span>, <span
-class="math inline">\(x_{i,bm}=0\)</span> with <span
-class="math inline">\(m\neq k\)</span> and <span
-class="math inline">\(x_{i,bk}=1\)</span>. There mean weight gain is
-thus equal to <span
-class="math inline">\(\mu_{h,p,bk}=\beta_0+\beta_h+\beta_p+\beta_{ph}+\beta_{bk}\)</span></p></li>
+<li><p>Rats that are assigned to block <span class="math inline">\(k\)</span> and receive a beef based low protein diet have a covariate pattern <span class="math inline">\(x_{i,h}=0\)</span>, <span class="math inline">\(x_{i,c}=0\)</span>, <span class="math inline">\(x_{i,p}=0\)</span>, <span class="math inline">\(x_{i,bm}=0\)</span> with <span class="math inline">\(m\neq k\)</span> and <span class="math inline">\(x_{i,bk}=1\)</span>. Their mean weight gain is thus equal to <span class="math inline">\(\mu_{l,b,bk}=\beta_0+\beta_{bk}\)</span></p></li>
+<li><p>Rats that are assigned to block <span class="math inline">\(k\)</span> and receive a beef based high protein diet have a covariate pattern <span class="math inline">\(x_{i,h}=1\)</span>, <span class="math inline">\(x_{i,c}=0\)</span>, <span class="math inline">\(x_{i,p}=0\)</span>, <span class="math inline">\(x_{i,bm}=0\)</span> with <span class="math inline">\(m\neq k\)</span> and <span class="math inline">\(x_{i,bk}=1\)</span>. Their mean weight gain is thus equal to <span class="math inline">\(\mu_{h,b,bk}=\beta_0+\beta_h+\beta_{bk}\)</span></p></li>
+<li><p>Rats that are assigned to block <span class="math inline">\(k\)</span> and receive a cereal based low protein diet have a covariate pattern <span class="math inline">\(x_{i,h}=0\)</span>, <span class="math inline">\(x_{i,c}=1\)</span>, <span class="math inline">\(x_{i,p}=0\)</span>, <span class="math inline">\(x_{i,bm}=0\)</span> with <span class="math inline">\(m\neq k\)</span> and <span class="math inline">\(x_{i,bk}=1\)</span>. Their mean weight gain is thus equal to <span class="math inline">\(\mu_{h,c,bk}=\beta_0+\beta_c+\beta_{bk}\)</span></p></li>
+<li><p>Rats that are assigned to block <span class="math inline">\(k\)</span> and receive a cereal based heigh protein diet have a covariate pattern <span class="math inline">\(x_{i,h}=1\)</span>, <span class="math inline">\(x_{i,c}=1\)</span>, <span class="math inline">\(x_{i,p}=0\)</span>, <span class="math inline">\(x_{i,bm}=0\)</span> with <span class="math inline">\(m\neq k\)</span> and <span class="math inline">\(x_{i,bk}=1\)</span>. Their mean weight gain is thus equal to <span class="math inline">\(\mu_{h,c,bk}=\beta_0+\beta_h+\beta_c+\beta_{ch}+\beta_{bk}\)</span></p></li>
+<li><p>Rats that are assigned to block <span class="math inline">\(k\)</span> and receive a pork based low protein diet have a covariate pattern <span class="math inline">\(x_{i,h}=0\)</span>, <span class="math inline">\(x_{i,c}=0\)</span>, <span class="math inline">\(x_{i,p}=1\)</span>, <span class="math inline">\(x_{i,bm}=0\)</span> with <span class="math inline">\(m\neq k\)</span> and <span class="math inline">\(x_{i,bk}=1\)</span>. Their mean weight gain is thus equal to <span class="math inline">\(\mu_{l,p,bk}=\beta_0+\beta_p+\beta_{bk}\)</span></p></li>
+<li><p>Rats that are assigned to block <span class="math inline">\(k\)</span> and receive a pork based heigh protein diet have a covariate pattern <span class="math inline">\(x_{i,h}=1\)</span>, <span class="math inline">\(x_{i,c}=0\)</span>, <span class="math inline">\(x_{i,p}=1\)</span>, <span class="math inline">\(x_{i,bm}=0\)</span> with <span class="math inline">\(m\neq k\)</span> and <span class="math inline">\(x_{i,bk}=1\)</span>. There mean weight gain is thus equal to <span class="math inline">\(\mu_{h,p,bk}=\beta_0+\beta_h+\beta_p+\beta_{ph}+\beta_{bk}\)</span></p></li>
 </ul>
-<p>We can now relate this to the output of the <code>lm</code>
-function:</p>
+<p>We can now relate this to the output of the <code>lm</code> function:</p>
 <ul>
-<li><p>The intercept <span class="math inline">\(\beta_0\)</span> is
-thus the average weight increase in the low beef diet for rats in block
-1.</p></li>
-<li><p>The parameter <span class="math inline">\(\beta_c\)</span>: the
-average difference in weight gain between cereal-low and beef-low diet
-is 1.1g.</p></li>
-<li><p>The parameter <span class="math inline">\(\beta_p\)</span>: the
-average difference in weight gain between pork-low and beef-low diet is
-1.3g.</p></li>
-<li><p>The parameter <span class="math inline">\(\beta_h\)</span>: the
-average difference in weight gain between beef-high and beef-Low diet is
-20g.</p></li>
-<li><p>The parameter <span class="math inline">\(\beta_{ch}\)</span> is
-the difference in the average weight gain difference due to the high
-protein level as compared to the low protein level for cereal diets as
-compared to the weight gain difference that occurs due to the protein
-level in the reference class (here beef diet). Here this is negative,
-i.e. -18.2g, thus the weight gain for the cereal protein source
-increases on average less between high and low protein diets than in
-beef based diets.</p></li>
-<li><p>The parameter <span class="math inline">\(\beta_{ph}\)</span> is
-the difference in the average weight gain difference due to the high
-protein level as compared to the low protein level for pork diets as
-compared to the weight gain difference that occurs due to the protein
-level in the reference class (here beef diet). Here this is negative,
-i.e. -1.7g, thus the weight gain for the proc protein source increases
-on average less between high and low protein diets than in beef based
-diets.</p></li>
+<li><p>The intercept <span class="math inline">\(\beta_0\)</span> is thus the average weight increase in the low beef diet for rats in block 1.</p></li>
+<li><p>The parameter <span class="math inline">\(\beta_c\)</span>: the average difference in weight gain between cereal-low and beef-low diet is 1.1g.</p></li>
+<li><p>The parameter <span class="math inline">\(\beta_p\)</span>: the average difference in weight gain between pork-low and beef-low diet is 1.3g.</p></li>
+<li><p>The parameter <span class="math inline">\(\beta_h\)</span>: the average difference in weight gain between beef-high and beef-Low diet is 20g.</p></li>
+<li><p>The parameter <span class="math inline">\(\beta_{ch}\)</span> is the difference in the average weight gain difference due to the high protein level as compared to the low protein level for cereal diets as compared to the weight gain difference that occurs due to the protein level in the reference class (here beef diet). Here this is negative, i.e. -18.2g, thus the weight gain for the cereal protein source increases on average less between high and low protein diets than in beef based diets.</p></li>
+<li><p>The parameter <span class="math inline">\(\beta_{ph}\)</span> is the difference in the average weight gain difference due to the high protein level as compared to the low protein level for pork diets as compared to the weight gain difference that occurs due to the protein level in the reference class (here beef diet). Here this is negative, i.e. -1.7g, thus the weight gain for the proc protein source increases on average less between high and low protein diets than in beef based diets.</p></li>
 </ul>
 </div>
-<div id="testing-the-overall-combined-effect-of-diet"
-class="section level2" number="6.4">
-<h2><span class="header-section-number">6.4</span> Testing the overall
-(combined) effect of diet</h2>
-<p>Because there are multiple factors with different levels in the
-model, we can first assess the effect of the diet (protein Level,
-protein source and the interaction) by using anova. With this test we
-will assess the null hypothesis that the average weight gain in each
-treatment is equal: i.e. <span class="math inline">\(H_0:
-\mu_{b,l}=\mu_{b,h}=\mu_{c,h}=\mu_{c,l}=\mu_{p,h}=\mu_{p,h}\)</span>
-versus the alternative hyptohesis <span
-class="math inline">\(H_1:\)</span> that at least two treatment means
-are different.</p>
+<div id="testing-the-overall-combined-effect-of-diet" class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> Testing the overall (combined) effect of diet</h2>
+<p>Because there are multiple factors with different levels in the model, we can first assess the effect of the diet (protein Level, protein source and the interaction) by using anova. With this test we will assess the null hypothesis that the average weight gain in each treatment is equal: i.e. <span class="math inline">\(H_0: \mu_{b,l}=\mu_{b,h}=\mu_{c,h}=\mu_{c,l}=\mu_{p,h}=\mu_{p,h}\)</span> versus the alternative hyptohesis <span class="math inline">\(H_1:\)</span> that at least two treatment means are different.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>lm0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(weightGain <span class="sc">~</span> block, <span class="at">data =</span> diet)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(lm0, lm1)</span></code></pre></div>
 <div data-pagedtable="false">
@@ -895,16 +749,10 @@ are different.</p>
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Res.Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["RSS"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Sum of Sq"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"50","2":"7728.833","3":"NA","4":"NA","5":"NA","6":"NA","_rn_":"1"},{"1":"45","2":"3134.150","3":"5","4":"4594.683","5":"13.19406","6":"6.308133e-08","_rn_":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>We can conclude that there is an extremely significant effect of the
-diet type (protein source and/or protein level and/or protein
-source-protein level interaction) on the weight gain of rats (p &lt;&lt;
-0.001).</p>
+<p>We can conclude that there is an extremely significant effect of the diet type (protein source and/or protein level and/or protein source-protein level interaction) on the weight gain of rats (p &lt;&lt; 0.001).</p>
 </div>
-<div
-id="assessing-the-interaction-effect-between-protein-source-and-protein-level"
-class="section level2" number="6.5">
-<h2><span class="header-section-number">6.5</span> Assessing the
-interaction effect between protein source and protein level</h2>
+<div id="assessing-the-interaction-effect-between-protein-source-and-protein-level" class="section level2" number="6.5">
+<h2><span class="header-section-number">6.5</span> Assessing the interaction effect between protein source and protein level</h2>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(lm1, <span class="at">type =</span> <span class="st">&quot;III&quot;</span>)</span></code></pre></div>
 <div data-pagedtable="false">
@@ -912,65 +760,39 @@ interaction effect between protein source and protein level</h2>
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sum Sq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"31222.890","2":"1","3":"448.297002","4":"4.955763e-25","_rn_":"(Intercept)"},{"1":"5969.350","2":"9","3":"9.523076","4":"6.083601e-08","_rn_":"block"},{"1":"9.800","2":"2","3":"0.070354","4":"9.321661e-01","_rn_":"protSource"},{"1":"2000.000","2":"1","3":"28.715920","4":"2.762595e-06","_rn_":"protLevel"},{"1":"1010.633","2":"2","3":"7.255316","4":"1.857393e-03","_rn_":"protSource:protLevel"},{"1":"3134.150","2":"45","3":"NA","4":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>There is a very significant interaction between the protein source
-and the protein level (p = 2e-03). This indicates that the average
-weight increase due to the protein level differs according to the
-protein source. Hence, we cannot assess the effect of the protein source
-and/or protein level independently because there effects of the protein
-source vary according to the protein level.</p>
+<p>There is a very significant interaction between the protein source and the protein level (p = 2e-03). This indicates that the average weight increase due to the protein level differs according to the protein source. Hence, we cannot assess the effect of the protein source and/or protein level independently because there effects of the protein source vary according to the protein level.</p>
 </div>
-<div id="assessing-specific-contrasts" class="section level2"
-number="6.6">
-<h2><span class="header-section-number">6.6</span> Assessing specific
-contrasts</h2>
-<p>Imagine that we are interested in assessing if there is an effect
-of</p>
+<div id="assessing-specific-contrasts" class="section level2" number="6.6">
+<h2><span class="header-section-number">6.6</span> Assessing specific contrasts</h2>
+<p>Imagine that we are interested in assessing if there is an effect of</p>
 <ol style="list-style-type: decimal">
 <li>protein source in the low protein diets
 <ul>
-<li><span class="math inline">\(\mu_{c,l}-\mu_{b,l} =
-\beta_c\)</span></li>
-<li><span class="math inline">\(\mu_{p,l}-\mu_{b,l} =
-\beta_p\)</span></li>
-<li><span class="math inline">\(\mu_{c,l}-\mu_{p,l}=
-\beta_c-\beta_p\)</span>)</li>
+<li><span class="math inline">\(\mu_{c,l}-\mu_{b,l} = \beta_c\)</span></li>
+<li><span class="math inline">\(\mu_{p,l}-\mu_{b,l} = \beta_p\)</span></li>
+<li><span class="math inline">\(\mu_{c,l}-\mu_{p,l}= \beta_c-\beta_p\)</span>)</li>
 </ul></li>
 <li>protein source in high protein diets
 <ul>
-<li><span
-class="math inline">\(\mu_{c,h}-\mu_{b,h}=\beta_c+\beta_{ch}\)</span></li>
-<li><span
-class="math inline">\(\mu_{p,h}-\mu_{b,h}=\beta_p+\beta_{ph}\)</span></li>
-<li><span
-class="math inline">\(\mu_{p,h}-\mu_{c,h}=(\beta_c+\beta_{ch})-(\beta_p+\beta_{ph})\)</span></li>
+<li><span class="math inline">\(\mu_{c,h}-\mu_{b,h}=\beta_c+\beta_{ch}\)</span></li>
+<li><span class="math inline">\(\mu_{p,h}-\mu_{b,h}=\beta_p+\beta_{ph}\)</span></li>
+<li><span class="math inline">\(\mu_{p,h}-\mu_{c,h}=(\beta_c+\beta_{ch})-(\beta_p+\beta_{ph})\)</span></li>
 </ul></li>
 <li>protein level for
 <ul>
-<li>beef diets (<span
-class="math inline">\(\mu_{b,h}-\mu_{b,l}=\beta_h\)</span>),</li>
-<li>cereal diets (<span
-class="math inline">\(\mu_{c,h}-\mu_{c,l}=\beta_h+\beta_{ch}\)</span>)
-and</li>
-<li>pork diets (<span
-class="math inline">\(\mu_{p,h}-\mu_{p,l}=\beta_h+\beta_{ph}\)</span>).</li>
+<li>beef diets (<span class="math inline">\(\mu_{b,h}-\mu_{b,l}=\beta_h\)</span>),</li>
+<li>cereal diets (<span class="math inline">\(\mu_{c,h}-\mu_{c,l}=\beta_h+\beta_{ch}\)</span>) and</li>
+<li>pork diets (<span class="math inline">\(\mu_{p,h}-\mu_{p,l}=\beta_h+\beta_{ph}\)</span>).</li>
 </ul></li>
 <li>If the effect of the protein level differs between
 <ul>
-<li>beef and cereal <span class="math inline">\((\mu_{c,h}-\mu_{c,l}) -
-(\mu_{b,h}-\mu_{b,l})=\beta_{ch}\)</span></li>
-<li>beef and pork <span class="math inline">\((\mu_{p,h}-\mu_{p,l}) -
-(\mu_{c,h}-\mu_{c,l})=\beta_{ph}\)</span> and</li>
-<li>cereal and pork diets <span
-class="math inline">\((\mu_{c,h}-\mu_{c,l}) -
-(\mu_{p,h}-\mu_{p,l})=\beta_{ch}-\beta_{ph}\)</span>.</li>
+<li>beef and cereal <span class="math inline">\((\mu_{c,h}-\mu_{c,l}) - (\mu_{b,h}-\mu_{b,l})=\beta_{ch}\)</span></li>
+<li>beef and pork <span class="math inline">\((\mu_{p,h}-\mu_{p,l}) - (\mu_{c,h}-\mu_{c,l})=\beta_{ph}\)</span> and</li>
+<li>cereal and pork diets <span class="math inline">\((\mu_{c,h}-\mu_{c,l}) - (\mu_{p,h}-\mu_{p,l})=\beta_{ch}-\beta_{ph}\)</span>.</li>
 </ul></li>
 </ol>
-<p>These effects of interest are so-called <strong>contrasts,
-i.e. linear combinations of the parameters</strong>.</p>
-<p>We can define the contrasts and assess the significance of the
-contrasts with the code below. The contrasts are given as input in the
-form of symbolic descriptions to the <code>linfct</code> argument of the
-<code>glht</code> function.</p>
+<p>These effects of interest are so-called <strong>contrasts, i.e. linear combinations of the parameters</strong>.</p>
+<p>We can define the contrasts and assess the significance of the contrasts with the code below. The contrasts are given as input in the form of symbolic descriptions to the <code>linfct</code> argument of the <code>glht</code> function.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">75468</span>) <span class="co"># to get reproducible results (small effect if removed)</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>lm1MultComp <span class="ot">&lt;-</span> <span class="fu">glht</span>(</span>
@@ -997,32 +819,71 @@ form of symbolic descriptions to the <code>linfct</code> argument of the
 ## Fit: lm(formula = weightGain ~ block + protSource * protLevel, data = diet)
 ## 
 ## Linear Hypotheses:
-##                                                                                      Estimate Std. Error t value
-## protSourcec == 0                                                                        1.100      3.732   0.295
-## protSourcep == 0                                                                        1.300      3.732   0.348
-## protSourcec - protSourcep == 0                                                         -0.200      3.732  -0.054
-## protSourcec + protSourcec:protLevelh == 0                                             -17.100      3.732  -4.582
-## protSourcep + protSourcep:protLevelh == 0                                              -0.400      3.732  -0.107
-## (protSourcec + protSourcec:protLevelh) - (protSourcep + protSourcep:protLevelh) == 0  -16.700      3.732  -4.475
-## protLevelh == 0                                                                        20.000      3.732   5.359
-## protLevelh + protSourcec:protLevelh == 0                                                1.800      3.732   0.482
-## protLevelh + protSourcep:protLevelh == 0                                               18.300      3.732   4.903
-## protSourcec:protLevelh == 0                                                           -18.200      5.278  -3.448
-## protSourcep:protLevelh == 0                                                            -1.700      5.278  -0.322
-## protSourcec:protLevelh - protSourcep:protLevelh == 0                                  -16.500      5.278  -3.126
-##                                                                                      Pr(&gt;|t|)    
-## protSourcec == 0                                                                       0.9995    
-## protSourcep == 0                                                                       0.9989    
-## protSourcec - protSourcep == 0                                                         1.0000    
-## protSourcec + protSourcec:protLevelh == 0                                              &lt;0.001 ***
-## protSourcep + protSourcep:protLevelh == 0                                              1.0000    
-## (protSourcec + protSourcec:protLevelh) - (protSourcep + protSourcep:protLevelh) == 0   &lt;0.001 ***
-## protLevelh == 0                                                                        &lt;0.001 ***
-## protLevelh + protSourcec:protLevelh == 0                                               0.9949    
-## protLevelh + protSourcep:protLevelh == 0                                               &lt;0.001 ***
-## protSourcec:protLevelh == 0                                                            0.0118 *  
-## protSourcep:protLevelh == 0                                                            0.9993    
-## protSourcec:protLevelh - protSourcep:protLevelh == 0                                   0.0265 *  
+##                                                                                      Estimate
+## protSourcec == 0                                                                        1.100
+## protSourcep == 0                                                                        1.300
+## protSourcec - protSourcep == 0                                                         -0.200
+## protSourcec + protSourcec:protLevelh == 0                                             -17.100
+## protSourcep + protSourcep:protLevelh == 0                                              -0.400
+## (protSourcec + protSourcec:protLevelh) - (protSourcep + protSourcep:protLevelh) == 0  -16.700
+## protLevelh == 0                                                                        20.000
+## protLevelh + protSourcec:protLevelh == 0                                                1.800
+## protLevelh + protSourcep:protLevelh == 0                                               18.300
+## protSourcec:protLevelh == 0                                                           -18.200
+## protSourcep:protLevelh == 0                                                            -1.700
+## protSourcec:protLevelh - protSourcep:protLevelh == 0                                  -16.500
+##                                                                                      Std. Error
+## protSourcec == 0                                                                          3.732
+## protSourcep == 0                                                                          3.732
+## protSourcec - protSourcep == 0                                                            3.732
+## protSourcec + protSourcec:protLevelh == 0                                                 3.732
+## protSourcep + protSourcep:protLevelh == 0                                                 3.732
+## (protSourcec + protSourcec:protLevelh) - (protSourcep + protSourcep:protLevelh) == 0      3.732
+## protLevelh == 0                                                                           3.732
+## protLevelh + protSourcec:protLevelh == 0                                                  3.732
+## protLevelh + protSourcep:protLevelh == 0                                                  3.732
+## protSourcec:protLevelh == 0                                                               5.278
+## protSourcep:protLevelh == 0                                                               5.278
+## protSourcec:protLevelh - protSourcep:protLevelh == 0                                      5.278
+##                                                                                      t value
+## protSourcec == 0                                                                       0.295
+## protSourcep == 0                                                                       0.348
+## protSourcec - protSourcep == 0                                                        -0.054
+## protSourcec + protSourcec:protLevelh == 0                                             -4.582
+## protSourcep + protSourcep:protLevelh == 0                                             -0.107
+## (protSourcec + protSourcec:protLevelh) - (protSourcep + protSourcep:protLevelh) == 0  -4.475
+## protLevelh == 0                                                                        5.359
+## protLevelh + protSourcec:protLevelh == 0                                               0.482
+## protLevelh + protSourcep:protLevelh == 0                                               4.903
+## protSourcec:protLevelh == 0                                                           -3.448
+## protSourcep:protLevelh == 0                                                           -0.322
+## protSourcec:protLevelh - protSourcep:protLevelh == 0                                  -3.126
+##                                                                                      Pr(&gt;|t|)
+## protSourcec == 0                                                                       0.9995
+## protSourcep == 0                                                                       0.9989
+## protSourcec - protSourcep == 0                                                         1.0000
+## protSourcec + protSourcec:protLevelh == 0                                              &lt;0.001
+## protSourcep + protSourcep:protLevelh == 0                                              1.0000
+## (protSourcec + protSourcec:protLevelh) - (protSourcep + protSourcep:protLevelh) == 0   &lt;0.001
+## protLevelh == 0                                                                        &lt;0.001
+## protLevelh + protSourcec:protLevelh == 0                                               0.9949
+## protLevelh + protSourcep:protLevelh == 0                                               &lt;0.001
+## protSourcec:protLevelh == 0                                                            0.0118
+## protSourcep:protLevelh == 0                                                            0.9993
+## protSourcec:protLevelh - protSourcep:protLevelh == 0                                   0.0265
+##                                                                                         
+## protSourcec == 0                                                                        
+## protSourcep == 0                                                                        
+## protSourcec - protSourcep == 0                                                          
+## protSourcec + protSourcec:protLevelh == 0                                            ***
+## protSourcep + protSourcep:protLevelh == 0                                               
+## (protSourcec + protSourcec:protLevelh) - (protSourcep + protSourcep:protLevelh) == 0 ***
+## protLevelh == 0                                                                      ***
+## protLevelh + protSourcec:protLevelh == 0                                                
+## protLevelh + protSourcep:protLevelh == 0                                             ***
+## protSourcec:protLevelh == 0                                                          *  
+## protSourcep:protLevelh == 0                                                             
+## protSourcec:protLevelh - protSourcep:protLevelh == 0                                 *  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>
@@ -1037,55 +898,58 @@ form of symbolic descriptions to the <code>linfct</code> argument of the
 ##  
 ## 
 ## Linear Hypotheses:
-##                                                                                      Estimate lwr      upr     
-## protSourcec == 0                                                                       1.1000  -9.6358  11.8358
-## protSourcep == 0                                                                       1.3000  -9.4358  12.0358
-## protSourcec - protSourcep == 0                                                        -0.2000 -10.9358  10.5358
-## protSourcec + protSourcec:protLevelh == 0                                            -17.1000 -27.8358  -6.3642
-## protSourcep + protSourcep:protLevelh == 0                                             -0.4000 -11.1358  10.3358
-## (protSourcec + protSourcec:protLevelh) - (protSourcep + protSourcep:protLevelh) == 0 -16.7000 -27.4358  -5.9642
-## protLevelh == 0                                                                       20.0000   9.2642  30.7358
-## protLevelh + protSourcec:protLevelh == 0                                               1.8000  -8.9358  12.5358
-## protLevelh + protSourcep:protLevelh == 0                                              18.3000   7.5642  29.0358
-## protSourcec:protLevelh == 0                                                          -18.2000 -33.3827  -3.0173
-## protSourcep:protLevelh == 0                                                           -1.7000 -16.8827  13.4827
-## protSourcec:protLevelh - protSourcep:protLevelh == 0                                 -16.5000 -31.6827  -1.3173</code></pre>
-<p>Note that the p-values and the confidence intervals are automatically
-corrected for multiple testing.</p>
+##                                                                                      Estimate
+## protSourcec == 0                                                                       1.1000
+## protSourcep == 0                                                                       1.3000
+## protSourcec - protSourcep == 0                                                        -0.2000
+## protSourcec + protSourcec:protLevelh == 0                                            -17.1000
+## protSourcep + protSourcep:protLevelh == 0                                             -0.4000
+## (protSourcec + protSourcec:protLevelh) - (protSourcep + protSourcep:protLevelh) == 0 -16.7000
+## protLevelh == 0                                                                       20.0000
+## protLevelh + protSourcec:protLevelh == 0                                               1.8000
+## protLevelh + protSourcep:protLevelh == 0                                              18.3000
+## protSourcec:protLevelh == 0                                                          -18.2000
+## protSourcep:protLevelh == 0                                                           -1.7000
+## protSourcec:protLevelh - protSourcep:protLevelh == 0                                 -16.5000
+##                                                                                      lwr     
+## protSourcec == 0                                                                      -9.6358
+## protSourcep == 0                                                                      -9.4358
+## protSourcec - protSourcep == 0                                                       -10.9358
+## protSourcec + protSourcec:protLevelh == 0                                            -27.8358
+## protSourcep + protSourcep:protLevelh == 0                                            -11.1358
+## (protSourcec + protSourcec:protLevelh) - (protSourcep + protSourcep:protLevelh) == 0 -27.4358
+## protLevelh == 0                                                                        9.2642
+## protLevelh + protSourcec:protLevelh == 0                                              -8.9358
+## protLevelh + protSourcep:protLevelh == 0                                               7.5642
+## protSourcec:protLevelh == 0                                                          -33.3827
+## protSourcep:protLevelh == 0                                                          -16.8827
+## protSourcec:protLevelh - protSourcep:protLevelh == 0                                 -31.6827
+##                                                                                      upr     
+## protSourcec == 0                                                                      11.8358
+## protSourcep == 0                                                                      12.0358
+## protSourcec - protSourcep == 0                                                        10.5358
+## protSourcec + protSourcec:protLevelh == 0                                             -6.3642
+## protSourcep + protSourcep:protLevelh == 0                                             10.3358
+## (protSourcec + protSourcec:protLevelh) - (protSourcep + protSourcep:protLevelh) == 0  -5.9642
+## protLevelh == 0                                                                       30.7358
+## protLevelh + protSourcec:protLevelh == 0                                              12.5358
+## protLevelh + protSourcep:protLevelh == 0                                              29.0358
+## protSourcec:protLevelh == 0                                                           -3.0173
+## protSourcep:protLevelh == 0                                                           13.4827
+## protSourcec:protLevelh - protSourcep:protLevelh == 0                                  -1.3173</code></pre>
+<p>Note that the p-values and the confidence intervals are automatically corrected for multiple testing.</p>
 </div>
 </div>
 <div id="conclusion" class="section level1" number="7">
 <h1><span class="header-section-number">7</span> Conclusion</h1>
 <ul>
-<li><p>There is an extremely significant effect of the type of protein
-diet on the weight gain of rats (p&lt;&lt;1e-6). The interaction between
-protein type and protein source is also very significant
-(p=0.0019).</p></li>
-<li><p>The average weight gain does not vary significantly according to
-protein source in the diets with low protein levels (all
-p&gt;0.99).</p></li>
-<li><p>The weight gain in the cereal diet at high protein concentration
-is on average 17.1g and 16.7g g lower than in the high protein beef and
-pork diet, respectively (95% CI [6.4, 27.8] and [6, 27.4]) and the
-differences are extremely significant (p&lt;0.001). The average weight
-gains after meat based diets at high protein levels, however, do not
-differ significantly (p&gt;0.99).</p></li>
-<li><p>We also discovered an extremely significant difference in weight
-gain according to the protein level for beef and pork based diets
-(p&lt;0.001). The weight gain on average increases with 20g and 18.3g in
-the high protein level as compared to the low protein beef and pork
-diet, respectively (95%CI [9.3, 30.7] and [7.6, 29]). The protein level
-effect is not significant for the cereal diet (p&gt;0.99).</p></li>
-<li><p>Finally significant interactions between protein level and
-protein source were found (p&lt;0.05), i.e. the increase in weight gain
-due to protein level in cereal based diets was 18.2g and 16.5g lower
-than that of beef and pork based diets, respectively (95% CI [3g,33.4g]
-and [1.3g,31.7g]). The average difference in increase in weight gain due
-to protein level among the meat based diets was not significant
-(p&gt;0.99).</p></li>
+<li><p>There is an extremely significant effect of the type of protein diet on the weight gain of rats (p&lt;&lt;1e-6). The interaction between protein type and protein source is also very significant (p=0.0019).</p></li>
+<li><p>The average weight gain does not vary significantly according to protein source in the diets with low protein levels (all p&gt;0.99).</p></li>
+<li><p>The weight gain in the cereal diet at high protein concentration is on average 17.1g and 16.7g g lower than in the high protein beef and pork diet, respectively (95% CI [6.4, 27.8] and [6, 27.4]) and the differences are extremely significant (p&lt;0.001). The average weight gains after meat based diets at high protein levels, however, do not differ significantly (p&gt;0.99).</p></li>
+<li><p>We also discovered an extremely significant difference in weight gain according to the protein level for beef and pork based diets (p&lt;0.001). The weight gain on average increases with 20g and 18.3g in the high protein level as compared to the low protein beef and pork diet, respectively (95%CI [9.3, 30.7] and [7.6, 29]). The protein level effect is not significant for the cereal diet (p&gt;0.99).</p></li>
+<li><p>Finally significant interactions between protein level and protein source were found (p&lt;0.05), i.e. the increase in weight gain due to protein level in cereal based diets was 18.2g and 16.5g lower than that of beef and pork based diets, respectively (95% CI [3g,33.4g] and [1.3g,31.7g]). The average difference in increase in weight gain due to protein level among the meat based diets was not significant (p&gt;0.99).</p></li>
 </ul>
-<p>All reported p-values and confidence intervals were corrected for
-multiple testing</p>
+<p>All reported p-values and confidence intervals were corrected for multiple testing</p>
 </div>
 
 <div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgOC42OiBCbG9ja2luZyBvbiB0aGUgcmF0IGRpZXQgZGF0YXNldCAtIHNvbHV0aW9uIgphdXRob3I6ICJMaWV2ZW4gQ2xlbWVudCBhbmQgSmVyb2VuIEdpbGlzIgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgotLS0KCiMgQmFja2dyb3VuZAoKUmVzZWFyY2hlcnMgYXJlIHN0dWR5aW5nIHRoZSBpbXBhY3Qgb2YgcHJvdGVpbiBzb3VyY2VzIGFuZCBwcm90ZWluIGxldmVscyBpbgp0aGUgZGlldCBvbiB0aGUgd2VpZ2h0IG9mIHJhdHMuIFRoZXkgZmVlZCB0aGUgcmF0cyB3aXRoIGRpZXRzIG9mIGJlZWYsIGNlcmVhbAphbmQgcG9yayBhbmQgdXNlIGEgbG93IGFuZCBoaWdoIHByb3RlaW4gbGV2ZWwgZm9yIGVhY2ggZGlldCB0eXBlLgpUaGUgcmVzZWFyY2hlcnMgY2FuIGluY2x1ZGUgNjAgcmF0cyBpbiB0aGUgZXhwZXJpbWVudC4gUHJpb3IgdG8gdGhlIGV4cGVyaW1lbnQsCnRoZSByYXRzIHdlcmUgZGl2aWRlZCBpbiAxMCBob21vZ2VuZW91cyBncm91cHMgb2YgNiByYXRzIGJhc2VkIG9uCmNoYXJhY3RlcmlzdGljcyBzdWNoIGFzIGluaXRpYWwgd2VpZ2h0LCBhcHBldGl0ZSwgZXRjLgoKV2l0aGluIGVhY2ggZ3JvdXAgYSByYXQgaXMgcmFuZG9tbHkgYXNzaWduZWQgdG8gYSBkaWV0LiBUaGUgcmF0cyBhcmUgZmVkIGR1cmluZwphIG1vbnRoIGFuZCB0aGUgd2VpZ2h0IGdhaW4gaW4gZ3JhbXMgaXMgcmVjb3JkZWQgZm9yIGVhY2ggcmF0LgoKIyBFeHBlcmltZW50YWwgZGVzaWduCgotIFRoZXJlIGFyZSB0aHJlZSBleHBsYW5hdG9yeSB2YXJpYWJsZXMgaW4gdGhlIGV4cGVyaW1lbnQ6IHRoZSBmYWN0b3IgZGlldCB0eXBlCndpdGggdGhyZWUgbGV2ZWxzIChiZWVmLCBjZXJlYWwgYW5kIHBvcmspLCBmYWN0b3IgcHJvdGVpbiBsZXZlbCB3aXRoIGxldmVscwoobG93IGFuZCBoaWdoKSBhbmQgYSBncm91cCBibG9ja2luZyBmYWN0b3Igd2l0aCAxMCBsZXZlbHMuCgotIFRoZXJlIGFyZSA2IHRyZWF0bWVudHM6IGJlZWYtaGlnaCwgY2VyZWFsLWhpZ2gsIHBvcmstaGlnaCwgYmVlZi1sb3csCmNlcmVhbC1sb3csIHBvcmstbG93IHByb3RlaW4uCgotIFRoZSByYXRzIGFyZSB0aGUgZXhwZXJpbWVudGFsIGFuZCBvYnNlcnZhdGlvbmFsIHVuaXRzLgoKLSBUaGUgd2VpZ2h0IGdhaW4gaXMgdGhlIHJlc3BvbnNlIHZhcmlhYmxlLgoKLSBUaGUgZXhwZXJpbWVudCBpcyBhIHJhbmRvbWl6ZWQgY29tcGxldGUgYmxvY2sgKFJDQikgZGVzaWduCgpMb2FkIGxpYnJhcmllcwoKYGBge3IsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKCiMgRGF0YSBpbXBvcnQKCmBgYHtyfQpkaWV0IDwtIHJlYWQudGFibGUoImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9zdGF0T21pY3MvUFNMUzIxL2RhdGEvZGlldFJhdHMudHh0IiwKICBoZWFkZXIgPSBUUlVFCikKaGVhZChkaWV0KQpgYGAKCiMgVGlkeSBkYXRhCgpgYGB7cn0KZGlldCA8LSBkaWV0ICU+JQogIG11dGF0ZSgKICAgIGJsb2NrID0gYXMuZmFjdG9yKGJsb2NrKSwKICAgIHByb3RTb3VyY2UgPSBhcy5mYWN0b3IocHJvdFNvdXJjZSksCiAgICBwcm90TGV2ZWwgPSBhcy5mYWN0b3IocHJvdExldmVsKQogICkgJT4lCiAgbXV0YXRlKHByb3RMZXZlbCA9IGZjdF9yZWxldmVsKHByb3RMZXZlbCwgImwiKSkKYGBgCgojIERhdGEgZXhwbG9yYXRpb24KCi0gQm94cGxvdCBvZiB0aGUgd2VpZ2h0IGdhaW4gYWdhaW5zdCBwcm90ZWluIHNvdXJjZSwgcHJvdGVpbiBsZXZlbCB3aXRoIGNvbG9yaW5nIGFjY29yZGluZyB0byBibG9jawoKYGBge3J9CmRpZXQgJT4lCiAgZ2dwbG90KGFlcyh4ID0gcHJvdExldmVsLCB5ID0gd2VpZ2h0R2FpbikpICsKICBzY2FsZV9maWxsX2JyZXdlcihwYWxldHRlID0gIlJkR3kiKSArCiAgdGhlbWVfYncoKSArCiAgZ2VvbV9ib3hwbG90KG91dGxpZXIuc2hhcGUgPSBOQSkgKwogIGdlb21faml0dGVyKGFlcyhjb2xvciA9IGJsb2NrKSkgKwogIGdndGl0bGUoIldlaWdodCBnYWluIGRlcGVuZGVuY2Ugb24gcHJvdGVpbiBzb3VyY2UiKSArCiAgeWxhYigiV2VpZ3RoIGdhaW4gKGcpIikgKwogICMgc3RhdF9zdW1tYXJ5KGZ1biA9IG1lYW4sIGdlb209InBvaW50Iiwgc2hhcGU9NSwgc2l6ZT0zLCBjb2xvcj0iYmxhY2siLCBmaWxsPSJibGFjayIpICsKICBmYWNldF93cmFwKC4gfiBwcm90U291cmNlKQpgYGAKCi0gTGluZXBsb3Qgb2YgdGhlIHdlaWdodCBnYWluIGFnYWluc3QgcHJvdGVpbiBzb3VyY2UsIHByb3RlaW4gbGV2ZWwgd2l0aCBjb2xvcmluZyBhbmQgZ3JvdXBpbmcgYWNjb3JkaW5nIHRvIGJsb2NrCgpgYGB7cn0KZGlldCAlPiUKICBnZ3Bsb3QoYWVzKHggPSBwcm90U291cmNlOnByb3RMZXZlbCwgeSA9IHdlaWdodEdhaW4pKSArCiAgc2NhbGVfZmlsbF9icmV3ZXIocGFsZXR0ZSA9ICJSZEd5IikgKwogIHRoZW1lX2J3KCkgKwogIGdlb21fbGluZShhZXMoZ3JvdXAgPSBibG9jaywgY29sb3IgPSBibG9jaykpICsKICBnZW9tX3BvaW50KGFlcyhjb2xvciA9IGJsb2NrKSkgKwogIGdndGl0bGUoIldlaWdodCBnYWluIGRlcGVuZGVuY2Ugb24gcHJvdGVpbiBzb3VyY2UiKSArCiAgeWxhYigiV2VpZ3RoIGdhaW4gKGcpIikKIyBzdGF0X3N1bW1hcnkoZnVuID0gbWVhbiwgZ2VvbT0icG9pbnQiLCBzaGFwZT01LCBzaXplPTMsIGNvbG9yPSJibGFjayIsIGZpbGw9ImJsYWNrIikKYGBgCgotIEFuIGluY3JlYXNlIGluIHRoZSB3ZWlnaHQgb2YgdGhlIHJhdHMgc2VlbXMgdG8gZGVwZW5kIG9uIHRoZSBwcm90ZWluIHNvdXJjZQpyZWNlaXZlZCBpbiB0aGUgZGlldC4KCi0gVGhlIGluY3JlYXNlIGluIHRoZSB3ZWlnaHQgb2YgdGhlIHJhdHMgc2VlbXMgdG8gZGVwZW5kIG9uIHRoZSBsZXZlbCBvZiBwcm90ZWluCnJlY2VpdmVkIGluIHRoZSBkaWV0CgotIFRoZXJlIGFsc28gc2VlbXMgdG8gYmUgYW4gaW50ZXJhY3Rpb24gZWZmZWN0IGJldHdlZW4gdGhlIHByb3RlaW4gbGV2ZWwgYW5kIHRoZQpwcm90ZWluIHNvdXJjZSBvbiB0aGUgZ2FpbiBpbiB3ZWlnaHQgb2YgdGhlIHJhdHMuIEZvciB0aGUgYmVlZiBhbmQgdGhlIHBvcmsKZGlldHMgdGhlIGVmZmVjdCBvZiBoaWdoIHByb3RlaW4gbGV2ZWxzIGluIHRoZSBkYXRhIHNlZW1zIHRvIGJlIG11Y2ggc3Ryb25nZXIKdGhhbiBpbiB0aGUgY2VyZWFsIGRpZXQuCgotIFRoZXJlIGlzIGFsc28gYSBzdHJvbmcgZWZmZWN0IG9mIHRoZSBibG9jay4gQmxvY2tpbmcgaW1wbGllcyBhIHJhbmRvbWlzYXRpb24KcmVzdHJpY3Rpb24sIGhlbmNlLCB3ZSB3aWxsIGhhdmUgdG8gaW5jbHVkZSB0aGUgYmxvY2sgZWZmZWN0IGFueXdheS4KCiMgTXVsdGl2YXJpYXRlIGxpbmVhciByZWdyZXNzaW9uIGFuYWx5c2lzCgojIyBBc3N1bXB0aW9ucwoKTGlzdCBhc3N1bXB0aW9uczoKCjEuIFRoZSBvYnNlcnZhdGlvbnMgYXJlIGluZGVwZW5kZW50CjIuIExpbmVhcml0eSBiZXR3ZWVuIHRoZSByZXNwb25zZSBhbmQgcHJlZGljdG9yIHZhcmlhYmxlCjMuIFRoZSByZXNpZHVhbHMgb2YgdGhlIG1vZGVsIG11c3QgYmUgbm9ybWFsbHkgZGlzdHJpYnV0ZWQKNC4gSG9tb3NjZWRhc3RpY2l0eSBvZiB0aGUgZGF0YQoKVGhlIGZpcnN0IGFzc3VtcHRpb24gaXMgbWV0IGlmIHdlIGNvcnJlY3QgZm9yIGJsb2NrIGluIHRoZSBtb2RlbCBiZWNhdXNlIHRoZSByYXRzIHdlcmUgcmFuZG9taXplZCB0byB0aGUgdHJlYXRtZW50IHdpdGhpbiBibG9jay4gVGhlIG90aGVyIHRocmVlIGFzc3VtcHRpb25zIGNhbiBiZSBhc3Nlc3NlZCBieQpmaXR0aW5nIHRoZSBsaW5lYXIgbW9kZWwgYW5kIGNhbGxpbmcgdGhlIGBwbG90KClgIGZ1bmN0aW9uIGFzIGZvbGxvd3MuCgpgYGB7cn0KbG0xIDwtIGxtKHdlaWdodEdhaW4gfiBibG9jayArIHByb3RTb3VyY2UgKiBwcm90TGV2ZWwsIGRhdGEgPSBkaWV0KQpwbG90KGxtMSkKYGBgCgpBbGwgYXNzdW1wdGlvbnMgYXJlIG1ldCBmb3IgdGhpcyBkYXRhc2V0LgoKIyMgSHlwb3RoZXNpcyB0ZXN0aW5nCgpXZSBoZXJlIGZpdCBhIGxpbmVhciBtb2RlbCB3aXRoIGEgYmxvY2tpbmcgZmFjdG9yIGZvciBgYmxvY2tgIGFuZCBtYWluIGFuZAppbnRlcmFjdGlvbiBlZmZlY3RzIGZvciBwcm90ZWluIHNvdXJjZSBhbmQgcHJvdGVpbiBsZXZlbC4KCmBgYHtyfQpzdW1tYXJ5KGxtMSkKYGBgCgojIyBJbnRlcnByZXRhdGlvbiBvZiB0aGUgcmVncmVzc2lvbiBwYXJhbWV0ZXJzCgpgYGB7cn0KbGlicmFyeShFeHBsb3JlTW9kZWxNYXRyaXgpCkV4cGxvcmVNb2RlbE1hdHJpeDo6VmlzdWFsaXplRGVzaWduKGRpZXQsIH4gYmxvY2sgKyBwcm90U291cmNlICogcHJvdExldmVsKSRwbG90bGlzdApgYGAKClRoZXJlIGFyZSAzIGxldmVscyBmb3IgcHJvdGVpbiBzb3VyY2UsIDIgbGV2ZWxzIGZvciBwcm90ZWluIGxldmVsIGFuZCAxMCBsZXZlbHMKZm9yIHRoZSBibG9ja2luZyB2YXJpYWJsZS4gV2Ugd2lsbCBoYXZlIG9uZSByZWZlcmVuY2UgbGV2ZWwgZm9yIGVhY2ggcmVzcGVjdGl2ZQp2YXJpYWJsZTogYmVlZiwgbG93LCBibG9jayAxLiBTbyB3ZSBuZWVkIDIsIDEgYW5kIDkgZHVtbXkgdmFyaWFibGVzIHRvIGludHJvZHVjZQp0aGUgZmFjdG9ycyBwcm90ZWluIHNvdXJjZSwgcHJvdGVpbiBsZXZlbCBhbmQgYmxvY2sgaW4gdGhlIGxpbmVhciBtb2RlbCwKcmVzcGVjdGl2ZWx5LgoKSGVuY2UsIHdlIGNhbiB3cml0ZSBkb3duIHRoZSBsaW5lYXIgbW9kZWwgYXMgZm9sbG93czoKCiR5X2k9XGJldGFfMCtcYmV0YV9jeF97aSxjfSArXGJldGFfcHhfe2kscH0rXGJldGFfaHhfe2ksaH0rXGJldGFfe2NofXhfe2ksY314X3tpLGh9K1xiZXRhX3twaH14X3tpLHB9eF97aSxofStcYmV0YV97YjJ9eF97aSxiMn0rXGxkb3RzK1xiZXRhX3tiMTB9eF97aSxiMTB9K1xlcHNpbG9uX3tpfSQKCndpdGg6CiR5X2kkIHRoZSBvYnNlcnZlZCB3ZWlnaHQgZ2FpbiBmb3IgcmF0IGksCiR4X3tpLGh9JCBhIGR1bW15IHZhcmlhYmxlIHdoaWNoIGlzIDEgaWYgcmF0IGkgcmVjZWl2ZXMgYSBoaWdoIHByb3RlaW4gZGlldAphbmQgaXMgMCBvdGhlcndpc2UsCiR4X3tpLGN9JCBhIGR1bW15IHZhcmlhYmxlIHdoaWNoIGlzIDEgaWYgcmF0IGkgcmVjZWl2ZXMgYSBjZXJlYWwgZGlldAphbmQgaXMgMCBvdGhlcndpc2UsCiR4X3tpLHB9JCBhIGR1bW15IHZhcmlhYmxlIHdoaWNoIGlzIDEgaWYgcmF0IGkgcmVjZWl2ZXMgYSBwb3JrIGRpZXQKYW5kIGlzIDAgb3RoZXJ3aXNlIGFuZAokeF97aSxia30kIGlzIGEgZHVtbXkgdmFyaWFibGUgd2hpY2ggaXMgMSBpZiByYXQgaSBiZWxvbmdzIHRvIGJsb2NrICRiayQKYW5kIGlzIDAgb3RoZXJ3aXNlLCB3aXRoICRrIFxpbiAyLFxsZG90cywgMTAkLAphbmQgJFxlcHNpbG9uX2kkIGFuIGVycm9yIHRlcm0gd2hpY2ggaXMgbm9ybWFsbHkgZGlzdHJpYnV0ZWQgd2l0aCBtZWFuIDAgYW5kCnZhcmlhbmNlICRcc2lnbWFeMiQsIGkuZS4gJFxlcHNpbG9uX2kgXHNpbSBOKDAsXHNpZ21hXjIpJC4KCi0gUmF0cyB0aGF0IGFyZSBhc3NpZ25lZCB0byBibG9jayAkayQgYW5kIHJlY2VpdmUgYSBiZWVmIGJhc2VkIGxvdyBwcm90ZWluIGRpZXQgaGF2ZQoJYSBjb3ZhcmlhdGUgcGF0dGVybiAkeF97aSxofT0wJCwgJHhfe2ksY309MCQsICR4X3tpLHB9PTAkLCAkeF97aSxibX09MCQgd2l0aCAkbVxuZXEgayQgYW5kICR4X3tpLGJrfT0xJC4KCVRoZWlyIG1lYW4gd2VpZ2h0IGdhaW4gaXMgdGh1cyBlcXVhbCB0byAkXG11X3tsLGIsYmt9PVxiZXRhXzArXGJldGFfe2JrfSQKCi0gUmF0cyB0aGF0IGFyZSBhc3NpZ25lZCB0byBibG9jayAkayQgYW5kIHJlY2VpdmUgYSBiZWVmIGJhc2VkIGhpZ2ggcHJvdGVpbiBkaWV0IGhhdmUKCWEgY292YXJpYXRlIHBhdHRlcm4gJHhfe2ksaH09MSQsICR4X3tpLGN9PTAkLCAkeF97aSxwfT0wJCwgJHhfe2ksYm19PTAkIHdpdGggJG1cbmVxIGskIGFuZCAkeF97aSxia309MSQuCglUaGVpciBtZWFuIHdlaWdodCBnYWluIGlzIHRodXMgZXF1YWwgdG8gJFxtdV97aCxiLGJrfT1cYmV0YV8wK1xiZXRhX2grXGJldGFfe2JrfSQKCi0gUmF0cyB0aGF0IGFyZSBhc3NpZ25lZCB0byBibG9jayAkayQgYW5kIHJlY2VpdmUgYSBjZXJlYWwgYmFzZWQgbG93IHByb3RlaW4gZGlldCBoYXZlCglhIGNvdmFyaWF0ZSBwYXR0ZXJuICR4X3tpLGh9PTAkLCAkeF97aSxjfT0xJCwgJHhfe2kscH09MCQsICR4X3tpLGJtfT0wJCB3aXRoICRtXG5lcSBrJCBhbmQgJHhfe2ksYmt9PTEkLgoJVGhlaXIgbWVhbiB3ZWlnaHQgZ2FpbiBpcyB0aHVzIGVxdWFsIHRvICRcbXVfe2gsYyxia309XGJldGFfMCtcYmV0YV9jK1xiZXRhX3tia30kCgotIFJhdHMgdGhhdCBhcmUgYXNzaWduZWQgdG8gYmxvY2sgJGskIGFuZCByZWNlaXZlIGEgY2VyZWFsIGJhc2VkIGhlaWdoIHByb3RlaW4gZGlldCBoYXZlCglhIGNvdmFyaWF0ZSBwYXR0ZXJuICR4X3tpLGh9PTEkLCAkeF97aSxjfT0xJCwgJHhfe2kscH09MCQsICR4X3tpLGJtfT0wJCB3aXRoICRtXG5lcSBrJCBhbmQgJHhfe2ksYmt9PTEkLgoJVGhlaXIgbWVhbiB3ZWlnaHQgZ2FpbiBpcyB0aHVzIGVxdWFsIHRvICRcbXVfe2gsYyxia309XGJldGFfMCtcYmV0YV9oK1xiZXRhX2MrXGJldGFfe2NofStcYmV0YV97Ymt9JAoKLSBSYXRzIHRoYXQgYXJlIGFzc2lnbmVkIHRvIGJsb2NrICRrJCBhbmQgcmVjZWl2ZSBhIHBvcmsgYmFzZWQgbG93IHByb3RlaW4gZGlldCBoYXZlCglhIGNvdmFyaWF0ZSBwYXR0ZXJuICR4X3tpLGh9PTAkLCAgJHhfe2ksY309MCQsICR4X3tpLHB9PTEkLCAkeF97aSxibX09MCQgd2l0aCAkbVxuZXEgayQgYW5kICR4X3tpLGJrfT0xJC4KCVRoZWlyIG1lYW4gd2VpZ2h0IGdhaW4gaXMgdGh1cyBlcXVhbCB0byAkXG11X3tsLHAsYmt9PVxiZXRhXzArXGJldGFfcCtcYmV0YV97Ymt9JAoKLSBSYXRzIHRoYXQgYXJlIGFzc2lnbmVkIHRvIGJsb2NrICRrJCBhbmQgcmVjZWl2ZSBhIHBvcmsgYmFzZWQgaGVpZ2ggcHJvdGVpbiBkaWV0IGhhdmUKCWEgY292YXJpYXRlIHBhdHRlcm4gJHhfe2ksaH09MSQsICR4X3tpLGN9PTAkLCAkeF97aSxwfT0xJCwgJHhfe2ksYm19PTAkIHdpdGggJG1cbmVxIGskIGFuZCAkeF97aSxia309MSQuCglUaGVyZSBtZWFuIHdlaWdodCBnYWluIGlzIHRodXMgZXF1YWwgdG8gJFxtdV97aCxwLGJrfT1cYmV0YV8wK1xiZXRhX2grXGJldGFfcCtcYmV0YV97cGh9K1xiZXRhX3tia30kCgpXZSBjYW4gbm93IHJlbGF0ZSB0aGlzIHRvIHRoZSBvdXRwdXQgb2YgdGhlIGBsbWAgZnVuY3Rpb246CgotIFRoZSBpbnRlcmNlcHQgJFxiZXRhXzAkIGlzIHRodXMgdGhlIGF2ZXJhZ2Ugd2VpZ2h0IGluY3JlYXNlIGluIHRoZSBsb3cgYmVlZgpkaWV0IGZvciByYXRzIGluIGJsb2NrIDEuCgotIFRoZSBwYXJhbWV0ZXIgJFxiZXRhX2MkOiB0aGUgYXZlcmFnZSBkaWZmZXJlbmNlIGluIHdlaWdodCBnYWluIGJldHdlZW4gY2VyZWFsLWxvdyBhbmQKYmVlZi1sb3cgZGlldCBpcyBgciBsbTEkY29lZlsicHJvdFNvdXJjZWMiXWBnLgoKLSBUaGUgcGFyYW1ldGVyICRcYmV0YV9wJDogdGhlIGF2ZXJhZ2UgZGlmZmVyZW5jZSBpbiB3ZWlnaHQgZ2FpbiBiZXR3ZWVuIHBvcmstbG93IGFuZApiZWVmLWxvdyBkaWV0IGlzIGByIGxtMSRjb2VmWyJwcm90U291cmNlcCJdYGcuCgotIFRoZSBwYXJhbWV0ZXIgJFxiZXRhX2gkOiB0aGUgYXZlcmFnZSBkaWZmZXJlbmNlIGluIHdlaWdodCBnYWluIGJldHdlZW4gYmVlZi1oaWdoIGFuZApiZWVmLUxvdyBkaWV0IGlzIGByIGxtMSRjb2VmWyJwcm90TGV2ZWxoIl1gZy4KCi0gVGhlIHBhcmFtZXRlciAkXGJldGFfe2NofSQgaXMgdGhlIGRpZmZlcmVuY2UgaW4gdGhlIGF2ZXJhZ2Ugd2VpZ2h0IGdhaW4gZGlmZmVyZW5jZQpkdWUgdG8gdGhlIGhpZ2ggcHJvdGVpbiBsZXZlbCBhcyBjb21wYXJlZCB0byB0aGUgbG93IHByb3RlaW4gbGV2ZWwgZm9yIGNlcmVhbCBkaWV0cwphcyBjb21wYXJlZCB0byB0aGUgd2VpZ2h0IGdhaW4gZGlmZmVyZW5jZSB0aGF0IG9jY3VycyBkdWUgdG8gdGhlIHByb3RlaW4gbGV2ZWwKaW4gdGhlIHJlZmVyZW5jZSBjbGFzcyAoaGVyZSBiZWVmIGRpZXQpLiBIZXJlIHRoaXMgaXMgbmVnYXRpdmUsCmkuZS4gYHIgbG0xJGNvZWZbInByb3RTb3VyY2VjOnByb3RMZXZlbGgiXWBnLCB0aHVzIHRoZSB3ZWlnaHQgZ2Fpbgpmb3IgdGhlIGNlcmVhbCBwcm90ZWluIHNvdXJjZSBpbmNyZWFzZXMgb24gYXZlcmFnZSBsZXNzIGJldHdlZW4gaGlnaCBhbmQgbG93IHByb3RlaW4gZGlldHMKdGhhbiBpbiBiZWVmIGJhc2VkIGRpZXRzLgoKLSBUaGUgcGFyYW1ldGVyICRcYmV0YV97cGh9JCBpcyB0aGUgZGlmZmVyZW5jZSBpbiB0aGUgYXZlcmFnZSB3ZWlnaHQgZ2FpbiBkaWZmZXJlbmNlCmR1ZSB0byB0aGUgaGlnaCBwcm90ZWluIGxldmVsIGFzIGNvbXBhcmVkIHRvIHRoZSBsb3cgcHJvdGVpbiBsZXZlbCBmb3IgcG9yayBkaWV0cwphcyBjb21wYXJlZCB0byB0aGUgd2VpZ2h0IGdhaW4gZGlmZmVyZW5jZSB0aGF0IG9jY3VycyBkdWUgdG8gdGhlIHByb3RlaW4gbGV2ZWwKaW4gdGhlIHJlZmVyZW5jZSBjbGFzcyAoaGVyZSBiZWVmIGRpZXQpLiBIZXJlIHRoaXMgaXMgbmVnYXRpdmUsCmkuZS4gYHIgbG0xJGNvZWZbInByb3RTb3VyY2VwOnByb3RMZXZlbGgiXWBnLCB0aHVzIHRoZSB3ZWlnaHQgZ2Fpbgpmb3IgdGhlIHByb2MgcHJvdGVpbiBzb3VyY2UgaW5jcmVhc2VzIG9uIGF2ZXJhZ2UgbGVzcyBiZXR3ZWVuIGhpZ2ggYW5kIGxvdyBwcm90ZWluIGRpZXRzCnRoYW4gaW4gYmVlZiBiYXNlZCBkaWV0cy4KCiMjIFRlc3RpbmcgdGhlIG92ZXJhbGwgKGNvbWJpbmVkKSBlZmZlY3Qgb2YgZGlldAoKQmVjYXVzZSB0aGVyZSBhcmUgbXVsdGlwbGUgZmFjdG9ycyB3aXRoIGRpZmZlcmVudCBsZXZlbHMgaW4gdGhlIG1vZGVsLAp3ZSBjYW4gZmlyc3QgYXNzZXNzIHRoZSBlZmZlY3Qgb2YgdGhlIGRpZXQgKHByb3RlaW4gTGV2ZWwsIHByb3RlaW4gc291cmNlCmFuZCB0aGUgaW50ZXJhY3Rpb24pIGJ5IHVzaW5nIGFub3ZhLiBXaXRoIHRoaXMgdGVzdCB3ZSB3aWxsIGFzc2VzcyB0aGUgbnVsbApoeXBvdGhlc2lzIHRoYXQgdGhlIGF2ZXJhZ2Ugd2VpZ2h0IGdhaW4gaW4gZWFjaCB0cmVhdG1lbnQgaXMgZXF1YWw6IGkuZS4gJEhfMDogXG11X3tiLGx9PVxtdV97YixofT1cbXVfe2MsaH09XG11X3tjLGx9PVxtdV97cCxofT1cbXVfe3AsaH0kIHZlcnN1cwp0aGUgYWx0ZXJuYXRpdmUgaHlwdG9oZXNpcyAkSF8xOiQgdGhhdCBhdCBsZWFzdCB0d28gdHJlYXRtZW50IG1lYW5zIGFyZQpkaWZmZXJlbnQuCgpgYGB7cn0KbG0wIDwtIGxtKHdlaWdodEdhaW4gfiBibG9jaywgZGF0YSA9IGRpZXQpCmFub3ZhKGxtMCwgbG0xKQpgYGAKCldlIGNhbiBjb25jbHVkZSB0aGF0IHRoZXJlIGlzIGFuIGV4dHJlbWVseSBzaWduaWZpY2FudCBlZmZlY3Qgb2YgdGhlIGRpZXQgdHlwZQoocHJvdGVpbiBzb3VyY2UgYW5kL29yIHByb3RlaW4gbGV2ZWwgYW5kL29yIHByb3RlaW4gc291cmNlLXByb3RlaW4gbGV2ZWwKaW50ZXJhY3Rpb24pIG9uIHRoZSB3ZWlnaHQgZ2FpbiBvZiByYXRzIChwIDw8IDAuMDAxKS4KCiMjIEFzc2Vzc2luZyB0aGUgaW50ZXJhY3Rpb24gZWZmZWN0IGJldHdlZW4gcHJvdGVpbiBzb3VyY2UgYW5kIHByb3RlaW4gbGV2ZWwKCmBgYHtyLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KGNhcikKQW5vdmEobG0xLCB0eXBlID0gIklJSSIpCmBgYAoKVGhlcmUgaXMgYSB2ZXJ5IHNpZ25pZmljYW50IGludGVyYWN0aW9uIGJldHdlZW4gdGhlIHByb3RlaW4gc291cmNlIGFuZAp0aGUgcHJvdGVpbiBsZXZlbCAocCA9IGByIGZvcm1hdChBbm92YShsbTEsIHR5cGU9MykkIlByKD5GKSIsZGlnaXRzPTEpWzVdYCkuIFRoaXMgaW5kaWNhdGVzIHRoYXQgdGhlIGF2ZXJhZ2Ugd2VpZ2h0IGluY3JlYXNlIGR1ZSB0bwp0aGUgcHJvdGVpbiBsZXZlbCBkaWZmZXJzIGFjY29yZGluZyB0byB0aGUgcHJvdGVpbiBzb3VyY2UuCkhlbmNlLCB3ZSBjYW5ub3QgYXNzZXNzIHRoZSBlZmZlY3Qgb2YgdGhlIHByb3RlaW4gc291cmNlIGFuZC9vciBwcm90ZWluIGxldmVsCmluZGVwZW5kZW50bHkgYmVjYXVzZSB0aGVyZSBlZmZlY3RzIG9mIHRoZSBwcm90ZWluIHNvdXJjZSB2YXJ5IGFjY29yZGluZyB0bwp0aGUgcHJvdGVpbiBsZXZlbC4KCiMjIEFzc2Vzc2luZyBzcGVjaWZpYyBjb250cmFzdHMKCkltYWdpbmUgdGhhdCB3ZSBhcmUgaW50ZXJlc3RlZCBpbiBhc3Nlc3NpbmcgaWYgdGhlcmUgaXMgYW4gZWZmZWN0IG9mCgoxLiBwcm90ZWluIHNvdXJjZSBpbiB0aGUgbG93IHByb3RlaW4gZGlldHMKCS0gJFxtdV97YyxsfS1cbXVfe2IsbH0gPSBcYmV0YV9jJAoJLSAkXG11X3twLGx9LVxtdV97YixsfSA9IFxiZXRhX3AkCgktICRcbXVfe2MsbH0tXG11X3twLGx9PSBcYmV0YV9jLVxiZXRhX3AkKQoKCjIuIHByb3RlaW4gc291cmNlIGluIGhpZ2ggcHJvdGVpbiBkaWV0cwoJLSAkXG11X3tjLGh9LVxtdV97YixofT1cYmV0YV9jK1xiZXRhX3tjaH0kCgktICRcbXVfe3AsaH0tXG11X3tiLGh9PVxiZXRhX3ArXGJldGFfe3BofSQKCS0gJFxtdV97cCxofS1cbXVfe2MsaH09KFxiZXRhX2MrXGJldGFfe2NofSktKFxiZXRhX3ArXGJldGFfe3BofSkkCgoKMy4gcHJvdGVpbiBsZXZlbCBmb3IKCS0gYmVlZiBkaWV0cyAoJFxtdV97YixofS1cbXVfe2IsbH09XGJldGFfaCQpLAoJLSBjZXJlYWwgZGlldHMgICgkXG11X3tjLGh9LVxtdV97YyxsfT1cYmV0YV9oK1xiZXRhX3tjaH0kKSBhbmQKCS0gcG9yayBkaWV0cyAgKCRcbXVfe3AsaH0tXG11X3twLGx9PVxiZXRhX2grXGJldGFfe3BofSQpLgoKCjQuIElmIHRoZSBlZmZlY3Qgb2YgdGhlIHByb3RlaW4gbGV2ZWwgZGlmZmVycyBiZXR3ZWVuCgktIGJlZWYgYW5kIGNlcmVhbCAgJChcbXVfe2MsaH0tXG11X3tjLGx9KSAtIChcbXVfe2IsaH0tXG11X3tiLGx9KT1cYmV0YV97Y2h9JAoJLSBiZWVmIGFuZCBwb3JrICQoXG11X3twLGh9LVxtdV97cCxsfSkgLSAoXG11X3tjLGh9LVxtdV97YyxsfSk9XGJldGFfe3BofSQgYW5kCgktIGNlcmVhbCBhbmQgcG9yayBkaWV0cyAkKFxtdV97YyxofS1cbXVfe2MsbH0pIC0gKFxtdV97cCxofS1cbXVfe3AsbH0pPVxiZXRhX3tjaH0tXGJldGFfe3BofSQuCgpUaGVzZSBlZmZlY3RzIG9mIGludGVyZXN0IGFyZSBzby1jYWxsZWQKKipjb250cmFzdHMsIGkuZS4gbGluZWFyIGNvbWJpbmF0aW9ucyBvZiB0aGUgcGFyYW1ldGVycyoqLgoKV2UgY2FuIGRlZmluZSB0aGUgY29udHJhc3RzIGFuZCBhc3Nlc3MgdGhlIHNpZ25pZmljYW5jZSBvZiB0aGUgY29udHJhc3RzIHdpdGgKdGhlIGNvZGUgYmVsb3cuIFRoZSBjb250cmFzdHMgYXJlIGdpdmVuIGFzIGlucHV0IGluIHRoZSBmb3JtIG9mIHN5bWJvbGljCmRlc2NyaXB0aW9ucyB0byB0aGUgYGxpbmZjdGAgYXJndW1lbnQgb2YgdGhlIGBnbGh0YCBmdW5jdGlvbi4KCmBgYHtyLG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkobXVsdGNvbXApCnNldC5zZWVkKDc1NDY4KSAjIHRvIGdldCByZXByb2R1Y2libGUgcmVzdWx0cyAoc21hbGwgZWZmZWN0IGlmIHJlbW92ZWQpCmxtMU11bHRDb21wIDwtIGdsaHQoCiAgbW9kZWwgPSBsbTEsCiAgbGluZmN0ID0gYygKICAgICJwcm90U291cmNlYyA9IDAiLAogICAgInByb3RTb3VyY2VwID0gMCIsCiAgICAicHJvdFNvdXJjZWMtIHByb3RTb3VyY2VwID0gMCIsCiAgICAicHJvdFNvdXJjZWMgKyBwcm90U291cmNlYzpwcm90TGV2ZWxoID0gMCIsCiAgICAicHJvdFNvdXJjZXAgKyBwcm90U291cmNlcDpwcm90TGV2ZWxoID0gMCIsCiAgICAiKHByb3RTb3VyY2VjICsgcHJvdFNvdXJjZWM6cHJvdExldmVsaCkgLSAocHJvdFNvdXJjZXAgKyBwcm90U291cmNlcDpwcm90TGV2ZWxoKSA9IDAiLAogICAgInByb3RMZXZlbGggPSAwIiwKICAgICJwcm90TGV2ZWxoICsgIHByb3RTb3VyY2VjOnByb3RMZXZlbGggPSAwIiwKICAgICJwcm90TGV2ZWxoICsgIHByb3RTb3VyY2VwOnByb3RMZXZlbGggPSAwIiwKICAgICJwcm90U291cmNlYzpwcm90TGV2ZWxoID0gMCIsCiAgICAicHJvdFNvdXJjZXA6cHJvdExldmVsaCA9IDAiLAogICAgInByb3RTb3VyY2VjOnByb3RMZXZlbGggLSBwcm90U291cmNlcDpwcm90TGV2ZWxoID0gMCIKICApCikKYGBgCgpgYGB7cn0Kc3VtbWFyeShsbTFNdWx0Q29tcCkKYGBgCgpgYGB7cn0KY29uZmludChsbTFNdWx0Q29tcCkKYGBgCgpOb3RlIHRoYXQgdGhlIHAtdmFsdWVzIGFuZCB0aGUgY29uZmlkZW5jZSBpbnRlcnZhbHMgYXJlIGF1dG9tYXRpY2FsbHkgY29ycmVjdGVkCmZvciBtdWx0aXBsZSB0ZXN0aW5nLgoKIyBDb25jbHVzaW9uCgotIFRoZXJlIGlzIGFuIGV4dHJlbWVseSBzaWduaWZpY2FudCBlZmZlY3Qgb2YgdGhlIHR5cGUgb2YgcHJvdGVpbiBkaWV0IG9uIHRoZQp3ZWlnaHQgZ2FpbiBvZiByYXRzICAocDw8MWUtNikuIFRoZSBpbnRlcmFjdGlvbiBiZXR3ZWVuIHByb3RlaW4gdHlwZSBhbmQgcHJvdGVpbgpzb3VyY2UgaXMgYWxzbyB2ZXJ5IHNpZ25pZmljYW50IChwPWByIHJvdW5kKEFub3ZhKGxtMSx0eXBlPTMpJFByWzVdLDQpYCkuCgotIFRoZSBhdmVyYWdlIHdlaWdodCBnYWluIGRvZXMgbm90IHZhcnkgc2lnbmlmaWNhbnRseSBhY2NvcmRpbmcgdG8gcHJvdGVpbgpzb3VyY2UgaW4gdGhlIGRpZXRzIHdpdGggbG93IHByb3RlaW4gbGV2ZWxzIChhbGwgcD4wLjk5KS4KCi0gVGhlIHdlaWdodCBnYWluIGluIHRoZSBjZXJlYWwgZGlldCBhdCBoaWdoIHByb3RlaW4gY29uY2VudHJhdGlvbiBpcyBvbgphdmVyYWdlIGByIGNvbmZpbnQobG0xTXVsdENvbXApJGNvbmZpbnRbInByb3RTb3VyY2VjICsgcHJvdFNvdXJjZWM6cHJvdExldmVsaCIsMV0gJT4lIGFicyAlPiUgcm91bmQoLiwxKWBnIGFuZCBgciBjb25maW50KGxtMU11bHRDb21wKSRjb25maW50WyIocHJvdFNvdXJjZWMgKyBwcm90U291cmNlYzpwcm90TGV2ZWxoKSAtIChwcm90U291cmNlcCArIHByb3RTb3VyY2VwOnByb3RMZXZlbGgpIiwxXSAlPiUgYWJzICU+JSByb3VuZCguLDEpYGcgZyBsb3dlciB0aGFuIGluIHRoZSBoaWdoIHByb3RlaW4gYmVlZiBhbmQgcG9yayBkaWV0LApyZXNwZWN0aXZlbHkgKDk1JSBDSSBbYHIgY29uZmludChsbTFNdWx0Q29tcCkkY29uZmludFsicHJvdFNvdXJjZWMgKyBwcm90U291cmNlYzpwcm90TGV2ZWxoIiwtMV0gJT4lIGFicyAlPiUgcm91bmQoLiwxKSAlPiUgc29ydGBdIGFuZCBbYHIgY29uZmludChsbTFNdWx0Q29tcCkkY29uZmludFsiKHByb3RTb3VyY2VjICsgcHJvdFNvdXJjZWM6cHJvdExldmVsaCkgLSAocHJvdFNvdXJjZXAgKyBwcm90U291cmNlcDpwcm90TGV2ZWxoKSIsLTFdICU+JSBhYnMgJT4lIHJvdW5kKC4sMSkgJT4lIHNvcnRgXSkgYW5kIHRoZSBkaWZmZXJlbmNlcyBhcmUKZXh0cmVtZWx5IHNpZ25pZmljYW50IChwPDAuMDAxKS4gVGhlIGF2ZXJhZ2Ugd2VpZ2h0IGdhaW5zIGFmdGVyIG1lYXQgYmFzZWQKZGlldHMgYXQgaGlnaCBwcm90ZWluIGxldmVscywgaG93ZXZlciwgZG8gbm90IGRpZmZlciBzaWduaWZpY2FudGx5CihwPjAuOTkpLgoKLSBXZSBhbHNvIGRpc2NvdmVyZWQgYW4gZXh0cmVtZWx5IHNpZ25pZmljYW50IGRpZmZlcmVuY2UgaW4gd2VpZ2h0IGdhaW4KYWNjb3JkaW5nIHRvIHRoZSBwcm90ZWluIGxldmVsIGZvciBiZWVmIGFuZCBwb3JrIGJhc2VkIGRpZXRzIChwPDAuMDAxKS4KVGhlIHdlaWdodCBnYWluIG9uIGF2ZXJhZ2UgaW5jcmVhc2VzIHdpdGggYHIgcm91bmQoY29uZmludChsbTFNdWx0Q29tcCkkY29uZmludFsicHJvdExldmVsaCIsMV0sMSlgZyBhbmQgYHIgcm91bmQoY29uZmludChsbTFNdWx0Q29tcCkkY29uZmludFsicHJvdExldmVsaCArIHByb3RTb3VyY2VwOnByb3RMZXZlbGgiLDFdLDEpYGcgaW4gdGhlIGhpZ2ggcHJvdGVpbgpsZXZlbCBhcyBjb21wYXJlZCB0byB0aGUgbG93IHByb3RlaW4gYmVlZiBhbmQgcG9yayBkaWV0LCByZXNwZWN0aXZlbHkKKDk1JUNJIFtgciByb3VuZChjb25maW50KGxtMU11bHRDb21wKSRjb25maW50WyJwcm90TGV2ZWxoIiwtMV0sMSlgXSBhbmQgW2ByIHJvdW5kKGNvbmZpbnQobG0xTXVsdENvbXApJGNvbmZpbnRbInByb3RMZXZlbGggKyBwcm90U291cmNlcDpwcm90TGV2ZWxoIiwtMV0sMSlgXSkuIFRoZSBwcm90ZWluIGxldmVsIGVmZmVjdCBpcyBub3Qgc2lnbmlmaWNhbnQKZm9yIHRoZSBjZXJlYWwgZGlldCAocD4wLjk5KS4KCi0gRmluYWxseSBzaWduaWZpY2FudCBpbnRlcmFjdGlvbnMgYmV0d2VlbiBwcm90ZWluIGxldmVsIGFuZCBwcm90ZWluIHNvdXJjZSB3ZXJlCmZvdW5kIChwPDAuMDUpLCBpLmUuIHRoZSBpbmNyZWFzZSBpbiB3ZWlnaHQgZ2FpbiBkdWUgdG8gcHJvdGVpbiBsZXZlbCBpbiBjZXJlYWwKYmFzZWQgZGlldHMgd2FzIDE4LjJnIGFuZCAxNi41ZyBsb3dlciB0aGFuIHRoYXQgb2YgYmVlZiBhbmQgcG9yayBiYXNlZCBkaWV0cywKcmVzcGVjdGl2ZWx5ICg5NSUgQ0kgWzNnLDMzLjRnXSBhbmQgWzEuM2csMzEuN2ddKS4gVGhlIGF2ZXJhZ2UgZGlmZmVyZW5jZSBpbgppbmNyZWFzZSBpbiB3ZWlnaHQgZ2FpbiBkdWUgdG8gcHJvdGVpbiBsZXZlbCBhbW9uZyB0aGUgbWVhdCBiYXNlZCBkaWV0cyB3YXMgbm90CnNpZ25pZmljYW50IChwPjAuOTkpLgoKQWxsIHJlcG9ydGVkIHAtdmFsdWVzIGFuZCBjb25maWRlbmNlIGludGVydmFscyB3ZXJlIGNvcnJlY3RlZCBmb3IgbXVsdGlwbGUKdGVzdGluZwo=</div>

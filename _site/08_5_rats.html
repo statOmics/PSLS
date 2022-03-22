@@ -549,47 +549,28 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 8.5: Blocking on the rat diet
-dataset</h1>
+<h1 class="title toc-ignore">Exercise 8.5: Blocking on the rat diet dataset</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="background" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Background</h1>
-<p>Researchers are studying the impact of protein sources and protein
-levels in the diet on the weight of rats. They feed the rats with diets
-of beef, cereal and pork and use a low and high protein level for each
-diet type. The researchers can include 60 rats in the experiment. Prior
-to the experiment, the rats were divided in 10 homogeneous groups of 6
-rats based on characteristics such as initial weight, appetite, etc.</p>
-<p>Within each group a rat is randomly assigned to a diet. The rats are
-fed during a month and the weight gain in grams is recorded for each
-rat.</p>
-<p>The researchers want to assess the effect of the type of diet and the
-protein level on the weight of the rats.</p>
-<p>In this exercise we will perform the data exploration using all
-diets, but, to keep the data analysis simple we will only assess the
-beef and cereal diets.</p>
+<p>Researchers are studying the impact of protein sources and protein levels in the diet on the weight of rats. They feed the rats with diets of beef, cereal and pork and use a low and high protein level for each diet type. The researchers can include 60 rats in the experiment. Prior to the experiment, the rats were divided in 10 homogeneous groups of 6 rats based on characteristics such as initial weight, appetite, etc.</p>
+<p>Within each group a rat is randomly assigned to a diet. The rats are fed during a month and the weight gain in grams is recorded for each rat.</p>
+<p>The researchers want to assess the effect of the type of diet and the protein level on the weight of the rats.</p>
+<p>In this exercise we will perform the data exploration using all diets, but, to keep the data analysis simple we will only assess the beef and cereal diets.</p>
 </div>
 <div id="experimental-design" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Experimental
-design</h1>
+<h1><span class="header-section-number">2</span> Experimental design</h1>
 <ul>
-<li><p>There are three explanatory variables in the experiment: the
-factor diet type with two levels (beef and cereal), factor protein level
-with levels (low and high) and a group blocking factor with 10
-levels.</p></li>
-<li><p>There are 6 treatments: beef-high, cereal-high, pork-high,
-beef-low, cereal-low, pork-low protein.</p></li>
+<li><p>There are three explanatory variables in the experiment: the factor diet type with two levels (beef and cereal), factor protein level with levels (low and high) and a group blocking factor with 10 levels.</p></li>
+<li><p>There are 6 treatments: beef-high, cereal-high, pork-high, beef-low, cereal-low, pork-low protein.</p></li>
 <li><p>The rats are the experimental and observational units.</p></li>
 <li><p>The weight gain is the response variable.</p></li>
-<li><p>The experiment is a randomized complete block (RCB)
-design</p></li>
+<li><p>The experiment is a randomized complete block (RCB) design</p></li>
 </ul>
 <p>Load libraries</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
@@ -619,10 +600,8 @@ design</p></li>
 <div id="data-exploration" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Data exploration</h1>
 <ul>
-<li><p>Boxplot of the weight gain against protein source, protein level
-with coloring according to block</p></li>
-<li><p>Lineplot of the weight gain against protein source, protein level
-with coloring and grouping according to block</p></li>
+<li><p>Boxplot of the weight gain against protein source, protein level with coloring according to block</p></li>
+<li><p>Lineplot of the weight gain against protein source, protein level with coloring and grouping according to block</p></li>
 <li><p>Interpret the plots</p></li>
 </ul>
 </div>
@@ -630,74 +609,46 @@ with coloring and grouping according to block</p></li>
 <h1><span class="header-section-number">6</span> Data filtering</h1>
 <p>Filter the data to only use the beef and cereal diet.</p>
 </div>
-<div id="multivariate-linear-regression-analysis" class="section level1"
-number="7">
-<h1><span class="header-section-number">7</span> Multivariate linear
-regression analysis</h1>
+<div id="multivariate-linear-regression-analysis" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Multivariate linear regression analysis</h1>
 <div id="model-specification" class="section level2" number="7.1">
-<h2><span class="header-section-number">7.1</span> Model
-specification</h2>
-<p>Based on the data exploration, propose a sensible regression model to
-analyse the data.</p>
+<h2><span class="header-section-number">7.1</span> Model specification</h2>
+<p>Based on the data exploration, propose a sensible regression model to analyse the data.</p>
 </div>
 <div id="assumptions" class="section level2" number="7.2">
 <h2><span class="header-section-number">7.2</span> Assumptions</h2>
 <p>Check the assumptions of the linear regression model</p>
 </div>
 <div id="hypothesis-testing" class="section level2" number="7.3">
-<h2><span class="header-section-number">7.3</span> Hypothesis
-testing</h2>
-<p>Use the <code>summary</code> function to get an initial test for the
-parameters in the model.</p>
+<h2><span class="header-section-number">7.3</span> Hypothesis testing</h2>
+<p>Use the <code>summary</code> function to get an initial test for the parameters in the model.</p>
 </div>
-<div id="interpretation-of-the-regression-parameters"
-class="section level2" number="7.4">
-<h2><span class="header-section-number">7.4</span> Interpretation of the
-regression parameters</h2>
-<p>To facilitate the interpretation of the different parameters in our
-regression model, we can make use of the <code>VisualizeDesign</code>
-function of the <code>ExploreModelMatrix</code> R package. The first
-argument of this function is the name of our target dataset, the second
-argument is a model formula, which in this case is specified as a
-<code>~</code> followed by the explanatory variables in our model.</p>
+<div id="interpretation-of-the-regression-parameters" class="section level2" number="7.4">
+<h2><span class="header-section-number">7.4</span> Interpretation of the regression parameters</h2>
+<p>To facilitate the interpretation of the different parameters in our regression model, we can make use of the <code>VisualizeDesign</code> function of the <code>ExploreModelMatrix</code> R package. The first argument of this function is the name of our target dataset, the second argument is a model formula, which in this case is specified as a <code>~</code> followed by the explanatory variables in our model.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ExploreModelMatrix)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ExploreModelMatrix<span class="sc">::</span><span class="fu">VisualizeDesign</span>(..., <span class="sc">~</span>...)<span class="sc">$</span>plotlist</span></code></pre></div>
-<p>After seeing this, again think about the meaning of the parameters in
-our model.</p>
+<p>After seeing this, again think about the meaning of the parameters in our model.</p>
 </div>
-<div id="testing-the-overall-omnibus-effect-of-diet"
-class="section level2" number="7.5">
-<h2><span class="header-section-number">7.5</span> Testing the overall
-(omnibus) effect of diet</h2>
-<p>By comparing a model containing diet effects to a model that does not
-have diet effects, using anova.</p>
+<div id="testing-the-overall-omnibus-effect-of-diet" class="section level2" number="7.5">
+<h2><span class="header-section-number">7.5</span> Testing the overall (omnibus) effect of diet</h2>
+<p>By comparing a model containing diet effects to a model that does not have diet effects, using anova.</p>
 </div>
-<div
-id="assessing-the-interaction-effect-between-protein-source-and-protein-level"
-class="section level2" number="7.6">
-<h2><span class="header-section-number">7.6</span> Assessing the
-interaction effect between protein source and protein level</h2>
+<div id="assessing-the-interaction-effect-between-protein-source-and-protein-level" class="section level2" number="7.6">
+<h2><span class="header-section-number">7.6</span> Assessing the interaction effect between protein source and protein level</h2>
 </div>
-<div id="assessing-specific-contrasts" class="section level2"
-number="7.7">
-<h2><span class="header-section-number">7.7</span> Assessing specific
-contrasts</h2>
-<p>Imagine that we are interested in assessing if there is an effect
-of</p>
+<div id="assessing-specific-contrasts" class="section level2" number="7.7">
+<h2><span class="header-section-number">7.7</span> Assessing specific contrasts</h2>
+<p>Imagine that we are interested in assessing if there is an effect of</p>
 <ol style="list-style-type: decimal">
 <li><p>protein source in the low protein diets</p></li>
 <li><p>protein source in high protein diets</p></li>
 <li><p>protein level for beef diets,</p></li>
 <li><p>protein level for cereal diets,</p></li>
-<li><p>if the effect of the protein level differs between beef and
-cereal</p></li>
+<li><p>if the effect of the protein level differs between beef and cereal</p></li>
 </ol>
-<p>Step 1: translate these research questions into parameters of the
-model (or combinations of multiple parameters).</p>
-<p>Step 2: Assess the significance of the contrasts using the
-<code>multcomp</code> package. The contrasts are given as input in the
-form of symbolic descriptions to the <code>linfct</code> argument of the
-<code>glht</code> function.</p>
+<p>Step 1: translate these research questions into parameters of the model (or combinations of multiple parameters).</p>
+<p>Step 2: Assess the significance of the contrasts using the <code>multcomp</code> package. The contrasts are given as input in the form of symbolic descriptions to the <code>linfct</code> argument of the <code>glht</code> function.</p>
 </div>
 </div>
 <div id="conclusion" class="section level1" number="8">

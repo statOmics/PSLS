@@ -549,33 +549,18 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 5.3: Hypothesis testing on the
-cuckoo dataset - solution</h1>
+<h1 class="title toc-ignore">Exercise 5.3: Hypothesis testing on the cuckoo dataset - solution</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="cuckoo-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Cuckoo dataset</h1>
-<p>The common cuckoo does not build its own nest: it prefers to lay its
-eggs in another birds’ nest. It is known, since 1892, that the type of
-cuckoo bird eggs are different between different locations. In a study
-from 1940, it was shown that cuckoos return to the same nesting area
-each year, and that they always pick the same bird species to be a
-“foster parent” for their eggs.</p>
-<p>Over the years, this has lead to the development of geographically
-determined subspecies of cuckoos. These subspecies have evolved in such
-a way that their eggs look as similar as possible as those of their
-foster parents.</p>
-<p>The cuckoo dataset contains information on 120 Cuckoo eggs, obtained
-from randomly selected “foster” nests. For these eggs, researchers have
-measured the <code>length</code> (in mm) and established the
-<code>type</code> (species) of foster parent. The type column is coded
-as follows:</p>
+<p>The common cuckoo does not build its own nest: it prefers to lay its eggs in another birds’ nest. It is known, since 1892, that the type of cuckoo bird eggs are different between different locations. In a study from 1940, it was shown that cuckoos return to the same nesting area each year, and that they always pick the same bird species to be a “foster parent” for their eggs.</p>
+<p>Over the years, this has lead to the development of geographically determined subspecies of cuckoos. These subspecies have evolved in such a way that their eggs look as similar as possible as those of their foster parents.</p>
+<p>The cuckoo dataset contains information on 120 Cuckoo eggs, obtained from randomly selected “foster” nests. For these eggs, researchers have measured the <code>length</code> (in mm) and established the <code>type</code> (species) of foster parent. The type column is coded as follows:</p>
 <ul>
 <li><code>type=1</code>: Meadow pipit</li>
 <li><code>type=2</code>: Tree pipit</li>
@@ -587,23 +572,14 @@ as follows:</p>
 </div>
 <div id="goal" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Goal</h1>
-<p>The researchers want totest if the type of foster parent has an
-effect on the average length of the cuckoo eggs.</p>
-<p>In theory, they want to study this for all six species. However, a
-t-test can only be used to study mean differences between two groups. If
-we want to analyze multiple groups, there are two options.</p>
+<p>The researchers want totest if the type of foster parent has an effect on the average length of the cuckoo eggs.</p>
+<p>In theory, they want to study this for all six species. However, a t-test can only be used to study mean differences between two groups. If we want to analyze multiple groups, there are two options.</p>
 <ol style="list-style-type: decimal">
-<li><p>We perform t-tests on all pairwise combinations of types. This
-mean we need to perform n*(n-1)/2 = 15 t-tests.</p></li>
+<li><p>We perform t-tests on all pairwise combinations of types. This mean we need to perform n*(n-1)/2 = 15 t-tests.</p></li>
 <li><p>We perform an ANOVA analysis.</p></li>
 </ol>
-<p>The second strategy is much more efficient and has a higher
-statistical power. We will learn all about ANOVA in a later stage of
-this course week.</p>
-<p>In this tutorial, we will assess a single pairwise comparison,
-between the European robin and the European wren. In a following
-tutorial, we will come back to this dataset and make a full analysis
-with ANOVA.</p>
+<p>The second strategy is much more efficient and has a higher statistical power. We will learn all about ANOVA in a later stage of this course week.</p>
+<p>In this tutorial, we will assess a single pairwise comparison, between the European robin and the European wren. In a following tutorial, we will come back to this dataset and make a full analysis with ANOVA.</p>
 <p>Load the required libraries</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 </div>
@@ -619,10 +595,7 @@ with ANOVA.</p>
 </div>
 <div id="tidy-data" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Tidy data</h1>
-<p>For this exercise, we only care about the European robin and the
-Eurasian wren. Therefore, we can remove the observations of the other
-types. In addition, it seems that the <code>type</code> column rather
-than a factor. Let’s fix this:</p>
+<p>For this exercise, we only care about the European robin and the Eurasian wren. Therefore, we can remove the observations of the other types. In addition, it seems that the <code>type</code> column rather than a factor. Let’s fix this:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Cuckoo <span class="ot">&lt;-</span> Cuckoo <span class="sc">%&gt;%</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;4&quot;</span>, <span class="st">&quot;6&quot;</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">as.factor</span>(type))</span></code></pre></div>
@@ -650,32 +623,22 @@ than a factor. Let’s fix this:</p>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">5</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;black&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: `fun.y` is deprecated. Use `fun` instead.</code></pre>
 <p><img src="05_3_cuckoo_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>We clearly see that, on average, the eggs laid in the nest of the
-European robin (type=4) are larger than those laid in the nest of the
-Eurasian wren. But is this difference <strong>significant</strong>?</p>
+<p>We clearly see that, on average, the eggs laid in the nest of the European robin (type=4) are larger than those laid in the nest of the Eurasian wren. But is this difference <strong>significant</strong>?</p>
 </div>
 <div id="analysis" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Analysis</h1>
-<p>We can test this with an unpaired, two-sample t-test. But before we
-can start the analysis, we must check if all assumptions to perform a
-t-test are met.</p>
+<p>We can test this with an unpaired, two-sample t-test. But before we can start the analysis, we must check if all assumptions to perform a t-test are met.</p>
 <div id="check-the-assumptions" class="section level2" number="6.1">
-<h2><span class="header-section-number">6.1</span> Check the
-assumptions</h2>
+<h2><span class="header-section-number">6.1</span> Check the assumptions</h2>
 <ol style="list-style-type: decimal">
-<li><p>The observations are independent of each other (in both
-groups)</p></li>
-<li><p>The data (length) must be normally distributed (in both
-groups)</p></li>
+<li><p>The observations are independent of each other (in both groups)</p></li>
+<li><p>The data (length) must be normally distributed (in both groups)</p></li>
 </ol>
-<p>Additionally, we should check if the variability within both groups
-is similar or not (in the lattter case we should use a Welch
-t-test).</p>
+<p>Additionally, we should check if the variability within both groups is similar or not (in the lattter case we should use a Welch t-test).</p>
 <ol start="3" style="list-style-type: decimal">
 <li>The variability within both groups is similar</li>
 </ol>
-<p>The first assumption is met, as we may assume that there are no
-specific patterns of correlation randomly selected nests.</p>
+<p>The first assumption is met, as we may assume that there are no specific patterns of correlation randomly selected nests.</p>
 <p>To check the normality assumption, we will use QQ plots.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Cuckoo <span class="sc">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> length)) <span class="sc">+</span></span>
@@ -684,14 +647,10 @@ specific patterns of correlation randomly selected nests.</p>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>type)</span></code></pre></div>
 <p><img src="05_3_cuckoo_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>There seems to be no clear deviation from normality.</p>
-<p>The third assumption seems to be met based on our visualization with
-boxplots. Indeed the interquartile range of the boxes are very
-comparable. As all assumptions are met, we may proceed with the
-analysis.</p>
+<p>The third assumption seems to be met based on our visualization with boxplots. Indeed the interquartile range of the boxes are very comparable. As all assumptions are met, we may proceed with the analysis.</p>
 </div>
 <div id="hypothesis-testing" class="section level2" number="6.2">
-<h2><span class="header-section-number">6.2</span> Hypothesis
-testing</h2>
+<h2><span class="header-section-number">6.2</span> Hypothesis testing</h2>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>output <span class="ot">&lt;-</span> <span class="fu">t.test</span>(length <span class="sc">~</span> type, <span class="at">data =</span> Cuckoo, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>output</span></code></pre></div>
 <pre><code>## 
@@ -708,10 +667,7 @@ testing</h2>
 </div>
 <div id="conclusion" class="section level2" number="6.3">
 <h2><span class="header-section-number">6.3</span> Conclusion</h2>
-<p>There is an extremely significant difference in mean length of Cuckoo
-eggs fostered by the European robin and those fostered by the Eurasian
-wren (p &lt;&lt; 0.001). The eggs fostered by the European wren are on
-average 1.45 mm longer (95% CI [0.92, 1.97]).</p>
+<p>There is an extremely significant difference in mean length of Cuckoo eggs fostered by the European robin and those fostered by the Eurasian wren (p &lt;&lt; 0.001). The eggs fostered by the European wren are on average 1.45 mm longer (95% CI [0.92, 1.97]).</p>
 </div>
 </div>
 

@@ -549,41 +549,31 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Experimental Design II: replication and
-power exercise 2</h1>
+<h1 class="title toc-ignore">Experimental Design II: replication and power exercise 2</h1>
 <h4 class="author">Lieven Clement &amp; Alexandre Segers</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.3.5     ✔ purrr   0.3.4
 ## ✔ tibble  3.1.6     ✔ dplyr   1.0.8
 ## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
 ## ✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <div id="puromycin-data" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Puromycin data</h1>
-<p>Data on the velocity of an enzymatic reaction were obtained by
-Treloar (1974). The number of counts per minute of radioactive product
-from the reaction was measured as a function of substrate concentration
-in parts per million (ppm) and from these counts the initial rate (or
-velocity) of the reaction was calculated (counts/min/min). The
-experiment was conducted once with the enzyme treated with Puromycin,
-and once with the enzyme untreated.</p>
+<p>Data on the velocity of an enzymatic reaction were obtained by Treloar (1974). The number of counts per minute of radioactive product from the reaction was measured as a function of substrate concentration in parts per million (ppm) and from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min). The experiment was conducted once with the enzyme treated with Puromycin, and once with the enzyme untreated.</p>
 <p>Here, we will focus again on the enzyme treated data.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Puromycin)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Puromycin <span class="ot">&lt;-</span> Puromycin <span class="sc">%&gt;%</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(state <span class="sc">==</span> <span class="st">&quot;treated&quot;</span>)</span></code></pre></div>
-<p>There was a linear association between the log10 substrate
-concentration and the reaction rate</p>
+<p>There was a linear association between the log10 substrate concentration and the reaction rate</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Puromycin <span class="sc">%&gt;%</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> conc <span class="sc">%&gt;%</span> <span class="fu">log10</span>(), <span class="at">y =</span> rate)) <span class="sc">+</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
@@ -594,35 +584,16 @@ concentration and the reaction rate</p>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
 ## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <p><img src="08_ExperimentalDesignII_1_puromycin_sol_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>Note, that the researchers have chosen 6 different substrate
-concentrations and conducted an experiment where they assessed the
-initial reaction rate twice for every concentration.</p>
+<p>Note, that the researchers have chosen 6 different substrate concentrations and conducted an experiment where they assessed the initial reaction rate twice for every concentration.</p>
 <ol style="list-style-type: decimal">
-<li><p>Use the data to calculate the power to pick up an association
-that is as least as strong as the association you observed in the
-dataset when using an experiment with the same design.</p></li>
-<li><p>Use the data to calculate the power to pick up an association
-where the reaction rate increases on average with 10 counts/min when the
-substrate concentration is 10 times higher (<span
-class="math inline">\(\beta_1=10\)</span>).</p></li>
-<li><p>Use the data to calculate the number of repeats you need for each
-concentration to pick up an association where the reaction rate
-increases on average with 10 counts/min when the substrate concentration
-is 10 times higher with a power of at least 90%. (<span
-class="math inline">\(\beta_1=10\)</span>)</p></li>
-<li><p>Suppose that you would setup an experiment with a design similar
-with the same concentrations as in the puromycin dataset and you have
-the following restriction: you need to use each concentration at least
-once and can setup at most 12 reactions, how would you choose your
-design points? Calculate the power for this design when the effect size
-is 10 counts/min per 10 times increase in the substrate concentration
-(<span class="math inline">\(\beta_1=10\)</span>).</p></li>
+<li><p>Use the data to calculate the power to pick up an association that is as least as strong as the association you observed in the dataset when using an experiment with the same design.</p></li>
+<li><p>Use the data to calculate the power to pick up an association where the reaction rate increases on average with 10 counts/min when the substrate concentration is 10 times higher (<span class="math inline">\(\beta_1=10\)</span>).</p></li>
+<li><p>Use the data to calculate the number of repeats you need for each concentration to pick up an association where the reaction rate increases on average with 10 counts/min when the substrate concentration is 10 times higher with a power of at least 90%. (<span class="math inline">\(\beta_1=10\)</span>)</p></li>
+<li><p>Suppose that you would setup an experiment with a design similar with the same concentrations as in the puromycin dataset and you have the following restriction: you need to use each concentration at least once and can setup at most 12 reactions, how would you choose your design points? Calculate the power for this design when the effect size is 10 counts/min per 10 times increase in the substrate concentration (<span class="math inline">\(\beta_1=10\)</span>).</p></li>
 </ol>
 <div id="simulation-function" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Simulation
-function</h2>
-<p>Function to simulate data similar to that of our experiment under our
-model assumptions.</p>
+<h2><span class="header-section-number">1.1</span> Simulation function</h2>
+<p>Function to simulate data similar to that of our experiment under our model assumptions.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>simFast <span class="ot">&lt;-</span> <span class="cf">function</span>(form, data, betas, sd, contrasts, <span class="at">alpha =</span> .<span class="dv">05</span>, <span class="at">nSim =</span> <span class="dv">10000</span>) {</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  ySim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">nrow</span>(data) <span class="sc">*</span> nSim, <span class="at">sd =</span> sd)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dim</span>(ySim) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">nrow</span>(data), nSim)</span>
@@ -642,12 +613,8 @@ model assumptions.</p>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">mean</span>(pvals <span class="sc">&lt;</span> alpha))</span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
-<div
-id="power-to-pick-up-the-same-effect-size-as-we-observed-in-the-data-set-with-the-same-design"
-class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Power to pick up the
-same effect size as we observed in the data set with the same
-design</h2>
+<div id="power-to-pick-up-the-same-effect-size-as-we-observed-in-the-data-set-with-the-same-design" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Power to pick up the same effect size as we observed in the data set with the same design</h2>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(rate <span class="sc">~</span> conc <span class="sc">%&gt;%</span> <span class="fu">log10</span>(), Puromycin)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>betas <span class="ot">&lt;-</span> mod1<span class="sc">$</span>coefficients</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -663,8 +630,7 @@ design</h2>
 <pre><code>## [1] 1</code></pre>
 </div>
 <div id="power-for-beta_110" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> Power for <span
-class="math inline">\(\beta_1=10\)</span></h2>
+<h2><span class="header-section-number">1.3</span> Power for <span class="math inline">\(\beta_1=10\)</span></h2>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(rate <span class="sc">~</span> conc <span class="sc">%&gt;%</span> <span class="fu">log10</span>(), Puromycin)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>betas <span class="ot">&lt;-</span> mod1<span class="sc">$</span>coefficients</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>betas[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">10</span></span>
@@ -678,17 +644,11 @@ class="math inline">\(\beta_1=10\)</span></h2>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>power <span class="ot">&lt;-</span> <span class="fu">simFast</span>(form, Puromycin, betas, sd, <span class="at">contrasts =</span> contrast, <span class="at">alpha =</span> alpha, <span class="at">nSim =</span> nSim)</span>
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>power</span></code></pre></div>
-<pre><code>## [1] 0.4255</code></pre>
-<p>The power to pick up a slope of <span
-class="math inline">\(\beta_1=10\)</span> for this experiment is only
-<code>round(power*100,1)</code>%.</p>
+<pre><code>## [1] 0.4207</code></pre>
+<p>The power to pick up a slope of <span class="math inline">\(\beta_1=10\)</span> for this experiment is only <code>round(power*100,1)</code>%.</p>
 </div>
-<div
-id="calculate-the-number-of-repeats-needed-per-concentration-to-obtain-a-power-of-90-to-pick-up-an-effect-of-beta10."
-class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> Calculate the number
-of repeats needed per concentration to obtain a power of 90% to pick up
-an effect of <span class="math inline">\(\beta=10\)</span>.</h2>
+<div id="calculate-the-number-of-repeats-needed-per-concentration-to-obtain-a-power-of-90-to-pick-up-an-effect-of-beta10." class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Calculate the number of repeats needed per concentration to obtain a power of 90% to pick up an effect of <span class="math inline">\(\beta=10\)</span>.</h2>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(rate <span class="sc">~</span> conc <span class="sc">%&gt;%</span> <span class="fu">log10</span>(), Puromycin)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>concentrations <span class="ot">&lt;-</span> Puromycin <span class="sc">%&gt;%</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(conc) <span class="sc">%&gt;%</span></span>
@@ -717,15 +677,11 @@ an effect of <span class="math inline">\(\beta=10\)</span>.</h2>
 <span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(n, power)) <span class="sc">+</span></span>
 <span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> .<span class="dv">9</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="08_ExperimentalDesignII_1_puromycin_sol_files/figure-html/unnamed-chunk-7-1.png" width="672" />
-We need <code>which(powers$power&gt;0.9) %&gt;%min</code> repeats for
-each concentration to obtain a power above 90%.</p>
+<p><img src="08_ExperimentalDesignII_1_puromycin_sol_files/figure-html/unnamed-chunk-7-1.png" width="672" /> We need <code>which(powers$power&gt;0.9) %&gt;%min</code> repeats for each concentration to obtain a power above 90%.</p>
 </div>
 </div>
-<div id="optimal-design-with-12-reactions" class="section level1"
-number="2">
-<h1><span class="header-section-number">2</span> Optimal design with 12
-reactions</h1>
+<div id="optimal-design-with-12-reactions" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Optimal design with 12 reactions</h1>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>concentrations <span class="ot">&lt;-</span> Puromycin <span class="sc">%&gt;%</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(conc) <span class="sc">%&gt;%</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span>
@@ -751,18 +707,13 @@ reactions</h1>
   </script>
 </div>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>powerOpt</span></code></pre></div>
-<pre><code>## [1] 0.6114</code></pre>
-<p>Note that the power for a design where we repeat each concentration 1
-time and the minimum and maximum concentration 4 times is considerably
-higher than that for the designs where we repeat all data points.</p>
+<pre><code>## [1] 0.6009</code></pre>
+<p>Note that the power for a design where we repeat each concentration 1 time and the minimum and maximum concentration 4 times is considerably higher than that for the designs where we repeat all data points.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>powers <span class="sc">%&gt;%</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(n, power)) <span class="sc">+</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> powerOpt, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="08_ExperimentalDesignII_1_puromycin_sol_files/figure-html/unnamed-chunk-9-1.png" width="672" />
-Indeed, the power for our optimal design with 12 reactions is as high as
-the power for an experiment where you would repeat every concentration 3
-times for which we need to conduct 18 reactions!</p>
+<p><img src="08_ExperimentalDesignII_1_puromycin_sol_files/figure-html/unnamed-chunk-9-1.png" width="672" /> Indeed, the power for our optimal design with 12 reactions is as high as the power for an experiment where you would repeat every concentration 3 times for which we need to conduct 18 reactions!</p>
 </div>
 
 <div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhwZXJpbWVudGFsIERlc2lnbiBJSTogcmVwbGljYXRpb24gYW5kIHBvd2VyIGV4ZXJjaXNlIDIiCmF1dGhvcjogIkxpZXZlbiBDbGVtZW50ICYgQWxleGFuZHJlIFNlZ2VycyIKZGF0ZTogInN0YXRPbWljcywgR2hlbnQgVW5pdmVyc2l0eSAoaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSIKLS0tCgo8YSByZWw9ImxpY2Vuc2UiIGhyZWY9Imh0dHBzOi8vY3JlYXRpdmVjb21tb25zLm9yZy9saWNlbnNlcy9ieS1uYy1zYS80LjAiPjxpbWcgYWx0PSJDcmVhdGl2ZSBDb21tb25zIExpY2Vuc2UiIHN0eWxlPSJib3JkZXItd2lkdGg6MCIgc3JjPSJodHRwczovL2kuY3JlYXRpdmVjb21tb25zLm9yZy9sL2J5LW5jLXNhLzQuMC84OHgzMS5wbmciIC8+PC9hPgoKYGBge3J9CmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKCiMgUHVyb215Y2luIGRhdGEKCkRhdGEgb24gdGhlIHZlbG9jaXR5IG9mIGFuIGVuenltYXRpYyByZWFjdGlvbiB3ZXJlIG9idGFpbmVkIGJ5IFRyZWxvYXIgKDE5NzQpLgpUaGUgbnVtYmVyIG9mIGNvdW50cyBwZXIgbWludXRlIG9mIHJhZGlvYWN0aXZlIHByb2R1Y3QgZnJvbSB0aGUgcmVhY3Rpb24gd2FzIG1lYXN1cmVkIGFzIGEgZnVuY3Rpb24gb2Ygc3Vic3RyYXRlIGNvbmNlbnRyYXRpb24gaW4gcGFydHMgcGVyIG1pbGxpb24gKHBwbSkgYW5kIGZyb20gdGhlc2UgY291bnRzIHRoZSBpbml0aWFsIHJhdGUgKG9yIHZlbG9jaXR5KSBvZiB0aGUgcmVhY3Rpb24gd2FzIGNhbGN1bGF0ZWQgKGNvdW50cy9taW4vbWluKS4gIFRoZSBleHBlcmltZW50IHdhcyBjb25kdWN0ZWQgb25jZSB3aXRoIHRoZSBlbnp5bWUgdHJlYXRlZCB3aXRoIFB1cm9teWNpbiwgYW5kIG9uY2Ugd2l0aCB0aGUgZW56eW1lIHVudHJlYXRlZC4KCkhlcmUsIHdlIHdpbGwgZm9jdXMgYWdhaW4gb24gdGhlIGVuenltZSB0cmVhdGVkIGRhdGEuCgpgYGB7cn0KZGF0YShQdXJvbXljaW4pClB1cm9teWNpbiA8LSBQdXJvbXljaW4gJT4lCiAgZmlsdGVyKHN0YXRlID09ICJ0cmVhdGVkIikKYGBgCgpUaGVyZSB3YXMgYSBsaW5lYXIgYXNzb2NpYXRpb24gYmV0d2VlbiB0aGUgbG9nMTAgc3Vic3RyYXRlIGNvbmNlbnRyYXRpb24gYW5kIHRoZSByZWFjdGlvbiByYXRlCgoKYGBge3J9ClB1cm9teWNpbiAlPiUKICBnZ3Bsb3QoYWVzKHggPSBjb25jICU+JSBsb2cxMCgpLCB5ID0gcmF0ZSkpICsKICBnZW9tX3BvaW50KCkgKwogIHN0YXRfc21vb3RoKG1ldGhvZCA9ICJsb2VzcyIsIGNvbCA9ICJyZWQiKSArCiAgc3RhdF9zbW9vdGgobWV0aG9kID0gImxtIiwgY29sID0gImJsYWNrIikgKwogIHlsYWIoIlJlYWN0aW9uIFJhdGUgKGNvdW50cy9taW4pIikgKwogIHhsYWIoImxvZzEwKFN1YnN0cmF0ZSBjb25jZW50cmF0aW9uKSAobG9nMTAgcHBtKSIpCmBgYAoKTm90ZSwgdGhhdCB0aGUgcmVzZWFyY2hlcnMgaGF2ZSBjaG9zZW4gNiBkaWZmZXJlbnQgc3Vic3RyYXRlIGNvbmNlbnRyYXRpb25zIGFuZCBjb25kdWN0ZWQgYW4gZXhwZXJpbWVudCB3aGVyZSB0aGV5IGFzc2Vzc2VkIHRoZSBpbml0aWFsIHJlYWN0aW9uIHJhdGUgdHdpY2UgZm9yIGV2ZXJ5IGNvbmNlbnRyYXRpb24uCgoxLiBVc2UgdGhlIGRhdGEgdG8gY2FsY3VsYXRlIHRoZSBwb3dlciB0byBwaWNrIHVwIGFuIGFzc29jaWF0aW9uIHRoYXQgaXMgYXMgbGVhc3QgYXMgc3Ryb25nIGFzIHRoZSBhc3NvY2lhdGlvbiB5b3Ugb2JzZXJ2ZWQgaW4gdGhlIGRhdGFzZXQgd2hlbiB1c2luZyBhbiBleHBlcmltZW50IHdpdGggdGhlIHNhbWUgZGVzaWduLgoKMi4gVXNlIHRoZSBkYXRhIHRvIGNhbGN1bGF0ZSB0aGUgcG93ZXIgdG8gcGljayB1cCBhbiBhc3NvY2lhdGlvbiB3aGVyZSB0aGUgcmVhY3Rpb24gcmF0ZSBpbmNyZWFzZXMgb24gYXZlcmFnZSB3aXRoIDEwIGNvdW50cy9taW4gd2hlbiB0aGUgc3Vic3RyYXRlIGNvbmNlbnRyYXRpb24gaXMgMTAgdGltZXMgaGlnaGVyICgkXGJldGFfMT0xMCQpLgoKMy4gVXNlIHRoZSBkYXRhIHRvIGNhbGN1bGF0ZSB0aGUgbnVtYmVyIG9mIHJlcGVhdHMgeW91IG5lZWQgZm9yIGVhY2ggY29uY2VudHJhdGlvbiB0byBwaWNrIHVwIGFuIGFzc29jaWF0aW9uIHdoZXJlIHRoZSByZWFjdGlvbiByYXRlIGluY3JlYXNlcyBvbiBhdmVyYWdlIHdpdGggMTAgY291bnRzL21pbiB3aGVuIHRoZSBzdWJzdHJhdGUgY29uY2VudHJhdGlvbiBpcyAxMCB0aW1lcyBoaWdoZXIgd2l0aCBhIHBvd2VyIG9mIGF0IGxlYXN0IDkwJS4gKCRcYmV0YV8xPTEwJCkKCjQuIFN1cHBvc2UgdGhhdCB5b3Ugd291bGQgc2V0dXAgYW4gZXhwZXJpbWVudCB3aXRoIGEgZGVzaWduIHNpbWlsYXIgd2l0aCB0aGUgc2FtZSBjb25jZW50cmF0aW9ucyBhcyBpbiB0aGUgcHVyb215Y2luIGRhdGFzZXQgYW5kIHlvdSBoYXZlIHRoZSBmb2xsb3dpbmcgcmVzdHJpY3Rpb246IHlvdSBuZWVkIHRvIHVzZSBlYWNoIGNvbmNlbnRyYXRpb24gYXQgbGVhc3Qgb25jZSBhbmQgY2FuIHNldHVwIGF0IG1vc3QgMTIgcmVhY3Rpb25zLCBob3cgd291bGQgeW91IGNob29zZSB5b3VyIGRlc2lnbiBwb2ludHM/IENhbGN1bGF0ZSB0aGUgcG93ZXIgZm9yIHRoaXMgZGVzaWduIHdoZW4gdGhlIGVmZmVjdCBzaXplIGlzIDEwIGNvdW50cy9taW4gcGVyIDEwIHRpbWVzIGluY3JlYXNlIGluIHRoZSBzdWJzdHJhdGUgY29uY2VudHJhdGlvbiAoJFxiZXRhXzE9MTAkKS4KCiMjIFNpbXVsYXRpb24gZnVuY3Rpb24KCkZ1bmN0aW9uIHRvIHNpbXVsYXRlIGRhdGEgc2ltaWxhciB0byB0aGF0IG9mIG91ciBleHBlcmltZW50IHVuZGVyIG91ciBtb2RlbCBhc3N1bXB0aW9ucy4KCmBgYHtyfQpzaW1GYXN0IDwtIGZ1bmN0aW9uKGZvcm0sIGRhdGEsIGJldGFzLCBzZCwgY29udHJhc3RzLCBhbHBoYSA9IC4wNSwgblNpbSA9IDEwMDAwKSB7CiAgeVNpbSA8LSBybm9ybShucm93KGRhdGEpICogblNpbSwgc2QgPSBzZCkKICBkaW0oeVNpbSkgPC0gYyhucm93KGRhdGEpLCBuU2ltKQogIGRlc2lnbiA8LSBtb2RlbC5tYXRyaXgoZm9ybSwgZGF0YSkKICB5U2ltIDwtIHlTaW0gKyBjKGRlc2lnbiAlKiUgYmV0YXMpCiAgeVNpbSA8LSB0KHlTaW0pCgogICMjIyBGaXR0aW5nCiAgZml0QWxsIDwtIGxpbW1hOjpsbUZpdCh5U2ltLCBkZXNpZ24pCgogICMjIyBJbmZlcmVuY2UKICB2YXJVbnNjYWxlZCA8LSBjKHQoY29udHJhc3RzKSAlKiUgZml0QWxsJGNvdi5jb2VmZmljaWVudHMgJSolIGNvbnRyYXN0cykKICBjb250cmFzdHMgPC0gZml0QWxsJGNvZWZmaWNpZW50cyAlKiUgY29udHJhc3RzCiAgc2VDb250cmFzdHMgPC0gdmFyVW5zY2FsZWReLjUgKiBmaXRBbGwkc2lnbWEKICB0c3RhdHMgPC0gY29udHJhc3RzIC8gc2VDb250cmFzdHMKICBwdmFscyA8LSBwdChhYnModHN0YXRzKSwgZml0QWxsJGRmLnJlc2lkdWFsLCBsb3dlci50YWlsID0gRkFMU0UpICogMgogIHJldHVybihtZWFuKHB2YWxzIDwgYWxwaGEpKQp9CmBgYAoKIyMgUG93ZXIgdG8gcGljayB1cCB0aGUgc2FtZSBlZmZlY3Qgc2l6ZSBhcyB3ZSBvYnNlcnZlZCBpbiB0aGUgZGF0YSBzZXQgd2l0aCB0aGUgc2FtZSBkZXNpZ24KCmBgYHtyfQptb2QxIDwtIGxtKHJhdGUgfiBjb25jICU+JSBsb2cxMCgpLCBQdXJvbXljaW4pCmJldGFzIDwtIG1vZDEkY29lZmZpY2llbnRzCgpuU2ltIDwtIDEwMDAwCmZvcm0gPC0gfiBjb25jICU+JSBsb2cxMCgpCnNkIDwtIHNpZ21hKG1vZDEpCmNvbnRyYXN0IDwtIG1hdHJpeChjKDAsIDEpLCBuY29sID0gMSkKcm93bmFtZXMoY29udHJhc3QpIDwtIG5hbWVzKG1vZDEkY29lZmZpY2llbnRzKQphbHBoYSA8LSAwLjA1Cgpwb3dlciA8LSBzaW1GYXN0KGZvcm0sIFB1cm9teWNpbiwgYmV0YXMsIHNkLCBjb250cmFzdHMgPSBjb250cmFzdCwgYWxwaGEgPSBhbHBoYSwgblNpbSA9IG5TaW0pCnBvd2VyCmBgYAoKIyMgUG93ZXIgZm9yICRcYmV0YV8xPTEwJAoKYGBge3J9Cm1vZDEgPC0gbG0ocmF0ZSB+IGNvbmMgJT4lIGxvZzEwKCksIFB1cm9teWNpbikKYmV0YXMgPC0gbW9kMSRjb2VmZmljaWVudHMKYmV0YXNbMl0gPC0gMTAKCm5TaW0gPC0gMTAwMDAKZm9ybSA8LSB+IGNvbmMgJT4lIGxvZzEwKCkKc2QgPC0gc2lnbWEobW9kMSkKY29udHJhc3QgPC0gbWF0cml4KGMoMCwgMSksIG5jb2wgPSAxKQpyb3duYW1lcyhjb250cmFzdCkgPC0gbmFtZXMobW9kMSRjb2VmZmljaWVudHMpCmFscGhhIDwtIDAuMDUKCnBvd2VyIDwtIHNpbUZhc3QoZm9ybSwgUHVyb215Y2luLCBiZXRhcywgc2QsIGNvbnRyYXN0cyA9IGNvbnRyYXN0LCBhbHBoYSA9IGFscGhhLCBuU2ltID0gblNpbSkKcG93ZXIKYGBgCgpUaGUgcG93ZXIgdG8gcGljayB1cCBhIHNsb3BlIG9mICRcYmV0YV8xPTEwJCBmb3IgdGhpcyBleHBlcmltZW50IGlzIG9ubHkKYHJvdW5kKHBvd2VyKjEwMCwxKWAlLgoKIyMgQ2FsY3VsYXRlIHRoZSBudW1iZXIgb2YgcmVwZWF0cyBuZWVkZWQgcGVyIGNvbmNlbnRyYXRpb24gdG8gb2J0YWluIGEgcG93ZXIgb2YgOTAlIHRvIHBpY2sgdXAgYW4gZWZmZWN0IG9mICRcYmV0YT0xMCQuCgoKYGBge3J9Cm1vZDEgPC0gbG0ocmF0ZSB+IGNvbmMgJT4lIGxvZzEwKCksIFB1cm9teWNpbikKY29uY2VudHJhdGlvbnMgPC0gUHVyb215Y2luICU+JQogIHB1bGwoY29uYykgJT4lCiAgdW5pcXVlKCkKCgpiZXRhcyA8LSBtb2QxJGNvZWZmaWNpZW50cwpiZXRhc1syXSA8LSAxMAoKblNpbSA8LSAxMDAwMApmb3JtIDwtIH4gY29uYyAlPiUgbG9nMTAoKQpzZCA8LSBzaWdtYShtb2QxKQpjb250cmFzdCA8LSBtYXRyaXgoYygwLCAxKSwgbmNvbCA9IDEpCnJvd25hbWVzKGNvbnRyYXN0KSA8LSBuYW1lcyhtb2QxJGNvZWZmaWNpZW50cykKYWxwaGEgPC0gMC4wNQoKcG93ZXJzIDwtIGRhdGEuZnJhbWUobiA9IDE6MTAsIHBvd2VyID0gTkEpCgpmb3IgKGkgaW4gMToxMCkKewogIHNpbURhdGEgPC0gZGF0YS5mcmFtZShjb25jID0gcmVwKGNvbmNlbnRyYXRpb25zLCBlYWNoID0gaSkpCiAgcG93ZXJzW2ksIDJdIDwtIHNpbUZhc3QoZm9ybSwgc2ltRGF0YSwgYmV0YXMsIHNkLCBjb250cmFzdHMgPSBjb250cmFzdCwgYWxwaGEgPSBhbHBoYSwgblNpbSA9IG5TaW0pCn0KCnBvd2VycyAlPiUKICBnZ3Bsb3QoYWVzKG4sIHBvd2VyKSkgKwogIGdlb21fbGluZSgpICsKICBnZW9tX2hsaW5lKHlpbnRlcmNlcHQgPSAuOSwgbHR5ID0gMikKYGBgCldlIG5lZWQgYHdoaWNoKHBvd2VycyRwb3dlcj4wLjkpICU+JW1pbmAgcmVwZWF0cyBmb3IgZWFjaCBjb25jZW50cmF0aW9uIHRvCm9idGFpbiBhIHBvd2VyIGFib3ZlIDkwJS4KCiMgT3B0aW1hbCBkZXNpZ24gd2l0aCAxMiByZWFjdGlvbnMKCmBgYHtyfQpjb25jZW50cmF0aW9ucyA8LSBQdXJvbXljaW4gJT4lCiAgcHVsbChjb25jKSAlPiUKICB1bmlxdWUoKQoKCmJldGFzIDwtIG1vZDEkY29lZmZpY2llbnRzCmJldGFzWzJdIDwtIDEwCgpuU2ltIDwtIDEwMDAwCmZvcm0gPC0gfiBjb25jICU+JSBsb2cxMCgpCnNkIDwtIHNpZ21hKG1vZDEpCmNvbnRyYXN0IDwtIG1hdHJpeChjKDAsIDEpLCBuY29sID0gMSkKcm93bmFtZXMoY29udHJhc3QpIDwtIG5hbWVzKG1vZDEkY29lZmZpY2llbnRzKQphbHBoYSA8LSAwLjA1CgpzaW1EYXRhIDwtIGRhdGEuZnJhbWUoY29uYyA9IGMoY29uY2VudHJhdGlvbnMsIHJlcChtaW4oY29uY2VudHJhdGlvbnMpLCAzKSwgcmVwKG1heChjb25jZW50cmF0aW9ucyksIDMpKSkKcG93ZXJPcHQgPC0gc2ltRmFzdChmb3JtLCBzaW1EYXRhLCBiZXRhcywgc2QsIGNvbnRyYXN0cyA9IGNvbnRyYXN0LCBhbHBoYSA9IGFscGhhLCBuU2ltID0gblNpbSkKCnNpbURhdGEKcG93ZXJPcHQKYGBgCgpOb3RlIHRoYXQgdGhlIHBvd2VyIGZvciBhIGRlc2lnbiB3aGVyZSB3ZSByZXBlYXQgZWFjaCBjb25jZW50cmF0aW9uIDEgdGltZSBhbmQKdGhlIG1pbmltdW0gYW5kIG1heGltdW0gY29uY2VudHJhdGlvbiA0IHRpbWVzIGlzIGNvbnNpZGVyYWJseSBoaWdoZXIgdGhhbiB0aGF0CmZvciB0aGUgZGVzaWducyB3aGVyZSB3ZSByZXBlYXQgYWxsIGRhdGEgcG9pbnRzLgoKYGBge3J9CnBvd2VycyAlPiUKICBnZ3Bsb3QoYWVzKG4sIHBvd2VyKSkgKwogIGdlb21fbGluZSgpICsKICBnZW9tX2hsaW5lKHlpbnRlcmNlcHQgPSBwb3dlck9wdCwgbHR5ID0gMikKYGBgCkluZGVlZCwgdGhlIHBvd2VyIGZvciBvdXIgb3B0aW1hbCBkZXNpZ24gd2l0aCAxMiByZWFjdGlvbnMgaXMgYXMgaGlnaCBhcyB0aGUKcG93ZXIgZm9yIGFuIGV4cGVyaW1lbnQgd2hlcmUgeW91IHdvdWxkIHJlcGVhdCBldmVyeSBjb25jZW50cmF0aW9uIDMgdGltZXMgZm9yCndoaWNoIHdlIG5lZWQgdG8gY29uZHVjdCAxOCByZWFjdGlvbnMhCg==</div>

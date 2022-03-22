@@ -549,52 +549,40 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Experimental Design II: replication and
-power exercise 1</h1>
+<h1 class="title toc-ignore">Experimental Design II: replication and power exercise 1</h1>
 <h4 class="author">Lieven Clement &amp; Alexandre Segers</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.3.5     ✔ purrr   0.3.4
 ## ✔ tibble  3.1.6     ✔ dplyr   1.0.8
 ## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
 ## ✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <div id="power" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Power</h1>
 <p>The power of a test is defined as:</p>
 <p><span class="math display">\[P(p &lt;
-\alpha | H_1)\]</span> This is the probability to reject the
-nulhypothesis at the significance level <span
-class="math inline">\(\alpha\)</span> given that the alternative
-hypothesis is true.</p>
+\alpha | H_1)\]</span> This is the probability to reject the nulhypothesis at the significance level <span class="math inline">\(\alpha\)</span> given that the alternative hypothesis is true.</p>
 <p>The power depends on:</p>
 <ul>
-<li>the real effect size in the population <span
-class="math inline">\(\mathbf{L}^T\boldsymbol{\beta}\)</span>.</li>
+<li>the real effect size in the population <span class="math inline">\(\mathbf{L}^T\boldsymbol{\beta}\)</span>.</li>
 <li>the number of observations: SE and df.</li>
 <li>Choice of designpoints</li>
-<li>Choice of significance-level <span
-class="math inline">\(\alpha\)</span>.</li>
+<li>Choice of significance-level <span class="math inline">\(\alpha\)</span>.</li>
 </ul>
 <p>We will evaluate the power using simulation.</p>
 </div>
 <div id="rodents" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Rodents</h1>
-<p>A biologist examined the effect of a fungal infection on the eating
-behavior of rodents. Infected apples were offered to a group of eight
-rodents, and sterile apples were offered to a group of 4 rodents. The
-amount of grams of apples consumed per kg body weight are given in the
-dataset below.</p>
+<p>A biologist examined the effect of a fungal infection on the eating behavior of rodents. Infected apples were offered to a group of eight rodents, and sterile apples were offered to a group of 4 rodents. The amount of grams of apples consumed per kg body weight are given in the dataset below.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>rodents <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">weight =</span> <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">33</span>, <span class="dv">48</span>, <span class="dv">34</span>, <span class="dv">112</span>, <span class="dv">369</span>, <span class="dv">64</span>, <span class="dv">44</span>, <span class="dv">177</span>, <span class="dv">80</span>, <span class="dv">141</span>, <span class="dv">332</span>),</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;treat&quot;</span>, <span class="dv">8</span>), <span class="fu">rep</span>(<span class="st">&quot;ctrl&quot;</span>, <span class="dv">4</span>)))</span>
@@ -618,50 +606,33 @@ dataset below.</p>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>group)</span></code></pre></div>
 <p><img src="08_ExperimentalDesignII_1_rodents_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
-<p>In the data exploration we do not have enough data to evaluate the
-assumptions.</p>
-<p>Suppose that the assumptions are valid and that standard deviation in
-the population would be equal to the ones you observed in the
-experiment.</p>
+<p>In the data exploration we do not have enough data to evaluate the assumptions.</p>
+<p>Suppose that the assumptions are valid and that standard deviation in the population would be equal to the ones you observed in the experiment.</p>
 <ol style="list-style-type: decimal">
-<li>What is the power of the experiment if the effect size and standard
-deviation in the population would be equal to the ones you observed in
-the experiment</li>
-<li>What would the power by if number of rodents would balanced in both
-groups</li>
-<li>How many observations would you need to pick up the treatment effect
-with a power of 90%?</li>
-<li>How many observations would you need to pick up the treatment effect
-of 60 g/kg with a power of 90%?</li>
+<li>What is the power of the experiment if the effect size and standard deviation in the population would be equal to the ones you observed in the experiment</li>
+<li>What would the power by if number of rodents would balanced in both groups</li>
+<li>How many observations would you need to pick up the treatment effect with a power of 90%?</li>
+<li>How many observations would you need to pick up the treatment effect of 60 g/kg with a power of 90%?</li>
 </ol>
 </div>
 </div>
 <div id="analysis" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Analysis</h1>
-<p>We will model the data using a linear model with one dummy
-variable.</p>
+<p>We will model the data using a linear model with one dummy variable.</p>
 <p><span class="math display">\[
 y_i = \beta_0 + \beta_1 x_{t,i} +
 \epsilon_i
-\]</span> with <span class="math inline">\(x_{p,i} = 0\)</span> if the
-rodent is subjected the control treatment with sterile apples and <span
-class="math inline">\(x_{t,i} = 1\)</span> if rodent receives the
-treatment with infected apples.</p>
+\]</span> with <span class="math inline">\(x_{p,i} = 0\)</span> if the rodent is subjected the control treatment with sterile apples and <span class="math inline">\(x_{t,i} = 1\)</span> if rodent receives the treatment with infected apples.</p>
 <ul>
 <li>Estimated effect size?</li>
 </ul>
-<p>The average difference in relative abundance of Staphylococcus of
-patients of the transplant and the placebo group.</p>
+<p>The average difference in relative abundance of Staphylococcus of patients of the transplant and the placebo group.</p>
 <p><span class="math display">\[
 \hat \beta_1 = \bar y_t - \bar y_c
 \]</span></p>
 <ul>
-<li><span class="math inline">\(H_0\)</span>: rodents eat consume on
-average the same amount of apples per kg body weight when they are fed
-with sterile or with infected apples.</li>
-<li><span class="math inline">\(H_1\)</span>: the average amount of
-apples in g/kg body weight is different when rodents are fed with
-sterile then as when they are fed with infected apples.</li>
+<li><span class="math inline">\(H_0\)</span>: rodents eat consume on average the same amount of apples per kg body weight when they are fed with sterile or with infected apples.</li>
+<li><span class="math inline">\(H_1\)</span>: the average amount of apples in g/kg body weight is different when rodents are fed with sterile then as when they are fed with infected apples.</li>
 </ul>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> group, rodents)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div>
@@ -683,25 +654,17 @@ sterile then as when they are fed with infected apples.</li>
 ## Residual standard error: 114.1 on 10 degrees of freedom
 ## Multiple R-squared:  0.1509, Adjusted R-squared:  0.06601 
 ## F-statistic: 1.777 on 1 and 10 DF,  p-value: 0.212</code></pre>
-<p>With the current study and when we assume that the assumptions of the
-model hold, we conclude that the amount of apples that rodents on
-average consume does not differ significantly between the group that was
-fed with sterile apples and the group that was fed with infected
-apples.</p>
+<p>With the current study and when we assume that the assumptions of the model hold, we conclude that the amount of apples that rodents on average consume does not differ significantly between the group that was fed with sterile apples and the group that was fed with infected apples.</p>
 </div>
 <div id="power-analyses" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Power analyses</h1>
 <div id="question-1" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Question 1</h2>
-<p>What is the power of the experiment if the effect size and standard
-deviation in the population would be equal to the ones you observed in
-the experiment?</p>
+<p>What is the power of the experiment if the effect size and standard deviation in the population would be equal to the ones you observed in the experiment?</p>
 </div>
 <div id="simulation-function" class="section level2" number="4.2">
-<h2><span class="header-section-number">4.2</span> Simulation
-function</h2>
-<p>We provide you with a function to simulate data similar to that of
-our experiment under our model assumptions.</p>
+<h2><span class="header-section-number">4.2</span> Simulation function</h2>
+<p>We provide you with a function to simulate data similar to that of our experiment under our model assumptions.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>simFast <span class="ot">&lt;-</span> <span class="cf">function</span>(form, data, betas, sd, contrasts, <span class="at">alpha =</span> .<span class="dv">05</span>, <span class="at">nSim =</span> <span class="dv">10000</span>) {</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  ySim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">nrow</span>(data) <span class="sc">*</span> nSim, <span class="at">sd =</span> sd)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dim</span>(ySim) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">nrow</span>(data), nSim)</span>
@@ -720,29 +683,18 @@ our experiment under our model assumptions.</p>
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  pvals <span class="ot">&lt;-</span> <span class="fu">pt</span>(<span class="fu">abs</span>(tstats), fitAll<span class="sc">$</span>df.residual, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>) <span class="sc">*</span> <span class="dv">2</span></span>
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">mean</span>(pvals <span class="sc">&lt;</span> alpha))</span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>Without going into the full code details, this function allows us to
-simulate data similar to that of our experiment under our model
-assumptions, given the following inputs:</p>
+<p>Without going into the full code details, this function allows us to simulate data similar to that of our experiment under our model assumptions, given the following inputs:</p>
 <ul>
-<li><code>form</code>: model formula for the experiment we want to
-simulate</li>
-<li><code>data</code>: the target dataset on which we want to base our
-simulations on</li>
-<li><code>betas</code>: the linear regression coefficients for the
-target dataset</li>
-<li><code>sd</code>: the residual standard errors from the linear
-regression model fit on the target dataset</li>
-<li><code>contrasts</code>: comparison of interest, i.e. which
-(combination of) model parameters we would like to assess</li>
-<li><code>alpha</code>: alpha-level at which to conduct the hypothesis
-testing</li>
+<li><code>form</code>: model formula for the experiment we want to simulate</li>
+<li><code>data</code>: the target dataset on which we want to base our simulations on</li>
+<li><code>betas</code>: the linear regression coefficients for the target dataset</li>
+<li><code>sd</code>: the residual standard errors from the linear regression model fit on the target dataset</li>
+<li><code>contrasts</code>: comparison of interest, i.e. which (combination of) model parameters we would like to assess</li>
+<li><code>alpha</code>: alpha-level at which to conduct the hypothesis testing</li>
 <li><code>nSim</code>: number of datasets we would like to simulate</li>
 </ul>
-<p>To simulate new data based on our target dataset <code>ç</code>, we
-will need to fill in all the arguments to the <code>simFast</code>
-function.</p>
-<p><strong>Hint: for the betas and sd, we will need to fit a linear
-model first!</strong></p>
+<p>To simulate new data based on our target dataset <code>ç</code>, we will need to fill in all the arguments to the <code>simFast</code> function.</p>
+<p><strong>Hint: for the betas and sd, we will need to fit a linear model first!</strong></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>power1 <span class="ot">&lt;-</span> <span class="fu">simFast</span>(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">form =</span> ...,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ...,</span>
@@ -757,10 +709,7 @@ model first!</strong></p>
 </div>
 <div id="question-2" class="section level2" number="4.3">
 <h2><span class="header-section-number">4.3</span> Question 2</h2>
-<p>What would the power by if number of rodents would balanced in both
-groups? Again, we simulate a large number of new experiments. Adjust one
-more more of the inputs to the <code>simFast</code> to allow for
-addressing this question.</p>
+<p>What would the power by if number of rodents would balanced in both groups? Again, we simulate a large number of new experiments. Adjust one more more of the inputs to the <code>simFast</code> to allow for addressing this question.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>power2 <span class="ot">&lt;-</span> <span class="fu">simFast</span>(</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">form =</span> ...,</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ...,</span>
@@ -774,24 +723,16 @@ addressing this question.</p>
 </div>
 <div id="question-3" class="section level2" number="4.4">
 <h2><span class="header-section-number">4.4</span> Question 3</h2>
-<p>How many observations would you need to pick up the treatment effect
-with a power of 90%?</p>
-<p>This will require us to establish a relationship between sample size
-and power. In turn, this will require us to perform a “parameter sweep”
-over different values of sample size and compute the power for each of
-them.</p>
+<p>How many observations would you need to pick up the treatment effect with a power of 90%?</p>
+<p>This will require us to establish a relationship between sample size and power. In turn, this will require us to perform a “parameter sweep” over different values of sample size and compute the power for each of them.</p>
 </div>
 <div id="question-4" class="section level2" number="4.5">
 <h2><span class="header-section-number">4.5</span> Question 4</h2>
-<p>Suppose that we would like to pick up an effect size of <span
-class="math inline">\(\beta_1 = 60 g/kg\)</span>. How many samples would
-be required in each group to obtain a power of 90%?</p>
+<p>Suppose that we would like to pick up an effect size of <span class="math inline">\(\beta_1 = 60 g/kg\)</span>. How many samples would be required in each group to obtain a power of 90%?</p>
 <p>Note, that</p>
 <ul>
-<li>we do a two-sided test so the sign of the effect size is
-arbitrary.</li>
-<li>the intercept in the power analysis is also arbitrary so we could
-also set it at 0.</li>
+<li>we do a two-sided test so the sign of the effect size is arbitrary.</li>
+<li>the intercept in the power analysis is also arbitrary so we could also set it at 0.</li>
 </ul>
 </div>
 </div>

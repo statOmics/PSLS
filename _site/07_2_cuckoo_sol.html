@@ -549,33 +549,18 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 7.2: ANOVA on the cuckoo dataset -
-solution</h1>
+<h1 class="title toc-ignore">Exercise 7.2: ANOVA on the cuckoo dataset - solution</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="cuckoo-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Cuckoo dataset</h1>
-<p>The common cuckoo does not build its own nest: it prefers to lay its
-eggs in another birds’ nest. It is known, since 1892, that the type of
-cuckoo bird eggs are different between different locations. In a study
-from 1940, it was shown that cuckoos return to the same nesting area
-each year, and that they always pick the same bird species to be a
-“foster parent” for their eggs.</p>
-<p>Over the years, this has lead to the development of geographically
-determined subspecies of cuckoos. These subspecies have evolved in such
-a way that their eggs look as similar as possible as those of their
-foster parents.</p>
-<p>The cuckoo dataset contains information on 120 Cuckoo eggs, obtained
-from randomly selected “foster” nests. For these eggs, researchers have
-measured the <code>length</code> (in mm) and established the
-<code>type</code> (species) of foster parent. The type column is coded
-as follows:</p>
+<p>The common cuckoo does not build its own nest: it prefers to lay its eggs in another birds’ nest. It is known, since 1892, that the type of cuckoo bird eggs are different between different locations. In a study from 1940, it was shown that cuckoos return to the same nesting area each year, and that they always pick the same bird species to be a “foster parent” for their eggs.</p>
+<p>Over the years, this has lead to the development of geographically determined subspecies of cuckoos. These subspecies have evolved in such a way that their eggs look as similar as possible as those of their foster parents.</p>
+<p>The cuckoo dataset contains information on 120 Cuckoo eggs, obtained from randomly selected “foster” nests. For these eggs, researchers have measured the <code>length</code> (in mm) and established the <code>type</code> (species) of foster parent. The type column is coded as follows:</p>
 <ul>
 <li><code>type=1</code>: Meadow pipit</li>
 <li><code>type=2</code>: Tree pipit</li>
@@ -587,12 +572,8 @@ as follows:</p>
 </div>
 <div id="goal" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Goal</h1>
-<p>The researchers want totest if the type of foster parent has an
-effect on the average length of the cuckoo eggs.</p>
-<p>In theory, they want to study this for all six species. Previously,
-we looked at a single pairwise comparison between the European robin and
-the Eurasian wren with a t-test. Here, we will analyse all types
-simultaneously with ANOVA.</p>
+<p>The researchers want totest if the type of foster parent has an effect on the average length of the cuckoo eggs.</p>
+<p>In theory, they want to study this for all six species. Previously, we looked at a single pairwise comparison between the European robin and the Eurasian wren with a t-test. Here, we will analyse all types simultaneously with ANOVA.</p>
 <p>Load the required libraries</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 <div id="import-the-data" class="section level2" number="2.1">
@@ -608,8 +589,7 @@ simultaneously with ANOVA.</p>
 </div>
 <div id="data-tidying" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Data tidying</h1>
-<p>It seems that the <code>tpye</code> column is a <code>double</code>
-rather than a <code>factor</code>. Let’s fix this:</p>
+<p>It seems that the <code>tpye</code> column is a <code>double</code> rather than a <code>factor</code>. Let’s fix this:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Cuckoo <span class="ot">&lt;-</span> Cuckoo <span class="sc">%&gt;%</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">as.factor</span>(type)) <span class="sc">%&gt;%</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">recode</span>(type,</span>
@@ -645,39 +625,25 @@ rather than a <code>factor</code>. Let’s fix this:</p>
 </div>
 <div id="anova" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> ANOVA</h1>
-<p>To study if the observed differences in average egg length between
-the different foster bird types are significant, we may perform an
-ANOVA.</p>
-<div id="formulate-null-and-alternative-hypothesis"
-class="section level2" number="5.1">
-<h2><span class="header-section-number">5.1</span> Formulate null and
-alternative hypothesis</h2>
-<p>The null hypothesis of ANOVA states that: <span
-class="math inline">\(H0\)</span>: The mean egg length is equal between
-the different bird types.</p>
-<p>The alternative hypothesis of ANOVA states that: <span
-class="math inline">\(HA\)</span>: The mean egg length for at least one
-bird type is different from the mean egg length in at least one other
-bird type.</p>
+<p>To study if the observed differences in average egg length between the different foster bird types are significant, we may perform an ANOVA.</p>
+<div id="formulate-null-and-alternative-hypothesis" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Formulate null and alternative hypothesis</h2>
+<p>The null hypothesis of ANOVA states that: <span class="math inline">\(H0\)</span>: The mean egg length is equal between the different bird types.</p>
+<p>The alternative hypothesis of ANOVA states that: <span class="math inline">\(HA\)</span>: The mean egg length for at least one bird type is different from the mean egg length in at least one other bird type.</p>
 </div>
 <div id="parameter-estimation" class="section level2" number="5.2">
-<h2><span class="header-section-number">5.2</span> Parameter
-estimation</h2>
+<h2><span class="header-section-number">5.2</span> Parameter estimation</h2>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(length <span class="sc">~</span> type, Cuckoo)</span></code></pre></div>
 </div>
 <div id="check-assumptions" class="section level2" number="5.3">
-<h2><span class="header-section-number">5.3</span> Check
-assumptions</h2>
-<p>Before we may proceed with the analysis, we must make sure that all
-assumptions for ANOVA are met. ANOVA has three assumptions:</p>
+<h2><span class="header-section-number">5.3</span> Check assumptions</h2>
+<p>Before we may proceed with the analysis, we must make sure that all assumptions for ANOVA are met. ANOVA has three assumptions:</p>
 <ol style="list-style-type: decimal">
 <li>The observations are independent of each other (in all groups)</li>
 <li>The data (length) must be normally distributed (in all groups)</li>
 <li>The variability within all groups is similar</li>
 </ol>
-<p>The first assumption is met, as we may assume that there are no
-specific patterns of correlation between the randomly selected
-nests.</p>
+<p>The first assumption is met, as we may assume that there are no specific patterns of correlation between the randomly selected nests.</p>
 <p>To check the normality assumption, we will use QQ plots.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod1, <span class="at">which =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="07_2_cuckoo_sol_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
@@ -688,13 +654,10 @@ nests.</p>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>type)</span></code></pre></div>
 <p><img src="07_2_cuckoo_sol_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>There seem to be no clear deviations from normality.</p>
-<p>The third assumption of equal variances seems to be met based on the
-visualization with the boxplots (see above).</p>
+<p>The third assumption of equal variances seems to be met based on the visualization with the boxplots (see above).</p>
 <p>As such, we may proceed with the ANOVA analysis.</p>
-<div id="simulate-to-train-your-skills-in-assessing-assumptions"
-class="section level3" number="5.3.1">
-<h3><span class="header-section-number">5.3.1</span> Simulate to train
-your skills in assessing assumptions</h3>
+<div id="simulate-to-train-your-skills-in-assessing-assumptions" class="section level3" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Simulate to train your skills in assessing assumptions</h3>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1031</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> mod1 <span class="sc">%&gt;%</span> <span class="fu">sigma</span>()</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>dataHlp <span class="ot">&lt;-</span> Cuckoo</span>
@@ -726,8 +689,7 @@ your skills in assessing assumptions</h3>
 <p><img src="07_2_cuckoo_sol_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">do.call</span>(gridExtra<span class="sc">::</span>grid.arrange, plotListQQ1)</span></code></pre></div>
 <p><img src="07_2_cuckoo_sol_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
-<p>The most deviating QQ-plot of the residuals in the nine simulation
-runs:</p>
+<p>The most deviating QQ-plot of the residuals in the nine simulation runs:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(simModels[[<span class="dv">8</span>]], <span class="at">which =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="07_2_cuckoo_sol_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
@@ -742,29 +704,15 @@ runs:</p>
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["int"],"align":["right"]},{"label":["Sum Sq"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Mean Sq"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"5","2":"41.16107","3":"8.232215","4":"4.746715","5":"0.0005621103","_rn_":"type"},{"1":"114","2":"197.70990","3":"1.734297","4":"NA","5":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>The p-value of the ANOVA analysis is extremely significant (p-value
-&lt; 0.001), so we reject the null hypothesis that the mean egg length
-is equal between the different bird types. We can say that the mean egg
-length is significantly different between at least two bird types on the
-5% significance level.</p>
-<p>Based on this analysis, we do not yet know between which particular
-bird types there is a significant difference. To study this, we will
-perform the Tuckey post-hoc analysis.</p>
+<p>The p-value of the ANOVA analysis is extremely significant (p-value &lt; 0.001), so we reject the null hypothesis that the mean egg length is equal between the different bird types. We can say that the mean egg length is significantly different between at least two bird types on the 5% significance level.</p>
+<p>Based on this analysis, we do not yet know between which particular bird types there is a significant difference. To study this, we will perform the Tuckey post-hoc analysis.</p>
 </div>
 <div id="post-hoc-analysis" class="section level2" number="5.5">
-<h2><span class="header-section-number">5.5</span> Post-hoc
-analysis</h2>
-<p>We will perform a post-hoc analysis, to look at the difference in egg
-length between each pairwise comparison of bird types. Importantly, with
-this strategy, the p-values will be correctly adjusted for multiple
-testing.</p>
-<p>The null hypothesis for each pairwise test is that there is no
-difference in the mean egg length between both bird types.</p>
-<p>The alternative hypothesis for each pairwise test states that there
-is indeed a difference in the mean egg length between both bird
-types.</p>
-<p>We will also calculate the confidence interval on the mean
-differences.</p>
+<h2><span class="header-section-number">5.5</span> Post-hoc analysis</h2>
+<p>We will perform a post-hoc analysis, to look at the difference in egg length between each pairwise comparison of bird types. Importantly, with this strategy, the p-values will be correctly adjusted for multiple testing.</p>
+<p>The null hypothesis for each pairwise test is that there is no difference in the mean egg length between both bird types.</p>
+<p>The alternative hypothesis for each pairwise test states that there is indeed a difference in the mean egg length between both bird types.</p>
+<p>We will also calculate the confidence interval on the mean differences.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>mcp <span class="ot">&lt;-</span> <span class="fu">glht</span>(mod1, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">type =</span> <span class="st">&quot;Tukey&quot;</span>))</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mcp)</span></code></pre></div>
@@ -829,26 +777,16 @@ differences.</p>
 </div>
 <div id="conclusion" class="section level2" number="5.6">
 <h2><span class="header-section-number">5.6</span> Conclusion</h2>
-<p>There association between the mean length of a cuckoo’s egg and the
-foster bird species is an extremely significant (p &lt;&lt; 0.001).</p>
-<p>The mean length of cuckoo’s eggs in nests of the Eurasian wern are
-smaller as compared to those from all other bird species in the
-study:</p>
+<p>There association between the mean length of a cuckoo’s egg and the foster bird species is an extremely significant (p &lt;&lt; 0.001).</p>
+<p>The mean length of cuckoo’s eggs in nests of the Eurasian wern are smaller as compared to those from all other bird species in the study:</p>
 <ul>
-<li>the meadow pipit (adjusted p-value = 0.009, mean difference =
--1.4mm, 95% CI [-2.5, -0.2])</li>
-<li>the tree pipit (adjusted p-value = 0.001, mean difference = -2mm,
-95% CI [-3.3, -0.6])</li>
-<li>the dunnock (adjusted p-value = 0.001, mean difference = -2mm, 95%
-CI [-3.4, -0.6])</li>
-<li>the European robin (adjusted p-value = 0.03, mean difference =
--1.4mm, 95% CI [-2.8, -0.1])</li>
-<li>the white wagtail (adjusted p-value = 0.004, mean difference =
--1.8mm, 95% CI [-3.2, -0.4])</li>
+<li>the meadow pipit (adjusted p-value = 0.009, mean difference = -1.4mm, 95% CI [-2.5, -0.2])</li>
+<li>the tree pipit (adjusted p-value = 0.001, mean difference = -2mm, 95% CI [-3.3, -0.6])</li>
+<li>the dunnock (adjusted p-value = 0.001, mean difference = -2mm, 95% CI [-3.4, -0.6])</li>
+<li>the European robin (adjusted p-value = 0.03, mean difference = -1.4mm, 95% CI [-2.8, -0.1])</li>
+<li>the white wagtail (adjusted p-value = 0.004, mean difference = -1.8mm, 95% CI [-3.2, -0.4])</li>
 </ul>
-<p>The mean length of the cuckoo bird’s eggs for all other pairwise
-comparisons between foster bird species are not statistically
-significantly different at the 5% level.</p>
+<p>The mean length of the cuckoo bird’s eggs for all other pairwise comparisons between foster bird species are not statistically significantly different at the 5% level.</p>
 </div>
 </div>
 

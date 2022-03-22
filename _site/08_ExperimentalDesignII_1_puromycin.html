@@ -549,12 +549,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Experimental Design II: replication and
-power exercise 2</h1>
+<h1 class="title toc-ignore">Experimental Design II: replication and power exercise 2</h1>
 <h4 class="author">Lieven Clement &amp; Alexandre Segers</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
@@ -562,56 +559,36 @@ class="uri">https://statomics.github.io</a>)</h4>
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
 <div id="puromycin-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Puromycin dataset</h1>
-<p>Data on the velocity of an enzymatic reaction were obtained by
-Treloar (1974). The number of counts per minute of radioactive product
-from the reaction was measured as a function of substrate concentration
-in parts per million (ppm) and from these counts the initial rate (or
-velocity) of the reaction was calculated (counts/min/min). The
-experiment was conducted once with the enzyme treated with Puromycin,
-and once with the enzyme untreated.</p>
+<p>Data on the velocity of an enzymatic reaction were obtained by Treloar (1974). The number of counts per minute of radioactive product from the reaction was measured as a function of substrate concentration in parts per million (ppm) and from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min). The experiment was conducted once with the enzyme treated with Puromycin, and once with the enzyme untreated.</p>
 <p>Import libraries</p>
 </div>
 <div id="import-data" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Import data</h1>
-<p>In contrast to the other datasets we have worked with so far, this
-dataset is not available through a URL link. In stead, the data is
-directly available from an R package that was pre-installed in your R
-working environment. As such, we can simple do</p>
+<p>In contrast to the other datasets we have worked with so far, this dataset is not available through a URL link. In stead, the data is directly available from an R package that was pre-installed in your R working environment. As such, we can simple do</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Puromycin)</span></code></pre></div>
-<p>and an object called <code>Puromycin</code> is immediately available
-in your working environment.</p>
+<p>and an object called <code>Puromycin</code> is immediately available in your working environment.</p>
 </div>
 <div id="data-wrangling" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Data wrangling</h1>
-<p>Filter the data so that we are left with only the “treated”
-enzymes.</p>
+<p>Filter the data so that we are left with only the “treated” enzymes.</p>
 </div>
 <div id="data-exploration" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Data exploration</h1>
-<p>In the original publication the authors observed a linear
-relationship between the log10 substrate concentration and the reaction
-rate. Make a visualization that allows for reproducing this finding.</p>
+<p>In the original publication the authors observed a linear relationship between the log10 substrate concentration and the reaction rate. Make a visualization that allows for reproducing this finding.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Puromycin <span class="sc">%&gt;%</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(...) <span class="sc">+</span> <span class="co"># select which elements of the dataset we need to visualize</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  ... <span class="co"># use a relevant plotting geometry</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">stat_smooth</span>(...) <span class="sc">+</span> <span class="co"># draw a smooth line through the data cloud</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(...) <span class="co"># draw a straight (linear regression) line through the data cloud</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>... <span class="co"># you can add some extra elements like axis labels, title, ...</span></span></code></pre></div>
-<p>Note, that the researchers have chosen 6 different substrate
-concentrations and conducted an experiment where they assessed the
-initial reaction rate twice for every concentration.</p>
+<p>Note, that the researchers have chosen 6 different substrate concentrations and conducted an experiment where they assessed the initial reaction rate twice for every concentration.</p>
 </div>
 <div id="question-1" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Question 1</h1>
-<p>Use the data to calculate the power to pick up an association that is
-as least as strong as the association you observed in the dataset when
-using an experiment with the same design.</p>
+<p>Use the data to calculate the power to pick up an association that is as least as strong as the association you observed in the dataset when using an experiment with the same design.</p>
 <div id="simulation-function" class="section level2" number="5.1">
-<h2><span class="header-section-number">5.1</span> Simulation
-function</h2>
-<p>For this first question, we will need a function that allows us to
-simulate data similar to that of our experiment under our model
-assumptions. We provide this function for you:</p>
+<h2><span class="header-section-number">5.1</span> Simulation function</h2>
+<p>For this first question, we will need a function that allows us to simulate data similar to that of our experiment under our model assumptions. We provide this function for you:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>simFast <span class="ot">&lt;-</span> <span class="cf">function</span>(form, data, betas, sd, contrasts, <span class="at">alpha =</span> .<span class="dv">05</span>, <span class="at">nSim =</span> <span class="dv">10000</span>) {</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  ySim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">nrow</span>(data) <span class="sc">*</span> nSim, <span class="at">sd =</span> sd)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dim</span>(ySim) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">nrow</span>(data), nSim)</span>
@@ -630,29 +607,18 @@ assumptions. We provide this function for you:</p>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  pvals <span class="ot">&lt;-</span> <span class="fu">pt</span>(<span class="fu">abs</span>(tstats), fitAll<span class="sc">$</span>df.residual, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>) <span class="sc">*</span> <span class="dv">2</span></span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">mean</span>(pvals <span class="sc">&lt;</span> alpha))</span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>Without going into the full code details, this function allows us to
-simulate data similar to that of our experiment under our model
-assumptions, given the following inputs:</p>
+<p>Without going into the full code details, this function allows us to simulate data similar to that of our experiment under our model assumptions, given the following inputs:</p>
 <ul>
-<li><code>form</code>: model formula for the experiment we want to
-simulate</li>
-<li><code>data</code>: the target dataset on which we want to base our
-simulations on</li>
-<li><code>betas</code>: the linear regression coefficients for the
-target dataset</li>
-<li><code>sd</code>: the residual standard errors from the linear
-regression model fit on the target dataset</li>
-<li><code>contrasts</code>: comparison of interest, i.e. which
-(combination of) model parameters we would like to assess</li>
-<li><code>alpha</code>: alpha-level at which to conduct the hypothesis
-testing</li>
+<li><code>form</code>: model formula for the experiment we want to simulate</li>
+<li><code>data</code>: the target dataset on which we want to base our simulations on</li>
+<li><code>betas</code>: the linear regression coefficients for the target dataset</li>
+<li><code>sd</code>: the residual standard errors from the linear regression model fit on the target dataset</li>
+<li><code>contrasts</code>: comparison of interest, i.e. which (combination of) model parameters we would like to assess</li>
+<li><code>alpha</code>: alpha-level at which to conduct the hypothesis testing</li>
 <li><code>nSim</code>: number of datasets we would like to simulate</li>
 </ul>
-<p>To simulate new data based on our target dataset
-<code>Puromycin</code>, we will need to fill in all the arguments to the
-<code>simFast</code> function.</p>
-<p><strong>Hint: for the betas and sd, we will need to fit a linear
-model first!</strong></p>
+<p>To simulate new data based on our target dataset <code>Puromycin</code>, we will need to fill in all the arguments to the <code>simFast</code> function.</p>
+<p><strong>Hint: for the betas and sd, we will need to fit a linear model first!</strong></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>power1 <span class="ot">&lt;-</span> <span class="fu">simFast</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">form =</span> ...,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ...,</span>
@@ -667,13 +633,8 @@ model first!</strong></p>
 </div>
 <div id="question-2" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Question 2</h1>
-<p>Use the data to calculate the power to pick up an association where
-the reaction rate increases on average with 10 counts/min when the
-substrate concentration is 10 times higher (<span
-class="math inline">\(\beta_1=10\)</span>).</p>
-<p>Again, we will need to fill in all the arguments to the
-<code>simFast</code> function. This time, however, the question is
-slightly different from question 1. Adjust the inputs accordingly!</p>
+<p>Use the data to calculate the power to pick up an association where the reaction rate increases on average with 10 counts/min when the substrate concentration is 10 times higher (<span class="math inline">\(\beta_1=10\)</span>).</p>
+<p>Again, we will need to fill in all the arguments to the <code>simFast</code> function. This time, however, the question is slightly different from question 1. Adjust the inputs accordingly!</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>power2 <span class="ot">&lt;-</span> <span class="fu">simFast</span>(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">form =</span> ...,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ...,</span>
@@ -684,19 +645,12 @@ slightly different from question 1. Adjust the inputs accordingly!</p>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">nSim =</span> ...</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>power2</span></code></pre></div>
-<p><strong>Compare your result with the one from question
-1!</strong></p>
+<p><strong>Compare your result with the one from question 1!</strong></p>
 </div>
 <div id="question-3" class="section level1" number="7">
 <h1><span class="header-section-number">7</span> Question 3</h1>
-<p>Use the data to calculate the number of repeats you need for each
-concentration to pick up an association where the reaction rate
-increases on average with 10 counts/min when the substrate concentration
-is 10 times higher (<span class="math inline">\(\beta_1=10\)</span>)
-with a power of at least 90%.</p>
-<p><strong>Hint: this will require us to repeat the simulation process
-as many times</strong> <strong>as we have concentration
-values.</strong></p>
+<p>Use the data to calculate the number of repeats you need for each concentration to pick up an association where the reaction rate increases on average with 10 counts/min when the substrate concentration is 10 times higher (<span class="math inline">\(\beta_1=10\)</span>) with a power of at least 90%.</p>
+<p><strong>Hint: this will require us to repeat the simulation process as many times</strong> <strong>as we have concentration values.</strong></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>concentrations <span class="ot">&lt;-</span> Puromycin <span class="sc">%&gt;%</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(conc) <span class="sc">%&gt;%</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span>
@@ -716,8 +670,7 @@ values.</strong></p>
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">nSim =</span> ...</span>
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>Make a visualization that displays the power in function of the
-number of repeats in the data.</p>
+<p>Make a visualization that displays the power in function of the number of repeats in the data.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>powers <span class="sc">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(...) <span class="sc">+</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
@@ -725,13 +678,7 @@ number of repeats in the data.</p>
 </div>
 <div id="question-4" class="section level1" number="8">
 <h1><span class="header-section-number">8</span> Question 4</h1>
-<p>Suppose that you would set up an experiment with a design similar
-with the same concentrations as in the puromycin dataset and you have
-the following restriction: you need to use each concentration at least
-once and can setup at most 12 reactions, how would you choose your
-design points? Calculate the power for this design when the effect size
-is 10 counts/min per 10 times increase in the substrate concentration
-(<span class="math inline">\(\beta_1=10\)</span>).</p>
+<p>Suppose that you would set up an experiment with a design similar with the same concentrations as in the puromycin dataset and you have the following restriction: you need to use each concentration at least once and can setup at most 12 reactions, how would you choose your design points? Calculate the power for this design when the effect size is 10 counts/min per 10 times increase in the substrate concentration (<span class="math inline">\(\beta_1=10\)</span>).</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>concentrations <span class="ot">&lt;-</span> ...</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -752,8 +699,7 @@ is 10 counts/min per 10 times increase in the substrate concentration
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>simData</span>
 <span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>powerOpt</span></code></pre></div>
-<p>Make a visualization that displays the power in function of the
-number of repeats in the data.</p>
+<p>Make a visualization that displays the power in function of the number of repeats in the data.</p>
 <p>Inspect and interpret the results.</p>
 </div>
 

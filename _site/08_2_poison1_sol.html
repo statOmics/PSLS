@@ -549,35 +549,21 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 8.2: Non-additive linear model on
-the poison dataset</h1>
+<h1 class="title toc-ignore">Exercise 8.2: Non-additive linear model on the poison dataset</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="the-poison-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> The poison dataset</h1>
-<p>In this experiment, 96 fish (dojofish, goldfish and zebrafish) were
-placed separately in a tank with two liters of water and a certain dose
-(in mg) of the poison EI-43,064. The resistance of the fish against the
-poison was measured as the amount of minutes the fish survived after
-being exposed to the poison (<code>Surv_time</code>, in minutes).
-Additionally, the weight of each fish was measured.</p>
+<p>In this experiment, 96 fish (dojofish, goldfish and zebrafish) were placed separately in a tank with two liters of water and a certain dose (in mg) of the poison EI-43,064. The resistance of the fish against the poison was measured as the amount of minutes the fish survived after being exposed to the poison (<code>Surv_time</code>, in minutes). Additionally, the weight of each fish was measured.</p>
 </div>
 <div id="goal" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Goal</h1>
-<p>Suppose that researchers are ,mainly interested in studying the
-effect of poison dose on the survival of fish. They know however that
-the weight can also impact the survival and might also change the effect
-of the poison dose.</p>
-<p>In this tutorial session we will focus on Dojofish and we will model
-the survival time in function of the dose and the weight of the fish,
-<strong>and including an interaction between dose and
-weight.</strong></p>
+<p>Suppose that researchers are ,mainly interested in studying the effect of poison dose on the survival of fish. They know however that the weight can also impact the survival and might also change the effect of the poison dose.</p>
+<p>In this tutorial session we will focus on Dojofish and we will model the survival time in function of the dose and the weight of the fish, <strong>and including an interaction between dose and weight.</strong></p>
 <p>Load libraries</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -596,18 +582,9 @@ weight.</strong></p>
 <ol style="list-style-type: decimal">
 <li><p>Capitalise the fist column name</p></li>
 <li><p>Set the Species column as a factor</p></li>
-<li><p>Change the species factor levels from 0, 1 and 2 to Dojofish,
-Goldfish and Zebrafish. <em>Hint</em>: use the <code>fct_recode</code>
-function.</p></li>
-<li><p>In previous analysis on this dataset
-(<code>Simple linear regression session</code>), we performed a
-log-transformation on the response variable <code>Surv_time</code> to
-meet the normality and homoscedasticity assumptions of the linear model.
-Here, we will immediately work with log-transformed survival times;
-store these in the new variable <code>log2Surv_time</code> and remove
-the non-transformed values.</p></li>
-<li><p>Subset the data to only retain
-<strong>Dojofish</strong>.</p></li>
+<li><p>Change the species factor levels from 0, 1 and 2 to Dojofish, Goldfish and Zebrafish. <em>Hint</em>: use the <code>fct_recode</code> function.</p></li>
+<li><p>In previous analysis on this dataset (<code>Simple linear regression session</code>), we performed a log-transformation on the response variable <code>Surv_time</code> to meet the normality and homoscedasticity assumptions of the linear model. Here, we will immediately work with log-transformed survival times; store these in the new variable <code>log2Surv_time</code> and remove the non-transformed values.</p></li>
+<li><p>Subset the data to only retain <strong>Dojofish</strong>.</p></li>
 </ol>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>poison <span class="ot">&lt;-</span> poison <span class="sc">%&gt;%</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">&quot;Species&quot;</span> <span class="ot">=</span> <span class="st">&quot;species&quot;</span>) <span class="sc">%&gt;%</span></span>
@@ -626,23 +603,15 @@ the non-transformed values.</p></li>
 </div>
 <div id="data-exploration" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Data exploration</h1>
-<p>Prior to the analysis, we should explore our data. To start our data
-exploration, we will make use of the <code>ggpairs</code> function of
-the <code>GGally</code> R package. This function will generate a
-visualization containing multiple panels, which display (1) univariate
-plots of the different variables in our dataset, (2) bivariate plots and
-(3) correlation coefficients between the different variables.</p>
+<p>Prior to the analysis, we should explore our data. To start our data exploration, we will make use of the <code>ggpairs</code> function of the <code>GGally</code> R package. This function will generate a visualization containing multiple panels, which display (1) univariate plots of the different variables in our dataset, (2) bivariate plots and (3) correlation coefficients between the different variables.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>poison <span class="sc">%&gt;%</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggpairs</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code></pre></div>
 <p><img src="08_2_poison1_sol_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Based on these plots, we observe that:</p>
 <ul>
-<li>The survival time seems to be associated with dose and fish
-weight.</li>
+<li>The survival time seems to be associated with dose and fish weight.</li>
 </ul>
-<p>From the tutorial of H6 we have seen that the fish weights were not
-nicely uniform across the different poison dosages due to the
-randomisation.</p>
+<p>From the tutorial of H6 we have seen that the fish weights were not nicely uniform across the different poison dosages due to the randomisation.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>poison <span class="sc">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Species <span class="sc">==</span> <span class="st">&quot;Dojofish&quot;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Dose, <span class="at">y =</span> Weight)) <span class="sc">+</span></span>
@@ -659,32 +628,25 @@ randomisation.</p>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="08_2_poison1_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
-<div id="analysis-with-main-effect-and-interaction-for-dose-and-weight"
-class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Analysis with main
-effect and interaction for dose and weight</h1>
+<div id="analysis-with-main-effect-and-interaction-for-dose-and-weight" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Analysis with main effect and interaction for dose and weight</h1>
 <div id="model-specification" class="section level2" number="6.1">
-<h2><span class="header-section-number">6.1</span> Model
-specification</h2>
+<h2><span class="header-section-number">6.1</span> Model specification</h2>
 <p><span class="math display">\[
 y_i=\beta_0+\beta_d x_d + \beta_g x_g +\beta_{d:g} x_d x_g+ \epsilon_i,
 \]</span></p>
-<p>with <span class="math inline">\(\epsilon_i \text{ i.i.d. }
-N(0,\sigma^2)\)</span></p>
+<p>with <span class="math inline">\(\epsilon_i \text{ i.i.d. } N(0,\sigma^2)\)</span></p>
 </div>
 <div id="assumptions" class="section level2" number="6.2">
 <h2><span class="header-section-number">6.2</span> Assumptions</h2>
-<p>The model will again be fit to allow for assessing the model
-assumptions</p>
+<p>The model will again be fit to allow for assessing the model assumptions</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lm_Int &lt;- lm(log2Surv_time ~ Dose+Weight+Dose:Weight, data = poison) # equivalent</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>lm_Int <span class="ot">&lt;-</span> <span class="fu">lm</span>(log2Surv_time <span class="sc">~</span> Dose <span class="sc">*</span> Weight, <span class="at">data =</span> poison) <span class="co"># * -&gt; short notation</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm_Int)</span></code></pre></div>
 <p><img src="08_2_poison1_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>The plots look very similar to those of the additive model from the
-previous exercise so we know that all assumptions are
-<strong>met</strong>.</p>
+<p>The plots look very similar to those of the additive model from the previous exercise so we know that all assumptions are <strong>met</strong>.</p>
 </div>
 <div id="inference" class="section level2" number="6.3">
 <h2><span class="header-section-number">6.3</span> Inference</h2>
@@ -709,39 +671,18 @@ previous exercise so we know that all assumptions are
 ## Multiple R-squared:  0.5173, Adjusted R-squared:  0.4759 
 ## F-statistic:  12.5 on 3 and 35 DF,  p-value: 1.036e-05</code></pre>
 </div>
-<div id="interpretation-of-model-parameters" class="section level2"
-number="6.4">
-<h2><span class="header-section-number">6.4</span> Interpretation of
-model parameters</h2>
+<div id="interpretation-of-model-parameters" class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> Interpretation of model parameters</h2>
 <p>We may interpret the estimate parameters as follows:</p>
 <ul>
-<li><p>When we compare the log2 survival of fish with weight <span
-class="math inline">\(x_g\)</span> that are exposed to a dose that
-differs with 1 mg/l, the expected log2 survival time will be <span
-class="math inline">\(\beta_d+\beta_{d:g}*x_g\)</span> higher for the
-fish that were exposed to the highest dose.</p></li>
-<li><p>When we compare the log2 survival of fish exposed to dose <span
-class="math inline">\(x_g\)</span>, but that have a weight that differs
-with 1 g, the expected log2 survival time will be <span
-class="math inline">\(\beta_d+\beta_{d:g}*x_g\)</span> higher for fish
-with the highest weight.</p></li>
+<li><p>When we compare the log2 survival of fish with weight <span class="math inline">\(x_g\)</span> that are exposed to a dose that differs with 1 mg/l, the expected log2 survival time will be <span class="math inline">\(\beta_d+\beta_{d:g}*x_g\)</span> higher for the fish that were exposed to the highest dose.</p></li>
+<li><p>When we compare the log2 survival of fish exposed to dose <span class="math inline">\(x_g\)</span>, but that have a weight that differs with 1 g, the expected log2 survival time will be <span class="math inline">\(\beta_d+\beta_{d:g}*x_g\)</span> higher for fish with the highest weight.</p></li>
 </ul>
-<p>The parameter <span class="math inline">\(\beta_{d:g}\)</span> thus
-shows that the effect of dose on the log2 survival time is dependent on
-the weight of the fish, and, that the effect of weight on the log2
-survival time dependents on the dose that was administered.</p>
+<p>The parameter <span class="math inline">\(\beta_{d:g}\)</span> thus shows that the effect of dose on the log2 survival time is dependent on the weight of the fish, and, that the effect of weight on the log2 survival time dependents on the dose that was administered.</p>
 </div>
 <div id="inference-1" class="section level2" number="6.5">
 <h2><span class="header-section-number">6.5</span> Inference</h2>
-<p>The effect of dose is now parameterized by two model parameters
-(<span class="math inline">\(\beta_d\)</span> and <span
-class="math inline">\(\beta_{d:g}\)</span>). We first evaluate an
-<em>omnibus</em> hypotheses that there is no effect of dose, i.e., no
-main effect nor an interaction effect. We can test this with an F-test
-that compares a <em>full</em> model (1) containing a main effect for
-dose, a main effect for weight and an interaction between dose and
-weight with a model (2) that only contains a main effect for weight
-(i.e. no effect for dose).</p>
+<p>The effect of dose is now parameterized by two model parameters (<span class="math inline">\(\beta_d\)</span> and <span class="math inline">\(\beta_{d:g}\)</span>). We first evaluate an <em>omnibus</em> hypotheses that there is no effect of dose, i.e., no main effect nor an interaction effect. We can test this with an F-test that compares a <em>full</em> model (1) containing a main effect for dose, a main effect for weight and an interaction between dose and weight with a model (2) that only contains a main effect for weight (i.e. no effect for dose).</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>lmDojo_weight <span class="ot">&lt;-</span> <span class="fu">lm</span>(log2Surv_time <span class="sc">~</span> Weight, <span class="at">data =</span> poison)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(lmDojo_weight, lm_Int)</span></code></pre></div>
 <div data-pagedtable="false">
@@ -749,20 +690,14 @@ weight with a model (2) that only contains a main effect for weight
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Res.Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["RSS"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Sum of Sq"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"37","2":"10.470626","3":"NA","4":"NA","5":"NA","6":"NA","_rn_":"1"},{"1":"35","2":"6.058125","3":"2","4":"4.412501","5":"12.74631","6":"6.940617e-05","_rn_":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>We observe an extremely significant (overall, or global) effect for
-dose on the log2 survival time of dojofish (p-value &lt;&lt;0.001)`.</p>
+<p>We observe an extremely significant (overall, or global) effect for dose on the log2 survival time of dojofish (p-value &lt;&lt;0.001)`.</p>
 </div>
 <div id="conventional-approach" class="section level2" number="6.6">
-<h2><span class="header-section-number">6.6</span> Conventional
-approach</h2>
-<p>We already established that there is a significant overall effect of
-dose. Now, we will test if there is a significant interaction effect
-between dose and weight. Since we only have one interaction term in this
-model, this can be achieved in several ways:</p>
+<h2><span class="header-section-number">6.6</span> Conventional approach</h2>
+<p>We already established that there is a significant overall effect of dose. Now, we will test if there is a significant interaction effect between dose and weight. Since we only have one interaction term in this model, this can be achieved in several ways:</p>
 <ol style="list-style-type: decimal">
 <li>The <code>summary</code> function</li>
-<li>An F-test comparing models with and without the interaction
-effect</li>
+<li>An F-test comparing models with and without the interaction effect</li>
 <li>An ANOVA table with type III sum of squares</li>
 </ol>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm_Int) <span class="co"># 1</span></span></code></pre></div>
@@ -797,12 +732,8 @@ effect</li>
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sum Sq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.002430229","2":"1","3":"0.01404032","4":"0.9063554","_rn_":"(Intercept)"},{"1":"0.003567063","2":"1","3":"0.02060822","4":"0.8866747","_rn_":"Dose"},{"1":"0.348114636","2":"1","3":"2.01118522","4":"0.1649862","_rn_":"Weight"},{"1":"0.040087588","2":"1","3":"0.23160062","4":"0.6333347","_rn_":"Dose:Weight"},{"1":"6.058125383","2":"35","3":"NA","4":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>There is no significant interaction between dose and weight. As such,
-the effect of dose on survival is not signifiantly different between
-fish of different weight (p = 0.63).</p>
-<p>The conventional approach is to remove the interaction effect from
-the model. As such, we are left with the additive linear regression
-model.</p>
+<p>There is no significant interaction between dose and weight. As such, the effect of dose on survival is not signifiantly different between fish of different weight (p = 0.63).</p>
+<p>The conventional approach is to remove the interaction effect from the model. As such, we are left with the additive linear regression model.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm_additive)</span></code></pre></div>
 <pre><code>## 
 ## Call:
@@ -833,22 +764,15 @@ model.</p>
 ## Weight      1.4259918 3.1265018</code></pre>
 <div id="conclusion" class="section level3" number="6.6.1">
 <h3><span class="header-section-number">6.6.1</span> Conclusion</h3>
-<p>The conclusion is exactly the same as for the additive model analysis
-above (obviously, as we are dealing with the same model):</p>
-<p>The dose of the poison has an extremely significant effect on the
-survival time of dojofish (p-value &lt;&lt; 0.001). The geometric
-average of the survival time for dojofish that are exposed to a poison
-dose that is 1mg/L larger is approximately halved, factor = <span
-class="math inline">\(2^{\beta_d}=\)</span> 0.51) .</p>
-<p>The effect of dose on survival is not significantly different between
-fish of different weight. (p = 0.63).</p>
+<p>The conclusion is exactly the same as for the additive model analysis above (obviously, as we are dealing with the same model):</p>
+<p>The dose of the poison has an extremely significant effect on the survival time of dojofish (p-value &lt;&lt; 0.001). The geometric average of the survival time for dojofish that are exposed to a poison dose that is 1mg/L larger is approximately halved, factor = <span class="math inline">\(2^{\beta_d}=\)</span> 0.51) .</p>
+<p>The effect of dose on survival is not significantly different between fish of different weight. (p = 0.63).</p>
 </div>
 </div>
 </div>
 <div id="remark" class="section level1" number="7">
 <h1><span class="header-section-number">7</span> Remark</h1>
-<p>Note, that we have have to test if the interaction is significant
-before using the additive model.</p>
+<p>Note, that we have have to test if the interaction is significant before using the additive model.</p>
 </div>
 
 <div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgOC4yOiBOb24tYWRkaXRpdmUgbGluZWFyIG1vZGVsIG9uIHRoZSBwb2lzb24gZGF0YXNldCIKYXV0aG9yOiAiTGlldmVuIENsZW1lbnQgYW5kIEplcm9lbiBHaWxpcyIKZGF0ZTogInN0YXRPbWljcywgR2hlbnQgVW5pdmVyc2l0eSAoaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSIKLS0tCgojIFRoZSBwb2lzb24gZGF0YXNldAoKSW4gdGhpcyBleHBlcmltZW50LCA5NiBmaXNoIChkb2pvZmlzaCwgZ29sZGZpc2ggYW5kIHplYnJhZmlzaCkKd2VyZSBwbGFjZWQgc2VwYXJhdGVseSBpbiBhIHRhbmsgd2l0aCB0d28gbGl0ZXJzIG9mIHdhdGVyIGFuZAphIGNlcnRhaW4gZG9zZSAoaW4gbWcpIG9mIHRoZSBwb2lzb24gRUktNDMsMDY0LiBUaGUgcmVzaXN0YW5jZQpvZiB0aGUgZmlzaCBhZ2FpbnN0IHRoZSBwb2lzb24gd2FzIG1lYXN1cmVkIGFzIHRoZSBhbW91bnQgb2YKbWludXRlcyB0aGUgZmlzaCBzdXJ2aXZlZCBhZnRlciBiZWluZyBleHBvc2VkIHRvIHRoZSBwb2lzb24gKGBTdXJ2X3RpbWVgLCBpbgptaW51dGVzKS4gQWRkaXRpb25hbGx5LCB0aGUgd2VpZ2h0IG9mIGVhY2ggZmlzaCB3YXMgbWVhc3VyZWQuCgojIEdvYWwKClN1cHBvc2UgdGhhdCByZXNlYXJjaGVycyBhcmUgLG1haW5seSBpbnRlcmVzdGVkIGluIHN0dWR5aW5nIHRoZSBlZmZlY3Qgb2YKcG9pc29uIGRvc2Ugb24gdGhlIHN1cnZpdmFsIG9mIGZpc2guIFRoZXkga25vdyBob3dldmVyIHRoYXQgdGhlIHdlaWdodCBjYW4KYWxzbyBpbXBhY3QgdGhlIHN1cnZpdmFsIGFuZCBtaWdodCBhbHNvIGNoYW5nZSB0aGUgZWZmZWN0IG9mIHRoZSBwb2lzb24gZG9zZS4KCkluIHRoaXMgdHV0b3JpYWwgc2Vzc2lvbiB3ZSB3aWxsIGZvY3VzIG9uIERvam9maXNoIGFuZCB3ZSB3aWxsIG1vZGVsIHRoZQpzdXJ2aXZhbCB0aW1lIGluIGZ1bmN0aW9uIG9mIHRoZSBkb3NlIGFuZCB0aGUgd2VpZ2h0IG9mIHRoZSBmaXNoLAoqKmFuZCBpbmNsdWRpbmcgYW4gaW50ZXJhY3Rpb24gYmV0d2VlbiBkb3NlIGFuZCB3ZWlnaHQuKioKCgpMb2FkIGxpYnJhcmllcwoKYGBge3IsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkodGlkeXZlcnNlKQpsaWJyYXJ5KGdncGxvdDIpCiMgaW5zdGFsbC5wYWNrYWdlcygiR0dhbGx5IikKbGlicmFyeShHR2FsbHkpCmxpYnJhcnkoY2FyKQpsaWJyYXJ5KG11bHRjb21wKQpgYGAKCiMgSW1wb3J0IHRoZSBkYXRhCgpgYGB7ciwgbWVzc2FnZT1GQUxTRX0KcG9pc29uIDwtIHJlYWRfY3N2KCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL3BvaXNvbi5jc3YiKQpgYGAKCiMgRGF0YSB0aWR5aW5nCgpXZSBjYW4gc2VlIGEgY291cGxlIG9mIHRoaW5ncyBpbiB0aGUgZGF0YSB0aGF0IGNhbiBiZSBpbXByb3ZlZDoKCjEuIENhcGl0YWxpc2UgdGhlIGZpc3QgY29sdW1uIG5hbWUKCjIuIFNldCB0aGUgU3BlY2llcyBjb2x1bW4gYXMgYSBmYWN0b3IKCjMuIENoYW5nZSB0aGUgc3BlY2llcyBmYWN0b3IgbGV2ZWxzIGZyb20gMCwgMSBhbmQgMiB0bwpEb2pvZmlzaCwgR29sZGZpc2ggYW5kIFplYnJhZmlzaC4gKkhpbnQqOiB1c2UgdGhlIGBmY3RfcmVjb2RlYCBmdW5jdGlvbi4KCjQuIEluIHByZXZpb3VzIGFuYWx5c2lzIG9uIHRoaXMgZGF0YXNldCAoYFNpbXBsZSBsaW5lYXIgcmVncmVzc2lvbiBzZXNzaW9uYCksIHdlCnBlcmZvcm1lZCBhIGxvZy10cmFuc2Zvcm1hdGlvbiBvbiB0aGUgcmVzcG9uc2UgdmFyaWFibGUgYFN1cnZfdGltZWAgdG8gbWVldCB0aGUKbm9ybWFsaXR5IGFuZCBob21vc2NlZGFzdGljaXR5IGFzc3VtcHRpb25zIG9mIHRoZSBsaW5lYXIgbW9kZWwuIEhlcmUsIHdlIHdpbGwKaW1tZWRpYXRlbHkgd29yayB3aXRoIGxvZy10cmFuc2Zvcm1lZCBzdXJ2aXZhbCB0aW1lczsgc3RvcmUgdGhlc2UgaW4gdGhlIG5ldwp2YXJpYWJsZSBgbG9nMlN1cnZfdGltZWAgYW5kIHJlbW92ZSB0aGUgbm9uLXRyYW5zZm9ybWVkIHZhbHVlcy4KCjUuIFN1YnNldCB0aGUgZGF0YSB0byBvbmx5IHJldGFpbiAqKkRvam9maXNoKiouCgpgYGB7cn0KcG9pc29uIDwtIHBvaXNvbiAlPiUKICByZW5hbWUoIlNwZWNpZXMiID0gInNwZWNpZXMiKSAlPiUKICBtdXRhdGUoU3BlY2llcyA9IGFzLmZhY3RvcihTcGVjaWVzKSkgJT4lCiAgbXV0YXRlKFNwZWNpZXMgPSBmY3RfcmVjb2RlKFNwZWNpZXMsIERvam9maXNoID0gIjAiLCBHb2xkZmlzaCA9ICIxIiwgWmVicmFmaXNoID0gIjIiKSkgJT4lCiAgbXV0YXRlKGxvZzJTdXJ2X3RpbWUgPSBTdXJ2X3RpbWUgJT4lIGxvZzIoKSkgJT4lCiAgZHBseXI6OnNlbGVjdCgtU3Vydl90aW1lKSAlPiUKICBmaWx0ZXIoU3BlY2llcyA9PSAiRG9qb2Zpc2giKQoKcG9pc29uCmBgYAoKIyBEYXRhIGV4cGxvcmF0aW9uCgpQcmlvciB0byB0aGUgYW5hbHlzaXMsIHdlIHNob3VsZCBleHBsb3JlIG91ciBkYXRhLgpUbyBzdGFydCBvdXIgZGF0YSBleHBsb3JhdGlvbiwgd2Ugd2lsbCBtYWtlIHVzZSBvZiB0aGUgYGdncGFpcnNgIGZ1bmN0aW9uIG9mIHRoZQpgR0dhbGx5YCBSIHBhY2thZ2UuIFRoaXMgZnVuY3Rpb24gd2lsbCBnZW5lcmF0ZSBhIHZpc3VhbGl6YXRpb24gY29udGFpbmluZwptdWx0aXBsZSBwYW5lbHMsIHdoaWNoIGRpc3BsYXkgKDEpIHVuaXZhcmlhdGUgcGxvdHMgb2YgdGhlIGRpZmZlcmVudCB2YXJpYWJsZXMKaW4gb3VyIGRhdGFzZXQsICgyKSBiaXZhcmlhdGUgcGxvdHMgYW5kICgzKSBjb3JyZWxhdGlvbiBjb2VmZmljaWVudHMgYmV0d2Vlbgp0aGUgZGlmZmVyZW50IHZhcmlhYmxlcy4KCmBgYHtyLCBtZXNzYWdlPUZBTFNFfQpwb2lzb24gJT4lCiAgZ2dwYWlycygpICsgdGhlbWVfYncoKQpgYGAKCkJhc2VkIG9uIHRoZXNlIHBsb3RzLCB3ZSBvYnNlcnZlIHRoYXQ6CgotIFRoZSBzdXJ2aXZhbCB0aW1lIHNlZW1zIHRvIGJlIGFzc29jaWF0ZWQgd2l0aCBkb3NlIGFuZCBmaXNoIHdlaWdodC4KCkZyb20gdGhlIHR1dG9yaWFsIG9mIEg2IHdlIGhhdmUgc2VlbiB0aGF0IHRoZSBmaXNoIHdlaWdodHMgd2VyZSBub3QgbmljZWx5CnVuaWZvcm0gYWNyb3NzIHRoZSBkaWZmZXJlbnQgcG9pc29uIGRvc2FnZXMgZHVlIHRvIHRoZSByYW5kb21pc2F0aW9uLgoKCmBgYHtyLCBtZXNzYWdlPUZBTFNFfQpwb2lzb24gJT4lCiAgZmlsdGVyKFNwZWNpZXMgPT0gIkRvam9maXNoIikgJT4lCiAgZ2dwbG90KGFlcyh4ID0gRG9zZSwgeSA9IFdlaWdodCkpICsKICBnZW9tX3BvaW50KCkgKwogIGdndGl0bGUoIkFzc29jaWF0aW9uIGJldHdlZW4gZG9zZSBhbmQgd2VpZ2h0IikgKwogIHRoZW1lX2J3KCkgKwogIHN0YXRfc3VtbWFyeSgKICAgIGdlb20gPSAicG9pbnQiLAogICAgZnVuID0gIm1lYW4iLAogICAgY29sID0gImJsYWNrIiwKICAgIHNpemUgPSA0LAogICAgc2hhcGUgPSAyNCwKICAgIGZpbGwgPSAicmVkIgogICkKYGBgCgojIEFuYWx5c2lzIHdpdGggbWFpbiBlZmZlY3QgYW5kIGludGVyYWN0aW9uIGZvciBkb3NlIGFuZCB3ZWlnaHQKCiMjIE1vZGVsIHNwZWNpZmljYXRpb24KCiQkCnlfaT1cYmV0YV8wK1xiZXRhX2QgeF9kICsgXGJldGFfZyB4X2cgK1xiZXRhX3tkOmd9IHhfZCB4X2crIFxlcHNpbG9uX2ksCiQkCgp3aXRoICRcZXBzaWxvbl9pIFx0ZXh0eyBpLmkuZC4gfSBOKDAsXHNpZ21hXjIpJAoKIyMgQXNzdW1wdGlvbnMKClRoZSBtb2RlbCB3aWxsIGFnYWluIGJlIGZpdCB0byBhbGxvdyBmb3IgYXNzZXNzaW5nIHRoZSBtb2RlbCBhc3N1bXB0aW9ucwoKYGBge3J9CiMgbG1fSW50IDwtIGxtKGxvZzJTdXJ2X3RpbWUgfiBEb3NlK1dlaWdodCtEb3NlOldlaWdodCwgZGF0YSA9IHBvaXNvbikgIyBlcXVpdmFsZW50CmxtX0ludCA8LSBsbShsb2cyU3Vydl90aW1lIH4gRG9zZSAqIFdlaWdodCwgZGF0YSA9IHBvaXNvbikgIyAqIC0+IHNob3J0IG5vdGF0aW9uCgpwYXIobWZyb3cgPSBjKDIsIDIpKQpwbG90KGxtX0ludCkKYGBgCgpUaGUgcGxvdHMgbG9vayB2ZXJ5IHNpbWlsYXIgdG8gdGhvc2Ugb2YgdGhlIGFkZGl0aXZlIG1vZGVsIGZyb20gdGhlIHByZXZpb3VzIGV4ZXJjaXNlIHNvIHdlIGtub3cgdGhhdCBhbGwgYXNzdW1wdGlvbnMgYXJlICoqbWV0KiouCgojIyBJbmZlcmVuY2UKCldlIHRoZW4gaW5zcGVjdCB0aGUgcmVzdWx0cy4KCmBgYHtyfQpzdW1tYXJ5KGxtX0ludCkKYGBgCgojIyBJbnRlcnByZXRhdGlvbiBvZiBtb2RlbCBwYXJhbWV0ZXJzCgpXZSBtYXkgaW50ZXJwcmV0IHRoZSBlc3RpbWF0ZSBwYXJhbWV0ZXJzIGFzIGZvbGxvd3M6CgotIFdoZW4gd2UgY29tcGFyZSB0aGUgbG9nMiBzdXJ2aXZhbCBvZiBmaXNoIHdpdGggd2VpZ2h0ICR4X2ckIHRoYXQgYXJlIGV4cG9zZWQgdG8gYSBkb3NlIHRoYXQgZGlmZmVycyB3aXRoIDEgbWcvbCwgdGhlIGV4cGVjdGVkIGxvZzIgc3Vydml2YWwgdGltZSB3aWxsIGJlCiRcYmV0YV9kK1xiZXRhX3tkOmd9KnhfZyQgaGlnaGVyIGZvciB0aGUgZmlzaCB0aGF0IHdlcmUgZXhwb3NlZCB0byB0aGUgaGlnaGVzdCBkb3NlLgoKLSBXaGVuIHdlIGNvbXBhcmUgdGhlIGxvZzIgc3Vydml2YWwgb2YgZmlzaCBleHBvc2VkIHRvIGRvc2UgJHhfZyQsIGJ1dCB0aGF0IGhhdmUgYSB3ZWlnaHQgdGhhdCBkaWZmZXJzIHdpdGggMSBnLCB0aGUgZXhwZWN0ZWQgbG9nMiBzdXJ2aXZhbCB0aW1lCndpbGwgYmUgICRcYmV0YV9kK1xiZXRhX3tkOmd9KnhfZyQgaGlnaGVyIGZvciBmaXNoIHdpdGggdGhlIGhpZ2hlc3Qgd2VpZ2h0LgoKVGhlIHBhcmFtZXRlciAkXGJldGFfe2Q6Z30kIHRodXMgc2hvd3MgdGhhdCB0aGUgZWZmZWN0IG9mIGRvc2Ugb24gdGhlIGxvZzIgc3Vydml2YWwgdGltZSBpcyBkZXBlbmRlbnQgb24gdGhlCndlaWdodCBvZiB0aGUgZmlzaCwgYW5kLCB0aGF0IHRoZSBlZmZlY3QKb2Ygd2VpZ2h0IG9uIHRoZSBsb2cyIHN1cnZpdmFsIHRpbWUgZGVwZW5kZW50cyBvbiB0aGUgZG9zZSB0aGF0IHdhcwphZG1pbmlzdGVyZWQuCgojIyBJbmZlcmVuY2UKClRoZSBlZmZlY3Qgb2YgZG9zZSBpcyBub3cgcGFyYW1ldGVyaXplZCBieSB0d28gbW9kZWwgcGFyYW1ldGVycyAoJFxiZXRhX2QkCmFuZCAkXGJldGFfe2Q6Z30kKS4gV2UgZmlyc3QgZXZhbHVhdGUgYW4gKm9tbmlidXMqIGh5cG90aGVzZXMgdGhhdCB0aGVyZSBpcwpubyBlZmZlY3Qgb2YgZG9zZSwgaS5lLiwgbm8gbWFpbiBlZmZlY3Qgbm9yIGFuIGludGVyYWN0aW9uIGVmZmVjdC4gV2UgY2FuIHRlc3QKdGhpcyB3aXRoIGFuIEYtdGVzdCB0aGF0IGNvbXBhcmVzIGEgKmZ1bGwqIG1vZGVsICgxKSBjb250YWluaW5nIGEgbWFpbiBlZmZlY3QKZm9yIGRvc2UsIGEgbWFpbiBlZmZlY3QgZm9yIHdlaWdodCBhbmQgYW4gaW50ZXJhY3Rpb24gYmV0d2VlbiBkb3NlIGFuZCB3ZWlnaHQKd2l0aCBhIG1vZGVsICgyKSB0aGF0IG9ubHkgY29udGFpbnMgYSBtYWluIGVmZmVjdCBmb3Igd2VpZ2h0IChpLmUuIG5vIGVmZmVjdApmb3IgZG9zZSkuCgpgYGB7cn0KbG1Eb2pvX3dlaWdodCA8LSBsbShsb2cyU3Vydl90aW1lIH4gV2VpZ2h0LCBkYXRhID0gcG9pc29uKQphbm92YShsbURvam9fd2VpZ2h0LCBsbV9JbnQpCmBgYAoKV2Ugb2JzZXJ2ZSBhbiBleHRyZW1lbHkgc2lnbmlmaWNhbnQgKG92ZXJhbGwsIG9yIGdsb2JhbCkgZWZmZWN0IGZvciBkb3NlIG9uCnRoZSBsb2cyIHN1cnZpdmFsIHRpbWUgb2YgZG9qb2Zpc2gKKHAtdmFsdWUgPDwwLjAwMSlgLgoKIyMgQ29udmVudGlvbmFsIGFwcHJvYWNoCgpXZSBhbHJlYWR5IGVzdGFibGlzaGVkIHRoYXQgdGhlcmUgaXMgYSBzaWduaWZpY2FudCBvdmVyYWxsIGVmZmVjdCBvZiBkb3NlLgpOb3csIHdlIHdpbGwgdGVzdCBpZiB0aGVyZSBpcyBhIHNpZ25pZmljYW50IGludGVyYWN0aW9uIGVmZmVjdCBiZXR3ZWVuIGRvc2UKYW5kIHdlaWdodC4gU2luY2Ugd2Ugb25seSBoYXZlIG9uZSBpbnRlcmFjdGlvbiB0ZXJtIGluIHRoaXMgbW9kZWwsIHRoaXMgY2FuCmJlIGFjaGlldmVkIGluIHNldmVyYWwgd2F5czoKCjEuIFRoZSBgc3VtbWFyeWAgZnVuY3Rpb24KMi4gQW4gRi10ZXN0IGNvbXBhcmluZyBtb2RlbHMgd2l0aCBhbmQgd2l0aG91dCB0aGUgaW50ZXJhY3Rpb24gZWZmZWN0CjMuIEFuIEFOT1ZBIHRhYmxlIHdpdGggdHlwZSBJSUkgc3VtIG9mIHNxdWFyZXMKCgpgYGB7cn0Kc3VtbWFyeShsbV9JbnQpICMgMQpsbV9hZGRpdGl2ZSA8LSBsbShsb2cyU3Vydl90aW1lIH4gRG9zZSArIFdlaWdodCwgZGF0YSA9IHBvaXNvbikgIyAyCmFub3ZhKGxtX2FkZGl0aXZlLCBsbV9JbnQpICMgMgpBbm92YShsbV9JbnQsIHR5cGUgPSAiSUlJIikgIyAzCmBgYAoKVGhlcmUgaXMgbm8gc2lnbmlmaWNhbnQgaW50ZXJhY3Rpb24gYmV0d2VlbiBkb3NlIGFuZCB3ZWlnaHQuIEFzIHN1Y2gsIHRoZQplZmZlY3Qgb2YgZG9zZSBvbiBzdXJ2aXZhbCBpcyBub3Qgc2lnbmlmaWFudGx5IGRpZmZlcmVudCBiZXR3ZWVuIGZpc2ggb2YKZGlmZmVyZW50IHdlaWdodCAocCA9IGByIGZvcm1hdChBbm92YShsbV9JbnQsdHlwZT0iSUlJIikkIlByKD5GKSJbNF0sIGRpZ2l0cyA9IDIpYCkuCgpUaGUgY29udmVudGlvbmFsIGFwcHJvYWNoIGlzIHRvIHJlbW92ZSB0aGUgaW50ZXJhY3Rpb24gZWZmZWN0IGZyb20gdGhlCm1vZGVsLiBBcyBzdWNoLCB3ZSBhcmUgbGVmdCB3aXRoIHRoZSBhZGRpdGl2ZSBsaW5lYXIgcmVncmVzc2lvbiBtb2RlbC4KCmBgYHtyfQpzdW1tYXJ5KGxtX2FkZGl0aXZlKQpgYGAKCmBgYHtyfQoyXihsbV9hZGRpdGl2ZSRjb2VmKSAjIG9yaWdpbmFsIHNjYWxlCjJeKGNvbmZpbnQobG1fYWRkaXRpdmUpKQpgYGAKCiMjIyBDb25jbHVzaW9uCgpUaGUgY29uY2x1c2lvbiBpcyBleGFjdGx5IHRoZSBzYW1lIGFzIGZvciB0aGUgYWRkaXRpdmUgbW9kZWwgYW5hbHlzaXMgYWJvdmUKKG9idmlvdXNseSwgYXMgd2UgYXJlIGRlYWxpbmcgd2l0aCB0aGUgc2FtZSBtb2RlbCk6CgpUaGUgZG9zZSBvZiB0aGUgcG9pc29uIGhhcyBhbiBleHRyZW1lbHkgc2lnbmlmaWNhbnQgZWZmZWN0IG9uIHRoZSBzdXJ2aXZhbCB0aW1lCm9mIGRvam9maXNoIChwLXZhbHVlIDw8IDAuMDAxKS4gVGhlIGdlb21ldHJpYyBhdmVyYWdlIG9mIHRoZSBzdXJ2aXZhbCB0aW1lIGZvcgpkb2pvZmlzaCB0aGF0IGFyZSBleHBvc2VkIHRvIGEgcG9pc29uIGRvc2UgdGhhdCBpcyAxbWcvTCBsYXJnZXIgaXMgYXBwcm94aW1hdGVseQpoYWx2ZWQsCmZhY3RvciA9ICQyXntcYmV0YV9kfT0kIGByIGZvcm1hdCgyXihsbV9hZGRpdGl2ZSRjb2VmWyJEb3NlIl0pLGRpZ2l0cz0yKWApIC4KCgpUaGUgZWZmZWN0IG9mIGRvc2Ugb24gc3Vydml2YWwgaXMgbm90IHNpZ25pZmljYW50bHkgZGlmZmVyZW50IGJldHdlZW4gZmlzaCBvZgpkaWZmZXJlbnQgd2VpZ2h0LiAocCA9IGByIGZvcm1hdChzdW1tYXJ5KGxtX0ludCkkY29lZmZpY2llbnRzWzQsNF0sIGRpZ2l0cz0yKWApLgoKCiMgUmVtYXJrCgpOb3RlLCB0aGF0IHdlIGhhdmUgaGF2ZSB0byB0ZXN0IGlmIHRoZSBpbnRlcmFjdGlvbiBpcyBzaWduaWZpY2FudCBiZWZvcmUgdXNpbmcKdGhlIGFkZGl0aXZlIG1vZGVsLgo=</div>

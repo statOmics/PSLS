@@ -446,241 +446,116 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercises on chapter 8: Multiple linear
-regression</h1>
+<h1 class="title toc-ignore">Exercises on chapter 8: Multiple linear regression</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
-<p>On the fourth day of the “Practical Statistics for the Life Sciences
-(2021)” course, we will have four tutorials on multiple linear
-regression, based on different datasets:</p>
+<p>On the fourth day of the “Practical Statistics for the Life Sciences (2021)” course, we will have four tutorials on multiple linear regression, based on different datasets:</p>
 <div id="the-poison-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> The poison dataset</h1>
-<p>In this experiment, 96 fish (dojofish, goldfish and zebrafish) were
-placed separately in a tank with two liters of water and a certain dose
-(in mg) of the poison EI-43,064. The resistance of the fish against the
-poison was measured as the amount of minutes the fish survived after
-being exposed to the poison (<code>Surv_time</code>, in minutes).
-Additionally, the weight of each fish was measured.</p>
-<p>In this tutorial session we will focus on Dojofish, and we will model
-the survival time in function of the poison dose while correcting for
-the weight of the fish.</p>
+<p>In this experiment, 96 fish (dojofish, goldfish and zebrafish) were placed separately in a tank with two liters of water and a certain dose (in mg) of the poison EI-43,064. The resistance of the fish against the poison was measured as the amount of minutes the fish survived after being exposed to the poison (<code>Surv_time</code>, in minutes). Additionally, the weight of each fish was measured.</p>
+<p>In this tutorial session we will focus on Dojofish, and we will model the survival time in function of the poison dose while correcting for the weight of the fish.</p>
 <ol style="list-style-type: decimal">
-<li><p>We will first analyse the survival data by only considering the
-dose as an explanatory variable for survival time</p></li>
-<li><p>Next we will model the survival data with and <strong>additive
-model</strong> for dose and weight</p></li>
+<li><p>We will first analyse the survival data by only considering the dose as an explanatory variable for survival time</p></li>
+<li><p>Next we will model the survival data with and <strong>additive model</strong> for dose and weight</p></li>
 </ol>
 <ul>
 <li>Exercise: <a href="./08_1_poison1.html">Exercise1</a></li>
-<li>Data path: “<a
-href="https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv"
-class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv</a>”
-<!-- - Solution1: [Solution1](./08_1_poison1_sol.html) --></li>
+<li>Data path: “<a href="https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv" class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv</a>” <!-- - Solution1: [Solution1](./08_1_poison1_sol.html) --></li>
 </ul>
 <hr />
 </div>
 <div id="the-poison-dataset-2" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> The poison dataset
-(2)</h1>
-<p>Again, we will work with the poison dataset. In contrast to the
-exercise above, we here we will model the survival time in function of
-the dose and the weight of the fish, <strong>and including an
-interaction between dose and weight.</strong></p>
+<h1><span class="header-section-number">2</span> The poison dataset (2)</h1>
+<p>Again, we will work with the poison dataset. In contrast to the exercise above, we here we will model the survival time in function of the dose and the weight of the fish, <strong>and including an interaction between dose and weight.</strong></p>
 <ul>
 <li>Exercise: <a href="./08_2_poison2.html">Exercise2</a></li>
-<li>Data path: “<a
-href="https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv"
-class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv</a>”
-<!-- - Solution2: [Solution2](./08_2_poison1_sol.html) --></li>
+<li>Data path: “<a href="https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv" class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv</a>” <!-- - Solution2: [Solution2](./08_2_poison1_sol.html) --></li>
 </ul>
 <hr />
 </div>
 <div id="the-puromycin-dataset" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> The puromycin
-dataset</h1>
-<p>Data on the velocity of an enzymatic reaction were obtained by
-Treloar (1974). The number of counts per minute of radioactive product
-from the reaction was measured as a function of substrate concentration
-in parts per million (ppm) and from these counts the initial rate (or
-velocity) of the reaction was calculated (counts/min/min). The
-experiment was conducted once with the enzyme treated with Puromycin,
-and once with the enzyme untreated.</p>
-<p>Assess if there is an association between the substrate concentration
-and rate <strong>for both the treated and untreated enzymes.</strong> To
-do this, fit a model that includes a main effect for concentration, a
-main effect for enzyme state, and an interaction term between these two
-variables.</p>
+<h1><span class="header-section-number">3</span> The puromycin dataset</h1>
+<p>Data on the velocity of an enzymatic reaction were obtained by Treloar (1974). The number of counts per minute of radioactive product from the reaction was measured as a function of substrate concentration in parts per million (ppm) and from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min). The experiment was conducted once with the enzyme treated with Puromycin, and once with the enzyme untreated.</p>
+<p>Assess if there is an association between the substrate concentration and rate <strong>for both the treated and untreated enzymes.</strong> To do this, fit a model that includes a main effect for concentration, a main effect for enzyme state, and an interaction term between these two variables.</p>
 <ul>
 <li>Exercise: <a href="./08_3_puromycin.html">Exercise3</a></li>
-<li>Data path: Not required
-<!-- - Solution: [Solution3](./08_3_puromycin_sol.html) --></li>
+<li>Data path: Not required <!-- - Solution: [Solution3](./08_3_puromycin_sol.html) --></li>
 </ul>
 <hr />
 </div>
 <div id="the-kpna2-dataset" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> The KPNA2 dataset</h1>
-<p>Histologic grade in breast cancer provides clinically important
-prognostic information. Researchers examined whether histologic grade
-was associated with gene expression profiles of breast cancers and
-whether such profiles could be used to improve histologic grading.</p>
-<p>In this tutorial we will assess the association between histologic
-grade and the expression of the KPNA2 gene that is known to be
-associated with poor breast cancer prognosis. The patients, however, do
-not only differ in the histologic grade, but also on their lymph node
-status. The lymph nodes were not affected (0) or surgically removed
-(1).</p>
+<p>Histologic grade in breast cancer provides clinically important prognostic information. Researchers examined whether histologic grade was associated with gene expression profiles of breast cancers and whether such profiles could be used to improve histologic grading.</p>
+<p>In this tutorial we will assess the association between histologic grade and the expression of the KPNA2 gene that is known to be associated with poor breast cancer prognosis. The patients, however, do not only differ in the histologic grade, but also on their lymph node status. The lymph nodes were not affected (0) or surgically removed (1).</p>
 <ul>
 <li>Exercise: <a href="./08_4_kpna2.html">Exercise4</a></li>
-<li>Data path: “<a
-href="https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt"
-class="uri">https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt</a>”
-<!-- - Solution: [Solution4](./08_4_kpna2_sol.html) --></li>
+<li>Data path: “<a href="https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt" class="uri">https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt</a>” <!-- - Solution: [Solution4](./08_4_kpna2_sol.html) --></li>
 </ul>
 <hr />
 </div>
 <div id="blocking-the-rats-dataset-1" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Blocking: the rats
-dataset (1)</h1>
-<p>Researchers are studying the impact of protein sources and protein
-levels in the diet on the weight of rats. They feed the rats with diets
-of beef, cereal and pork and use a low and high protein level for each
-diet type. The researchers can include 60 rats in the experiment. Prior
-to the experiment, the rats were divided in 10 homogeneous groups of 6
-rats based on characteristics such as initial weight, appetite, etc.</p>
-<p>Within each group a rat is randomly assigned to a diet. The rats are
-fed during a month and the weight gain in grams is recorded for each
-rat.</p>
-<p>The researchers want to assess the effect of the type of diet and the
-protein level on the weight of the rats.</p>
-<p>In this exercise we will perform the data exploration using all
-diets, but, to keep the data analysis simple we will only assess the
-beef and cereal diets.</p>
+<h1><span class="header-section-number">5</span> Blocking: the rats dataset (1)</h1>
+<p>Researchers are studying the impact of protein sources and protein levels in the diet on the weight of rats. They feed the rats with diets of beef, cereal and pork and use a low and high protein level for each diet type. The researchers can include 60 rats in the experiment. Prior to the experiment, the rats were divided in 10 homogeneous groups of 6 rats based on characteristics such as initial weight, appetite, etc.</p>
+<p>Within each group a rat is randomly assigned to a diet. The rats are fed during a month and the weight gain in grams is recorded for each rat.</p>
+<p>The researchers want to assess the effect of the type of diet and the protein level on the weight of the rats.</p>
+<p>In this exercise we will perform the data exploration using all diets, but, to keep the data analysis simple we will only assess the beef and cereal diets.</p>
 <ul>
 <li>Exercise: <a href="./08_5_rats.html">Exercise5</a></li>
-<li>Data path: “<a
-href="https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt"
-class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt</a>”
-<!-- - Exercise: [Solution5](./08_5_rats_sol.html) --></li>
+<li>Data path: “<a href="https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt" class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt</a>” <!-- - Exercise: [Solution5](./08_5_rats_sol.html) --></li>
 </ul>
 <hr />
 </div>
 <div id="blocking-the-rats-dataset-2" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Blocking: the rats
-dataset (2)</h1>
-<p>Again, we make use of the <em>rats</em> dataset defined above. In
-contrast to the previous exercise, we perform the analysis for all three
-diets in the dataset.</p>
+<h1><span class="header-section-number">6</span> Blocking: the rats dataset (2)</h1>
+<p>Again, we make use of the <em>rats</em> dataset defined above. In contrast to the previous exercise, we perform the analysis for all three diets in the dataset.</p>
 <ul>
 <li>Exercise: <a href="./08_6_rats.html">Exercise6</a></li>
-<li>Data path: “<a
-href="https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt"
-class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt</a>”
-<!-- - Exercise: [Solution6](./08_6_rats_sol.html) --></li>
+<li>Data path: “<a href="https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt" class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt</a>” <!-- - Exercise: [Solution6](./08_6_rats_sol.html) --></li>
 </ul>
 <hr />
 </div>
-<div id="power-analysis-the-rodents-dataset" class="section level1"
-number="7">
-<h1><span class="header-section-number">7</span> Power analysis: the
-rodents dataset</h1>
-<p>A biologist examined the effect of a fungal infection on the eating
-behavior of rodents. Infected apples were offered to a group of eight
-rodents, and sterile apples were offered to a group of 4 rodents. The
-amount of grams of apples consumed per kg body weight are given in the
-dataset.</p>
+<div id="power-analysis-the-rodents-dataset" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Power analysis: the rodents dataset</h1>
+<p>A biologist examined the effect of a fungal infection on the eating behavior of rodents. Infected apples were offered to a group of eight rodents, and sterile apples were offered to a group of 4 rodents. The amount of grams of apples consumed per kg body weight are given in the dataset.</p>
 <p>We will answer four research questions:</p>
 <ul>
-<li><p>What is the power of the experiment if the effect size and
-standard deviation in the population would be equal to the ones you
-observed in the experiment?</p></li>
-<li><p>What would the power by if number of rodents would balanced in
-both groups?</p></li>
-<li><p>How many observations would you need to pick up the treatment
-effect with a power of 90%?</p></li>
-<li><p>Suppose that we would like to pick up an effect size of <span
-class="math inline">\(\beta_1 = 60 g/kg\)</span>. How many samples would
-be required in each group to obtain a power of 90%?</p></li>
-<li><p>Exercise: <a
-href="./08_ExperimentalDesignII_1_rodents.html">Exercise7</a></p></li>
-<li><p>Data path: Not required
-<!-- - Solution: [Solution7](./08_ExperimentalDesignII_1_rodents_sol.html) --></p></li>
+<li><p>What is the power of the experiment if the effect size and standard deviation in the population would be equal to the ones you observed in the experiment?</p></li>
+<li><p>What would the power by if number of rodents would balanced in both groups?</p></li>
+<li><p>How many observations would you need to pick up the treatment effect with a power of 90%?</p></li>
+<li><p>Suppose that we would like to pick up an effect size of <span class="math inline">\(\beta_1 = 60 g/kg\)</span>. How many samples would be required in each group to obtain a power of 90%?</p></li>
+<li><p>Exercise: <a href="./08_ExperimentalDesignII_1_rodents.html">Exercise7</a></p></li>
+<li><p>Data path: Not required <!-- - Solution: [Solution7](./08_ExperimentalDesignII_1_rodents_sol.html) --></p></li>
 </ul>
 <hr />
 </div>
-<div id="power-analysis-the-puromycin-dataset" class="section level1"
-number="8">
-<h1><span class="header-section-number">8</span> Power analysis: the
-Puromycin dataset</h1>
-<p>Data on the velocity of an enzymatic reaction were obtained by
-Treloar (1974). The number of counts per minute of radioactive product
-from the reaction was measured as a function of substrate concentration
-in parts per million (ppm) and from these counts the initial rate (or
-velocity) of the reaction was c alculated (counts/min/min). The
-experiment was conducted once with the enzyme treated with Puromycin,
-and once with the enzyme untreated.</p>
+<div id="power-analysis-the-puromycin-dataset" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Power analysis: the Puromycin dataset</h1>
+<p>Data on the velocity of an enzymatic reaction were obtained by Treloar (1974). The number of counts per minute of radioactive product from the reaction was measured as a function of substrate concentration in parts per million (ppm) and from these counts the initial rate (or velocity) of the reaction was c alculated (counts/min/min). The experiment was conducted once with the enzyme treated with Puromycin, and once with the enzyme untreated.</p>
 <p>We will answer four research questions:</p>
 <ul>
-<li><p>Use the data to calculate the power to pick up an association
-that is as least as strong as the association you observed in the
-dataset when using an experiment with the same design.</p></li>
-<li><p>Use the data to calculate the power to pick up an association
-where the reaction rate increases on average with 10 counts/min when the
-substrate concentration is 10 times higher (<span
-class="math inline">\(\beta_1=10\)</span>).</p></li>
-<li><p>Use the data to calculate the number of repeats you need for each
-concentration to pick up an association where the reaction rate
-increases on average with 10 counts/min when the substrate concentration
-is 10 times higher with a power of at least 90%. (<span
-class="math inline">\(\beta_1=10\)</span>)</p></li>
-<li><p>Suppose that you would setup an experiment with a design similar
-with the same concentrations as in the puromycin dataset and you have
-the following restriction: you need to use each concentration at least
-once and can setup at most 12 reactions, how would you choose your
-design points? Calculate the power for this design when the effect size
-is 10 counts/min per 10 times increase in the substrate concentration
-(<span class="math inline">\(\beta_1=10\)</span>).</p></li>
-<li><p>Exercise: <a
-href="./08_ExperimentalDesignII_1_puromycin.html">Exercise8</a></p></li>
-<li><p>Data path: Not required
-<!-- - Solution: [Solution8](./08_ExperimentalDesignII_1_puromycin_sol.html) --></p></li>
+<li><p>Use the data to calculate the power to pick up an association that is as least as strong as the association you observed in the dataset when using an experiment with the same design.</p></li>
+<li><p>Use the data to calculate the power to pick up an association where the reaction rate increases on average with 10 counts/min when the substrate concentration is 10 times higher (<span class="math inline">\(\beta_1=10\)</span>).</p></li>
+<li><p>Use the data to calculate the number of repeats you need for each concentration to pick up an association where the reaction rate increases on average with 10 counts/min when the substrate concentration is 10 times higher with a power of at least 90%. (<span class="math inline">\(\beta_1=10\)</span>)</p></li>
+<li><p>Suppose that you would setup an experiment with a design similar with the same concentrations as in the puromycin dataset and you have the following restriction: you need to use each concentration at least once and can setup at most 12 reactions, how would you choose your design points? Calculate the power for this design when the effect size is 10 counts/min per 10 times increase in the substrate concentration (<span class="math inline">\(\beta_1=10\)</span>).</p></li>
+<li><p>Exercise: <a href="./08_ExperimentalDesignII_1_puromycin.html">Exercise8</a></p></li>
+<li><p>Data path: Not required <!-- - Solution: [Solution8](./08_ExperimentalDesignII_1_puromycin_sol.html) --></p></li>
 </ul>
 <hr />
 </div>
-<div id="power-analysis-he-kpna2-dataset" class="section level1"
-number="9">
-<h1><span class="header-section-number">9</span> Power analysis: he
-KPNA2 dataset</h1>
-<p>Histologic grade in breast cancer provides clinically important
-prognostic information. Researchers examined whether histologic grade
-was associated with gene expression profiles of breast cancers and
-whether such profiles could be used to improve histologic grading.</p>
-<p>In this tutorial we will assess the association between histologic
-grade and the expression of the KPNA2 gene that is known to be
-associated with poor breast cancer prognosis. The patients, however, do
-not only differ in the histologic grade, but also on their lymph node
-status. The lymph nodes were not affected (0) or surgically removed
-(1).</p>
+<div id="power-analysis-he-kpna2-dataset" class="section level1" number="9">
+<h1><span class="header-section-number">9</span> Power analysis: he KPNA2 dataset</h1>
+<p>Histologic grade in breast cancer provides clinically important prognostic information. Researchers examined whether histologic grade was associated with gene expression profiles of breast cancers and whether such profiles could be used to improve histologic grading.</p>
+<p>In this tutorial we will assess the association between histologic grade and the expression of the KPNA2 gene that is known to be associated with poor breast cancer prognosis. The patients, however, do not only differ in the histologic grade, but also on their lymph node status. The lymph nodes were not affected (0) or surgically removed (1).</p>
 <p>We will answer three research questions:</p>
 <ul>
-<li><p>What is the power to pick up each of the contrasts when their
-real effect sizes would be equal to the effect sizes we observed in the
-study?</p></li>
-<li><p>How does the power evolves if we have 2 upto 10 repeats for each
-factor combination of grade and node when their real effect sizes would
-be equal to the ones we observed in the study?</p></li>
-<li><p>What is the power to pick up each of the contrasts when the FC
-for grade for patients with unaffected lymph nodes equals 1.5 (<span
-class="math inline">\(\beta_g = log2(1.5)\)</span>)?</p></li>
-<li><p>Data path: “<a
-href="https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt"
-class="uri">https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt</a>”
-<!-- - Solution: [Solution9](./08_ExperimentalDesignII_3_kpna2_sol.Rmd.html) --></p></li>
+<li><p>What is the power to pick up each of the contrasts when their real effect sizes would be equal to the effect sizes we observed in the study?</p></li>
+<li><p>How does the power evolves if we have 2 upto 10 repeats for each factor combination of grade and node when their real effect sizes would be equal to the ones we observed in the study?</p></li>
+<li><p>What is the power to pick up each of the contrasts when the FC for grade for patients with unaffected lymph nodes equals 1.5 (<span class="math inline">\(\beta_g = log2(1.5)\)</span>)?</p></li>
+<li><p>Data path: “<a href="https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt" class="uri">https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt</a>” <!-- - Solution: [Solution9](./08_ExperimentalDesignII_3_kpna2_sol.Rmd.html) --></p></li>
 </ul>
 </div>
 

@@ -549,38 +549,27 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exeercise 6.2: Linear regression on the FEV
-dataset</h1>
+<h1 class="title toc-ignore">Exeercise 6.2: Linear regression on the FEV dataset</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="the-fev-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> The FEV dataset</h1>
-<p>The FEV, which is an acronym for forced expiratory volume, is a
-measure of how much air a person can exhale (in liters) during a forced
-breath. In this dataset, the FEV of 606 children, between the ages of 6
-and 17, were measured. The dataset also provides additional information
-on these children: their <code>age</code>, their <code>height</code>,
-their <code>gender</code> and, most importantly, whether the child is a
-smoker or a non-smoker.</p>
-<p>The overarching goal of this experiment was to find out if smoking
-has an effect on the FEV of children.</p>
+<p>The FEV, which is an acronym for forced expiratory volume, is a measure of how much air a person can exhale (in liters) during a forced breath. In this dataset, the FEV of 606 children, between the ages of 6 and 17, were measured. The dataset also provides additional information on these children: their <code>age</code>, their <code>height</code>, their <code>gender</code> and, most importantly, whether the child is a smoker or a non-smoker.</p>
+<p>The overarching goal of this experiment was to find out if smoking has an effect on the FEV of children.</p>
 </div>
 <div id="load-the-required-libraries" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Load the required
-libraries</h1>
+<h1><span class="header-section-number">2</span> Load the required libraries</h1>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 </div>
 <div id="import-the-data" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Import the data</h1>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fev <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/fev.txt&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 606 Columns: 5
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): gender
 ## dbl (4): age, fev, height, smoking
@@ -596,55 +585,31 @@ libraries</h1>
 </div>
 <div id="tidy-the-data" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Tidy the data</h1>
-<p>There are a few things in the formatting of the data that can be
-improved upon:</p>
+<p>There are a few things in the formatting of the data that can be improved upon:</p>
 <ol style="list-style-type: decimal">
-<li><p>Both the <code>gender</code> and <code>smoking</code> can be
-transformed to factors.</p></li>
-<li><p>The <code>height</code> variable is written in inches. Assuming
-that this audience is mainly Portuguese/Belgian, inches are hard to
-interpret. Let’s add a new column, <code>height_cm</code>, with the
-values converted to centimeters using the <code>mutate</code>
-function.</p></li>
+<li><p>Both the <code>gender</code> and <code>smoking</code> can be transformed to factors.</p></li>
+<li><p>The <code>height</code> variable is written in inches. Assuming that this audience is mainly Portuguese/Belgian, inches are hard to interpret. Let’s add a new column, <code>height_cm</code>, with the values converted to centimeters using the <code>mutate</code> function.</p></li>
 </ol>
 </div>
 <div id="data-exploration" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Data Exploration</h1>
-<p>Explore the data. Visualise the FEV for smokers versus
-non-smokers:</p>
-<p>Did you expect these results? Can you explain what we observe (and
-why)? Additionally, can you provide an even better visualisation of the
-data, taking into account more useful explanatory variables with respect
-to the FEV?</p>
+<p>Explore the data. Visualise the FEV for smokers versus non-smokers:</p>
+<p>Did you expect these results? Can you explain what we observe (and why)? Additionally, can you provide an even better visualisation of the data, taking into account more useful explanatory variables with respect to the FEV?</p>
 </div>
 <div id="analysis" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Analysis</h1>
-<p>As stated above, the overarching goal of this experiment was to
-assess the impact of smoking on the FEV of children. In principle, we
-have multiple variables that can affect the FEV. We have, however, not
-learned yet how to model the response based on multiple predictors. To
-answer this research question properly, we will need some more advanced
-modelling techniques. In the tutorial on
-<code>multiple regression</code>, we will learn those and come back to
-this dataset!</p>
-<p>For now, we can already assess other (less complex) research
-questions:</p>
+<p>As stated above, the overarching goal of this experiment was to assess the impact of smoking on the FEV of children. In principle, we have multiple variables that can affect the FEV. We have, however, not learned yet how to model the response based on multiple predictors. To answer this research question properly, we will need some more advanced modelling techniques. In the tutorial on <code>multiple regression</code>, we will learn those and come back to this dataset!</p>
+<p>For now, we can already assess other (less complex) research questions:</p>
 <ol style="list-style-type: decimal">
-<li><p>Is there a linear association between the <code>FEV</code> and
-the <code>height</code> of <code>non-smoking females</code>?</p></li>
-<li><p>Is there a linear association between the <code>FEV</code> and
-the <code>age</code> of <code>non-smoking females</code>?</p></li>
-<li><p>Is there a linear association between the <code>FEV</code> and
-the <code>height</code> of <code>non-smoking males</code>?</p></li>
-<li><p>Is there a linear association between the <code>FEV</code> and
-the <code>age</code> of <code>non-smoking males</code>?</p></li>
+<li><p>Is there a linear association between the <code>FEV</code> and the <code>height</code> of <code>non-smoking females</code>?</p></li>
+<li><p>Is there a linear association between the <code>FEV</code> and the <code>age</code> of <code>non-smoking females</code>?</p></li>
+<li><p>Is there a linear association between the <code>FEV</code> and the <code>height</code> of <code>non-smoking males</code>?</p></li>
+<li><p>Is there a linear association between the <code>FEV</code> and the <code>age</code> of <code>non-smoking males</code>?</p></li>
 </ol>
 <p>For each of these short research questions, you should:</p>
 <ol style="list-style-type: decimal">
-<li><p>Check the assumptions of the linear model, and analyse the data
-accordingly.</p></li>
-<li><p>Interpret the output, focusing on the interpretation of the
-intercept and the slope parameters of the model.</p></li>
+<li><p>Check the assumptions of the linear model, and analyse the data accordingly.</p></li>
+<li><p>Interpret the output, focusing on the interpretation of the intercept and the slope parameters of the model.</p></li>
 <li><p>Formulate a conclusion for each research hypothesis.</p></li>
 </ol>
 </div>

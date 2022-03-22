@@ -446,12 +446,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">8.4. Multiple Regression: KPNA2
-example</h1>
+<h1 class="title toc-ignore">8.4. Multiple Regression: KPNA2 example</h1>
 <h4 class="author">Lieven Clement</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
@@ -459,16 +456,7 @@ class="uri">https://statomics.github.io</a>)</h4>
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
 <div id="background" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Background</h1>
-<p>Background: Histologic grade in breast cancer provides clinically
-important prognostic information. Researchers examined whether
-histologic grade was associated with gene expression profiles of breast
-cancers and whether such profiles could be used to improve histologic
-grading. In this tutorial we will assess the association between
-histologic grade and the expression of the KPNA2 gene that is known to
-be associated with poor breast cancer prognosis. The patients, however,
-do not only differ in the histologic grade, but also on their lymph node
-status. The lymph nodes were not affected (0) or surgically removed
-(1).</p>
+<p>Background: Histologic grade in breast cancer provides clinically important prognostic information. Researchers examined whether histologic grade was associated with gene expression profiles of breast cancers and whether such profiles could be used to improve histologic grading. In this tutorial we will assess the association between histologic grade and the expression of the KPNA2 gene that is known to be associated with poor breast cancer prognosis. The patients, however, do not only differ in the histologic grade, but also on their lymph node status. The lymph nodes were not affected (0) or surgically removed (1).</p>
 </div>
 <div id="import-data" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Import data</h1>
@@ -479,30 +467,21 @@ status. The lymph nodes were not affected (0) or surgically removed
 </div>
 <div id="data-exploration" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Data exploration</h1>
-<p>Histologic grade and lymph node status can be associated with the
-KPNA2 gene expression. Moreover, it is also possible that the
-differential expression associated with histological grade is different
-in patients that have unaffected lymph nodes and patients for which the
-lymph nodes had to be removed.</p>
-<p>Make a relevant plot that contains information on KPNA2 expression
-and both explanatory variables grade and node.</p>
+<p>Histologic grade and lymph node status can be associated with the KPNA2 gene expression. Moreover, it is also possible that the differential expression associated with histological grade is different in patients that have unaffected lymph nodes and patients for which the lymph nodes had to be removed.</p>
+<p>Make a relevant plot that contains information on KPNA2 expression and both explanatory variables grade and node.</p>
 <p>What does the plot suggest?</p>
 </div>
 <div id="linear-regression" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Linear regression</h1>
 <ol style="list-style-type: decimal">
-<li><p>Specify the model, interpret each model parameter in the
-model.</p></li>
+<li><p>Specify the model, interpret each model parameter in the model.</p></li>
 <li><p>Formulate the relevant research questions</p></li>
 <li><p>Translate them in a null and alternative hyptheses.</p></li>
-<li><p>Perform the hypothesis tests and calculate the confidence
-intervals.</p></li>
+<li><p>Perform the hypothesis tests and calculate the confidence intervals.</p></li>
 </ol>
 </div>
-<div id="formulate-your-conclusions-in-terms-of-the-research-question"
-class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Formulate your
-conclusions in terms of the research question</h1>
+<div id="formulate-your-conclusions-in-terms-of-the-research-question" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Formulate your conclusions in terms of the research question</h1>
 </div>
 
 <div id="rmd-source-code">LS0tCnRpdGxlOiAiOC40LiBNdWx0aXBsZSBSZWdyZXNzaW9uOiBLUE5BMiBleGFtcGxlIgphdXRob3I6ICJMaWV2ZW4gQ2xlbWVudCIKZGF0ZTogInN0YXRPbWljcywgR2hlbnQgVW5pdmVyc2l0eSAoaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSIKLS0tCgo8YSByZWw9ImxpY2Vuc2UiIGhyZWY9Imh0dHBzOi8vY3JlYXRpdmVjb21tb25zLm9yZy9saWNlbnNlcy9ieS1uYy1zYS80LjAiPjxpbWcgYWx0PSJDcmVhdGl2ZSBDb21tb25zIExpY2Vuc2UiIHN0eWxlPSJib3JkZXItd2lkdGg6MCIgc3JjPSJodHRwczovL2kuY3JlYXRpdmVjb21tb25zLm9yZy9sL2J5LW5jLXNhLzQuMC84OHgzMS5wbmciIC8+PC9hPgoKIyBCYWNrZ3JvdW5kCgpCYWNrZ3JvdW5kOiBIaXN0b2xvZ2ljIGdyYWRlIGluIGJyZWFzdCBjYW5jZXIgcHJvdmlkZXMgY2xpbmljYWxseSBpbXBvcnRhbnQKcHJvZ25vc3RpYyBpbmZvcm1hdGlvbi4gUmVzZWFyY2hlcnMgZXhhbWluZWQgd2hldGhlciBoaXN0b2xvZ2ljIGdyYWRlIHdhcwphc3NvY2lhdGVkIHdpdGggZ2VuZSBleHByZXNzaW9uIHByb2ZpbGVzIG9mIGJyZWFzdCBjYW5jZXJzIGFuZCB3aGV0aGVyIHN1Y2gKcHJvZmlsZXMgY291bGQgYmUgdXNlZCB0byBpbXByb3ZlIGhpc3RvbG9naWMgZ3JhZGluZy4gSW4gdGhpcyB0dXRvcmlhbCB3ZQp3aWxsIGFzc2VzcyB0aGUgYXNzb2NpYXRpb24gYmV0d2VlbiBoaXN0b2xvZ2ljIGdyYWRlIGFuZCB0aGUgZXhwcmVzc2lvbiBvZgp0aGUgS1BOQTIgZ2VuZSB0aGF0IGlzIGtub3duIHRvIGJlIGFzc29jaWF0ZWQgd2l0aCBwb29yIGJyZWFzdCBjYW5jZXIgcHJvZ25vc2lzLgpUaGUgcGF0aWVudHMsIGhvd2V2ZXIsIGRvIG5vdCBvbmx5IGRpZmZlciBpbiB0aGUgaGlzdG9sb2dpYyBncmFkZSwKYnV0IGFsc28gb24gdGhlaXIgbHltcGggbm9kZSBzdGF0dXMuIFRoZSBseW1waCBub2RlcyB3ZXJlIG5vdCBhZmZlY3RlZCAoMCkKb3Igc3VyZ2ljYWxseSByZW1vdmVkICgxKS4KCiMgSW1wb3J0IGRhdGEKCmBgYHtyfQoKYGBgCgojIERhdGEgd3JhbmdsaW5nCgpUcmFuc2Zvcm0gdGhlIHZhcmlhYmxlIGdyYWRlIGFuZCBub2RlIHRvIGEgZmFjdG9yLgoKYGBge3J9CgpgYGAKCiMgRGF0YSBleHBsb3JhdGlvbgoKSGlzdG9sb2dpYyBncmFkZSBhbmQgbHltcGggbm9kZSBzdGF0dXMgY2FuIGJlIGFzc29jaWF0ZWQgd2l0aCB0aGUgS1BOQTIgZ2VuZQpleHByZXNzaW9uLiBNb3Jlb3ZlciwgaXQgaXMgYWxzbyBwb3NzaWJsZSB0aGF0IHRoZSBkaWZmZXJlbnRpYWwgZXhwcmVzc2lvbgphc3NvY2lhdGVkIHdpdGggaGlzdG9sb2dpY2FsIGdyYWRlIGlzIGRpZmZlcmVudCBpbiBwYXRpZW50cyB0aGF0IGhhdmUKdW5hZmZlY3RlZCBseW1waCBub2RlcyBhbmQgcGF0aWVudHMgZm9yIHdoaWNoIHRoZSBseW1waCBub2RlcyBoYWQgdG8gYmUgcmVtb3ZlZC4KCk1ha2UgYSByZWxldmFudCBwbG90IHRoYXQgY29udGFpbnMgaW5mb3JtYXRpb24gb24gS1BOQTIgZXhwcmVzc2lvbiBhbmQgYm90aApleHBsYW5hdG9yeSB2YXJpYWJsZXMgZ3JhZGUgYW5kIG5vZGUuCgpgYGB7cn0KCmBgYAoKV2hhdCBkb2VzIHRoZSBwbG90IHN1Z2dlc3Q/CgojIExpbmVhciByZWdyZXNzaW9uCgoxLiBTcGVjaWZ5IHRoZSBtb2RlbCwgaW50ZXJwcmV0IGVhY2ggbW9kZWwgcGFyYW1ldGVyIGluIHRoZSBtb2RlbC4KCjIuIEZvcm11bGF0ZSB0aGUgcmVsZXZhbnQgcmVzZWFyY2ggcXVlc3Rpb25zCgozLiBUcmFuc2xhdGUgdGhlbSBpbiBhIG51bGwgYW5kIGFsdGVybmF0aXZlIGh5cHRoZXNlcy4KCjQuIFBlcmZvcm0gdGhlIGh5cG90aGVzaXMgdGVzdHMgIGFuZCBjYWxjdWxhdGUgdGhlIGNvbmZpZGVuY2UgaW50ZXJ2YWxzLgoKIyBGb3JtdWxhdGUgeW91ciBjb25jbHVzaW9ucyBpbiB0ZXJtcyBvZiB0aGUgcmVzZWFyY2ggcXVlc3Rpb24K</div>

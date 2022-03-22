@@ -549,57 +549,37 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 5.2: Hypothesis testing on the
-armpit dataset - solution</h1>
+<h1 class="title toc-ignore">Exercise 5.2: Hypothesis testing on the armpit dataset - solution</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="smelly-armpit-dataset" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Smelly armpit
-dataset</h1>
-<p>Smelly armpits are not caused by sweat, itself. The smell is caused
-by specific micro-organisms belonging to the group of
-<em>Corynebacterium spp.</em> that metabolise sweat. Another group of
-abundant bacteria are the <em>Staphylococcus spp.</em>, these bacteria
-do not metabolise sweat in smelly compounds.</p>
-<p>The CMET-group at Ghent University does research to on transplanting
-the armpit microbiome to save people with smelly armpits.</p>
+<h1><span class="header-section-number">1</span> Smelly armpit dataset</h1>
+<p>Smelly armpits are not caused by sweat, itself. The smell is caused by specific micro-organisms belonging to the group of <em>Corynebacterium spp.</em> that metabolise sweat. Another group of abundant bacteria are the <em>Staphylococcus spp.</em>, these bacteria do not metabolise sweat in smelly compounds.</p>
+<p>The CMET-group at Ghent University does research to on transplanting the armpit microbiome to save people with smelly armpits.</p>
 <ul>
 <li><p>Proposed Therapy:</p>
 <ol style="list-style-type: decimal">
 <li>Remove armpit-microbiome with antibiotics</li>
-<li>Influence armpit microbiome with microbial transplant, see this 2
-minute talk on <a href="https://youtu.be/9RIFyqLXdVw">youtube</a></li>
+<li>Influence armpit microbiome with microbial transplant, see this 2 minute talk on <a href="https://youtu.be/9RIFyqLXdVw">youtube</a></li>
 </ol></li>
 <li><p>Experiment:</p>
 <ul>
-<li>20 students with smelly armpits are attributed to one of two
-treatment groups</li>
+<li>20 students with smelly armpits are attributed to one of two treatment groups</li>
 <li>placebo (only antibiotics)</li>
 <li>transplant (antibiotica followed by microbial transplant).</li>
 <li>The microbiome is sampled 6 weeks upon the treatment</li>
-<li>The relative abundance of <em>Staphylococcus spp.</em> on
-<em>Corynebacterium spp.</em> + <em>Staphylococcus spp.</em> in the
-microbiome is measured via DGGE (<em>Denaturing Gradient Gel
-Electrophoresis</em>).</li>
+<li>The relative abundance of <em>Staphylococcus spp.</em> on <em>Corynebacterium spp.</em> + <em>Staphylococcus spp.</em> in the microbiome is measured via DGGE (<em>Denaturing Gradient Gel Electrophoresis</em>).</li>
 </ul></li>
 </ul>
 </div>
 <div id="goal" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Goal</h1>
-<p>The overarching goal of this research was to assess if the relative
-abundance <em>Staphylococcus spp.</em> in the microbiome of the armpit
-is affected by transplanting the microbiome. To this end the researchers
-randomized patients to two treatment: A treatment with antibiotics only
-and a treatment with antibiotics and a microbial transplant.</p>
-<p>In the tutorial on hypotheses testing we will use a formal
-statistical test to generalize the results from the sample to that of
-the population.</p>
+<p>The overarching goal of this research was to assess if the relative abundance <em>Staphylococcus spp.</em> in the microbiome of the armpit is affected by transplanting the microbiome. To this end the researchers randomized patients to two treatment: A treatment with antibiotics only and a treatment with antibiotics and a microbial transplant.</p>
+<p>In the tutorial on hypotheses testing we will use a formal statistical test to generalize the results from the sample to that of the population.</p>
 </div>
 <div id="import-the-dataset" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Import the dataset</h1>
@@ -608,7 +588,7 @@ the population.</p>
 <p>Import the data</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ap <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 20 Columns: 2
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (1): trt
 ## dbl (1): rel
@@ -618,13 +598,12 @@ the population.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(ap)</span></code></pre></div>
 <pre><code>## Rows: 20
 ## Columns: 2
-## $ trt &lt;chr&gt; &quot;placebo&quot;, &quot;placebo&quot;, &quot;placebo&quot;, &quot;placebo&quot;, &quot;placebo&quot;, &quot;placebo&quot;, &quot;placebo&quot;, &quot;placebo&quot;, &quot;placebo&quot;, &quot;placeb…
-## $ rel &lt;dbl&gt; 54.99208, 31.84466, 41.09948, 59.52064, 63.57341, 41.48649, 30.44041, 42.95676, 41.73913, 33.89652, 57.218…</code></pre>
+## $ trt &lt;chr&gt; &quot;placebo&quot;, &quot;placebo&quot;, &quot;placebo&quot;, &quot;placebo&quot;, &quot;placebo&quot;, &quot;placebo&quot;, …
+## $ rel &lt;dbl&gt; 54.99208, 31.84466, 41.09948, 59.52064, 63.57341, 41.48649, 30.440…</code></pre>
 </div>
 <div id="data-exploration" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Data Exploration</h1>
-<p>A crucial first step in a data analysis is to visualize and to
-explore the raw data.</p>
+<p>A crucial first step in a data analysis is to visualize and to explore the raw data.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ap <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> trt, <span class="at">y =</span> rel, <span class="at">fill =</span> trt)) <span class="sc">+</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>) <span class="sc">+</span></span>
@@ -633,30 +612,17 @@ explore the raw data.</p>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">5</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;black&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: `fun.y` is deprecated. Use `fun` instead.</code></pre>
 <p><img src="05_2_armpit_sol_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>We clearly see that, on average, the subjects who had a microbial
-transplant have a higher relative abundance of Staphylococcus spp. But
-is this difference statistically <em>significant</em> so that we can
-generalized what we observe in the sample to the population?</p>
-<p>We can test this with an unpaired, two-sample t-test, which falsifies
-the null hypothesis that there is on average no difference in relative
-abundance of <em>Staphylococcus</em> in the armpit microbiome between
-the transplant and the placebo group against the alternative hypothesis
-that there is a difference in average abundance of
-<em>Staphyloccocus</em> in the armpit microbiome between the transplant
-and placebo treatment.</p>
-<p>But, before we can start the analysis, we must check if all
-assumptions to perform a t-test are met.</p>
+<p>We clearly see that, on average, the subjects who had a microbial transplant have a higher relative abundance of Staphylococcus spp. But is this difference statistically <em>significant</em> so that we can generalized what we observe in the sample to the population?</p>
+<p>We can test this with an unpaired, two-sample t-test, which falsifies the null hypothesis that there is on average no difference in relative abundance of <em>Staphylococcus</em> in the armpit microbiome between the transplant and the placebo group against the alternative hypothesis that there is a difference in average abundance of <em>Staphyloccocus</em> in the armpit microbiome between the transplant and placebo treatment.</p>
+<p>But, before we can start the analysis, we must check if all assumptions to perform a t-test are met.</p>
 </div>
 <div id="analysis" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Analysis</h1>
 <div id="check-the-assumptions" class="section level2" number="5.1">
-<h2><span class="header-section-number">5.1</span> Check the
-assumptions</h2>
+<h2><span class="header-section-number">5.1</span> Check the assumptions</h2>
 <ol style="list-style-type: decimal">
-<li><p>The observations are independent. This has to be guaranteed by
-the design.</p></li>
-<li><p>The data (rel) are normally distributed in each of the
-groups</p></li>
+<li><p>The observations are independent. This has to be guaranteed by the design.</p></li>
+<li><p>The data (rel) are normally distributed in each of the groups</p></li>
 <li><p>The variability within both groups is similar.</p></li>
 </ol>
 <p>To check the normality assumption, we will use QQ plots.</p>
@@ -666,11 +632,8 @@ groups</p></li>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(trt))</span></code></pre></div>
 <p><img src="05_2_armpit_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>We can see that all of the data lies nicely around the
-quantile-quantile line (black line). As such, we may assume that our
-data are normally distributed.</p>
-<p>For the third assumption, we must compare the within-group
-variability of both groups. We can do this visually:</p>
+<p>We can see that all of the data lies nicely around the quantile-quantile line (black line). As such, we may assume that our data are normally distributed.</p>
+<p>For the third assumption, we must compare the within-group variability of both groups. We can do this visually:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ap <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> trt, <span class="at">y =</span> rel)) <span class="sc">+</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>) <span class="sc">+</span></span>
@@ -679,10 +642,8 @@ variability of both groups. We can do this visually:</p>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">5</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;black&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: `fun.y` is deprecated. Use `fun` instead.</code></pre>
 <p><img src="05_2_armpit_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>Here we can see that the interquartile range is approximately equal
-for groups.</p>
-<p>As all three assumptions are met we may continue with performing the
-unpaired two-sample t-test.</p>
+<p>Here we can see that the interquartile range is approximately equal for groups.</p>
+<p>As all three assumptions are met we may continue with performing the unpaired two-sample t-test.</p>
 </div>
 <div id="hypothesis-test" class="section level2" number="5.2">
 <h2><span class="header-section-number">5.2</span> Hypothesis test</h2>
@@ -714,29 +675,18 @@ unpaired two-sample t-test.</p>
 </div>
 <div id="conclusion" class="section level2" number="5.3">
 <h2><span class="header-section-number">5.3</span> Conclusion</h2>
-<p>On average the relative abundance of <em>Staphylococcus spp.</em> in
-the microbiome of the armpit in the transplant group is extremely
-significantly different from that in the placebo group (<span
-class="math inline">\(p&lt;&lt;0.001\)</span>). The relative abundance
-of <em>Staphylococcus spp.</em> is on average 22.2% larger in the
-transplant group than in the placebo group (95% CI [13.0,31.5]%).</p>
+<p>On average the relative abundance of <em>Staphylococcus spp.</em> in the microbiome of the armpit in the transplant group is extremely significantly different from that in the placebo group (<span class="math inline">\(p&lt;&lt;0.001\)</span>). The relative abundance of <em>Staphylococcus spp.</em> is on average 22.2% larger in the transplant group than in the placebo group (95% CI [13.0,31.5]%).</p>
 </div>
 </div>
-<div id="addendum-train-yourself-in-checking-the-assumptions"
-class="section level1" number="6">
-<h1><span class="header-section-number">6</span> ADDENDUM: Train
-yourself in checking the assumptions</h1>
-<p>In order for the learners to get more proficient in evaluating the
-assumptions we will simulate 9 dataset with sample sizes similar to our
-data for which the assumptions of normality and equal variance do hold.
-For the QQ-plots we will only plot the one from one of the groups.</p>
+<div id="addendum-train-yourself-in-checking-the-assumptions" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> ADDENDUM: Train yourself in checking the assumptions</h1>
+<p>In order for the learners to get more proficient in evaluating the assumptions we will simulate 9 dataset with sample sizes similar to our data for which the assumptions of normality and equal variance do hold. For the QQ-plots we will only plot the one from one of the groups.</p>
 <div id="simulate-data" class="section level2" number="6.1">
 <h2><span class="header-section-number">6.1</span> Simulate data</h2>
-<p>We simulate 9 datasets with the same sample sizes, means and pooled
-variance as in the sample.</p>
+<p>We simulate 9 datasets with the same sample sizes, means and pooled variance as in the sample.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ap <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 20 Columns: 2
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (1): trt
 ## dbl (1): rel
@@ -775,8 +725,7 @@ variance as in the sample.</p>
 <span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">trt =</span> ap<span class="sc">$</span>trt)</span></code></pre></div>
 </div>
 <div id="comparisons-of-variances" class="section level2" number="6.2">
-<h2><span class="header-section-number">6.2</span> Comparisons of
-variances</h2>
+<h2><span class="header-section-number">6.2</span> Comparisons of variances</h2>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>normSim <span class="sc">%&gt;%</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(samp, data, <span class="sc">-</span>trt) <span class="sc">%&gt;%</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> trt, <span class="at">y =</span> data)) <span class="sc">+</span></span>
@@ -785,8 +734,7 @@ variances</h2>
 <p><img src="05_2_armpit_sol_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 <div id="evaluation-of-normality" class="section level2" number="6.3">
-<h2><span class="header-section-number">6.3</span> Evaluation of
-normality</h2>
+<h2><span class="header-section-number">6.3</span> Evaluation of normality</h2>
 <div id="placebo-group" class="section level3" number="6.3.1">
 <h3><span class="header-section-number">6.3.1</span> Placebo group</h3>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>normSim <span class="sc">%&gt;%</span></span>
@@ -799,8 +747,7 @@ normality</h2>
 <p><img src="05_2_armpit_sol_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 <div id="transplant-group" class="section level3" number="6.3.2">
-<h3><span class="header-section-number">6.3.2</span> Transplant
-group</h3>
+<h3><span class="header-section-number">6.3.2</span> Transplant group</h3>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>normSim <span class="sc">%&gt;%</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(samp, data, <span class="sc">-</span>trt) <span class="sc">%&gt;%</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(trt <span class="sc">==</span> <span class="st">&quot;transplant&quot;</span>) <span class="sc">%&gt;%</span></span>

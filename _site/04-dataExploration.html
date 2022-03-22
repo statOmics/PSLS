@@ -551,9 +551,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">4. Data Exploration</h1>
 <h4 class="author">Lieven Clement</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
@@ -561,25 +559,19 @@ class="uri">https://statomics.github.io</a>)</h4>
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
 <p><img src="04-dataExploration_files/figure-html/pop2Samp2Pop-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <hr />
-<div id="why-data-exploration-and-descriptive-statistics"
-class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Why data exploration
-and descriptive statistics?</h1>
+<div id="why-data-exploration-and-descriptive-statistics" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Why data exploration and descriptive statistics?</h1>
 <ol style="list-style-type: decimal">
-<li>Reporting on results: not useful to only report a table with the
-results for each subject.</li>
+<li>Reporting on results: not useful to only report a table with the results for each subject.</li>
 <li>Letting the data speak by summarizing and visualizing it.</li>
 <li>Getting insight in the data.</li>
 <li>Discover errors, anomalies or even fraud.</li>
-<li>Check assumptions that are required for the downstream statistical
-inference, e.g. are the data Normally distributed.</li>
+<li>Check assumptions that are required for the downstream statistical inference, e.g. are the data Normally distributed.</li>
 </ol>
 <hr />
 </div>
-<div id="univariate-exploration-of-quantitative-variables"
-class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Univariate exploration
-of quantitative variables</h1>
+<div id="univariate-exploration-of-quantitative-variables" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Univariate exploration of quantitative variables</h1>
 <div id="histogram" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Histogram</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
@@ -597,15 +589,12 @@ of quantitative variables</h1>
 </ol>
 <pre><code>ggplot(aes(x=DirectChol)) +</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li><p>Equal bins for interpretation, the number of bins can be selected
-with the bins argument to the geom_hist.</p></li>
-<li><p><em>Relative</em> frequenties to enable visual comparison between
-histograms.</p></li>
+<li><p>Equal bins for interpretation, the number of bins can be selected with the bins argument to the geom_hist.</p></li>
+<li><p><em>Relative</em> frequenties to enable visual comparison between histograms.</p></li>
 </ol>
 <pre><code>geom_histogram(aes(y=..density.., fill=..count..)) +</code></pre>
 <ol start="5" style="list-style-type: decimal">
-<li>If we have enough observations we can use a kernel density estimator
-of f(x).</li>
+<li>If we have enough observations we can use a kernel density estimator of f(x).</li>
 </ol>
 <pre><code>geom_density(aes(y=..density..))</code></pre>
 <hr />
@@ -613,30 +602,18 @@ of f(x).</li>
 <div id="boxplot" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Boxplot</h2>
 <ul>
-<li>A quantile, <span class="math inline">\(x_{a\%}\)</span>, is the
-value of the random variable that correspond to a certain probability
-<span class="math inline">\(F(x_{a\%})=P[X\leq
-x_{a\%}=a\%]\)</span>.</li>
+<li>A quantile, <span class="math inline">\(x_{a\%}\)</span>, is the value of the random variable that correspond to a certain probability <span class="math inline">\(F(x_{a\%})=P[X\leq x_{a\%}=a\%]\)</span>.</li>
 </ul>
 <p><img src="04-dataExploration_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>With ggplot we always have to define an x variable if we make a
-boxplot. If we use a string then all data is considered to originate
-from one category and one boxplot is constructed.</p>
+<p>With ggplot we always have to define an x variable if we make a boxplot. If we use a string then all data is considered to originate from one category and one boxplot is constructed.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> DirectChol)) <span class="sc">+</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
 <p><img src="04-dataExploration_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>So we can add a boxplot to a ggplot figure by using the
-<code>geom_boxplot()</code> function.</p>
-<p>If the dataset is small to moderate in size we can also add the raw
-data to the plot with the <code>geom_point()</code> function and the
-<code>position="jitter"</code> argument. Note, that we then also set the
-<code>outlier.shape</code> argument in the <code>geom_boxplot</code>
-function on NA so that the outliers are not plotted twice.</p>
-<p>Here, we will plot again the relative abundances of
-<strong>Staphylococcus</strong> from the armpit transplant
-experiment.</p>
+<p>So we can add a boxplot to a ggplot figure by using the <code>geom_boxplot()</code> function.</p>
+<p>If the dataset is small to moderate in size we can also add the raw data to the plot with the <code>geom_point()</code> function and the <code>position="jitter"</code> argument. Note, that we then also set the <code>outlier.shape</code> argument in the <code>geom_boxplot</code> function on NA so that the outliers are not plotted twice.</p>
+<p>Here, we will plot again the relative abundances of <strong>Staphylococcus</strong> from the armpit transplant experiment.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ap <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/GTPB/PSLS20/master/data/armpit.csv&quot;</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ap</span></code></pre></div>
 <div data-pagedtable="false">
@@ -649,39 +626,30 @@ experiment.</p>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>)</span></code></pre></div>
 <p><img src="04-dataExploration_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>When we specify a factor variable for x, we get a boxplot for each
-treatment group.</p>
+<p>When we specify a factor variable for x, we get a boxplot for each treatment group.</p>
 <hr />
 </div>
 <div id="descriptive-statistics" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> Descriptive
-statistics</h2>
-<div id="central-location-mean-or-median" class="section level3"
-number="2.3.1">
-<h3><span class="header-section-number">2.3.1</span> Central location:
-Mean or Median?</h3>
+<h2><span class="header-section-number">2.3</span> Descriptive statistics</h2>
+<div id="central-location-mean-or-median" class="section level3" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Central location: Mean or Median?</h3>
 <div id="mean" class="section level4" number="2.3.1.1">
 <h4><span class="header-section-number">2.3.1.1</span> Mean</h4>
 <ul>
-<li>In a period of 30 years, males hope to have on average 64.3 partners
-and females 2.8 {(Miller and Fishkin, 1997)}.</li>
+<li>In a period of 30 years, males hope to have on average 64.3 partners and females 2.8 {(Miller and Fishkin, 1997)}.</li>
 </ul>
 <hr />
 </div>
 <div id="median" class="section level4" number="2.3.1.2">
 <h4><span class="header-section-number">2.3.1.2</span> Median</h4>
 <ul>
-<li>The median of the number of partners males and females want to have
-is both 1 {(Miller and Fishkin, 1997)}</li>
+<li>The median of the number of partners males and females want to have is both 1 {(Miller and Fishkin, 1997)}</li>
 </ul>
 <hr />
 </div>
 <div id="what-happens" class="section level4" number="2.3.1.3">
-<h4><span class="header-section-number">2.3.1.3</span> What
-happens?</h4>
-<p><img
-src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/partners.png"
-style="width:75.0%" /></p>
+<h4><span class="header-section-number">2.3.1.3</span> What happens?</h4>
+<p><img src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/partners.png" style="width:75.0%" /></p>
 <ul>
 <li>Mean is very sensitive towards outliers!</li>
 </ul>
@@ -690,30 +658,20 @@ style="width:75.0%" /></p>
 </div>
 <div id="geometric-mean" class="section level3" number="2.3.2">
 <h3><span class="header-section-number">2.3.2</span> Geometric mean</h3>
-<p><span class="math display">\[\sqrt[n]{\prod\limits_{i=1}^n x_i} =
-\exp\left\{\frac{1}{n} \sum_{i=1}^n \log(x_i)\right\}\]</span></p>
+<p><span class="math display">\[\sqrt[n]{\prod\limits_{i=1}^n x_i} = \exp\left\{\frac{1}{n} \sum_{i=1}^n \log(x_i)\right\}\]</span></p>
 <ul>
 <li><p>Geometric mean is closer to the median then the mean</p></li>
 <li><p>log-transformation removes skewness</p></li>
-<li><p>Often a more useful measure for the central location than
-median:</p></li>
+<li><p>Often a more useful measure for the central location than median:</p></li>
 </ul>
 <ol style="list-style-type: decimal">
 <li>Uses all observations: is more precise</li>
-<li>It is the ordinary mean on log-transformed data <span
-class="math inline">\(\rightarrow\)</span> classical statistical methods
-can be directly applied, e.g. hypothesis tests and confidence intervals
-(see chapter 5)</li>
-<li>Useful for many biological characteristics e.g. concentrations that
-cannot be negative.</li>
-<li>Differences on a log scale have the interpretation of a log fold
-change:</li>
+<li>It is the ordinary mean on log-transformed data <span class="math inline">\(\rightarrow\)</span> classical statistical methods can be directly applied, e.g. hypothesis tests and confidence intervals (see chapter 5)</li>
+<li>Useful for many biological characteristics e.g. concentrations that cannot be negative.</li>
+<li>Differences on a log scale have the interpretation of a log fold change:</li>
 </ol>
-<p><span class="math display">\[\log (B) - \log(A)=
-\log(\frac{B}{A})=\log(FC_\text{B vs A})\]</span></p>
-<p>In Genomics often the <span class="math inline">\(log_2\)</span>
-transformation is used. A difference of 1 corresponds to a <span
-class="math inline">\(FC=2\)</span>.</p>
+<p><span class="math display">\[\log (B) - \log(A)= \log(\frac{B}{A})=\log(FC_\text{B vs A})\]</span></p>
+<p>In Genomics often the <span class="math inline">\(log_2\)</span> transformation is used. A difference of 1 corresponds to a <span class="math inline">\(FC=2\)</span>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>logSummary <span class="ot">&lt;-</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  NHANES <span class="sc">%&gt;%</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
@@ -736,69 +694,48 @@ class="math inline">\(FC=2\)</span>.</p>
 <ul>
 <li>Indeed the mean is pulled to larger values by the skewed data.</li>
 <li>The geometric mean is closer to the median.</li>
-<li>The cholesterol data are much more symmetric upon log transformation
-and the approximation by a Normal distribution is good.</li>
+<li>The cholesterol data are much more symmetric upon log transformation and the approximation by a Normal distribution is good.</li>
 </ul>
 </div>
 </div>
-<div id="descriptive-statistics-for-variability" class="section level2"
-number="2.4">
-<h2><span class="header-section-number">2.4</span> Descriptive
-Statistics for Variability</h2>
+<div id="descriptive-statistics-for-variability" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Descriptive Statistics for Variability</h2>
 <p>The variability around the central value is crucial:</p>
 <ol style="list-style-type: decimal">
-<li>Biologists are often interested in how animals or plants are spread
-in the study region.</li>
-<li>Compare groups: the group effect is more clear when the response has
-less variability. Quantifying variability is crucial to distinguish
-between systematic and random patterns.</li>
+<li>Biologists are often interested in how animals or plants are spread in the study region.</li>
+<li>Compare groups: the group effect is more clear when the response has less variability. Quantifying variability is crucial to distinguish between systematic and random patterns.</li>
 </ol>
 <ul>
-<li><p>The response varies between and within individuals and is the
-reason why we need statistics.</p></li>
-<li><p>Crucial to describe both the central location and the
-variability.</p></li>
-<li><p>Which part of the variability can we explain (e.g. with
-characteristics treatment, age, etc,) and which part is
-unexplained?</p></li>
+<li><p>The response varies between and within individuals and is the reason why we need statistics.</p></li>
+<li><p>Crucial to describe both the central location and the variability.</p></li>
+<li><p>Which part of the variability can we explain (e.g. with characteristics treatment, age, etc,) and which part is unexplained?</p></li>
 </ul>
-<div id="sample-variance-and-sample-standard-deviation"
-class="section level3" number="2.4.1">
-<h3><span class="header-section-number">2.4.1</span> Sample variance and
-sample standard deviation</h3>
+<div id="sample-variance-and-sample-standard-deviation" class="section level3" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Sample variance and sample standard deviation</h3>
 <ul>
 <li><p>Sample variance: <span class="math display">\[
 s_X^2= \sum\limits_{i=1}^n \frac{(X-\bar X)^2}{n-1}
 \]</span></p></li>
-<li><p>Interpretation is often difficult because it is in another unit
-than the measurements.</p></li>
+<li><p>Interpretation is often difficult because it is in another unit than the measurements.</p></li>
 <li><p><em>Standard deviation</em>: <span class="math display">\[
 s_X= \sqrt{s_x^2}
 \]</span></p></li>
 <li><p>Very useful for Normal distributed observations:</p>
 <ul>
-<li>68% of the observations falls in the interval <span
-class="math inline">\(\bar{x} - s_x\)</span> en <span
-class="math inline">\(\bar{x} + s_x\)</span></li>
-<li>95% of the observations falls in the interval <span
-class="math inline">\(\bar{x} - 2 s_x\)</span> en <span
-class="math inline">\(\bar{x} + 2 s_x\)</span>.</li>
+<li>68% of the observations falls in the interval <span class="math inline">\(\bar{x} - s_x\)</span> en <span class="math inline">\(\bar{x} + s_x\)</span></li>
+<li>95% of the observations falls in the interval <span class="math inline">\(\bar{x} - 2 s_x\)</span> en <span class="math inline">\(\bar{x} + 2 s_x\)</span>.</li>
 </ul></li>
-<li><p>These intervals are referred to as 68% en 95%
-<em>reference-intervals</em>.</p></li>
-<li><p>If the data are not Normally distributed, reference intervals are
-not valid.</p></li>
+<li><p>These intervals are referred to as 68% en 95% <em>reference-intervals</em>.</p></li>
+<li><p>If the data are not Normally distributed, reference intervals are not valid.</p></li>
 </ul>
 <hr />
 </div>
 <div id="interquartile-range" class="section level3" number="2.4.2">
-<h3><span class="header-section-number">2.4.2</span> Interquartile
-range</h3>
+<h3><span class="header-section-number">2.4.2</span> Interquartile range</h3>
 <p>For skewed data the standard deviation is not useful</p>
 <ul>
 <li>It is very sensitive to outliers</li>
-<li><em>Inter Quartile Range</em>: Distance between first and third
-quartile</li>
+<li><em>Inter Quartile Range</em>: Distance between first and third quartile</li>
 <li>Width of the boxplot!</li>
 </ul>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
@@ -819,46 +756,30 @@ quartile</li>
 </div>
 </div>
 <div id="normal-approximation" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Normal
-approximation</h1>
+<h1><span class="header-section-number">3</span> Normal approximation</h1>
 <ul>
-<li><p>Biological and chemical data are often Normally distributed upon
-transformation.</p></li>
-<li><p>If this is the case we can get a lot of insight in the data using
-just two descriptive statistics: mean <span
-class="math inline">\(\mu\)</span> and standard deviation <span
-class="math inline">\(\sigma\)</span>.</p></li>
+<li><p>Biological and chemical data are often Normally distributed upon transformation.</p></li>
+<li><p>If this is the case we can get a lot of insight in the data using just two descriptive statistics: mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span>.</p></li>
 </ul>
 <hr />
 <div id="evaluation-with-qq-plots" class="section level2" number="3.1">
-<h2><span class="header-section-number">3.1</span> Evaluation with
-QQ-plots</h2>
-<p>If your analysis builds upon the assumption that the data are
-Normally distributed, it has to be verified.</p>
+<h2><span class="header-section-number">3.1</span> Evaluation with QQ-plots</h2>
+<p>If your analysis builds upon the assumption that the data are Normally distributed, it has to be verified.</p>
 <p>We use <em>QQ-plots</em> or <em>quantile-quantile plots</em>.</p>
 <ul>
-<li><p>Observed quantiles from the observations in the sample are
-plotted against quantiles from the Normal distribution.</p></li>
-<li><p>If the data are Normally distributed both quantiles have to be in
-line.</p></li>
+<li><p>Observed quantiles from the observations in the sample are plotted against quantiles from the Normal distribution.</p></li>
+<li><p>If the data are Normally distributed both quantiles have to be in line.</p></li>
 <li><p>Dots in the plot are expected on a straight line.</p></li>
-<li><p>Systematic deviations of the straight line indicate that the data
-are not Normally distributed.</p></li>
-<li><p>Note, that we will always observe some random deviations from the
-straight line in the plot because of random biological variability,
-which is not indicative for deviations from Normality.</p></li>
-<li><p>So it is important to train yourself to learn to distinguish
-systematic from random deviations.</p></li>
+<li><p>Systematic deviations of the straight line indicate that the data are not Normally distributed.</p></li>
+<li><p>Note, that we will always observe some random deviations from the straight line in the plot because of random biological variability, which is not indicative for deviations from Normality.</p></li>
+<li><p>So it is important to train yourself to learn to distinguish systematic from random deviations.</p></li>
 </ul>
 <hr />
 <div id="normal-data" class="section level3" number="3.1.1">
 <h3><span class="header-section-number">3.1.1</span> Normal data</h3>
 <ul>
-<li><p>We will first simulate data from the Normal distribution to show
-how the plots look like for data that is meeting the
-assumptions.</p></li>
-<li><p>We will simulate data from 9 samples with a mean of 18 and
-standard deviation of 9.</p></li>
+<li><p>We will first simulate data from the Normal distribution to show how the plots look like for data that is meeting the assumptions.</p></li>
+<li><p>We will simulate data from 9 samples with a mean of 18 and standard deviation of 9.</p></li>
 </ul>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">18</span></span>
@@ -881,8 +802,7 @@ standard deviation of 9.</p></li>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>samp)</span></code></pre></div>
 <p><img src="04-dataExploration_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
-<p>So even for Normal data we observe some deviations due to sampling
-variability!</p>
+<p>So even for Normal data we observe some deviations due to sampling variability!</p>
 <hr />
 </div>
 <div id="real-data" class="section level3" number="3.1.2">
@@ -903,20 +823,16 @@ variability!</p>
 <p><img src="04-dataExploration_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
 <p>The QQ-plot shows that the quantiles of the data</p>
 <ul>
-<li>are larger (above the line) than these from the Normal in the left
-tail: compression of the lower tail,</li>
-<li>are larger (above the line) than these from the Normal in the right
-tail: long tail to the right.</li>
+<li>are larger (above the line) than these from the Normal in the left tail: compression of the lower tail,</li>
+<li>are larger (above the line) than these from the Normal in the right tail: long tail to the right.</li>
 </ul>
 <p>We can clearly see that the data are right-skewed.</p>
 <hr />
 </div>
 </div>
 </div>
-<div id="two-continuous-variables-correlation" class="section level1"
-number="4">
-<h1><span class="header-section-number">4</span> Two continuous
-variables: Correlation</h1>
+<div id="two-continuous-variables-correlation" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Two continuous variables: Correlation</h1>
 <ul>
 <li>NHANES study</li>
 <li>Height and Weight Example for females</li>
@@ -926,8 +842,7 @@ variables: Correlation</h1>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Height, <span class="at">y =</span> Weight)) <span class="sc">+</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
 <p><img src="04-dataExploration_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>We observe an association between Weight and Height, but we also
-observe that the Weights tend to be right-skewed.</p>
+<p>We observe an association between Weight and Height, but we also observe that the Weights tend to be right-skewed.</p>
 <p>Lets look at the univariate distributions first.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
@@ -958,8 +873,7 @@ observe that the Weights tend to be right-skewed.</p>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>()</span></code></pre></div>
 <p><img src="04-dataExploration_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
 <p>The weights are indeed skewed!</p>
-<p>Upon log transformaton the Weights are less skewed, but still not
-Normally distributed.</p>
+<p>Upon log transformaton the Weights are less skewed, but still not Normally distributed.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Weight <span class="sc">%&gt;%</span> <span class="fu">log2</span>())) <span class="sc">+</span></span>
@@ -982,38 +896,28 @@ Normally distributed.</p>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
 <p><img src="04-dataExploration_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <hr />
-<div id="covariance-and-correlation" class="section level2"
-number="4.1">
-<h2><span class="header-section-number">4.1</span> Covariance and
-Correlation</h2>
+<div id="covariance-and-correlation" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Covariance and Correlation</h2>
 <ul>
-<li>Let X and Y be to continuous random variables, and for each subject
-i we observe <span class="math inline">\((X_i,Y_i)\)</span>.</li>
+<li>Let X and Y be to continuous random variables, and for each subject i we observe <span class="math inline">\((X_i,Y_i)\)</span>.</li>
 <li>Covariance: how deviate X_i and Y_i around their means?</li>
 </ul>
-<p><span
-class="math display">\[\mbox{Covar}(X,Y)=E[(X-E[X])(Y-E[Y])]\]</span></p>
+<p><span class="math display">\[\mbox{Covar}(X,Y)=E[(X-E[X])(Y-E[Y])]\]</span></p>
 <ul>
-<li>Correlation: standardise the covariance according to the variability
-in each variable:</li>
+<li>Correlation: standardise the covariance according to the variability in each variable:</li>
 </ul>
-<p><span
-class="math display">\[\mbox{Cor}(X,Y)=\frac{E[(X-E[X])(Y-E[Y])]}{\sqrt{E[(X-E[X])^2}\sqrt{E[(Y-E[Y])^2}}\]</span></p>
+<p><span class="math display">\[\mbox{Cor}(X,Y)=\frac{E[(X-E[X])(Y-E[Y])]}{\sqrt{E[(X-E[X])^2}\sqrt{E[(Y-E[Y])^2}}\]</span></p>
 </div>
 <div id="pearson-correlation" class="section level2" number="4.2">
-<h2><span class="header-section-number">4.2</span> Pearson
-Correlation</h2>
+<h2><span class="header-section-number">4.2</span> Pearson Correlation</h2>
 <ul>
 <li>Association between two continuous covariate:</li>
 </ul>
-<p><span
-class="math display">\[\mbox{Cor}(X,Y)=\frac{\sum_{i=1}^{n}(X_{i}-\bar{X})(Y_{i}-\bar{Y})}{(n-1)s_{X}s_{Y}}
+<p><span class="math display">\[\mbox{Cor}(X,Y)=\frac{\sum_{i=1}^{n}(X_{i}-\bar{X})(Y_{i}-\bar{Y})}{(n-1)s_{X}s_{Y}}
 \]</span></p>
 <ul>
-<li><p>Positive correlation: <span class="math inline">\(x \ \nearrow \
-\Rightarrow \ y \ \nearrow\)</span></p></li>
-<li><p>Negative correlation: <span class="math inline">\(x \ \nearrow \
-\Rightarrow \ y \ \searrow\)</span></p></li>
+<li><p>Positive correlation: <span class="math inline">\(x \ \nearrow \ \Rightarrow \ y \ \nearrow\)</span></p></li>
+<li><p>Negative correlation: <span class="math inline">\(x \ \nearrow \ \Rightarrow \ y \ \searrow\)</span></p></li>
 <li><p>Correlation always between -1 en 1</p></li>
 </ul>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>means <span class="ot">&lt;-</span> NHANES <span class="sc">%&gt;%</span></span>
@@ -1066,15 +970,12 @@ Weight     1.0000000 0.3029834  0.9812646
 Height     0.3029834 1.0000000  0.3240824
 log2Weight 0.9812646 0.3240824  1.0000000</code></pre>
 <ul>
-<li>Note, that the correlation is lower when the data are not
-transformed.</li>
+<li>Note, that the correlation is lower when the data are not transformed.</li>
 <li>The Pearson correlation is sensitive to outliers!</li>
-<li>Do not use Pearson correlation for skewed distributions or for data
-with outliers.</li>
+<li>Do not use Pearson correlation for skewed distributions or for data with outliers.</li>
 </ul>
 <div id="impact-of-outliers" class="section level3" number="4.2.1">
-<h3><span class="header-section-number">4.2.1</span> Impact of
-outliers</h3>
+<h3><span class="header-section-number">4.2.1</span> Impact of outliers</h3>
 <p>Illustration with simulated data that has one outlier.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">20</span>)</span>
@@ -1090,10 +991,8 @@ outliers</h3>
 <p><img src="04-dataExploration_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
 </div>
 <div id="only-linear-association" class="section level3" number="4.2.2">
-<h3><span class="header-section-number">4.2.2</span> Only linear
-association</h3>
-<p>Note, that the Pearson correlation only captures linear
-association!</p>
+<h3><span class="header-section-number">4.2.2</span> Only linear association</h3>
+<p>Note, that the Pearson correlation only captures linear association!</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>quadratic <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(x)))</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>quadratic <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
@@ -1104,10 +1003,8 @@ association!</p>
 <p><img src="04-dataExploration_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
 </div>
-<div id="different-magnitudes-of-correlation" class="section level2"
-number="4.3">
-<h2><span class="header-section-number">4.3</span> Different magnitudes
-of correlation</h2>
+<div id="different-magnitudes-of-correlation" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Different magnitudes of correlation</h2>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>simData2 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(x, <span class="fl">1.5</span> <span class="sc">*</span> x, <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>, <span class="cf">function</span>(sd, x) <span class="fl">1.5</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(x), <span class="at">sd =</span> sd), <span class="at">x =</span> x), <span class="fu">rnorm</span>(<span class="fu">length</span>(x), <span class="at">sd =</span> <span class="dv">7</span>))</span>
@@ -1135,10 +1032,8 @@ of correlation</h2>
 <hr />
 </div>
 <div id="spearman-correlation" class="section level2" number="4.4">
-<h2><span class="header-section-number">4.4</span> Spearman
-correlation</h2>
-<p>The Spearman correlation is the Pearson correlation after
-transforming the data to ranks.</p>
+<h2><span class="header-section-number">4.4</span> Spearman correlation</h2>
+<p>The Spearman correlation is the Pearson correlation after transforming the data to ranks.</p>
 <ul>
 <li>Pearson correlation</li>
 </ul>

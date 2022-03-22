@@ -549,35 +549,23 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 8.1: Additive linear model on the
-poison dataset - solution</h1>
+<h1 class="title toc-ignore">Exercise 8.1: Additive linear model on the poison dataset - solution</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="the-poison-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> The poison dataset</h1>
-<p>In this experiment, 96 fish (dojofish, goldfish and zebrafish) were
-placed separately in a tank with two liters of water and a certain dose
-(in mg) of the poison EI-43,064. The resistance of the fish against the
-poison was measured as the amount of minutes the fish survived after
-being exposed to the poison (<code>Surv_time</code>, in minutes).
-Additionally, the weight of each fish was measured.</p>
+<p>In this experiment, 96 fish (dojofish, goldfish and zebrafish) were placed separately in a tank with two liters of water and a certain dose (in mg) of the poison EI-43,064. The resistance of the fish against the poison was measured as the amount of minutes the fish survived after being exposed to the poison (<code>Surv_time</code>, in minutes). Additionally, the weight of each fish was measured.</p>
 </div>
 <div id="goal" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Goal</h1>
-<p>In this tutorial session we will focus on <strong>Dojofish</strong>,
-and we will model the survival time in function of the poison dose while
-correcting for the weight of the fish.</p>
+<p>In this tutorial session we will focus on <strong>Dojofish</strong>, and we will model the survival time in function of the poison dose while correcting for the weight of the fish.</p>
 <ol style="list-style-type: decimal">
-<li><p>We will first analyse the survival data by only considering the
-dose as an explanatory variable for survival time</p></li>
-<li><p>Next we will model the survival data with and additive model for
-dose and weight</p></li>
+<li><p>We will first analyse the survival data by only considering the dose as an explanatory variable for survival time</p></li>
+<li><p>Next we will model the survival data with and additive model for dose and weight</p></li>
 </ol>
 <p>Load libraries</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -597,17 +585,9 @@ dose and weight</p></li>
 <ol style="list-style-type: decimal">
 <li><p>Capitalise the fist column name</p></li>
 <li><p>Set the Species column as a factor</p></li>
-<li><p>Change the species factor levels from “0” to Dojofish.
-<em>Hint</em>: use the <code>fct_recode</code> function.</p></li>
-<li><p>In the previous analysis on this dataset
-(<code>Simple linear regression session</code>), we performed a
-log-transformation on the response variable <code>Surv_time</code> to
-meet the normality and homoscedasticity assumptions of the linear model.
-Here, we will immediately work with log-transformed survival times;
-store these in the new variable <code>log2Surv_time</code> and remove
-the non-transformed values.</p></li>
-<li><p>Subset the data to only retain
-<strong>Dojofish</strong>.</p></li>
+<li><p>Change the species factor levels from “0” to Dojofish. <em>Hint</em>: use the <code>fct_recode</code> function.</p></li>
+<li><p>In the previous analysis on this dataset (<code>Simple linear regression session</code>), we performed a log-transformation on the response variable <code>Surv_time</code> to meet the normality and homoscedasticity assumptions of the linear model. Here, we will immediately work with log-transformed survival times; store these in the new variable <code>log2Surv_time</code> and remove the non-transformed values.</p></li>
+<li><p>Subset the data to only retain <strong>Dojofish</strong>.</p></li>
 </ol>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>poison <span class="ot">&lt;-</span> poison <span class="sc">%&gt;%</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">&quot;Species&quot;</span> <span class="ot">=</span> <span class="st">&quot;species&quot;</span>) <span class="sc">%&gt;%</span></span>
@@ -626,23 +606,15 @@ the non-transformed values.</p></li>
 </div>
 <div id="data-exploration" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Data exploration</h1>
-<p>Prior to the analysis, we should explore our data. To start our data
-exploration, we will make use of the <code>ggpairs</code> function of
-the <code>GGally</code> R package. This function will generate a
-visualization containing multiple panels, which display (1) univariate
-plots of the different variables in our dataset, (2) bivariate plots and
-(3) correlation coefficients between the different variables.</p>
+<p>Prior to the analysis, we should explore our data. To start our data exploration, we will make use of the <code>ggpairs</code> function of the <code>GGally</code> R package. This function will generate a visualization containing multiple panels, which display (1) univariate plots of the different variables in our dataset, (2) bivariate plots and (3) correlation coefficients between the different variables.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>poison <span class="sc">%&gt;%</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggpairs</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code></pre></div>
 <p><img src="08_1_poison1_sol_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Based on these plots, we observe that:</p>
 <ul>
-<li>The survival time seems to be associated with dose and fish
-weight.</li>
+<li>The survival time seems to be associated with dose and fish weight.</li>
 </ul>
-<p>From the tutorial of H6 we have seen that the fish weights were not
-nicely uniform across the different poison dosages due to the
-randomisation.</p>
+<p>From the tutorial of H6 we have seen that the fish weights were not nicely uniform across the different poison dosages due to the randomisation.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>poison <span class="sc">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Dose, <span class="at">y =</span> Weight)) <span class="sc">+</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
@@ -659,11 +631,8 @@ randomisation.</p>
 <p><img src="08_1_poison1_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="simple-linear-regression" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Simple linear
-regression</h1>
-<p>This is the same regression model that we have already fit in the
-exercise session on simple linear regression, with <code>Dose</code> as
-the only explanatory variable for <code>log2Surv_time</code>.</p>
+<h1><span class="header-section-number">6</span> Simple linear regression</h1>
+<p>This is the same regression model that we have already fit in the exercise session on simple linear regression, with <code>Dose</code> as the only explanatory variable for <code>log2Surv_time</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a linear regression model with &#39;Surv_time&#39; as response variable and</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># &#39;Dose&#39; as predictor variabele</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>lm_simple <span class="ot">&lt;-</span> <span class="fu">lm</span>(log2Surv_time <span class="sc">~</span> Dose, <span class="at">data =</span> poison)</span>
@@ -673,8 +642,7 @@ the only explanatory variable for <code>log2Surv_time</code>.</p>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm_simple)</span></code></pre></div>
 <p><img src="08_1_poison1_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <ol style="list-style-type: decimal">
-<li>The independence assumption was <strong>met</strong> because the
-fish were randomized to the dose.</li>
+<li>The independence assumption was <strong>met</strong> because the fish were randomized to the dose.</li>
 <li>The linearity assumption is <strong>met</strong>.</li>
 <li>The normality assumption is <strong>met</strong>.</li>
 <li>The homoscedasticity assumption is <strong>met</strong>.</li>
@@ -699,51 +667,34 @@ fish were randomized to the dose.</li>
 ## Residual standard error: 0.4828 on 37 degrees of freedom
 ## Multiple R-squared:  0.3128, Adjusted R-squared:  0.2942 
 ## F-statistic: 16.84 on 1 and 37 DF,  p-value: 0.0002146</code></pre>
-<p>Or for an interpretation at the original scale (minutes in stead of
-log2 minutes):</p>
+<p>Or for an interpretation at the original scale (minutes in stead of log2 minutes):</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^</span>(lm_simple<span class="sc">$</span>coef)[<span class="st">&quot;Dose&quot;</span>]</span></code></pre></div>
 <pre><code>##      Dose 
 ## 0.5335551</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^</span>(<span class="fu">confint</span>(lm_simple))[<span class="dv">2</span>, ]</span></code></pre></div>
 <pre><code>##     2.5 %    97.5 % 
 ## 0.3912681 0.7275855</code></pre>
-<p>There is a very significant effect of the poison on survival of
-Dojofish (p&lt; 0.001). Dojofish that are exposed to a higher dose of
-the poison will have a survival time that decrease on average with a
-factor 0.53 per gram of poison that is added (95% CI [0.39, 0.73]).</p>
+<p>There is a very significant effect of the poison on survival of Dojofish (p&lt; 0.001). Dojofish that are exposed to a higher dose of the poison will have a survival time that decrease on average with a factor 0.53 per gram of poison that is added (95% CI [0.39, 0.73]).</p>
 </div>
-<div id="analysis-with-additive-effect-for-weight"
-class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Analysis with additive
-effect for weight</h1>
+<div id="analysis-with-additive-effect-for-weight" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Analysis with additive effect for weight</h1>
 <div id="model-specification" class="section level2" number="7.1">
-<h2><span class="header-section-number">7.1</span> Model
-specification</h2>
-<p>Here, we will estimate the effect of the poison while correcting for
-<code>weight</code> and we will add it as an additional covariate to our
-linear regression model, such that</p>
+<h2><span class="header-section-number">7.1</span> Model specification</h2>
+<p>Here, we will estimate the effect of the poison while correcting for <code>weight</code> and we will add it as an additional covariate to our linear regression model, such that</p>
 <p><span class="math display">\[
 y_i=\beta_0+\beta_d x_d + \beta_g x_g + \epsilon_i,
 \]</span></p>
-<p>with <span class="math inline">\(\epsilon_i \text{ i.i.d. }
-N(0,\sigma^2)\)</span>.</p>
+<p>with <span class="math inline">\(\epsilon_i \text{ i.i.d. } N(0,\sigma^2)\)</span>.</p>
 </div>
 <div id="assumptions" class="section level2" number="7.2">
 <h2><span class="header-section-number">7.2</span> Assumptions</h2>
-<p>The model will again be fit to allow for assessing the model
-assumptions</p>
+<p>The model will again be fit to allow for assessing the model assumptions</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>lm_additive <span class="ot">&lt;-</span> <span class="fu">lm</span>(log2Surv_time <span class="sc">~</span> Dose <span class="sc">+</span> Weight, <span class="at">data =</span> poison)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm_additive)</span></code></pre></div>
 <p><img src="08_1_poison1_sol_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>The assumption of independence, linearity and homoscedasticity are
-met.</p>
-<p>The QQ-plot suggest that there might be some deviation from normality
-in the left tail of the,distribution. However, when we would simulate
-data under the normality assumption, it seems that deviations of this
-size may be expected when normality is met. We will use simulation to
-assess if we can observe similar residual plots if all assumptions for
-the linear model hold.</p>
+<p>The assumption of independence, linearity and homoscedasticity are met.</p>
+<p>The QQ-plot suggest that there might be some deviation from normality in the left tail of the,distribution. However, when we would simulate data under the normality assumption, it seems that deviations of this size may be expected when normality is met. We will use simulation to assess if we can observe similar residual plots if all assumptions for the linear model hold.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1031</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> lm_additive <span class="sc">%&gt;%</span> <span class="fu">sigma</span>()</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -758,10 +709,7 @@ the linear model hold.</p>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  simModels[[i]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(ySim <span class="sc">~</span> Dose <span class="sc">+</span> Weight, dataHlp)</span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(simModels[[i]], <span class="at">which =</span> <span class="dv">2</span>)</span>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p><img src="08_1_poison1_sol_files/figure-html/unnamed-chunk-10-1.png" width="672" />
-It seems that deviations of the size that we see in our real data may be
-expected even when normality is met. As such, all assumptions for linear
-regression seem to be valid.</p>
+<p><img src="08_1_poison1_sol_files/figure-html/unnamed-chunk-10-1.png" width="672" /> It seems that deviations of the size that we see in our real data may be expected even when normality is met. As such, all assumptions for linear regression seem to be valid.</p>
 </div>
 <div id="inference" class="section level2" number="7.3">
 <h2><span class="header-section-number">7.3</span> Inference</h2>
@@ -787,37 +735,18 @@ regression seem to be valid.</p>
 ## Multiple R-squared:  0.5141, Adjusted R-squared:  0.4871 
 ## F-statistic: 19.04 on 2 and 36 DF,  p-value: 2.282e-06</code></pre>
 </div>
-<div id="interpretation-of-model-parameters" class="section level2"
-number="7.4">
-<h2><span class="header-section-number">7.4</span> Interpretation of
-model parameters</h2>
-<p>We see that the effect of dose on survival time remains similar,
-however, it has become more significant after we have incorporated
-weight in our model. Indeed, from the data exploration, we learned that
-weight is associated with survival.</p>
+<div id="interpretation-of-model-parameters" class="section level2" number="7.4">
+<h2><span class="header-section-number">7.4</span> Interpretation of model parameters</h2>
+<p>We see that the effect of dose on survival time remains similar, however, it has become more significant after we have incorporated weight in our model. Indeed, from the data exploration, we learned that weight is associated with survival.</p>
 <ol style="list-style-type: decimal">
-<li><p>As such, by incorporating weight in our model, we are able to
-explain a larger part of the variability in the response variable
-survival time. As a consequence, the variability in the residuals of the
-model will decrease, which in turn will lead to smaller standard error
-estimates for the different parameter estimates in the model.</p></li>
-<li><p>From the data exploration, we additionally found that the
-dojo-fish weights were not uniform across the different poison dosages
-due to the randomisation. Therefore, we can estimate the effect between
-dose and survival time better while accounting for the weight.</p></li>
+<li><p>As such, by incorporating weight in our model, we are able to explain a larger part of the variability in the response variable survival time. As a consequence, the variability in the residuals of the model will decrease, which in turn will lead to smaller standard error estimates for the different parameter estimates in the model.</p></li>
+<li><p>From the data exploration, we additionally found that the dojo-fish weights were not uniform across the different poison dosages due to the randomisation. Therefore, we can estimate the effect between dose and survival time better while accounting for the weight.</p></li>
 </ol>
-<p>In this model, the effect of <code>Dose</code> can be interpreted as
-the average change in the log2 survival time between two groups of
-dojofish <strong>with the same weight</strong> that are exposed to a
-poison dosage that differs 1 mg/L. In symbols:</p>
+<p>In this model, the effect of <code>Dose</code> can be interpreted as the average change in the log2 survival time between two groups of dojofish <strong>with the same weight</strong> that are exposed to a poison dosage that differs 1 mg/L. In symbols:</p>
 <p><span class="math display">\[\begin{eqnarray}
-\hat{\mu_1}&amp;=&amp; \beta_0 + \beta_d x_{1d} + \beta_g x_g \text{
-(average log2-survival time for dose 1 for a certain weight)}\\
-\hat{\mu_2}&amp;=&amp; \beta_0 + \beta_d x_{2d} + \beta_g x_g \text{
-(average log2-survival time for dose 2 for that same weight)}\\
-\hat \mu_2- \hat \mu_1&amp;=&amp;\beta_0 + \beta_d x_{2d} + \beta_g x_g
-- (\beta_0 + \beta_d x_{1d} + \beta_g x_g) \text{ (difference in average
-log2-survival time between dose 2 en dose 1)}\\
+\hat{\mu_1}&amp;=&amp; \beta_0 + \beta_d x_{1d} + \beta_g x_g \text{ (average log2-survival time for dose 1 for a certain weight)}\\
+\hat{\mu_2}&amp;=&amp; \beta_0 + \beta_d x_{2d} + \beta_g x_g \text{ (average log2-survival time for dose 2 for that same weight)}\\
+\hat \mu_2- \hat \mu_1&amp;=&amp;\beta_0 + \beta_d x_{2d} + \beta_g x_g - (\beta_0 + \beta_d x_{1d} + \beta_g x_g) \text{ (difference in average log2-survival time between dose 2 en dose 1)}\\
 \hat \mu_2-\hat \mu_1&amp;=&amp;\beta_d (x_{2d}-x_{1d})
 \end{eqnarray}\]</span></p>
 </div>
@@ -831,24 +760,12 @@ log2-survival time between dose 2 en dose 1)}\\
 ## (Intercept) 0.7169728 4.4042734
 ## Dose        0.3945101 0.6707292
 ## Weight      1.4259918 3.1265018</code></pre>
-<p>The dose of the poison has an extremely significant effect on the
-log2 transformed survival time of dojofish (p-value = 1e-05). The
-geometric average of the survival time for dojofish that are exposed to
-a poison dose that is 1mg/L larger is approximately halved (factor =
-<span class="math inline">\(2^{\beta_d}=\)</span> 0.51) .</p>
-<p>The effect of weight on the survival time of dojofish is also
-extremely significant (p-value = 5e-04). The geometric average of the
-survival time of a dojofish that weighs 1 gram more than another
-dojofish is approximately twice as long (factor = <span
-class="math inline">\(2^{ \beta_g}\)</span>= 2.1, 95% BI [1.4,3.1]).</p>
+<p>The dose of the poison has an extremely significant effect on the log2 transformed survival time of dojofish (p-value = 1e-05). The geometric average of the survival time for dojofish that are exposed to a poison dose that is 1mg/L larger is approximately halved (factor = <span class="math inline">\(2^{\beta_d}=\)</span> 0.51) .</p>
+<p>The effect of weight on the survival time of dojofish is also extremely significant (p-value = 5e-04). The geometric average of the survival time of a dojofish that weighs 1 gram more than another dojofish is approximately twice as long (factor = <span class="math inline">\(2^{ \beta_g}\)</span>= 2.1, 95% BI [1.4,3.1]).</p>
 </div>
 <div id="remarks" class="section level2" number="7.6">
 <h2><span class="header-section-number">7.6</span> Remarks</h2>
-<p>In the <code>lm_additive</code> model, we included only a <em>main
-effect</em> for weight. However, there could also be an <em>interaction
-effect</em> between weight and dose. An interaction between weight and
-dose implies that the dose effect on the survival time changes according
-to the weight of the fish.</p>
+<p>In the <code>lm_additive</code> model, we included only a <em>main effect</em> for weight. However, there could also be an <em>interaction effect</em> between weight and dose. An interaction between weight and dose implies that the dose effect on the survival time changes according to the weight of the fish.</p>
 </div>
 </div>
 

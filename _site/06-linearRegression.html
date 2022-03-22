@@ -551,29 +551,22 @@ div.tocify {
 
 <h1 class="title toc-ignore">6. Simple linear regression</h1>
 <h4 class="author">Lieven Clement</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
 <div id="breast-cancer-dataset" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Breast cancer
-dataset</h1>
+<h1><span class="header-section-number">1</span> Breast cancer dataset</h1>
 <ul>
-<li><p>Subset of study <a href="https://doi.org/10.1093/jnci/djj052"
-class="uri">https://doi.org/10.1093/jnci/djj052</a></p></li>
-<li><p>32 breast cancer patients with estrogen recepter positieve tumor
-that had tamoxifen chemotherapy. Variabels:</p>
+<li><p>Subset of study <a href="https://doi.org/10.1093/jnci/djj052" class="uri">https://doi.org/10.1093/jnci/djj052</a></p></li>
+<li><p>32 breast cancer patients with estrogen recepter positieve tumor that had tamoxifen chemotherapy. Variabels:</p>
 <ul>
 <li>grade: histological grade of tumor (grade 1 vs 3),</li>
-<li>node: lymph node status (0: not affected, 1: lymph nodes affected
-and removed),</li>
+<li>node: lymph node status (0: not affected, 1: lymph nodes affected and removed),</li>
 <li>size: tumor size in cm,</li>
-<li>ESR1 and S100A8 gene expression in tumor biopsy (microarray
-technology)</li>
+<li>ESR1 and S100A8 gene expression in tumor biopsy (microarray technology)</li>
 </ul></li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>brca <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/GTPB/PSLS20/master/data/breastcancer.csv&quot;</span>)</span>
@@ -584,10 +577,8 @@ technology)</li>
   </script>
 </div>
 <ul>
-<li>For didactical reasons we first remove 3 outliers in the S100A8
-expression data.</li>
-<li>Later in the lecture we will show how to properly deal with all
-data.</li>
+<li>For didactical reasons we first remove 3 outliers in the S100A8 expression data.</li>
+<li>Later in the lecture we will show how to properly deal with all data.</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>brca <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> S100A8)) <span class="sc">+</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
@@ -597,22 +588,17 @@ data.</li>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>brcaSubset <span class="ot">&lt;-</span> brca <span class="sc">%&gt;%</span> <span class="fu">filter</span>(S100A8 <span class="sc">&lt;</span> <span class="dv">2000</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>brcaSubset[, <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)] <span class="sc">%&gt;%</span> <span class="fu">ggpairs</span>()</span></code></pre></div>
 <p><img src="06-linearRegression_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<div id="association-between-esr1-and-s100a8-expressie"
-class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Association between
-ESR1 and S100A8 expressie</h2>
+<div id="association-between-esr1-and-s100a8-expressie" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Association between ESR1 and S100A8 expressie</h2>
 <ul>
-<li><p>ESR1 in <span class="math inline">\(\pm\)</span> 75% of breast
-cancer tumors.</p>
+<li><p>ESR1 in <span class="math inline">\(\pm\)</span> 75% of breast cancer tumors.</p>
 <ul>
-<li>Expression of ER gene positive for treatment: tumor responds to
-hormone therapy</li>
+<li>Expression of ER gene positive for treatment: tumor responds to hormone therapy</li>
 <li>Tamoxifen interacts with ER and modulates gene expression.</li>
 </ul></li>
 <li><p>Proteins of S100 family often dysregulated in cancer</p>
 <ul>
-<li>S100A8 expressie represses immune systeem in tumor en creates an
-environment of inflamation that promotes tumor growth.</li>
+<li>S100A8 expressie represses immune systeem in tumor en creates an environment of inflamation that promotes tumor growth.</li>
 </ul></li>
 <li><p>Assess association between ESR1 and S100A8 expression.</p></li>
 </ul>
@@ -632,9 +618,7 @@ environment of inflamation that promotes tumor growth.</li>
 <div id="lineair-regression" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Lineair Regression</h1>
 <ul>
-<li><p>Statistical method to assess association between two variables
-<span class="math inline">\((X_i, Y_i)\)</span>, measured on each
-subject <span class="math inline">\(i = 1, ..., n\)</span>.</p></li>
+<li><p>Statistical method to assess association between two variables <span class="math inline">\((X_i, Y_i)\)</span>, measured on each subject <span class="math inline">\(i = 1, ..., n\)</span>.</p></li>
 <li><p>Gene expression example</p>
 <ul>
 <li>Response Y : S100A8 expression</li>
@@ -650,67 +634,41 @@ subject <span class="math inline">\(i = 1, ..., n\)</span>.</p></li>
 <div id="model" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Model</h2>
 <ul>
-<li>For fixed <span class="math inline">\(X\)</span>, <span
-class="math inline">\(Y\)</span> does not necessarly has the same
-value</li>
+<li>For fixed <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span> does not necessarly has the same value</li>
 </ul>
-<p><span class="math display">\[\text{observation = signal +
-noise}\]</span></p>
-<p><span class="math display">\[Y_i=g(X_i)+\epsilon_i\]</span> - We
-define <span class="math inline">\(g(x)\)</span> als the expected
-outcome for subjects with <span class="math inline">\(X_i=x\)</span></p>
+<p><span class="math display">\[\text{observation = signal + noise}\]</span></p>
+<p><span class="math display">\[Y_i=g(X_i)+\epsilon_i\]</span> - We define <span class="math inline">\(g(x)\)</span> als the expected outcome for subjects with <span class="math inline">\(X_i=x\)</span></p>
 <p><span class="math display">\[E[Y_i|X_i=x]=g(x)\]</span></p>
-<p>Hence, <span class="math inline">\(\epsilon_i\)</span> is on average
-0 for subjects with same <span class="math inline">\(X_i\)</span>: <span
-class="math display">\[E[\epsilon_i|X_i]=0\]</span></p>
+<p>Hence, <span class="math inline">\(\epsilon_i\)</span> is on average 0 for subjects with same <span class="math inline">\(X_i\)</span>: <span class="math display">\[E[\epsilon_i|X_i]=0\]</span></p>
 </div>
 <div id="lineair-regression-1" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> Lineair
-regression</h2>
+<h2><span class="header-section-number">2.2</span> Lineair regression</h2>
 <ul>
-<li>To obtain <em>accurate</em> and <em>interpretable</em> results one
-often choose <span class="math inline">\(g(x)\)</span> to be a linear
-function with unknown parameter.</li>
+<li>To obtain <em>accurate</em> and <em>interpretable</em> results one often choose <span class="math inline">\(g(x)\)</span> to be a linear function with unknown parameter.</li>
 </ul>
-<p><span class="math display">\[E(Y|X=x)=\beta_0 + \beta_1
-x\]</span></p>
-<p>unknown <span class="math inline">\(\beta_0\)</span> and <span
-class="math inline">\(\beta_1\)</span>.</p>
+<p><span class="math display">\[E(Y|X=x)=\beta_0 + \beta_1 x\]</span></p>
+<p>unknown  <span class="math inline">\(\beta_0\)</span> and  <span class="math inline">\(\beta_1\)</span>.</p>
 <ul>
-<li><p>Lineair model imposes an <em>assumption</em> on the distribution
-of <span class="math inline">\(X\)</span> and <span
-class="math inline">\(Y\)</span>, which can be invalid.</p></li>
-<li><p><em>Efficient data-analysis</em>: because it uses all
-observations to learn on the expected outcome for <span
-class="math inline">\(X=x\)</span>.</p></li>
+<li><p>Lineair model imposes an <em>assumption</em> on the distribution of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, which can be invalid.</p></li>
+<li><p><em>Efficient data-analysis</em>: because it uses all observations to learn on the expected outcome for <span class="math inline">\(X=x\)</span>.</p></li>
 </ul>
 </div>
 <div id="use" class="section level2" number="2.3">
 <h2><span class="header-section-number">2.3</span> Use</h2>
 <ul>
-<li><p><em>Prediction</em>: when <span class="math inline">\(Y\)</span>
-is unknown but <span class="math inline">\(X\)</span> is known we can
-predict <span class="math inline">\(Y\)</span> using <span
-class="math display">\[E(Y|X=x)=\beta_0 + \beta_1 x\]</span></p></li>
-<li><p><em>Association</em>: biological relation between variable <span
-class="math inline">\(X\)</span> and response <span
-class="math inline">\(Y\)</span></p></li>
-<li><p><em>Intercept:</em> <span
-class="math inline">\(E(Y|X=0)=\beta_0\)</span> </p></li>
+<li><p><em>Prediction</em>: when <span class="math inline">\(Y\)</span> is unknown but <span class="math inline">\(X\)</span> is known we can predict <span class="math inline">\(Y\)</span> using <span class="math display">\[E(Y|X=x)=\beta_0 + \beta_1 x\]</span></p></li>
+<li><p><em>Association</em>: biological relation between variable <span class="math inline">\(X\)</span> and response <span class="math inline">\(Y\)</span></p></li>
+<li><p><em>Intercept:</em> <span class="math inline">\(E(Y|X=0)=\beta_0\)</span> </p></li>
 <li><p><em>Slope</em>: <span class="math display">\[\begin{eqnarray*}
-E(Y|X=x+\delta)-E(Y|X=x)&amp;=&amp;\beta_0 + \beta_1 (x+\delta)
--\beta_0-\beta_1 x\\
+E(Y|X=x+\delta)-E(Y|X=x)&amp;=&amp;\beta_0 + \beta_1 (x+\delta) -\beta_0-\beta_1 x\\
 &amp;=&amp; \beta_1\delta
 \end{eqnarray*}\]</span></p></li>
 </ul>
-<p><span class="math inline">\(\beta_1=\)</span> difference in mean
-outcome for subjects that differ in one unit of the predictor <span
-class="math inline">\(X\)</span>.</p>
+<p><span class="math inline">\(\beta_1=\)</span> difference in mean outcome for subjects that differ in one unit of the predictor <span class="math inline">\(X\)</span>.</p>
 </div>
 </div>
 <div id="parameter-estimation" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Parameter
-estimation</h1>
+<h1><span class="header-section-number">3</span> Parameter estimation</h1>
 <ul>
 <li>Least squares</li>
 </ul>
@@ -721,51 +679,29 @@ estimation</h1>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p><img src="06-linearRegression_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 <ul>
-<li><p>Parameters <span class="math inline">\(\beta_0\)</span> en <span
-class="math inline">\(\beta_1\)</span> are unknown.</p></li>
+<li><p>Parameters <span class="math inline">\(\beta_0\)</span> en <span class="math inline">\(\beta_1\)</span> are unknown.</p></li>
 <li><p>Estimate them using sample</p></li>
 <li><p>Best fitting line</p>
 <ul>
-<li>Point on regression line for a given <span
-class="math inline">\(x_i\)</span>: <span class="math inline">\((x_i,
-\beta_0 + \beta_1 x_i)\)</span> as close as possible <span
-class="math inline">\((x_i, y_i)\)</span></li>
-<li>Choose <span class="math inline">\(\beta_0\)</span> and <span
-class="math inline">\(\beta_1\)</span> so that the sum between predicted
-and observed points becomes as small as possible.</li>
+<li>Point on regression line for a given <span class="math inline">\(x_i\)</span>: <span class="math inline">\((x_i, \beta_0 + \beta_1 x_i)\)</span> as close as possible <span class="math inline">\((x_i, y_i)\)</span></li>
+<li>Choose <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> so that the sum between predicted and observed points becomes as small as possible.</li>
 </ul></li>
 </ul>
-<p><span class="math display">\[SSE=\sum_{i=1}^n (y_i-\beta_0-\beta_1
-x_i)^2=\sum_{i=1}^n e_i^2\]</span></p>
-<p>with residuals <span class="math inline">\(e_i\)</span> the vertical
-distances from the observations to the fitted regression line</p>
-<div id="estimators-that-minimise-sse" class="section level2"
-number="3.1">
-<h2><span class="header-section-number">3.1</span> Estimators that
-minimise SSE</h2>
-<p><span class="math display">\[\hat{\beta_1}= \frac{\sum\limits_{i=1}^n
-(y_i-\bar y)(x_i-\bar x)}{\sum\limits_{i=1}^n (x_i-\bar
-x_i)^2}=\frac{\mbox{cor}(x,y)s_y}{s_x} \]</span></p>
-<p><span class="math display">\[\hat{\beta_0}=\bar y - \hat{\beta}_1
-\bar x \]</span></p>
-<p>Note, that the slope of the least squares fit is proportional to the
-correlation between the response and the predictor.</p>
+<p><span class="math display">\[SSE=\sum_{i=1}^n (y_i-\beta_0-\beta_1 x_i)^2=\sum_{i=1}^n e_i^2\]</span></p>
+<p>with residuals <span class="math inline">\(e_i\)</span> the vertical distances from the observations to the fitted regression line</p>
+<div id="estimators-that-minimise-sse" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Estimators that minimise SSE</h2>
+<p><span class="math display">\[\hat{\beta_1}= \frac{\sum\limits_{i=1}^n (y_i-\bar y)(x_i-\bar x)}{\sum\limits_{i=1}^n (x_i-\bar x_i)^2}=\frac{\mbox{cor}(x,y)s_y}{s_x} \]</span></p>
+<p><span class="math display">\[\hat{\beta_0}=\bar y - \hat{\beta}_1 \bar x \]</span></p>
+<p>Note, that the slope of the least squares fit is proportional to the correlation between the response and the predictor.</p>
 <p>Fitted model allows to:</p>
 <ul>
-<li><p>predict the response for subjects with a given value <span
-class="math inline">\(x\)</span> for the predictor: <span
-class="math display">\[\text{E} [ Y | X =
-x]=\hat{\beta}_0+\hat{\beta}_1x\]</span></p></li>
-<li><p>Assess how the mean response differs between two groups of
-subjects that differ <span class="math inline">\(\delta\)</span> units
-in the predictor:</p></li>
+<li><p>predict the response for subjects with a given value <span class="math inline">\(x\)</span> for the predictor: <span class="math display">\[\text{E} [ Y | X = x]=\hat{\beta}_0+\hat{\beta}_1x\]</span></p></li>
+<li><p>Assess how the mean response differs between two groups of subjects that differ <span class="math inline">\(\delta\)</span> units in the predictor:</p></li>
 </ul>
-<p><span
-class="math display">\[\text{E}\left[Y|X=x+\delta\right]-\text{E}\left[Y|X=x\right]=
-\hat{\beta}_1\delta\]</span></p>
+<p><span class="math display">\[\text{E}\left[Y|X=x+\delta\right]-\text{E}\left[Y|X=x\right]= \hat{\beta}_1\delta\]</span></p>
 <div id="breast-cancer-example" class="section level3" number="3.1.1">
-<h3><span class="header-section-number">3.1.1</span> Breast cancer
-example</h3>
+<h3><span class="header-section-number">3.1.1</span> Breast cancer example</h3>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(S100A8 <span class="sc">~</span> ESR1, brcaSubset)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div>
 <pre><code>
@@ -788,128 +724,66 @@ Multiple R-squared:  0.4698,    Adjusted R-squared:  0.4502
 F-statistic: 23.93 on 1 and 27 DF,  p-value: 4.078e-05</code></pre>
 <p><span class="math display">\[E(Y|X=x)=208.47-0.059 x\]</span></p>
 <ul>
-<li><p>Expected S100A8 expression is on average 59 units lower for
-patients with ESR1 expression level that is 1000 units higher</p></li>
-<li><p>Expected S100A8 expression level for patients with an ESR1
-expression level of 2000: <span
-class="math display">\[208.47-0.059\times 2000=89.94\]</span></p></li>
-<li><p>Expected S100A8 expression level for patients with an ESR1
-expression level of 4000: <span
-class="math display">\[208.47-0.059\times 4000=-28.58\]</span></p></li>
-<li><p>Be careful when you extrapolate! (We can only assess the
-assumption of linearity within the range of the data).</p></li>
+<li><p>Expected S100A8 expression is on average 59 units lower for patients with ESR1 expression level that is 1000 units higher</p></li>
+<li><p>Expected S100A8 expression level for patients with an ESR1 expression level of 2000: <span class="math display">\[208.47-0.059\times 2000=89.94\]</span></p></li>
+<li><p>Expected S100A8 expression level for patients with an ESR1 expression level of 4000: <span class="math display">\[208.47-0.059\times 4000=-28.58\]</span></p></li>
+<li><p>Be careful when you extrapolate! (We can only assess the assumption of linearity within the range of the data).</p></li>
 </ul>
 </div>
 </div>
 </div>
 <div id="statistical-inference" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Statistical
-inference</h1>
-<p>To draw conclusions based on the regression model <span
-class="math display">\[E(Y|X)=\beta_0+\beta_1 X\]</span> we need to
-know</p>
+<h1><span class="header-section-number">4</span> Statistical inference</h1>
+<p>To draw conclusions based on the regression model <span class="math display">\[E(Y|X)=\beta_0+\beta_1 X\]</span> we need to know</p>
 <ul>
-<li><p>How the least squares parameter estimators vary from sample to
-sample, and</p></li>
-<li><p>how they deviate under the null hypothesis that there is no
-association between predictor and response</p></li>
+<li><p>How the least squares parameter estimators vary from sample to sample, and</p></li>
+<li><p>how they deviate under the null hypothesis that there is no association between predictor and response</p></li>
 <li><p>Requires a statistical model</p></li>
-<li><p>Model the distribution of <span class="math inline">\(Y\)</span>
-given <span class="math inline">\(X\)</span> explicitly:
-f_{Y|X}(y)</p></li>
+<li><p>Model the distribution of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> explicitly: f_{Y|X}(y)</p></li>
 </ul>
-<div id="modelling-distribution-of-y" class="section level2"
-number="4.1">
-<h2><span class="header-section-number">4.1</span> Modelling
-distribution of Y?</h2>
+<div id="modelling-distribution-of-y" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Modelling distribution of Y?</h2>
 <ol style="list-style-type: decimal">
 <li>Besides <em>Linearity</em> we need additional assumptions!</li>
-<li><em>Independence</em>: Observations <span
-class="math inline">\((X_1,Y_1), ..., (X_n,Y_n)\)</span> are made for n
-independent subjects (is required to estimate the variance)</li>
-<li><em>Homoscedasticity</em> or <em>equal variances</em>: observations
-vary with equal mean around the regression line
+<li><em>Independence</em>: Observations <span class="math inline">\((X_1,Y_1), ..., (X_n,Y_n)\)</span> are made for n independent subjects (is required to estimate the variance)</li>
+<li><em>Homoscedasticity</em> or <em>equal variances</em>: observations vary with equal mean around the regression line
 <ul>
-<li>Residuals <span class="math inline">\(\epsilon_i\)</span> have equal
-variance for each <span class="math inline">\(X_i=x\)</span></li>
-<li><span class="math inline">\(\text{var}(Y\vert X=x) =
-\sigma^2\)</span> for each <span class="math inline">\(X=x\)</span></li>
-<li><span class="math inline">\(\sigma\)</span> is referred to as the
-<em>residual standard deviation</em></li>
+<li>Residuals <span class="math inline">\(\epsilon_i\)</span> have equal variance for each <span class="math inline">\(X_i=x\)</span></li>
+<li><span class="math inline">\(\text{var}(Y\vert X=x) = \sigma^2\)</span> for each <span class="math inline">\(X=x\)</span></li>
+<li><span class="math inline">\(\sigma\)</span> is referred to as the <em>residual standard deviation</em></li>
 </ul></li>
-<li><em>Normality</em>: the residuals <span
-class="math inline">\(\epsilon_i\)</span> are normally distributed</li>
+<li><em>Normality</em>: the residuals <span class="math inline">\(\epsilon_i\)</span> are normally distributed</li>
 </ol>
-<p><img
-src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/RegModel3.png"
-style="width:100.0%" /></p>
+<p><img src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/RegModel3.png" style="width:100.0%" /></p>
 <ul>
-<li><p>Given 2, 3 and 4 <span class="math display">\[\epsilon_i \text{
-i.i.d.} N(0,\sigma^2).\]</span></p></li>
-<li><p>Together with 1 this implies: <span
-class="math display">\[Y_i\vert X_i\sim N(\beta_0+\beta_1
-X_i,\sigma^2),\]</span></p></li>
-<li><p>We can show that given these assumption <span
-class="math display">\[\sigma^2_{\hat{\beta}_0}=\frac{\sum\limits_{i=1}^n
-X^2_i}{\sum\limits_{i=1}^n (X_i-\bar X)^2} \times\frac{\sigma^2}{n}
-\text{ en } \sigma^2_{\hat{\beta}_1}=\frac{\sigma^2}{\sum\limits_{i=1}^n
-(X_i-\bar X)^2}\]</span></p></li>
-<li><p>and the parameter estimators are also normally distributed <span
-class="math display">\[\hat\beta_0 \sim N\left(\beta_0,\sigma^2_{\hat
-\beta_0}\right) \text{ en } \hat\beta_1 \sim
-N\left(\beta_1,\sigma^2_{\hat \beta_1}\right)\]</span></p></li>
+<li><p>Given 2, 3 and 4 <span class="math display">\[\epsilon_i \text{ i.i.d.} N(0,\sigma^2).\]</span></p></li>
+<li><p>Together with 1 this implies: <span class="math display">\[Y_i\vert X_i\sim N(\beta_0+\beta_1 X_i,\sigma^2),\]</span></p></li>
+<li><p>We can show that given these assumption <span class="math display">\[\sigma^2_{\hat{\beta}_0}=\frac{\sum\limits_{i=1}^n X^2_i}{\sum\limits_{i=1}^n (X_i-\bar X)^2} \times\frac{\sigma^2}{n} \text{ en } \sigma^2_{\hat{\beta}_1}=\frac{\sigma^2}{\sum\limits_{i=1}^n (X_i-\bar X)^2}\]</span></p></li>
+<li><p>and the parameter estimators are also normally distributed <span class="math display">\[\hat\beta_0 \sim N\left(\beta_0,\sigma^2_{\hat \beta_0}\right) \text{ en } \hat\beta_1 \sim N\left(\beta_1,\sigma^2_{\hat \beta_1}\right)\]</span></p></li>
 </ul>
 </div>
-<div id="high-spread-of-x-improves-the-precision" class="section level2"
-number="4.2">
-<h2><span class="header-section-number">4.2</span> High spread of <span
-class="math inline">\(X\)</span> improves the precision</h2>
-<p><span
-class="math display">\[\sigma^2_{\hat{\beta}_1}=\frac{\sigma^2}{\sum\limits_{i=1}^n
-(X_i-\bar X)^2}\]</span></p>
-<p><img
-src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/spread.png"
-style="width:100.0%" /></p>
+<div id="high-spread-of-x-improves-the-precision" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> High spread of <span class="math inline">\(X\)</span> improves the precision</h2>
+<p><span class="math display">\[\sigma^2_{\hat{\beta}_1}=\frac{\sigma^2}{\sum\limits_{i=1}^n (X_i-\bar X)^2}\]</span></p>
+<p><img src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/spread.png" style="width:100.0%" /></p>
 <ul>
-<li>Conditional variance (<span class="math inline">\(\sigma^2\)</span>)
-is unknown</li>
-<li>Estimate using <em>mean squared error</em> (MSE) <span
-class="math display">\[\hat\sigma^2=MSE=\frac{\sum\limits_{i=1}^n
-\left(y_i-\hat\beta_0-\hat\beta_1\times
-x_i\right)^2}{n-2}=\frac{\sum\limits_{i=1}^n e^2_i}{n-2}.\]</span></li>
-<li>This estimator is based on independence (assumption 2) and equality
-of the variance (assumption 3).</li>
+<li>Conditional variance (<span class="math inline">\(\sigma^2\)</span>) is unknown</li>
+<li>Estimate using <em>mean squared error</em> (MSE) <span class="math display">\[\hat\sigma^2=MSE=\frac{\sum\limits_{i=1}^n \left(y_i-\hat\beta_0-\hat\beta_1\times x_i\right)^2}{n-2}=\frac{\sum\limits_{i=1}^n e^2_i}{n-2}.\]</span></li>
+<li>This estimator is based on independence (assumption 2) and equality of the variance (assumption 3).</li>
 <li>Devide by <span class="math inline">\(n-2\)</span></li>
 </ul>
-<p>Upon the estimation of <span class="math inline">\(\sigma^2\)</span>
-we obtain following standard errors:</p>
-<p><span
-class="math display">\[\text{SE}_{\hat{\beta}_0}=\hat\sigma_{\hat{\beta}_0}=\sqrt{\frac{\sum\limits_{i=1}^n
-X^2_i}{\sum\limits_{i=1}^n (X_i-\bar X)^2} \times\frac{\text{MSE}}{n}}
-\text{ en }
-\text{SE}_{\hat{\beta}_1}=\hat\sigma_{\hat{\beta}_1}=\sqrt{\frac{\text{MSE}}{\sum\limits_{i=1}^n
-(X_i-\bar X)^2}}\]</span></p>
+<p>Upon the estimation of <span class="math inline">\(\sigma^2\)</span> we obtain following standard errors:</p>
+<p><span class="math display">\[\text{SE}_{\hat{\beta}_0}=\hat\sigma_{\hat{\beta}_0}=\sqrt{\frac{\sum\limits_{i=1}^n X^2_i}{\sum\limits_{i=1}^n (X_i-\bar X)^2} \times\frac{\text{MSE}}{n}} \text{ en } \text{SE}_{\hat{\beta}_1}=\hat\sigma_{\hat{\beta}_1}=\sqrt{\frac{\text{MSE}}{\sum\limits_{i=1}^n (X_i-\bar X)^2}}\]</span></p>
 <ul>
-<li><p>Again we can construct tests and confidence intervals using <span
-class="math display">\[T=\frac{\hat{\beta}_k-\beta_k}{SE(\hat{\beta}_k)}
-\text{ with } k=1,2.\]</span></p></li>
-<li><p>If all assumptions are valid <span
-class="math inline">\(T\)</span> follows t-verdeling with n-2 degrees of
-freedom. </p></li>
-<li><p>If no normality, but independence, linearity, equality of mean
-and large dataset <span class="math display">\[\rightarrow \text{Central
-Limit theorem}\]</span></p></li>
+<li><p>Again we can construct tests and confidence intervals using <span class="math display">\[T=\frac{\hat{\beta}_k-\beta_k}{SE(\hat{\beta}_k)} \text{ with } k=1,2.\]</span></p></li>
+<li><p>If all assumptions are valid <span class="math inline">\(T\)</span> follows t-verdeling with n-2 degrees of freedom. </p></li>
+<li><p>If no normality, but independence, linearity, equality of mean and large dataset <span class="math display">\[\rightarrow \text{Central Limit theorem}\]</span></p></li>
 </ul>
 <div id="breast-cancer-example-1" class="section level3" number="4.2.1">
-<h3><span class="header-section-number">4.2.1</span> Breast cancer
-example</h3>
+<h3><span class="header-section-number">4.2.1</span> Breast cancer example</h3>
 <ul>
-<li><p>Negative association between S100A8 and ESR1 gene
-expression.</p></li>
-<li><p>Generalize effect in sample to population using the confidence
-interval on the mean: <span class="math display">\[[\hat\beta_1 -
-t_{n-2,\alpha/2} \text{SE}_{\hat\beta_1},\hat\beta_1 + t_{n-2,\alpha/2}
-\text{SE}_{\hat\beta_1}]\]</span>.</p></li>
+<li><p>Negative association between S100A8 and ESR1 gene expression.</p></li>
+<li><p>Generalize effect in sample to population using the confidence interval on the mean: <span class="math display">\[[\hat\beta_1 - t_{n-2,\alpha/2} \text{SE}_{\hat\beta_1},\hat\beta_1 + t_{n-2,\alpha/2} \text{SE}_{\hat\beta_1}]\]</span>.</p></li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(lm1)</span></code></pre></div>
 <pre><code>                   2.5 %       97.5 %
@@ -923,19 +797,11 @@ ESR1         -0.08412397  -0.03440378</code></pre>
 <div id="hypothesis-test" class="section level2" number="4.3">
 <h2><span class="header-section-number">4.3</span> Hypothesis test</h2>
 <ul>
-<li><p>Translate the research question to assess the association between
-the S100A8 and ESR1 gene expression to parameters in the model.</p></li>
-<li><p>Under the null hypothesis of the absence of an association in the
-expression of both genes: <span class="math display">\[H_0:
-\beta_1=0\]</span></p></li>
-<li><p>Under the alternative hypothesis, there is an association between
-the expression of both genes : <span class="math display">\[H_1:
-\beta_1\neq0\]</span> </p></li>
-<li><p>Test statistic <span
-class="math display">\[T=\frac{\hat{\beta}_1-0}{SE(\hat{\beta}_k)}\]</span>
-</p></li>
-<li><p>Under <span class="math inline">\(H_0\)</span> the statistics
-follows a t-distribution with n-2 degrees of freedom.</p></li>
+<li><p>Translate the research question to assess the association between the S100A8 and ESR1 gene expression to parameters in the model.</p></li>
+<li><p>Under the null hypothesis of the absence of an association in the expression of both genes: <span class="math display">\[H_0: \beta_1=0\]</span></p></li>
+<li><p>Under the alternative hypothesis, there is an association between the expression of both genes : <span class="math display">\[H_1: \beta_1\neq0\]</span> </p></li>
+<li><p>Test statistic <span class="math display">\[T=\frac{\hat{\beta}_1-0}{SE(\hat{\beta}_k)}\]</span> </p></li>
+<li><p>Under <span class="math inline">\(H_0\)</span> the statistics follows a t-distribution with n-2 degrees of freedom.</p></li>
 </ul>
 <div id="brca-dataset" class="section level3" number="4.3.1">
 <h3><span class="header-section-number">4.3.1</span> BRCA dataset</h3>
@@ -959,11 +825,9 @@ Residual standard error: 59.91 on 27 degrees of freedom
 Multiple R-squared:  0.4698,    Adjusted R-squared:  0.4502 
 F-statistic: 23.93 on 1 and 27 DF,  p-value: 4.078e-05</code></pre>
 <ul>
-<li>The association between the S100A8 and ESR1 expression is extremely
-significant (p&lt;&lt;0.001).</li>
+<li>The association between the S100A8 and ESR1 expression is extremely significant (p&lt;&lt;0.001).</li>
 <li>But, we first have to check all assumptions!</li>
-<li>Otherwise the conclusions based on the statistical test and the CI
-can be incorrect.</li>
+<li>Otherwise the conclusions based on the statistical test and the CI can be incorrect.</li>
 </ul>
 </div>
 </div>
@@ -972,12 +836,9 @@ can be incorrect.</li>
 <h1><span class="header-section-number">5</span> Assess assumptions</h1>
 <ul>
 <li>Independence: design</li>
-<li>Linearity: inference is useless if the association is not
-linear</li>
-<li>Homoscedasticity: inference/p-value is incorrect if data are
-heteroscedastic</li>
-<li>Normality: inference/p-value is incorrect if data are not normally
-distributed in small samples</li>
+<li>Linearity: inference is useless if the association is not linear</li>
+<li>Homoscedasticity: inference/p-value is incorrect if data are heteroscedastic</li>
+<li>Normality: inference/p-value is incorrect if data are not normally distributed in small samples</li>
 </ul>
 <div id="linearity" class="section level2" number="5.1">
 <h2><span class="header-section-number">5.1</span> Linearity</h2>
@@ -988,58 +849,33 @@ distributed in small samples</li>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p><img src="06-linearRegression_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div id="residual-analysis" class="section level3" number="5.1.1">
-<h3><span class="header-section-number">5.1.1</span> Residual
-analysis</h3>
+<h3><span class="header-section-number">5.1.1</span> Residual analysis</h3>
 <ul>
-<li>Assumption of linearity is typically assessed using <em>residual
-plot</em>. (Especially if the lineair model has multiple covariates,
-later chapters)</li>
-<li>predictor of predictions <span
-class="math inline">\(\hat\beta_0+\hat\beta_1 x\)</span> on <span
-class="math inline">\(X\)</span>-axis</li>
-<li><em>residuals</em> on <span class="math inline">\(Y\)</span>-as
-<span
-class="math display">\[e_i=y_i-\hat{g}(x_i)=y_i-\hat\beta_0-\hat\beta_1\times
-x_i,\]</span></li>
+<li>Assumption of linearity is typically assessed using <em>residual plot</em>. (Especially if the lineair model has multiple covariates, later chapters)</li>
+<li>predictor of predictions <span class="math inline">\(\hat\beta_0+\hat\beta_1 x\)</span> on <span class="math inline">\(X\)</span>-axis</li>
+<li><em>residuals</em> on <span class="math inline">\(Y\)</span>-as <span class="math display">\[e_i=y_i-\hat{g}(x_i)=y_i-\hat\beta_0-\hat\beta_1\times x_i,\]</span></li>
 </ul>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm1)</span></code></pre></div>
 <p><img src="06-linearRegression_files/figure-html/unnamed-chunk-11-1.png" width="672" /><img src="06-linearRegression_files/figure-html/unnamed-chunk-11-2.png" width="672" /><img src="06-linearRegression_files/figure-html/unnamed-chunk-11-3.png" width="672" /><img src="06-linearRegression_files/figure-html/unnamed-chunk-11-4.png" width="672" /></p>
 </div>
 </div>
-<div id="homoscedasticity-equal-variances" class="section level2"
-number="5.2">
-<h2><span class="header-section-number">5.2</span> Homoscedasticity
-(equal variances)</h2>
+<div id="homoscedasticity-equal-variances" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Homoscedasticity (equal variances)</h2>
 <ul>
-<li><p>Residuals and squared residuals cary information on the residual
-variability</p></li>
-<li><p>Association with predictors <span
-class="math inline">\(\rightarrow\)</span> indication of
-heteroscedasticity.</p></li>
-<li><p>Scatterplot of <span class="math inline">\(e_i\)</span> vs <span
-class="math inline">\(x_i\)</span> or predictions <span
-class="math inline">\(\hat \beta_0+ \hat \beta_1 x_i\)</span>.</p></li>
-<li><p>Scatterplot van standardized residual versus <span
-class="math inline">\(x_i\)</span> or predictions.</p></li>
+<li><p>Residuals and squared residuals cary information on the residual variability</p></li>
+<li><p>Association with predictors <span class="math inline">\(\rightarrow\)</span> indication of heteroscedasticity.</p></li>
+<li><p>Scatterplot of <span class="math inline">\(e_i\)</span> vs <span class="math inline">\(x_i\)</span> or predictions <span class="math inline">\(\hat \beta_0+ \hat \beta_1 x_i\)</span>.</p></li>
+<li><p>Scatterplot van standardized residual versus <span class="math inline">\(x_i\)</span> or predictions.</p></li>
 </ul>
 </div>
 <div id="normality" class="section level2" number="5.3">
 <h2><span class="header-section-number">5.3</span> Normality</h2>
 <ul>
-<li><p>If the sample size is large the estimators are normally
-distributed even if the observations are not normally distributed:
-central limit theorem</p></li>
-<li><p>How many observations? <span
-class="math inline">\(\rightarrow\)</span> depends on shape and
-magnitude of deviations</p></li>
-<li><p>Assumption: Data are Normally distributed conditional on X: <span
-class="math display">\[Y_i\vert X_i\sim
-N(\beta_0+\beta_1X_i,\sigma^2)\]</span></p></li>
-<li><p>QQ-plot of response Y is misleading and useless: distribution of
-<span class="math inline">\(Y_i\)</span> are different because they have
-a different conditional mean!</p></li>
-<li><p>QQ-plot of the residuals <span
-class="math inline">\(e_i\)</span></p></li>
+<li><p>If the sample size is large the estimators are normally distributed even if the observations are not normally distributed: central limit theorem</p></li>
+<li><p>How many observations? <span class="math inline">\(\rightarrow\)</span> depends on shape and magnitude of deviations</p></li>
+<li><p>Assumption: Data are Normally distributed conditional on X: <span class="math display">\[Y_i\vert X_i\sim N(\beta_0+\beta_1X_i,\sigma^2)\]</span></p></li>
+<li><p>QQ-plot of response Y is misleading and useless: distribution of <span class="math inline">\(Y_i\)</span> are different because they have a different conditional mean!</p></li>
+<li><p>QQ-plot of the residuals <span class="math inline">\(e_i\)</span></p></li>
 </ul>
 <p><img src="06-linearRegression_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm1, <span class="at">which =</span> <span class="dv">2</span>)</span></code></pre></div>
@@ -1047,29 +883,19 @@ class="math inline">\(e_i\)</span></p></li>
 </div>
 </div>
 <div id="invalid-assumptions" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Invalid
-assumptions</h1>
+<h1><span class="header-section-number">6</span> Invalid assumptions</h1>
 <ul>
-<li><p>Transformation of predictor does not change distribution of Y for
-given X:</p>
+<li><p>Transformation of predictor does not change distribution of Y for given X:</p>
 <ul>
 <li>not useful to obtain homoscedasticity or Normal distribution</li>
-<li>useful for linearity when normality and homoscedasticity are
-valid</li>
-<li>Often inclusion of higher order terms: <span
-class="math inline">\(X^2\)</span>, <span
-class="math inline">\(X^3\)</span>, … <span
-class="math display">\[Y_i=\beta_0+\beta_1X_i+\beta_2X_i^2+ ... +
-\epsilon_i\]</span></li>
+<li>useful for linearity when normality and homoscedasticity are valid</li>
+<li>Often inclusion of higher order terms: <span class="math inline">\(X^2\)</span>, <span class="math inline">\(X^3\)</span>, … <span class="math display">\[Y_i=\beta_0+\beta_1X_i+\beta_2X_i^2+ ... + \epsilon_i\]</span></li>
 </ul></li>
-<li><p>Transformation of response Y can be useful to obtain normality
-and homoscedasticity</p></li>
-<li><p><span class="math inline">\(\sqrt(Y)\)</span>, <span
-class="math inline">\(\log(Y)\)</span>, 1/Y, …</p></li>
+<li><p>Transformation of response Y can be useful to obtain normality and homoscedasticity</p></li>
+<li><p><span class="math inline">\(\sqrt(Y)\)</span>, <span class="math inline">\(\log(Y)\)</span>, 1/Y, …</p></li>
 </ul>
 <div id="breast-cancer-example-2" class="section level2" number="6.1">
-<h2><span class="header-section-number">6.1</span> Breast cancer
-example</h2>
+<h2><span class="header-section-number">6.1</span> Breast cancer example</h2>
 <p>Problems with</p>
 <ul>
 <li>heteroscedasticity</li>
@@ -1077,17 +903,12 @@ example</h2>
 <li>negative concentration predictions are theoretically impossible</li>
 <li>non-linearity</li>
 </ul>
-<p>This is often the case for concentration and intensity
-measurements</p>
+<p>This is often the case for concentration and intensity measurements</p>
 <ul>
-<li>These are often log-normal distributed (normal distribution upon
-log-transformatie)</li>
-<li>We also observed a kind of exponential relation with the
-smoother</li>
-<li>In gene expression literature often <span
-class="math inline">\(\log_2\)</span> transformation is adopted</li>
-<li>gene-expression on log scale: differences on log scale are fold
-changes on original scale!</li>
+<li>These are often log-normal distributed (normal distribution upon log-transformatie)</li>
+<li>We also observed a kind of exponential relation with the smoother</li>
+<li>In gene expression literature often <span class="math inline">\(\log_2\)</span> transformation is adopted</li>
+<li>gene-expression on log scale: differences on log scale are fold changes on original scale!</li>
 </ul>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>brca <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ESR1, <span class="at">y =</span> S100A8)) <span class="sc">+</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
@@ -1124,38 +945,21 @@ F-statistic: 115.8 on 1 and 30 DF,  p-value: 8.07e-12</code></pre>
 (Intercept)     20.128645 26.674023
 ESR1 %&gt;% log2() -1.921047 -1.308185</code></pre>
 <div id="interpretation-1" class="section level3" number="6.1.1">
-<h3><span class="header-section-number">6.1.1</span> Interpretation
-1</h3>
-<p>A patient with an ESR1 expression that is one unit on <span
-class="math inline">\(\log_2\)</span> scale higher than that of another
-patient on average has a <span class="math inline">\(\log_2\)</span>
-expression for S100A8 that is 1.61 units lower (95% CI
-[-1.92,-1.31]).</p>
-<p><span class="math display">\[\log_2 \hat\mu_1=23.401  -1.615 \times
-\text{logESR}_1,\text{ } \log_2 \hat\mu_2=23.401  -1.615 \times
-\text{logESR}_2 \]</span> <span class="math display">\[\log_2
-\hat\mu_2-\log_2 \hat\mu_1=  -1.615 (\log_2 \text{ESR}_2-\log_2
-\text{ESR}_1) = -1.615 \times 1 = -1.615\]</span></p>
+<h3><span class="header-section-number">6.1.1</span> Interpretation 1</h3>
+<p>A patient with an ESR1 expression that is one unit on <span class="math inline">\(\log_2\)</span> scale higher than that of another patient on average has a <span class="math inline">\(\log_2\)</span> expression for S100A8 that is 1.61 units lower (95% CI [-1.92,-1.31]).</p>
+<p><span class="math display">\[\log_2 \hat\mu_1=23.401  -1.615 \times \text{logESR}_1,\text{ } \log_2 \hat\mu_2=23.401  -1.615 \times \text{logESR}_2 \]</span> <span class="math display">\[\log_2 \hat\mu_2-\log_2 \hat\mu_1=  -1.615 (\log_2 \text{ESR}_2-\log_2 \text{ESR}_1) = -1.615 \times 1 = -1.615\]</span></p>
 </div>
 <div id="interpretation-2" class="section level3" number="6.1.2">
-<h3><span class="header-section-number">6.1.2</span> Interpretation
-2</h3>
-<p>Model on log-scale: upon back-transformation we obtain geometric
-means</p>
+<h3><span class="header-section-number">6.1.2</span> Interpretation 2</h3>
+<p>Model on log-scale: upon back-transformation we obtain geometric means</p>
 <p><span class="math display">\[\begin{eqnarray*}
-\sum\limits_{i=1}^n \frac{\log x_i}{n}&amp;=&amp;\frac{\log x_1 + \ldots
-+ \log x_n}{n}\\\\
-&amp;\stackrel{(1)}{=}&amp;\frac{\log(x_1 \times \ldots \times
-x_n)}{n}=\frac{\log\left(\prod\limits_{i=1}^n x_i\right)}{n}\\\\
-&amp;\stackrel{(2)}{=}&amp;\log
-\left(\sqrt[\leftroot{-1}\uproot{2}\scriptstyle n]{\prod\limits_{i=1}^n
-x_i}\right)
+\sum\limits_{i=1}^n \frac{\log x_i}{n}&amp;=&amp;\frac{\log x_1 + \ldots + \log x_n}{n}\\\\
+&amp;\stackrel{(1)}{=}&amp;\frac{\log(x_1 \times \ldots \times x_n)}{n}=\frac{\log\left(\prod\limits_{i=1}^n x_i\right)}{n}\\\\
+&amp;\stackrel{(2)}{=}&amp;\log \left(\sqrt[\leftroot{-1}\uproot{2}\scriptstyle n]{\prod\limits_{i=1}^n x_i}\right)
 \end{eqnarray*}\]</span></p>
 <ul>
-<li>Population mean <span class="math inline">\(\mu\)</span> is
-estimated as a geometric mean</li>
-<li>Logarithmic transformation is monotone: we can backtransform
-confidence intervals on log-scale!</li>
+<li>Population mean <span class="math inline">\(\mu\)</span> is estimated as a geometric mean</li>
+<li>Logarithmic transformation is monotone: we can backtransform confidence intervals on log-scale!</li>
 </ul>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^</span>lm2<span class="sc">$</span>coef[<span class="dv">2</span>]</span></code></pre></div>
 <pre><code>ESR1 %&gt;% log2() 
@@ -1166,75 +970,31 @@ confidence intervals on log-scale!</li>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^-</span><span class="fu">confint</span>(lm2)[<span class="dv">2</span>, ]</span></code></pre></div>
 <pre><code>   2.5 %   97.5 % 
 3.786977 2.476298 </code></pre>
-<p>A patient with an ESR1 expression that is 2 times the expression of
-that of another patient will on average have an S100A8 expression that
-is 3.06 times lower (95% CI [2.48,3.79]).</p>
-<p><span class="math display">\[\log_2 \hat\mu_1=23.401  -1.615 \times
-\text{logESR}_1,\text{ } \log_2 \hat\mu_2=23.401  -1.615 \times
-\text{logESR}_2 \]</span> <span class="math display">\[\log_2
-\hat\mu_2-\log_2 \hat\mu_1=  -1.615 (\log_2 \text{ESR}_2-\log_2
-\text{ESR}_1) \]</span> <span class="math display">\[\log_2
-\left[\frac{\hat\mu_2}{\hat\mu_1}\right]=  -1.615 \log_2\left[\frac{
-\text{ESR}_2}{\text{ESR}_1}\right] \]</span> <span
-class="math display">\[\frac{\hat\mu_2}{\hat\mu_1}=\left[\frac{
-\text{ESR}_2}{\text{ESR}_1}\right]^{-1.615}=2^ {-1.615} =0.326\]</span>
-or <span class="math display">\[\frac{\hat\mu_1}{\hat\mu_2}=2^{1.615}
-=3.06\]</span></p>
+<p>A patient with an ESR1 expression that is 2 times the expression of that of another patient will on average have an S100A8 expression that is 3.06 times lower (95% CI [2.48,3.79]).</p>
+<p><span class="math display">\[\log_2 \hat\mu_1=23.401  -1.615 \times \text{logESR}_1,\text{ } \log_2 \hat\mu_2=23.401  -1.615 \times \text{logESR}_2 \]</span> <span class="math display">\[\log_2 \hat\mu_2-\log_2 \hat\mu_1=  -1.615 (\log_2 \text{ESR}_2-\log_2 \text{ESR}_1) \]</span> <span class="math display">\[\log_2 \left[\frac{\hat\mu_2}{\hat\mu_1}\right]=  -1.615 \log_2\left[\frac{ \text{ESR}_2}{\text{ESR}_1}\right] \]</span> <span class="math display">\[\frac{\hat\mu_2}{\hat\mu_1}=\left[\frac{ \text{ESR}_2}{\text{ESR}_1}\right]^{-1.615}=2^ {-1.615} =0.326\]</span> or <span class="math display">\[\frac{\hat\mu_1}{\hat\mu_2}=2^{1.615} =3.06\]</span></p>
 </div>
 <div id="interpretation-3" class="section level3" number="6.1.3">
-<h3><span class="header-section-number">6.1.3</span> Interpretation
-3</h3>
-<p>A patient with an ESR1 expression that is 1% higher than that of
-another patient will on average have an expression-level for S100A8 gen
-that is approximately -1.61% lower (95% CI [-1.92,-1.31])%.</p>
-<p><span class="math display">\[\log_2 \hat\mu_1=23.401  -1.615 \times
-\text{logESR}_1,\text{ } \log_2 \hat\mu_2=23.401  -1.615 \times
-\text{logESR}_2 \]</span> <span class="math display">\[\log_2
-\hat\mu_2-\hat\log_2 \mu_1=  -1.615 (\log_2 \text{ESR}_2-\log_2
-\text{ESR}_1) \]</span> <span class="math display">\[\log_2
-\left[\frac{\hat\mu_2}{\hat\mu_1}\right]=  -1.615 \log_2\left[\frac{
-\text{ESR}_2}{\text{ESR}_1}\right] \]</span> <span
-class="math display">\[\frac{\hat\mu_2}{\hat\mu_1}=\left[\frac{
-\text{ESR}_2}{\text{ESR}_1}\right]^{-1.615}=1.01^ {-1.615} =0.984
-\approx -1.6\%\]</span></p>
-<p>This is valid for low to moderate values of <span
-class="math inline">\(\beta_1\)</span>: <span
-class="math display">\[-10&lt;\beta_1&lt;10 \rightarrow 1.01^{\beta_1}
--1 \approx \frac{\beta_1}{100}.\]</span></p>
+<h3><span class="header-section-number">6.1.3</span> Interpretation 3</h3>
+<p>A patient with an ESR1 expression that is 1% higher than that of another patient will on average have an expression-level for S100A8 gen that is approximately -1.61% lower (95% CI [-1.92,-1.31])%.</p>
+<p><span class="math display">\[\log_2 \hat\mu_1=23.401  -1.615 \times \text{logESR}_1,\text{ } \log_2 \hat\mu_2=23.401  -1.615 \times \text{logESR}_2 \]</span> <span class="math display">\[\log_2 \hat\mu_2-\hat\log_2 \mu_1=  -1.615 (\log_2 \text{ESR}_2-\log_2 \text{ESR}_1) \]</span> <span class="math display">\[\log_2 \left[\frac{\hat\mu_2}{\hat\mu_1}\right]=  -1.615 \log_2\left[\frac{ \text{ESR}_2}{\text{ESR}_1}\right] \]</span> <span class="math display">\[\frac{\hat\mu_2}{\hat\mu_1}=\left[\frac{ \text{ESR}_2}{\text{ESR}_1}\right]^{-1.615}=1.01^ {-1.615} =0.984 \approx -1.6\%\]</span></p>
+<p>This is valid for low to moderate values of <span class="math inline">\(\beta_1\)</span>: <span class="math display">\[-10&lt;\beta_1&lt;10 \rightarrow 1.01^{\beta_1} -1 \approx \frac{\beta_1}{100}.\]</span></p>
 </div>
 </div>
-<div id="inference-on-the-mean-outcome" class="section level2"
-number="6.2">
-<h2><span class="header-section-number">6.2</span> Inference on the mean
-outcome</h2>
+<div id="inference-on-the-mean-outcome" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Inference on the mean outcome</h2>
 <ul>
 <li>A regression model can also be used for prediction</li>
-<li>Inference on average outcome for a given value of <span
-class="math inline">\(X=x\)</span>, i.e. <span
-class="math display">\[\hat{g}(x)= \hat{\beta}_0 + \hat{\beta}_1
-x\]</span></li>
-<li><span class="math inline">\(\hat{g}(x)\)</span> is an estimator of
-the conditional mean <span class="math inline">\(E[Y\vert
-X=x]\)</span></li>
-<li>Parameter estimators are Normally distributed and unbiased <span
-class="math inline">\(\rightarrow\)</span> estimator <span
-class="math inline">\(\hat{g}(x)\)</span> is also Normally distributed
-and unbiased.</li>
+<li>Inference on average outcome for a given value of <span class="math inline">\(X=x\)</span>, i.e. <span class="math display">\[\hat{g}(x)= \hat{\beta}_0 + \hat{\beta}_1 x\]</span></li>
+<li><span class="math inline">\(\hat{g}(x)\)</span> is an estimator of the conditional mean <span class="math inline">\(E[Y\vert X=x]\)</span></li>
+<li>Parameter estimators are Normally distributed and unbiased <span class="math inline">\(\rightarrow\)</span> estimator <span class="math inline">\(\hat{g}(x)\)</span> is also Normally distributed and unbiased.</li>
 </ul>
-<p><span
-class="math display">\[\text{SE}_{\hat{g}(x)}=\sqrt{MSE\left\{\frac{1}{n}+\frac{(x-\bar
-X)^2}{\sum\limits_{i=1}^n (X_i-\bar X)^2}\right\}}.\]</span></p>
-<p><span
-class="math display">\[T=\frac{\hat{g}(x)-g(x)}{SE_{\hat{g}(x)}}\sim
-t_{n-2}\]</span></p>
+<p><span class="math display">\[\text{SE}_{\hat{g}(x)}=\sqrt{MSE\left\{\frac{1}{n}+\frac{(x-\bar X)^2}{\sum\limits_{i=1}^n (X_i-\bar X)^2}\right\}}.\]</span></p>
+<p><span class="math display">\[T=\frac{\hat{g}(x)-g(x)}{SE_{\hat{g}(x)}}\sim t_{n-2}\]</span></p>
 <ul>
-<li>Mean response and confidence intervals for the mean response in R
-via de <code>predict(.)</code> functie.</li>
-<li><code>newdata</code> argument: predictor values (x-values) at which
-we want to calculate the mean response</li>
+<li>Mean response and confidence intervals for the mean response in R via de <code>predict(.)</code> functie.</li>
+<li><code>newdata</code> argument: predictor values (x-values) at which we want to calculate the mean response</li>
 <li><code>interval="confidence"</code> argument to obtain CI.</li>
-<li>Without newdata argument we perform predictions for all predictor
-values in the dataset used to fit the model.</li>
+<li>Without newdata argument we perform predictions for all predictor values in the dataset used to fit the model.</li>
 </ul>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="dv">140</span><span class="sc">:</span><span class="dv">4000</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">predict</span>(lm2, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">ESR1 =</span> grid), <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>)</span>
@@ -1246,18 +1006,14 @@ values in the dataset used to fit the model.</li>
 4 11.84089 10.72028 12.96151
 5 11.82466 10.70696 12.94237
 6 11.80854 10.69372 12.92336</code></pre>
-<p>Note, that we do not have to transform the new data that we specified
-for the ESR1 expression because we fitted the model with a call to the
-<code>lm</code> function and specified the transformation within the lm
-formula using the pipe command!</p>
+<p>Note, that we do not have to transform the new data that we specified for the ESR1 expression because we fitted the model with a call to the <code>lm</code> function and specified the transformation within the lm formula using the pipe command!</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>brca <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ESR1 <span class="sc">%&gt;%</span> <span class="fu">log2</span>(), <span class="at">y =</span> S100A8 <span class="sc">%&gt;%</span> <span class="fu">log2</span>())) <span class="sc">+</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
 <p><img src="06-linearRegression_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
 <div id="back-transformation" class="section level2" number="6.3">
-<h2><span class="header-section-number">6.3</span>
-Back-transformation</h2>
+<h2><span class="header-section-number">6.3</span> Back-transformation</h2>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>newdata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">cbind</span>(grid, <span class="dv">2</span><span class="sc">^</span>g))</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>brca <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ESR1, <span class="at">y =</span> S100A8)) <span class="sc">+</span></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
@@ -1268,51 +1024,27 @@ Back-transformation</h2>
 </div>
 </div>
 <div id="prediction-intervals" class="section level1" number="7">
-<h1><span class="header-section-number">7</span>
-Prediction-intervals</h1>
+<h1><span class="header-section-number">7</span> Prediction-intervals</h1>
 <ul>
-<li><p>We can also make a prediction for the location of a new
-observation that would be collected in a new experiment for a patient
-with a particular value for their ESR1 expression</p></li>
-<li><p>It is important to notice that this experiment still has to be
-conducted. So we want to predict the non-observed individual expression
-value for a novel patient.</p></li>
-<li><p>For a novel independent observation <span
-class="math inline">\(Y^*\)</span> <span class="math display">\[
+<li><p>We can also make a prediction for the location of a new observation that would be collected in a new experiment for a patient with a particular value for their ESR1 expression</p></li>
+<li><p>It is important to notice that this experiment still has to be conducted. So we want to predict the non-observed individual expression value for a novel patient.</p></li>
+<li><p>For a novel independent observation <span class="math inline">\(Y^*\)</span> <span class="math display">\[
 Y^* = g(x) + \epsilon^*
-\]</span> with <span class="math inline">\(\epsilon^*\sim
-N(0,\sigma^2)\)</span> and <span
-class="math inline">\(\epsilon^*\)</span> independent of the
-observations in the sample <span class="math inline">\(Y_1,\ldots,
-Y_n\)</span>.</p></li>
-<li><p>We predict a new log-S100A8 for a patient with a known log2-ESR1
-expression level x <span class="math display">\[
+\]</span> with <span class="math inline">\(\epsilon^*\sim N(0,\sigma^2)\)</span> and <span class="math inline">\(\epsilon^*\)</span> independent of the observations in the sample <span class="math inline">\(Y_1,\ldots, Y_n\)</span>.</p></li>
+<li><p>We predict a new log-S100A8 for a patient with a known log2-ESR1 expression level x <span class="math display">\[
 \hat{y}(x)=\hat{\beta}_0+\hat{\beta}_1 \times x
 \]</span></p></li>
-<li><p>The estimated mean outcome and prediction for a new observation
-are equal.</p></li>
+<li><p>The estimated mean outcome and prediction for a new observation are equal.</p></li>
 <li><p>But, their sample distributions are different!</p>
 <ul>
-<li>Uncertainty on the estimated mean outcome <span
-class="math inline">\(\leftarrow\)</span> uncertainty on estimated model
-parameters <span class="math inline">\(\hat\beta_0\)</span> en <span
-class="math inline">\(\hat\beta_1\)</span>.</li>
-<li>Uncertainty on new observation $ <span
-class="math inline">\(\leftarrow\)</span> <em>uncertainty on estimated
-mean</em> and <em>additional uncertainty</em> because the new
-observation will deviate around the mean!</li>
+<li>Uncertainty on the estimated mean outcome <span class="math inline">\(\leftarrow\)</span> uncertainty on estimated model parameters <span class="math inline">\(\hat\beta_0\)</span> en <span class="math inline">\(\hat\beta_1\)</span>.</li>
+<li>Uncertainty on new observation $ <span class="math inline">\(\leftarrow\)</span> <em>uncertainty on estimated mean</em> and <em>additional uncertainty</em> because the new observation will deviate around the mean!</li>
 </ul></li>
 </ul>
-<p><span
-class="math display">\[\text{SE}_{\hat{Y}(x)}=\sqrt{\hat\sigma^2+\hat\sigma^2_{\hat{g}(x)}}=\sqrt{MSE\left\{1+\frac{1}{n}+\frac{(x-\bar
-X)^2}{\sum\limits_{i=1}^n (X_i-\bar X)^2}\right\}}.\]</span></p>
-<p><span
-class="math display">\[\frac{\hat{Y}(x)-Y}{\text{SE}_{\hat{Y}(x)}}\sim
-t_{n-2}\]</span></p>
+<p><span class="math display">\[\text{SE}_{\hat{Y}(x)}=\sqrt{\hat\sigma^2+\hat\sigma^2_{\hat{g}(x)}}=\sqrt{MSE\left\{1+\frac{1}{n}+\frac{(x-\bar X)^2}{\sum\limits_{i=1}^n (X_i-\bar X)^2}\right\}}.\]</span></p>
+<p><span class="math display">\[\frac{\hat{Y}(x)-Y}{\text{SE}_{\hat{Y}(x)}}\sim t_{n-2}\]</span></p>
 <ul>
-<li>Note, that a <strong>prediction-interval</strong> (PI) is an
-improved version of a reference-interval when the model parameters are
-unknown: Uncertainty on model parameters + t-distribution.</li>
+<li>Note, that a <strong>prediction-interval</strong> (PI) is an improved version of a reference-interval when the model parameters are unknown: Uncertainty on model parameters + t-distribution.</li>
 </ul>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(lm2, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">ESR1 =</span> grid), <span class="at">interval =</span> <span class="st">&quot;prediction&quot;</span>)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(p)</span></code></pre></div>
@@ -1342,8 +1074,7 @@ unknown: Uncertainty on model parameters + t-distribution.</li>
 <div id="nhanes-example" class="section level2" number="7.1">
 <h2><span class="header-section-number">7.1</span> NHANES example</h2>
 <ul>
-<li><p>Replace reference interval for cholesterol level from chapter 2
-by prediction-interval.</p></li>
+<li><p>Replace reference interval for cholesterol level from chapter 2 by prediction-interval.</p></li>
 <li><p>Reference interval</p></li>
 </ul>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(NHANES)</span>
@@ -1359,11 +1090,8 @@ by prediction-interval.</p></li>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="dv">2</span><span class="sc">^</span>predInt, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>   fit  lwr  upr
 1 1.43 0.84 2.44</code></pre>
-<p>Note, that the prediction interval is almost similar to the reference
-interval for the large sample. Indeed we could estimate the parameters
-very precise.</p>
-<p>We will do the same thing for the small sample size of 10
-patients.</p>
+<p>Note, that the prediction interval is almost similar to the reference interval for the large sample. Indeed we could estimate the parameters very precise.</p>
+<p>We will do the same thing for the small sample size of 10 patients.</p>
 <ul>
 <li>Reference interval</li>
 </ul>
@@ -1383,113 +1111,71 @@ patients.</p>
 <pre><code>   fit  lwr  upr
 1 1.42 0.81 2.49</code></pre>
 <ul>
-<li><p>Note, that the PI now captures uncertainty in parameter
-estimators (mean and standard error). And that the interval becomes much
-wider! This is particularly important here for the upper limit because
-we back-transformed the data!</p></li>
-<li><p>The interval is almost as wide as the one based on the large
-sample.</p></li>
-<li><p>In small samples it is very important to account for this
-additional uncertainty.</p></li>
+<li><p>Note, that the PI now captures uncertainty in parameter estimators (mean and standard error). And that the interval becomes much wider! This is particularly important here for the upper limit because we back-transformed the data!</p></li>
+<li><p>The interval is almost as wide as the one based on the large sample.</p></li>
+<li><p>In small samples it is very important to account for this additional uncertainty.</p></li>
 </ul>
 </div>
 </div>
-<div id="sum-of-squares-and-anova-table" class="section level1"
-number="8">
-<h1><span class="header-section-number">8</span> Sum of squares and
-Anova-table</h1>
-<p>##Total sum of squares <span class="math display">\[\text{SSTot} =
-\sum_{i=1}^n (Y_i-\bar{Y})^2.\]</span></p>
+<div id="sum-of-squares-and-anova-table" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Sum of squares and Anova-table</h1>
+<p>##Total sum of squares <span class="math display">\[\text{SSTot} = \sum_{i=1}^n (Y_i-\bar{Y})^2.\]</span></p>
 <ul>
-<li><p>SStot can be used to estimate the variance of the
-<strong>marginal distribution</strong> of the response.</p></li>
-<li><p>In this chapter we focused on the <strong>conditional
-distribution</strong> <span class="math inline">\(f(Y\vert
-X=x)\)</span>.</p></li>
-<li><p>We known that MSE is a good estimate of the variance of the
-conditional distribution of <span class="math inline">\(Y\vert
-X=x\)</span>.</p></li>
+<li><p>SStot can be used to estimate the variance of the <strong>marginal distribution</strong> of the response.</p></li>
+<li><p>In this chapter we focused on the <strong>conditional distribution</strong> <span class="math inline">\(f(Y\vert X=x)\)</span>.</p></li>
+<li><p>We known that MSE is a good estimate of the variance of the conditional distribution of <span class="math inline">\(Y\vert X=x\)</span>.</p></li>
 </ul>
 <p><img src="06-linearRegression_files/figure-html/unnamed-chunk-29-1.png" width="100%" style="display: block; margin: auto;" /></p>
-<div id="sum-of-squares-of-the-regression-ssr" class="section level2"
-number="8.1">
-<h2><span class="header-section-number">8.1</span> Sum of squares of the
-regression SSR</h2>
-<p><span class="math display">\[\text{SSR} = \sum_{i=1}^n (\hat{Y}_i -
-\bar{Y})^2 = \sum_{i=1}^n (\hat{g}(x_i) - \bar{Y})^2.\]</span></p>
+<div id="sum-of-squares-of-the-regression-ssr" class="section level2" number="8.1">
+<h2><span class="header-section-number">8.1</span> Sum of squares of the regression SSR</h2>
+<p><span class="math display">\[\text{SSR} = \sum_{i=1}^n (\hat{Y}_i - \bar{Y})^2 = \sum_{i=1}^n (\hat{g}(x_i) - \bar{Y})^2.\]</span></p>
 <ul>
-<li><p>Is a measure for the deviation of the predictions on the
-regression line and the marginal mean of the response.</p></li>
+<li><p>Is a measure for the deviation of the predictions on the regression line and the marginal mean of the response.</p></li>
 <li><p>Another interpretation: difference between two models</p>
 <ul>
-<li>Estimated model <span
-class="math inline">\(\hat{g}(x)=\hat\beta_0+\hat\beta_1x\)</span></li>
-<li>Estimated model without predictor (only intercept): <span
-class="math inline">\(g(x)=\beta_0\)</span> <span
-class="math inline">\(\rightarrow\)</span> <span
-class="math inline">\(\beta_0\)</span> will be equal to <span
-class="math inline">\(\bar{Y}\)</span>.</li>
+<li>Estimated model <span class="math inline">\(\hat{g}(x)=\hat\beta_0+\hat\beta_1x\)</span></li>
+<li>Estimated model without predictor (only intercept): <span class="math inline">\(g(x)=\beta_0\)</span> <span class="math inline">\(\rightarrow\)</span> <span class="math inline">\(\beta_0\)</span> will be equal to <span class="math inline">\(\bar{Y}\)</span>.</li>
 </ul></li>
 <li><p>SSR measures the size of the effect of the predictor</p></li>
 </ul>
 <p><img src="06-linearRegression_files/figure-html/unnamed-chunk-30-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="sum-of-squares-of-the-error" class="section level2"
-number="8.2">
-<h2><span class="header-section-number">8.2</span> Sum of Squares of the
-Error</h2>
-<p><span class="math display">\[ \text{SSE} = \sum_{i=1}^n
-(Y_i-\hat{Y}_i )^2 = \sum_{i=1}^n
-\left\{Y_i-\hat{g}\left(x_i\right)\right\}^2.\]</span></p>
+<div id="sum-of-squares-of-the-error" class="section level2" number="8.2">
+<h2><span class="header-section-number">8.2</span> Sum of Squares of the Error</h2>
+<p><span class="math display">\[ \text{SSE} = \sum_{i=1}^n (Y_i-\hat{Y}_i )^2 = \sum_{i=1}^n \left\{Y_i-\hat{g}\left(x_i\right)\right\}^2.\]</span></p>
 <ul>
 <li><p>The smaller SSE the better the fit.</p></li>
 <li><p>Least squares method!</p></li>
 </ul>
 <hr />
 <p><img src="06-linearRegression_files/figure-html/unnamed-chunk-31-1.png" width="100%" style="display: block; margin: auto;" /></p>
-<p>We can show that SST can be decomposed in <span
-class="math display">\[\begin{eqnarray*}
+<p>We can show that SST can be decomposed in <span class="math display">\[\begin{eqnarray*}
   \text{SSTot}
     &amp;=&amp;  \sum_{i=1}^n (Y_i-\bar{Y})^2 \\
     &amp;=&amp;  \sum_{i=1}^n (Y_i-\hat{Y}_i+\hat{Y}_i-\bar{Y})^2 \\
-    &amp;=&amp;  \sum_{i=1}^n
-(Y_i-\hat{Y}_i)^2+\sum_{i=1}^n(\hat{Y}_i-\bar{Y})^2 \\
+    &amp;=&amp;  \sum_{i=1}^n (Y_i-\hat{Y}_i)^2+\sum_{i=1}^n(\hat{Y}_i-\bar{Y})^2 \\
     &amp;=&amp;  \text{SSE }+\text{SSR}
   \end{eqnarray*}\]</span></p>
 <ul>
-<li>Total variability in the data (SSTot) is partially explained by the
-predictor (SSR).</li>
-<li>Variability that we cannot explain with the regression model is the
-residual variability (SSE).</li>
+<li>Total variability in the data (SSTot) is partially explained by the predictor (SSR).</li>
+<li>Variability that we cannot explain with the regression model is the residual variability (SSE).</li>
 </ul>
 </div>
 <div id="determination-coefficient" class="section level2" number="8.3">
-<h2><span class="header-section-number">8.3</span> Determination
-coefficient</h2>
-<p><span class="math display">\[ R^2 =
-1-\frac{\text{SSE}}{\text{SSTot}}=\frac{\text{SSR}}{\text{SSTot}}.\]</span></p>
+<h2><span class="header-section-number">8.3</span> Determination coefficient</h2>
+<p><span class="math display">\[ R^2 = 1-\frac{\text{SSE}}{\text{SSTot}}=\frac{\text{SSR}}{\text{SSTot}}.\]</span></p>
 <ul>
-<li><p><em>Fraction of total variability of the sample outcomes
-explained by the model</em>.</p></li>
-<li><p>Large <span class="math inline">\(R^2\)</span> indicates that the
-model has the potential to make good predictions (small SSE).</p></li>
-<li><p>Not very indicative for p-value of the test <span
-class="math inline">\(H_0:\beta_1=0\)</span> vs <span
-class="math inline">\(H_1:\beta_1\neq0\)</span>.</p>
+<li><p><em>Fraction of total variability of the sample outcomes explained by the model</em>.</p></li>
+<li><p>Large <span class="math inline">\(R^2\)</span> indicates that the model has the potential to make good predictions (small SSE).</p></li>
+<li><p>Not very indicative for p-value of the test <span class="math inline">\(H_0:\beta_1=0\)</span> vs <span class="math inline">\(H_1:\beta_1\neq0\)</span>.</p>
 <ul>
-<li>p-value is largely determined by SSE and sample size <span
-class="math inline">\(n\)</span>, but not by SSTot.</li>
-<li><span class="math inline">\(R^2\)</span> is determined by SSE and
-SSTot but not by sample size <span
-class="math inline">\(n\)</span>.</li>
+<li>p-value is largely determined by SSE and sample size <span class="math inline">\(n\)</span>, but not by SSTot.</li>
+<li><span class="math inline">\(R^2\)</span> is determined by SSE and SSTot but not by sample size <span class="math inline">\(n\)</span>.</li>
 </ul></li>
-<li><p>Model with low <span class="math inline">\(R^2\)</span> is still
-useful to study associations as long as the association is modelled
-correctly!</p></li>
+<li><p>Model with low <span class="math inline">\(R^2\)</span> is still useful to study associations as long as the association is modelled correctly!</p></li>
 </ul>
 <div id="breast-cancer-example-3" class="section level3" number="8.3.1">
-<h3><span class="header-section-number">8.3.1</span> Breast cancer
-example</h3>
+<h3><span class="header-section-number">8.3.1</span> Breast cancer example</h3>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm2)</span></code></pre></div>
 <pre><code>
 Call:
@@ -1511,29 +1197,17 @@ Multiple R-squared:  0.7942,    Adjusted R-squared:  0.7874
 F-statistic: 115.8 on 1 and 30 DF,  p-value: 8.07e-12</code></pre>
 </div>
 </div>
-<div id="f-test-in-simple-linear-model" class="section level2"
-number="8.4">
-<h2><span class="header-section-number">8.4</span> F-Test in simple
-linear model</h2>
+<div id="f-test-in-simple-linear-model" class="section level2" number="8.4">
+<h2><span class="header-section-number">8.4</span> F-Test in simple linear model</h2>
 <ul>
-<li>Sum of squares are the bases for <span
-class="math inline">\(F\)</span>-tests <span
-class="math display">\[  F  =
-\frac{\text{MSR}}{\text{MSE}}\]</span></li>
+<li>Sum of squares are the bases for <span class="math inline">\(F\)</span>-tests <span class="math display">\[  F  = \frac{\text{MSR}}{\text{MSE}}\]</span></li>
 </ul>
-<p>with <span class="math inline">\(\text{MSR} = \frac{\text{SSR}}{1}
-\text{ and } \text{MSE} = \frac{\text{SSE}}{n-2}.\)</span></p>
+<p>with <span class="math inline">\(\text{MSR} = \frac{\text{SSR}}{1} \text{ and } \text{MSE} = \frac{\text{SSE}}{n-2}.\)</span></p>
 <ul>
 <li><p>MSR mean sum of squares of the regression,</p></li>
-<li><p>denominators 1 en <span class="math inline">\(n-2\)</span> are
-the degrees of freedom of SSR and SSE.</p></li>
-<li><p>Under <span class="math inline">\(H_0: \beta_1=0\)</span> <span
-class="math display">\[H_0:F = \frac{\text{MSR}}{\text{MSE}} \sim
-F_{1,n-2},\]</span></p></li>
-<li><p>F-test is always two-sided! <span
-class="math inline">\(H_1:\beta_1\neq 0\)</span> <span
-class="math display">\[  p = P_0\left[F\geq
-f\right]=1-F_F(f;1,n-2)\]</span></p></li>
+<li><p>denominators 1 en <span class="math inline">\(n-2\)</span> are the degrees of freedom of SSR and SSE.</p></li>
+<li><p>Under <span class="math inline">\(H_0: \beta_1=0\)</span> <span class="math display">\[H_0:F = \frac{\text{MSR}}{\text{MSE}} \sim F_{1,n-2},\]</span></p></li>
+<li><p>F-test is always two-sided! <span class="math inline">\(H_1:\beta_1\neq 0\)</span> <span class="math display">\[  p = P_0\left[F\geq f\right]=1-F_F(f;1,n-2)\]</span></p></li>
 </ul>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm2)</span></code></pre></div>
 <pre><code>
@@ -1599,60 +1273,33 @@ F-statistic: 115.8 on 1 and 30 DF,  p-value: 8.07e-12</code></pre>
 <div id="dummy-variables" class="section level1" number="9">
 <h1><span class="header-section-number">9</span> Dummy variables</h1>
 <ul>
-<li><p>Linear regression model can also be used to compare two group
-means.</p></li>
-<li><p>brca: difference in average age between patients with unaffected
-and affected lymph nodes.</p></li>
-<li><p>Define dummy variabele <span class="math display">\[x_i = \left\{
-\begin{array}{ll}
+<li><p>Linear regression model can also be used to compare two group means.</p></li>
+<li><p>brca: difference in average age between patients with unaffected and affected lymph nodes.</p></li>
+<li><p>Define dummy variabele <span class="math display">\[x_i = \left\{ \begin{array}{ll}
 1 &amp; \text{affected lymph nodes} \\
-0 &amp; \text{unaffected lymph nodes}
-\end{array}\right.\]</span></p></li>
-<li><p>group with <span class="math inline">\(x_i=0\)</span> is referred
-to as the <strong>reference group</strong>.</p></li>
-<li><p>Regression model remains unaltered, <span
-class="math display">\[Y_i = \beta_0 + \beta_1 x_i +\epsilon_i\]</span>
-with <span class="math inline">\(\epsilon_i \text{ iid }
-N(0,\sigma^2)\)</span></p></li>
+0 &amp; \text{unaffected lymph nodes} \end{array}\right.\]</span></p></li>
+<li><p>group with <span class="math inline">\(x_i=0\)</span> is referred to as the <strong>reference group</strong>.</p></li>
+<li><p>Regression model remains unaltered, <span class="math display">\[Y_i = \beta_0 + \beta_1 x_i +\epsilon_i\]</span> with <span class="math inline">\(\epsilon_i \text{ iid } N(0,\sigma^2)\)</span></p></li>
 </ul>
-<p>Because <span class="math inline">\(x_i\)</span> only can take two
-values, we can study the regression model for each value of <span
-class="math inline">\(x_i\)</span> separately: <span
-class="math display">\[ \begin{array}{lcll}
-   Y_i &amp;=&amp; \beta_0 +\epsilon_i &amp;\text{unaffected lymph
-nodes} (x_i=0) \\
-   Y_i &amp;=&amp; \beta_0 + \beta_1 +\epsilon_i &amp;\text{ affected
-lymph nodes} (x_i=1) .
-\end{array}\]</span> So <span class="math display">\[\begin{eqnarray*}
+<p>Because <span class="math inline">\(x_i\)</span> only can take two values, we can study the regression model for each value of <span class="math inline">\(x_i\)</span> separately: <span class="math display">\[ \begin{array}{lcll}
+   Y_i &amp;=&amp; \beta_0 +\epsilon_i &amp;\text{unaffected lymph nodes} (x_i=0) \\
+   Y_i &amp;=&amp; \beta_0 + \beta_1 +\epsilon_i &amp;\text{ affected lymph nodes} (x_i=1) .
+ \end{array}\]</span> So <span class="math display">\[\begin{eqnarray*}
    E\left[Y_i\mid x_i=0\right] &amp;=&amp; \beta_0 \\
    E\left[Y_i\mid x_i=1\right] &amp;=&amp; \beta_0 + \beta_1,
 \end{eqnarray*}\]</span></p>
-<p>Hence, the interpretation of <span
-class="math inline">\(\beta_1\)</span>: <span
-class="math display">\[   \beta_1 = E\left[Y_i\mid
-x_i=1\right]-E\left[Y_i\mid x_i=0\right]\]</span></p>
-<p><span class="math inline">\(\beta_1\)</span> is the average age
-difference between patients with affected and patients with unaffected
-lymph nodes (reference group).</p>
-<p>With notation <span class="math inline">\(\mu_0= E\left[Y_i\mid
-x_i=0\right]\)</span> and <span class="math inline">\(\mu_1=
-E\left[Y_i\mid x_i=1\right]\)</span> this becomes <span
-class="math display">\[\beta_1 = \mu_1-\mu_0.\]</span></p>
+<p>Hence, the interpretation of <span class="math inline">\(\beta_1\)</span>: <span class="math display">\[   \beta_1 = E\left[Y_i\mid x_i=1\right]-E\left[Y_i\mid x_i=0\right]\]</span></p>
+<p><span class="math inline">\(\beta_1\)</span> is the average age difference between patients with affected and patients with unaffected lymph nodes (reference group).</p>
+<p>With notation <span class="math inline">\(\mu_0= E\left[Y_i\mid x_i=0\right]\)</span> and <span class="math inline">\(\mu_1= E\left[Y_i\mid x_i=1\right]\)</span> this becomes <span class="math display">\[\beta_1 = \mu_1-\mu_0.\]</span></p>
 <p>We can show that <span class="math display">\[\begin{array}{ccll}
-\hat\beta_0
+ \hat\beta_0
    &amp;=&amp; \bar{Y}_1&amp;\text{ (sample mean of reference group)} \\
-\hat\beta_1
-   &amp;=&amp; \bar{Y}_2-\bar{Y}_1&amp;\text{(estimator of effect size)}
-\\
-\text{MSE}
+ \hat\beta_1
+   &amp;=&amp; \bar{Y}_2-\bar{Y}_1&amp;\text{(estimator of effect size)} \\
+ \text{MSE}
    &amp;=&amp; S_p^2 .
 \end{array}\]</span></p>
-<p>Tests <span class="math inline">\(H_0:\beta_1=0\)</span> vs. <span
-class="math inline">\(H_1:\beta_1\neq0\)</span> can be used to assess
-the null hypothesis of the two-sample <span
-class="math inline">\(t\)</span>-test, <span
-class="math inline">\(H_0:\mu_1=\mu_2\)</span> vs <span
-class="math inline">\(H_1:\mu_1\neq\mu_2\)</span>.</p>
+<p>Tests <span class="math inline">\(H_0:\beta_1=0\)</span> vs. <span class="math inline">\(H_1:\beta_1\neq0\)</span> can be used to assess the null hypothesis of the two-sample <span class="math inline">\(t\)</span>-test, <span class="math inline">\(H_0:\mu_1=\mu_2\)</span> vs <span class="math inline">\(H_1:\mu_1\neq\mu_2\)</span>.</p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>brca<span class="sc">$</span>node <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(brca<span class="sc">$</span>node)</span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(age <span class="sc">~</span> node, brca, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>
@@ -1697,27 +1344,17 @@ F-statistic: 7.833 on 1 and 30 DF,  p-value: 0.008879</code></pre>
 <p><img src="06-linearRegression_files/figure-html/unnamed-chunk-40-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="observational-study" class="section level1" number="10">
-<h1><span class="header-section-number">10</span> Observational
-study</h1>
+<h1><span class="header-section-number">10</span> Observational study</h1>
 <ul>
-<li><p>We cannot conclude that age causes a higher risk for affected
-lymph nodes.</p></li>
-<li><p>Possibly <strong>confounding</strong>: no randomisation <span
-class="math inline">\(\rightarrow\)</span> groups of patients with
-affected and unaffected lymph nodes. They can also differ in other
-characteristics.</p></li>
-<li><p>We can only conclude that there is an association between lymph
-node status and age.</p></li>
+<li><p>We cannot conclude that age causes a higher risk for affected lymph nodes.</p></li>
+<li><p>Possibly <strong>confounding</strong>: no randomisation <span class="math inline">\(\rightarrow\)</span> groups of patients with affected and unaffected lymph nodes. They can also differ in other characteristics.</p></li>
+<li><p>We can only conclude that there is an association between lymph node status and age.</p></li>
 <li><p>However, the association does not have to be causal!</p></li>
-<li><p>Note, that this is also the case for the linear model for <span
-class="math inline">\(\log_2\)</span>-S100A8-expression.</p>
+<li><p>Note, that this is also the case for the linear model for <span class="math inline">\(\log_2\)</span>-S100A8-expression.</p>
 <ul>
-<li>Because we were not able to fix the ESR1-expression experimentally
-we cannot conclude that a higher ESR1-expression causes a decrease in
-the S100A8-expression.</li>
+<li>Because we were not able to fix the ESR1-expression experimentally we cannot conclude that a higher ESR1-expression causes a decrease in the S100A8-expression.</li>
 <li>We can only conclude that there is a negative association.</li>
-<li>To assess the impact of a gene on other gene typically knockout
-mutants are used in the lab.</li>
+<li>To assess the impact of a gene on other gene typically knockout mutants are used in the lab.</li>
 </ul></li>
 </ul>
 </div>

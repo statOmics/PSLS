@@ -549,52 +549,40 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Experimental Design II: replication and
-power exercise 1 - solution</h1>
+<h1 class="title toc-ignore">Experimental Design II: replication and power exercise 1 - solution</h1>
 <h4 class="author">Lieven Clement &amp; Alexandre Segers</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.3.5     ✔ purrr   0.3.4
 ## ✔ tibble  3.1.6     ✔ dplyr   1.0.8
 ## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
 ## ✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <div id="power" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Power</h1>
 <p>The power of a test is defined as:</p>
 <p><span class="math display">\[P(p &lt;
-\alpha | H_1)\]</span> This is the probability to reject the
-nulhypothesis at the significance level <span
-class="math inline">\(\alpha\)</span> given that the alternative
-hypothesis is true.</p>
+\alpha | H_1)\]</span> This is the probability to reject the nulhypothesis at the significance level <span class="math inline">\(\alpha\)</span> given that the alternative hypothesis is true.</p>
 <p>The power depends on:</p>
 <ul>
-<li>the real effect size in the population <span
-class="math inline">\(\mathbf{L}^T\boldsymbol{\beta}\)</span>.</li>
+<li>the real effect size in the population <span class="math inline">\(\mathbf{L}^T\boldsymbol{\beta}\)</span>.</li>
 <li>the number of observations: SE and df.</li>
 <li>Choice of designpoints</li>
-<li>Choice of significance-level <span
-class="math inline">\(\alpha\)</span>.</li>
+<li>Choice of significance-level <span class="math inline">\(\alpha\)</span>.</li>
 </ul>
 <p>We will evaluate the power using simulation.</p>
 </div>
 <div id="rodents" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Rodents</h1>
-<p>A biologist examined the effect of a fungal infection on the eating
-behavior of rodents. Infected apples were offered to a group of eight
-rodents, and sterile apples were offered to a group of 4 rodents. The
-amount of grams of apples consumed per kg body weight are given in the
-dataset below.</p>
+<p>A biologist examined the effect of a fungal infection on the eating behavior of rodents. Infected apples were offered to a group of eight rodents, and sterile apples were offered to a group of 4 rodents. The amount of grams of apples consumed per kg body weight are given in the dataset below.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>rodents <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">weight =</span> <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">33</span>, <span class="dv">48</span>, <span class="dv">34</span>, <span class="dv">112</span>, <span class="dv">369</span>, <span class="dv">64</span>, <span class="dv">44</span>, <span class="dv">177</span>, <span class="dv">80</span>, <span class="dv">141</span>, <span class="dv">332</span>), <span class="at">group =</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;treat&quot;</span>, <span class="dv">8</span>), <span class="fu">rep</span>(<span class="st">&quot;ctrl&quot;</span>, <span class="dv">4</span>))))</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>rodents</span></code></pre></div>
 <div data-pagedtable="false">
@@ -615,50 +603,33 @@ dataset below.</p>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>group)</span></code></pre></div>
 <p><img src="08_ExperimentalDesignII_1_rodents_sol_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
-<p>In the data exploration we do not have enough data to evaluate the
-assumptions.</p>
-<p>Suppose that the assumptions are valid and that standard deviation in
-the population would be equal to the ones you observed in the
-experiment.</p>
+<p>In the data exploration we do not have enough data to evaluate the assumptions.</p>
+<p>Suppose that the assumptions are valid and that standard deviation in the population would be equal to the ones you observed in the experiment.</p>
 <ol style="list-style-type: decimal">
-<li>What is the power of the experiment if the effect size and standard
-deviation in the population would be equal to the ones you observed in
-the experiment</li>
-<li>What would the power by if number of rodents would balanced in both
-groups</li>
-<li>How many observations would you need to pick up the treatment effect
-with a power of 90%?</li>
-<li>How many observations would you need to pick up the treatment effect
-of 60 g/kg with a power of 90%?</li>
+<li>What is the power of the experiment if the effect size and standard deviation in the population would be equal to the ones you observed in the experiment</li>
+<li>What would the power by if number of rodents would balanced in both groups</li>
+<li>How many observations would you need to pick up the treatment effect with a power of 90%?</li>
+<li>How many observations would you need to pick up the treatment effect of 60 g/kg with a power of 90%?</li>
 </ol>
 </div>
 </div>
 <div id="analysis" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Analysis</h1>
-<p>We will model the data using a linear model with one dummy
-variable.</p>
+<p>We will model the data using a linear model with one dummy variable.</p>
 <p><span class="math display">\[
 y_i = \beta_0 + \beta_1 x_{t,i} +
 \epsilon_i
-\]</span> with <span class="math inline">\(x_{p,i} = 0\)</span> if the
-rodent is subjected the control treatment with sterile apples and <span
-class="math inline">\(x_{t,i} = 1\)</span> if rodent receives the
-treatment with infected apples.</p>
+\]</span> with <span class="math inline">\(x_{p,i} = 0\)</span> if the rodent is subjected the control treatment with sterile apples and <span class="math inline">\(x_{t,i} = 1\)</span> if rodent receives the treatment with infected apples.</p>
 <ul>
 <li>Estimated effect size?</li>
 </ul>
-<p>The average difference in relative abundance of Staphylococcus of
-patients of the transplant and the placebo group.</p>
+<p>The average difference in relative abundance of Staphylococcus of patients of the transplant and the placebo group.</p>
 <p><span class="math display">\[
 \hat \beta_1 = \bar y_t - \bar y_c
 \]</span></p>
 <ul>
-<li><span class="math inline">\(H_0\)</span>: rodents eat consume on
-average the same amount of apples per kg body weight when they are fed
-with sterile or with infected apples.</li>
-<li><span class="math inline">\(H_1\)</span>: the average amount of
-apples in g/kg body weight is different when rodents are fed with
-sterile then as when they are fed with infected apples.</li>
+<li><span class="math inline">\(H_0\)</span>: rodents eat consume on average the same amount of apples per kg body weight when they are fed with sterile or with infected apples.</li>
+<li><span class="math inline">\(H_1\)</span>: the average amount of apples in g/kg body weight is different when rodents are fed with sterile then as when they are fed with infected apples.</li>
 </ul>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> group, rodents)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div>
@@ -680,23 +651,13 @@ sterile then as when they are fed with infected apples.</li>
 ## Residual standard error: 114.1 on 10 degrees of freedom
 ## Multiple R-squared:  0.1509, Adjusted R-squared:  0.06601 
 ## F-statistic: 1.777 on 1 and 10 DF,  p-value: 0.212</code></pre>
-<p>With the current study and when we assume that the assumptions of the
-model hold, we conclude that the amount of apples that rodents on
-average consume does not differ significantly between the group that was
-fed with sterile apples and the group that was fed with infected
-apples.</p>
+<p>With the current study and when we assume that the assumptions of the model hold, we conclude that the amount of apples that rodents on average consume does not differ significantly between the group that was fed with sterile apples and the group that was fed with infected apples.</p>
 </div>
-<div
-id="power-of-the-test-to-detect-the-same-effect-size-as-observed-in-our-dataset-with-our-experimental-design"
-class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Power of the test to
-detect the same effect size as observed in our dataset with our
-experimental design?</h1>
+<div id="power-of-the-test-to-detect-the-same-effect-size-as-observed-in-our-dataset-with-our-experimental-design" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Power of the test to detect the same effect size as observed in our dataset with our experimental design?</h1>
 <div id="simulation-function" class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> Simulation
-function</h2>
-<p>Function to simulate data similar to that of our experiment under our
-model assumptions.</p>
+<h2><span class="header-section-number">4.1</span> Simulation function</h2>
+<p>Function to simulate data similar to that of our experiment under our model assumptions.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>simFast <span class="ot">&lt;-</span> <span class="cf">function</span>(form, data, betas, sd, contrasts, <span class="at">alpha =</span> .<span class="dv">05</span>, <span class="at">nSim =</span> <span class="dv">10000</span>) {</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  ySim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">nrow</span>(data) <span class="sc">*</span> nSim, <span class="at">sd =</span> sd)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dim</span>(ySim) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">nrow</span>(data), nSim)</span>
@@ -724,34 +685,32 @@ model assumptions.</p>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>form <span class="ot">&lt;-</span> <span class="er">~</span>group</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">&lt;-</span> <span class="fu">sigma</span>(lm1)</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>contrast <span class="ot">&lt;-</span> limma<span class="sc">::</span><span class="fu">makeContrasts</span>(<span class="st">&quot;grouptreat&quot;</span>, <span class="at">levels =</span> <span class="fu">names</span>(lm1<span class="sc">$</span>coefficients))</span></code></pre></div>
-<pre><code>## Warning in limma::makeContrasts(&quot;grouptreat&quot;, levels = names(lm1$coefficients)): Renaming (Intercept) to Intercept</code></pre>
+<pre><code>## Warning in limma::makeContrasts(&quot;grouptreat&quot;, levels = names(lm1$coefficients)):
+## Renaming (Intercept) to Intercept</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>power <span class="ot">&lt;-</span> <span class="fu">simFast</span>(form, rodents, betas, sd, <span class="at">contrasts =</span> contrast, <span class="at">alpha =</span> alpha, <span class="at">nSim =</span> nSim)</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>power</span></code></pre></div>
-<pre><code>## [1] 0.2336</code></pre>
-<p>We observe that the experiment is severly underpowered. We only have
-a power of 23.4% to pick up the treatment effect.</p>
+<pre><code>## [1] 0.2243</code></pre>
+<p>We observe that the experiment is severly underpowered. We only have a power of 22.4% to pick up the treatment effect.</p>
 </div>
 </div>
 <div id="power-for-a-balanced-design" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Power for a balanced
-design</h1>
+<h1><span class="header-section-number">5</span> Power for a balanced design</h1>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>betas <span class="ot">&lt;-</span> lm1<span class="sc">$</span>coefficients</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>nSim <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>form <span class="ot">&lt;-</span> <span class="er">~</span>group</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">&lt;-</span> <span class="fu">sigma</span>(lm1)</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>contrast <span class="ot">&lt;-</span> limma<span class="sc">::</span><span class="fu">makeContrasts</span>(<span class="st">&quot;grouptreat&quot;</span>, <span class="at">levels =</span> <span class="fu">names</span>(lm1<span class="sc">$</span>coefficients))</span></code></pre></div>
-<pre><code>## Warning in limma::makeContrasts(&quot;grouptreat&quot;, levels = names(lm1$coefficients)): Renaming (Intercept) to Intercept</code></pre>
+<pre><code>## Warning in limma::makeContrasts(&quot;grouptreat&quot;, levels = names(lm1$coefficients)):
+## Renaming (Intercept) to Intercept</code></pre>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> n2 <span class="ot">&lt;-</span> <span class="fu">nrow</span>(rodents) <span class="sc">/</span> <span class="dv">2</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>predictorData <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">group =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;ctrl&quot;</span>, <span class="st">&quot;treat&quot;</span>), <span class="fu">c</span>(n1, n2)) <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>powerBalanced <span class="ot">&lt;-</span> <span class="fu">simFast</span>(form, predictorData, betas, sd, <span class="at">contrasts =</span> contrast, <span class="at">alpha =</span> alpha, <span class="at">nSim =</span> nSim)</span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>powerBalanced</span></code></pre></div>
-<pre><code>## [1] 0.2525</code></pre>
-<p>We observe that the power is larger for the balanced design. We could
-also have known this from formula of the standard error from the
-two-sample t-test.</p>
+<pre><code>## [1] 0.2488</code></pre>
+<p>We observe that the power is larger for the balanced design. We could also have known this from formula of the standard error from the two-sample t-test.</p>
 <p><span class="math display">\[
 SE = \hat \sigma \sqrt{1/n1 + 1/n2}
 \]</span> Indeed,</p>
@@ -761,10 +720,8 @@ SE = \hat \sigma \sqrt{1/n1 + 1/n2}
 <pre><code>## [1] 0.5773503</code></pre>
 <p>So the SE is larger when the design is not balanced.</p>
 </div>
-<div id="required-sample-size-to-obtain-a-power-of-90"
-class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Required sample size to
-obtain a power of 90 %?</h1>
+<div id="required-sample-size-to-obtain-a-power-of-90" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Required sample size to obtain a power of 90 %?</h1>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1400</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>betas <span class="ot">&lt;-</span> lm1<span class="sc">$</span>coefficients</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>nSim <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
@@ -773,7 +730,8 @@ obtain a power of 90 %?</h1>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>power <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">n =</span> <span class="fu">seq</span>(<span class="dv">5</span>, <span class="dv">50</span>, <span class="dv">5</span>), <span class="at">power =</span> <span class="cn">NA</span>)</span>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
 <span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>contrast <span class="ot">&lt;-</span> limma<span class="sc">::</span><span class="fu">makeContrasts</span>(<span class="st">&quot;grouptreat&quot;</span>, <span class="at">levels =</span> <span class="fu">names</span>(lm1<span class="sc">$</span>coefficients))</span></code></pre></div>
-<pre><code>## Warning in limma::makeContrasts(&quot;grouptreat&quot;, levels = names(lm1$coefficients)): Renaming (Intercept) to Intercept</code></pre>
+<pre><code>## Warning in limma::makeContrasts(&quot;grouptreat&quot;, levels = names(lm1$coefficients)):
+## Renaming (Intercept) to Intercept</code></pre>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(power))</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  n1 <span class="ot">&lt;-</span> n2 <span class="ot">&lt;-</span> power<span class="sc">$</span>n[i]</span>
@@ -790,10 +748,8 @@ obtain a power of 90 %?</h1>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> power)) <span class="sc">+</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
 <p><img src="08_ExperimentalDesignII_1_rodents_sol_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>Through simulations we show that we need about 32-33 observations to
-obtain a power of about 90%.</p>
-<p>This is similar to what we would obtain with the close form formula
-that can be applied for a two group design</p>
+<p>Through simulations we show that we need about 32-33 observations to obtain a power of about 90%.</p>
+<p>This is similar to what we would obtain with the close form formula that can be applied for a two group design</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.t.test</span>(<span class="at">delta =</span> lm1<span class="sc">$</span>coef[<span class="dv">2</span>], <span class="at">sd =</span> <span class="fu">sigma</span>(lm1), <span class="at">power =</span> .<span class="dv">9</span>)</span></code></pre></div>
 <pre><code>## 
 ##      Two-sample t test power calculation 
@@ -808,16 +764,11 @@ that can be applied for a two group design</p>
 ## NOTE: n is number in *each* group</code></pre>
 </div>
 <div id="impact-of-effect-size" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Impact of effect
-size</h1>
-<p>Suppose that we would like to pick up an effect size of <span
-class="math inline">\(\beta_1 = 60 g/kg\)</span>. how many samples would
-be required in each group to obtain a power of 90%? Note, that</p>
+<h1><span class="header-section-number">7</span> Impact of effect size</h1>
+<p>Suppose that we would like to pick up an effect size of <span class="math inline">\(\beta_1 = 60 g/kg\)</span>. how many samples would be required in each group to obtain a power of 90%? Note, that</p>
 <ul>
-<li>we do a two-sided test so the sign of the effect size is
-arbitrary.</li>
-<li>the intercept in the power analysis is also arbitrary so we could
-also set it at 0.</li>
+<li>we do a two-sided test so the sign of the effect size is arbitrary.</li>
+<li>the intercept in the power analysis is also arbitrary so we could also set it at 0.</li>
 </ul>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1400</span>)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>betas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">60</span>)</span>
@@ -827,7 +778,8 @@ also set it at 0.</li>
 <span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>power2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">n =</span> <span class="fu">seq</span>(<span class="dv">5</span>, <span class="dv">100</span>, <span class="dv">5</span>), <span class="at">power =</span> <span class="cn">NA</span>)</span>
 <span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
 <span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>contrast <span class="ot">&lt;-</span> limma<span class="sc">::</span><span class="fu">makeContrasts</span>(<span class="st">&quot;grouptreat&quot;</span>, <span class="at">levels =</span> <span class="fu">names</span>(lm1<span class="sc">$</span>coefficients))</span></code></pre></div>
-<pre><code>## Warning in limma::makeContrasts(&quot;grouptreat&quot;, levels = names(lm1$coefficients)): Renaming (Intercept) to Intercept</code></pre>
+<pre><code>## Warning in limma::makeContrasts(&quot;grouptreat&quot;, levels = names(lm1$coefficients)):
+## Renaming (Intercept) to Intercept</code></pre>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(power2))</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  n1 <span class="ot">&lt;-</span> n2 <span class="ot">&lt;-</span> power2<span class="sc">$</span>n[i]</span>
@@ -845,10 +797,8 @@ also set it at 0.</li>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> .<span class="dv">9</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="08_ExperimentalDesignII_1_rodents_sol_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<p>We observe that we need between 75-80 observations to obtain a power
-of 90%.</p>
-<p>This is confirmed with the power functions for the two sample
-t-test.</p>
+<p>We observe that we need between 75-80 observations to obtain a power of 90%.</p>
+<p>This is confirmed with the power functions for the two sample t-test.</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">60</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>power <span class="ot">&lt;-</span> .<span class="dv">9</span></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">power.t.test</span>(<span class="at">d =</span> b1, <span class="at">sd =</span> <span class="fu">sigma</span>(lm1), <span class="at">type =</span> <span class="st">&quot;two.sample&quot;</span>, <span class="at">power =</span> power)</span></code></pre></div>
@@ -863,9 +813,7 @@ t-test.</p>
 ##     alternative = two.sided
 ## 
 ## NOTE: n is number in *each* group</code></pre>
-<p>Note, that we would require a much larger sample size. This is
-because the desired effect size that we would like to pick up is small
-compared to the variability (standard deviation) in the population.</p>
+<p>Note, that we would require a much larger sample size. This is because the desired effect size that we would like to pick up is small compared to the variability (standard deviation) in the population.</p>
 </div>
 
 <div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhwZXJpbWVudGFsIERlc2lnbiBJSTogcmVwbGljYXRpb24gYW5kIHBvd2VyIGV4ZXJjaXNlIDEgLSBzb2x1dGlvbiIKYXV0aG9yOiAiTGlldmVuIENsZW1lbnQgJiBBbGV4YW5kcmUgU2VnZXJzIgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgotLS0KCgo8YSByZWw9ImxpY2Vuc2UiIGhyZWY9Imh0dHBzOi8vY3JlYXRpdmVjb21tb25zLm9yZy9saWNlbnNlcy9ieS1uYy1zYS80LjAiPjxpbWcgYWx0PSJDcmVhdGl2ZSBDb21tb25zIExpY2Vuc2UiIHN0eWxlPSJib3JkZXItd2lkdGg6MCIgc3JjPSJodHRwczovL2kuY3JlYXRpdmVjb21tb25zLm9yZy9sL2J5LW5jLXNhLzQuMC84OHgzMS5wbmciIC8+PC9hPgoKYGBge3J9CmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKCiMgUG93ZXIKClRoZSBwb3dlciBvZiBhIHRlc3QgaXMgZGVmaW5lZCBhczoKCiQkUChwIDwKXGFscGhhIHwgSF8xKSQkClRoaXMgaXMgdGhlIHByb2JhYmlsaXR5IHRvIHJlamVjdCB0aGUgbnVsaHlwb3RoZXNpcyBhdCB0aGUgc2lnbmlmaWNhbmNlIGxldmVsICRcYWxwaGEkIGdpdmVuIHRoYXQgdGhlIGFsdGVybmF0aXZlIGh5cG90aGVzaXMgaXMgdHJ1ZS4KClRoZSBwb3dlciBkZXBlbmRzIG9uOgoKLSB0aGUgcmVhbCBlZmZlY3Qgc2l6ZSBpbiB0aGUgcG9wdWxhdGlvbiAkXG1hdGhiZntMfV5UXGJvbGRzeW1ib2x7XGJldGF9JC4KLSB0aGUgbnVtYmVyIG9mIG9ic2VydmF0aW9uczogU0UgYW5kIGRmLgotIENob2ljZSBvZiBkZXNpZ25wb2ludHMKLSBDaG9pY2Ugb2Ygc2lnbmlmaWNhbmNlLWxldmVsICRcYWxwaGEkLgoKV2Ugd2lsbCBldmFsdWF0ZSB0aGUgcG93ZXIgdXNpbmcgc2ltdWxhdGlvbi4KCiMgUm9kZW50cwoKQSBiaW9sb2dpc3QgZXhhbWluZWQgdGhlIGVmZmVjdCBvZiBhIGZ1bmdhbCBpbmZlY3Rpb24gb24gdGhlIGVhdGluZyBiZWhhdmlvciBvZiByb2RlbnRzLgpJbmZlY3RlZCBhcHBsZXMgd2VyZSBvZmZlcmVkIHRvIGEgZ3JvdXAgb2YgZWlnaHQgcm9kZW50cywgYW5kIHN0ZXJpbGUgYXBwbGVzIHdlcmUgb2ZmZXJlZCB0byBhIGdyb3VwIG9mIDQgcm9kZW50cy4gVGhlIGFtb3VudCBvZiBncmFtcyBvZiBhcHBsZXMgY29uc3VtZWQgcGVyIGtnIGJvZHkgd2VpZ2h0IGFyZSBnaXZlbiBpbiB0aGUgZGF0YXNldCBiZWxvdy4KCmBgYHtyfQpyb2RlbnRzIDwtIGRhdGEuZnJhbWUod2VpZ2h0ID0gYygxMSwgMzMsIDQ4LCAzNCwgMTEyLCAzNjksIDY0LCA0NCwgMTc3LCA4MCwgMTQxLCAzMzIpLCBncm91cCA9IGFzLmZhY3RvcihjKHJlcCgidHJlYXQiLCA4KSwgcmVwKCJjdHJsIiwgNCkpKSkKcm9kZW50cwpgYGAKCiMjIERhdGEgZXhwbG9yYXRpb24KCmBgYHtyfQpyb2RlbnRzICU+JQogIGdncGxvdChhZXMoeCA9IGdyb3VwLCB5ID0gd2VpZ2h0KSkgKwogIGdlb21fYm94cGxvdChvdXRsaWVyLnNoYXBlID0gTkEpICsKICBnZW9tX2ppdHRlcigpCgpyb2RlbnRzICU+JQogIGdncGxvdChhZXMoc2FtcGxlID0gd2VpZ2h0KSkgKwogIGdlb21fcXEoKSArCiAgZ2VvbV9xcV9saW5lKCkgKwogIGZhY2V0X3dyYXAofmdyb3VwKQpgYGAKCkluIHRoZSBkYXRhIGV4cGxvcmF0aW9uIHdlIGRvIG5vdCBoYXZlIGVub3VnaCBkYXRhIHRvIGV2YWx1YXRlIHRoZSBhc3N1bXB0aW9ucy4KClN1cHBvc2UgdGhhdCB0aGUgYXNzdW1wdGlvbnMgYXJlIHZhbGlkIGFuZCB0aGF0IHN0YW5kYXJkIGRldmlhdGlvbiBpbiB0aGUgcG9wdWxhdGlvbiB3b3VsZCBiZSBlcXVhbCB0byB0aGUgb25lcyB5b3Ugb2JzZXJ2ZWQgaW4gdGhlIGV4cGVyaW1lbnQuCgoxLiBXaGF0IGlzIHRoZSBwb3dlciBvZiB0aGUgZXhwZXJpbWVudCBpZiB0aGUgZWZmZWN0IHNpemUgYW5kIHN0YW5kYXJkIGRldmlhdGlvbiBpbiB0aGUgcG9wdWxhdGlvbiB3b3VsZCBiZSBlcXVhbCB0byB0aGUgb25lcyB5b3Ugb2JzZXJ2ZWQgaW4gdGhlIGV4cGVyaW1lbnQKMi4gV2hhdCB3b3VsZCB0aGUgcG93ZXIgYnkgaWYgbnVtYmVyIG9mIHJvZGVudHMgd291bGQgIGJhbGFuY2VkIGluIGJvdGggZ3JvdXBzCjMuIEhvdyBtYW55IG9ic2VydmF0aW9ucyB3b3VsZCB5b3UgbmVlZCB0byBwaWNrIHVwIHRoZSB0cmVhdG1lbnQgZWZmZWN0IHdpdGggYSBwb3dlciBvZiA5MCU/CjQuIEhvdyBtYW55IG9ic2VydmF0aW9ucyB3b3VsZCB5b3UgbmVlZCB0byBwaWNrIHVwIHRoZSB0cmVhdG1lbnQgZWZmZWN0IG9mIDYwIGcva2cgd2l0aCBhIHBvd2VyIG9mIDkwJT8KCiMgQW5hbHlzaXMKCldlIHdpbGwgbW9kZWwgdGhlIGRhdGEgdXNpbmcgYSBsaW5lYXIgbW9kZWwgd2l0aCBvbmUgZHVtbXkgdmFyaWFibGUuCgokJAp5X2kgPSBcYmV0YV8wICsgXGJldGFfMSB4X3t0LGl9ICsKXGVwc2lsb25faQokJAp3aXRoICR4X3twLGl9ID0gMCQgaWYgdGhlIHJvZGVudCBpcyBzdWJqZWN0ZWQgdGhlIGNvbnRyb2wgdHJlYXRtZW50IHdpdGggc3RlcmlsZSBhcHBsZXMgYW5kICR4X3t0LGl9ID0gMSQgaWYgcm9kZW50IHJlY2VpdmVzIHRoZSB0cmVhdG1lbnQgd2l0aCBpbmZlY3RlZCBhcHBsZXMuCgotIEVzdGltYXRlZCBlZmZlY3Qgc2l6ZT8KClRoZSBhdmVyYWdlIGRpZmZlcmVuY2UgaW4gcmVsYXRpdmUgYWJ1bmRhbmNlIG9mIFN0YXBoeWxvY29jY3VzIG9mIHBhdGllbnRzCm9mIHRoZSB0cmFuc3BsYW50IGFuZCB0aGUgcGxhY2VibyBncm91cC4KCiQkClxoYXQgXGJldGFfMSA9IFxiYXIgeV90IC0gXGJhciB5X2MKJCQKCi0gJEhfMCQ6IHJvZGVudHMgZWF0IGNvbnN1bWUgb24gYXZlcmFnZSB0aGUgc2FtZSBhbW91bnQgb2YgYXBwbGVzIHBlciBrZyBib2R5IHdlaWdodCB3aGVuIHRoZXkgYXJlIGZlZCB3aXRoIHN0ZXJpbGUgb3Igd2l0aCBpbmZlY3RlZCBhcHBsZXMuCi0gJEhfMSQ6IHRoZSBhdmVyYWdlIGFtb3VudCBvZiBhcHBsZXMgaW4gZy9rZyBib2R5IHdlaWdodCBpcyBkaWZmZXJlbnQgd2hlbiByb2RlbnRzIGFyZSBmZWQgd2l0aCBzdGVyaWxlIHRoZW4gYXMgd2hlbiB0aGV5IGFyZSBmZWQgd2l0aCBpbmZlY3RlZCBhcHBsZXMuCgpgYGB7cn0KbG0xIDwtIGxtKHdlaWdodCB+IGdyb3VwLCByb2RlbnRzKQpzdW1tYXJ5KGxtMSkKYGBgCgpXaXRoIHRoZSBjdXJyZW50IHN0dWR5IGFuZCB3aGVuIHdlIGFzc3VtZSB0aGF0IHRoZSBhc3N1bXB0aW9ucyBvZiB0aGUgbW9kZWwgaG9sZCwgd2UgY29uY2x1ZGUgdGhhdCB0aGUgYW1vdW50IG9mIGFwcGxlcyB0aGF0IHJvZGVudHMgb24gYXZlcmFnZSBjb25zdW1lIGRvZXMgbm90IGRpZmZlciBzaWduaWZpY2FudGx5IGJldHdlZW4gdGhlIGdyb3VwIHRoYXQgd2FzIGZlZCB3aXRoIHN0ZXJpbGUgYXBwbGVzIGFuZCB0aGUgZ3JvdXAgdGhhdCB3YXMgZmVkIHdpdGggaW5mZWN0ZWQgYXBwbGVzLgoKIyBQb3dlciBvZiB0aGUgdGVzdCB0byBkZXRlY3QgdGhlIHNhbWUgZWZmZWN0IHNpemUgYXMgb2JzZXJ2ZWQgaW4gb3VyIGRhdGFzZXQgd2l0aCBvdXIgZXhwZXJpbWVudGFsIGRlc2lnbj8KCiMjIFNpbXVsYXRpb24gZnVuY3Rpb24KCkZ1bmN0aW9uIHRvIHNpbXVsYXRlIGRhdGEgc2ltaWxhciB0byB0aGF0IG9mIG91ciBleHBlcmltZW50IHVuZGVyIG91ciBtb2RlbCBhc3N1bXB0aW9ucy4KCmBgYHtyfQpzaW1GYXN0IDwtIGZ1bmN0aW9uKGZvcm0sIGRhdGEsIGJldGFzLCBzZCwgY29udHJhc3RzLCBhbHBoYSA9IC4wNSwgblNpbSA9IDEwMDAwKSB7CiAgeVNpbSA8LSBybm9ybShucm93KGRhdGEpICogblNpbSwgc2QgPSBzZCkKICBkaW0oeVNpbSkgPC0gYyhucm93KGRhdGEpLCBuU2ltKQogIGRlc2lnbiA8LSBtb2RlbC5tYXRyaXgoZm9ybSwgZGF0YSkKICB5U2ltIDwtIHlTaW0gKyBjKGRlc2lnbiAlKiUgYmV0YXMpCiAgeVNpbSA8LSB0KHlTaW0pCgogICMjIyBGaXR0aW5nCiAgZml0QWxsIDwtIGxpbW1hOjpsbUZpdCh5U2ltLCBkZXNpZ24pCgogICMjIyBJbmZlcmVuY2UKICB2YXJVbnNjYWxlZCA8LSBjKHQoY29udHJhc3RzKSAlKiUgZml0QWxsJGNvdi5jb2VmZmljaWVudHMgJSolIGNvbnRyYXN0cykKICBjb250cmFzdHMgPC0gZml0QWxsJGNvZWZmaWNpZW50cyAlKiUgY29udHJhc3RzCiAgc2VDb250cmFzdHMgPC0gdmFyVW5zY2FsZWReLjUgKiBmaXRBbGwkc2lnbWEKICB0c3RhdHMgPC0gY29udHJhc3RzIC8gc2VDb250cmFzdHMKICBwdmFscyA8LSBwdChhYnModHN0YXRzKSwgZml0QWxsJGRmLnJlc2lkdWFsLCBsb3dlci50YWlsID0gRkFMU0UpICogMgogIHJldHVybihtZWFuKHB2YWxzIDwgYWxwaGEpKQp9CmBgYAoKIyMgU2ltdWxhdGlvbgoKYGBge3J9CmJldGFzIDwtIGxtMSRjb2VmZmljaWVudHMKCm5TaW0gPC0gMTAwMDAKZm9ybSA8LSB+Z3JvdXAKc2QgPC0gc2lnbWEobG0xKQpjb250cmFzdCA8LSBsaW1tYTo6bWFrZUNvbnRyYXN0cygiZ3JvdXB0cmVhdCIsIGxldmVscyA9IG5hbWVzKGxtMSRjb2VmZmljaWVudHMpKQphbHBoYSA8LSAwLjA1Cgpwb3dlciA8LSBzaW1GYXN0KGZvcm0sIHJvZGVudHMsIGJldGFzLCBzZCwgY29udHJhc3RzID0gY29udHJhc3QsIGFscGhhID0gYWxwaGEsIG5TaW0gPSBuU2ltKQpwb3dlcgpgYGAKCldlIG9ic2VydmUgdGhhdCB0aGUgZXhwZXJpbWVudCBpcyBzZXZlcmx5IHVuZGVycG93ZXJlZC4gV2Ugb25seSBoYXZlIGEgcG93ZXIgb2YgYHIgcm91bmQocG93ZXIqMTAwLDEpYCUgdG8gcGljayB1cCB0aGUgdHJlYXRtZW50IGVmZmVjdC4KCiMgUG93ZXIgZm9yIGEgYmFsYW5jZWQgZGVzaWduCgpgYGB7cn0KYmV0YXMgPC0gbG0xJGNvZWZmaWNpZW50cwpuU2ltIDwtIDEwMDAwCmZvcm0gPC0gfmdyb3VwCnNkIDwtIHNpZ21hKGxtMSkKY29udHJhc3QgPC0gbGltbWE6Om1ha2VDb250cmFzdHMoImdyb3VwdHJlYXQiLCBsZXZlbHMgPSBuYW1lcyhsbTEkY29lZmZpY2llbnRzKSkKbjEgPC0gbjIgPC0gbnJvdyhyb2RlbnRzKSAvIDIKcHJlZGljdG9yRGF0YSA8LSBkYXRhLmZyYW1lKGdyb3VwID0gcmVwKGMoImN0cmwiLCAidHJlYXQiKSwgYyhuMSwgbjIpKSAlPiUgYXMuZmFjdG9yKCkpCgpwb3dlckJhbGFuY2VkIDwtIHNpbUZhc3QoZm9ybSwgcHJlZGljdG9yRGF0YSwgYmV0YXMsIHNkLCBjb250cmFzdHMgPSBjb250cmFzdCwgYWxwaGEgPSBhbHBoYSwgblNpbSA9IG5TaW0pCnBvd2VyQmFsYW5jZWQKYGBgCgpXZSBvYnNlcnZlIHRoYXQgdGhlIHBvd2VyIGlzIGxhcmdlciBmb3IgdGhlIGJhbGFuY2VkIGRlc2lnbi4KV2UgY291bGQgYWxzbyBoYXZlIGtub3duIHRoaXMgZnJvbSBmb3JtdWxhIG9mIHRoZSBzdGFuZGFyZCBlcnJvciBmcm9tIHRoZSB0d28tc2FtcGxlIHQtdGVzdC4KCiQkClNFID0gXGhhdCBcc2lnbWEgXHNxcnR7MS9uMSArIDEvbjJ9CiQkCkluZGVlZCwKCmBgYHtyfQpzcXJ0KDEgLyBzdW0ocm9kZW50cyRncm91cCA9PSAidHJlYXQiKSArIDEgLyBzdW0ocm9kZW50cyRncm91cCA9PSAiY3RybCIpKQpzcXJ0KDEgLyBuMSArIDEgLyBuMSkKYGBgCgpTbyB0aGUgU0UgaXMgbGFyZ2VyIHdoZW4gdGhlIGRlc2lnbiBpcyBub3QgYmFsYW5jZWQuCgoKIyBSZXF1aXJlZCBzYW1wbGUgc2l6ZSB0byBvYnRhaW4gYSBwb3dlciBvZiA5MCAlPwoKYGBge3J9CnNldC5zZWVkKDE0MDApCmJldGFzIDwtIGxtMSRjb2VmZmljaWVudHMKblNpbSA8LSAxMDAwMApmb3JtIDwtIH5ncm91cApzZCA8LSBzaWdtYShsbTEpCnBvd2VyIDwtIGRhdGEuZnJhbWUobiA9IHNlcSg1LCA1MCwgNSksIHBvd2VyID0gTkEpCmFscGhhIDwtIDAuMDUKY29udHJhc3QgPC0gbGltbWE6Om1ha2VDb250cmFzdHMoImdyb3VwdHJlYXQiLCBsZXZlbHMgPSBuYW1lcyhsbTEkY29lZmZpY2llbnRzKSkKCmZvciAoaSBpbiAxOm5yb3cocG93ZXIpKQp7CiAgbjEgPC0gbjIgPC0gcG93ZXIkbltpXQogIHByZWRpY3RvckRhdGEgPC0gZGF0YS5mcmFtZShncm91cCA9IHJlcChjKCJjdHJsIiwgInRyZWF0IiksIGMobjEsIG4yKSkgJT4lIGFzLmZhY3RvcigpKQogIHBvd2VyJHBvd2VyW2ldIDwtIHNpbUZhc3QoZm9ybSwgcHJlZGljdG9yRGF0YSwgYmV0YXMsIHNkLCBjb250cmFzdHMgPSBjb250cmFzdCwgYWxwaGEgPSBhbHBoYSwgblNpbSA9IG5TaW0pCn0KcG93ZXIKYGBgCgpgYGB7cn0KcG93ZXIgJT4lCiAgZ2dwbG90KGFlcyh4ID0gbiwgeSA9IHBvd2VyKSkgKwogIGdlb21fbGluZSgpCmBgYAoKVGhyb3VnaCBzaW11bGF0aW9ucyB3ZSBzaG93IHRoYXQgd2UgbmVlZCBhYm91dCAzMi0zMyBvYnNlcnZhdGlvbnMgdG8gb2J0YWluIGEgcG93ZXIgb2YgYWJvdXQgOTAlLgoKClRoaXMgaXMgc2ltaWxhciB0byB3aGF0IHdlIHdvdWxkIG9idGFpbiB3aXRoIHRoZSBjbG9zZSBmb3JtIGZvcm11bGEgdGhhdCBjYW4gYmUgYXBwbGllZCBmb3IgYSB0d28gZ3JvdXAgZGVzaWduCgpgYGB7cn0KcG93ZXIudC50ZXN0KGRlbHRhID0gbG0xJGNvZWZbMl0sIHNkID0gc2lnbWEobG0xKSwgcG93ZXIgPSAuOSkKYGBgCgoKIyBJbXBhY3Qgb2YgZWZmZWN0IHNpemUKClN1cHBvc2UgdGhhdCB3ZSB3b3VsZCBsaWtlIHRvIHBpY2sgdXAgYW4gZWZmZWN0IHNpemUgb2YgJFxiZXRhXzEgPSA2MCBnL2tnJC4KaG93IG1hbnkgc2FtcGxlcyB3b3VsZCBiZSByZXF1aXJlZCBpbiBlYWNoIGdyb3VwIHRvIG9idGFpbiBhIHBvd2VyIG9mIDkwJT8KTm90ZSwgdGhhdAoKLSB3ZSBkbyBhIHR3by1zaWRlZCB0ZXN0IHNvIHRoZSBzaWduIG9mIHRoZSBlZmZlY3Qgc2l6ZSBpcyBhcmJpdHJhcnkuCi0gdGhlIGludGVyY2VwdCBpbiB0aGUgcG93ZXIgYW5hbHlzaXMgaXMgYWxzbyBhcmJpdHJhcnkgc28gd2UgY291bGQgYWxzbyBzZXQgaXQgYXQgMC4KCmBgYHtyfQpzZXQuc2VlZCgxNDAwKQpiZXRhcyA8LSBjKDAsIDYwKQpuU2ltIDwtIDEwMDAwCmZvcm0gPC0gfmdyb3VwCnNkIDwtIHNpZ21hKGxtMSkKcG93ZXIyIDwtIGRhdGEuZnJhbWUobiA9IHNlcSg1LCAxMDAsIDUpLCBwb3dlciA9IE5BKQphbHBoYSA8LSAwLjA1CmNvbnRyYXN0IDwtIGxpbW1hOjptYWtlQ29udHJhc3RzKCJncm91cHRyZWF0IiwgbGV2ZWxzID0gbmFtZXMobG0xJGNvZWZmaWNpZW50cykpCgpmb3IgKGkgaW4gMTpucm93KHBvd2VyMikpCnsKICBuMSA8LSBuMiA8LSBwb3dlcjIkbltpXQogIHByZWRpY3RvckRhdGEgPC0gZGF0YS5mcmFtZShncm91cCA9IHJlcChjKCJjdHJsIiwgInRyZWF0IiksIGMobjEsIG4yKSkgJT4lIGFzLmZhY3RvcigpKQogIHBvd2VyMiRwb3dlcltpXSA8LSBzaW1GYXN0KGZvcm0sIHByZWRpY3RvckRhdGEsIGJldGFzLCBzZCwgY29udHJhc3RzID0gY29udHJhc3QsIGFscGhhID0gYWxwaGEsIG5TaW0gPSBuU2ltKQp9CnBvd2VyMgpgYGAKCmBgYHtyfQpwb3dlcjIgJT4lCiAgZ2dwbG90KGFlcyh4ID0gbiwgeSA9IHBvd2VyKSkgKwogIGdlb21fbGluZSgpICsKICBnZW9tX2hsaW5lKHlpbnRlcmNlcHQgPSAuOSwgbHR5ID0gMikKYGBgCgpXZSBvYnNlcnZlIHRoYXQgd2UgbmVlZCBiZXR3ZWVuIDc1LTgwIG9ic2VydmF0aW9ucyB0byBvYnRhaW4gYSBwb3dlciBvZiA5MCUuCgpUaGlzIGlzIGNvbmZpcm1lZCB3aXRoIHRoZSBwb3dlciBmdW5jdGlvbnMgZm9yIHRoZSB0d28gc2FtcGxlIHQtdGVzdC4KCmBgYHtyfQpiMSA8LSAtNjAKcG93ZXIgPC0gLjkKcG93ZXIudC50ZXN0KGQgPSBiMSwgc2QgPSBzaWdtYShsbTEpLCB0eXBlID0gInR3by5zYW1wbGUiLCBwb3dlciA9IHBvd2VyKQpgYGAKCk5vdGUsIHRoYXQgd2Ugd291bGQgcmVxdWlyZSBhIG11Y2ggbGFyZ2VyIHNhbXBsZSBzaXplLiBUaGlzIGlzIGJlY2F1c2UgdGhlCmRlc2lyZWQgZWZmZWN0IHNpemUgdGhhdCB3ZSB3b3VsZCBsaWtlIHRvIHBpY2sgdXAgaXMgc21hbGwgY29tcGFyZWQgdG8gdGhlCnZhcmlhYmlsaXR5IChzdGFuZGFyZCBkZXZpYXRpb24pIGluIHRoZSBwb3B1bGF0aW9uLgo=</div>

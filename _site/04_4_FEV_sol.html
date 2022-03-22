@@ -549,41 +549,23 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 4.4: Exploring the FEV dataset -
-solution</h1>
+<h1 class="title toc-ignore">Exercise 4.4: Exploring the FEV dataset - solution</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
-<p>In this tutorial, you will learn how to import, tidy, wrangle and
-visualize data yourself!</p>
+<p>In this tutorial, you will learn how to import, tidy, wrangle and visualize data yourself!</p>
 <div id="the-fev-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> The FEV dataset</h1>
-<p>The FEV, which is an acronym for
-<code>forced expiratory volume</code>, is a measure of how much air a
-person can exhale (in liters) during a forced breath. In this dataset,
-the FEV of 606 children, between the ages of 6 and 17, were measured.
-The dataset also provides additional information on these children:
-their <code>age</code>, their <code>height</code>, their
-<code>gender</code> and, most importantly, whether the child is a smoker
-or a non-smoker.</p>
-<p>The goal of this experiment was to find out whether or not smoking
-has an effect on the FEV of children.</p>
-<p>Note: to analyse this dataset properly, we will need some relatively
-advanced modeling techniques. At the end of this week, you will have
-seen all three required steps to analyse such a dataset! For now, we
-will limit ourselves to exploring the data.</p>
+<p>The FEV, which is an acronym for <code>forced expiratory volume</code>, is a measure of how much air a person can exhale (in liters) during a forced breath. In this dataset, the FEV of 606 children, between the ages of 6 and 17, were measured. The dataset also provides additional information on these children: their <code>age</code>, their <code>height</code>, their <code>gender</code> and, most importantly, whether the child is a smoker or a non-smoker.</p>
+<p>The goal of this experiment was to find out whether or not smoking has an effect on the FEV of children.</p>
+<p>Note: to analyse this dataset properly, we will need some relatively advanced modeling techniques. At the end of this week, you will have seen all three required steps to analyse such a dataset! For now, we will limit ourselves to exploring the data.</p>
 </div>
 <div id="load-libraries" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Load libraries</h1>
-<p>If you do not have these libraries installed, make sure to install
-them first by using the <code>install.packages()</code> function with
-missing the package name inside the parentheses (and using quotation
-marks, like <code>install.packages("car")</code>)</p>
+<p>If you do not have these libraries installed, make sure to install them first by using the <code>install.packages()</code> function with missing the package name inside the parentheses (and using quotation marks, like <code>install.packages("car")</code>)</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -592,11 +574,10 @@ marks, like <code>install.packages("car")</code>)</p>
 </div>
 <div id="import-the-data" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Import the data</h1>
-<p>Note: <code>fev.txt</code> is a tab-separated file: make sure to
-select the correct <code>readr</code> function!</p>
+<p>Note: <code>fev.txt</code> is a tab-separated file: make sure to select the correct <code>readr</code> function!</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fev <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/fev.txt&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 606 Columns: 5
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): gender
 ## dbl (4): age, fev, height, smoking
@@ -612,15 +593,10 @@ select the correct <code>readr</code> function!</p>
 </div>
 <div id="data-wrangling" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Data wrangling</h1>
-<p>There are a few things in the formatting of the data that can be
-improved upon:</p>
+<p>There are a few things in the formatting of the data that can be improved upon:</p>
 <ol style="list-style-type: decimal">
-<li><p>Both <code>gender</code> and <code>smoking</code> can be
-transformed to factors.</p></li>
-<li><p>The <code>height</code> variable is written in inches. Assuming
-that this audience is mainly Portuguese/Belgian, inches are hard to
-interpret. Let’s add a new column, <code>height_cm</code>, with the
-values converted to centimeters.</p></li>
+<li><p>Both <code>gender</code> and <code>smoking</code> can be transformed to factors.</p></li>
+<li><p>The <code>height</code> variable is written in inches. Assuming that this audience is mainly Portuguese/Belgian, inches are hard to interpret. Let’s add a new column, <code>height_cm</code>, with the values converted to centimeters.</p></li>
 </ol>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fev <span class="ot">&lt;-</span> fev <span class="sc">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gender =</span> <span class="fu">as.factor</span>(gender)) <span class="sc">%&gt;%</span></span>
@@ -637,8 +613,7 @@ values converted to centimeters.</p></li>
 </div>
 <div id="data-exploration" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Data exploration</h1>
-<p>Now, let’s make a first explorative plot, showing only the FEV for
-both smoking categories.</p>
+<p>Now, let’s make a first explorative plot, showing only the FEV for both smoking categories.</p>
 <p>Which type of plot do you suggest?</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fev <span class="sc">%&gt;%</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> smoking, <span class="at">y =</span> fev, <span class="at">fill =</span> smoking)) <span class="sc">+</span></span>
@@ -651,12 +626,8 @@ both smoking categories.</p>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;smoking status&quot;</span>)</span></code></pre></div>
 <p><img src="04_4_FEV_sol_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Did you expect these results?</p>
-<p>It appears that children that smoke have a higher median FEV than
-children that do not smoke. Should we change legislation worldwide and
-make smoking obligatory for children?</p>
-<p>Maybe there is something else going on in the data. Now, we will
-generate a similar plot, but we will stratify the data based on age (age
-as factor).</p>
+<p>It appears that children that smoke have a higher median FEV than children that do not smoke. Should we change legislation worldwide and make smoking obligatory for children?</p>
+<p>Maybe there is something else going on in the data. Now, we will generate a similar plot, but we will stratify the data based on age (age as factor).</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fev <span class="sc">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(age), <span class="at">y =</span> fev, <span class="at">fill =</span> smoking)) <span class="sc">+</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
@@ -668,17 +639,9 @@ as factor).</p>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;smoking status&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: Ignoring unknown parameters: width</code></pre>
 <p><img src="04_4_FEV_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>This plot seems to already be much more plausible. First, it seems
-that we do not have any smoking children of ages 6, 7 or 8. Second, when
-looking at the results per age “category”, it seems no longer the case
-that smokers have a much higher FEV than non-smokers; for the higher
-ages, the contrary seems true.</p>
-<p>This shows that taking into account important confounders (in this
-case) is crucial! If we simply analysed based on the smoking status and
-FEV values only, we probably would’ve obtained completely incorrect
-results.</p>
-<p>Can we provide an even better visualization of the data, taking into
-account more useful explanatory variables with respect to the FEV?</p>
+<p>This plot seems to already be much more plausible. First, it seems that we do not have any smoking children of ages 6, 7 or 8. Second, when looking at the results per age “category”, it seems no longer the case that smokers have a much higher FEV than non-smokers; for the higher ages, the contrary seems true.</p>
+<p>This shows that taking into account important confounders (in this case) is crucial! If we simply analysed based on the smoking status and FEV values only, we probably would’ve obtained completely incorrect results.</p>
+<p>Can we provide an even better visualization of the data, taking into account more useful explanatory variables with respect to the FEV?</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fev <span class="sc">%&gt;%</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(age), <span class="at">y =</span> fev, <span class="at">fill =</span> smoking)) <span class="sc">+</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
@@ -691,13 +654,8 @@ account more useful explanatory variables with respect to the FEV?</p>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(gender))</span></code></pre></div>
 <pre><code>## Warning: Ignoring unknown parameters: width</code></pre>
 <p><img src="04_4_FEV_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>This plot holds one extra level of information, the gender of the
-child. Especially for higher ages, the median FEV is higher for males as
-compared to females.</p>
-<p>The only source of information that is lacking is
-<code>height</code>. To look at the effect of height, we could simply
-make a scatterplot displaying the FEV in function of a child’s height
-(in cm). Additionally, we could color the dots based on gender.</p>
+<p>This plot holds one extra level of information, the gender of the child. Especially for higher ages, the median FEV is higher for males as compared to females.</p>
+<p>The only source of information that is lacking is <code>height</code>. To look at the effect of height, we could simply make a scatterplot displaying the FEV in function of a child’s height (in cm). Additionally, we could color the dots based on gender.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fev <span class="sc">%&gt;%</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> height_cm, <span class="at">y =</span> fev, <span class="at">color =</span> gender)) <span class="sc">+</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
@@ -707,9 +665,7 @@ make a scatterplot displaying the FEV in function of a child’s height
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;fev (l)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;height (cm)&quot;</span>)</span></code></pre></div>
 <p><img src="04_4_FEV_sol_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>There is a clear relationship between height and FEV. In addition, we
-see that for the large height values (&gt;175cm), we mainly find male
-subjects.</p>
+<p>There is a clear relationship between height and FEV. In addition, we see that for the large height values (&gt;175cm), we mainly find male subjects.</p>
 </div>
 
 <div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgNC40OiBFeHBsb3JpbmcgdGhlIEZFViBkYXRhc2V0IC0gc29sdXRpb24iCmF1dGhvcjogIkxpZXZlbiBDbGVtZW50IGFuZCBKZXJvZW4gR2lsaXMiCmRhdGU6ICJzdGF0T21pY3MsIEdoZW50IFVuaXZlcnNpdHkgKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pbykiCi0tLQoKSW4gdGhpcyB0dXRvcmlhbCwgeW91IHdpbGwgbGVhcm4gaG93IHRvIGltcG9ydCwgdGlkeSwgd3JhbmdsZSBhbmQKdmlzdWFsaXplIGRhdGEgeW91cnNlbGYhCgojIFRoZSBGRVYgZGF0YXNldAoKVGhlIEZFViwgd2hpY2ggaXMgYW4gYWNyb255bSBmb3IgYGZvcmNlZCBleHBpcmF0b3J5IHZvbHVtZWAsCmlzIGEgbWVhc3VyZSBvZiBob3cgbXVjaCBhaXIgYSBwZXJzb24gY2FuIGV4aGFsZSAoaW4gbGl0ZXJzKQpkdXJpbmcgIGEgZm9yY2VkIGJyZWF0aC4gSW4gdGhpcyBkYXRhc2V0LCB0aGUgRkVWIG9mIDYwNiBjaGlsZHJlbiwKYmV0d2VlbiB0aGUgYWdlcyBvZiA2IGFuZCAxNywgd2VyZSBtZWFzdXJlZC4gVGhlIGRhdGFzZXQKYWxzbyBwcm92aWRlcyBhZGRpdGlvbmFsIGluZm9ybWF0aW9uIG9uIHRoZXNlIGNoaWxkcmVuOgp0aGVpciBgYWdlYCwgdGhlaXIgYGhlaWdodGAsIHRoZWlyIGBnZW5kZXJgIGFuZCwgbW9zdAppbXBvcnRhbnRseSwgd2hldGhlciB0aGUgY2hpbGQgaXMgYSBzbW9rZXIgb3IgYSBub24tc21va2VyLgoKVGhlIGdvYWwgb2YgdGhpcyBleHBlcmltZW50IHdhcyB0byBmaW5kIG91dCB3aGV0aGVyIG9yIG5vdApzbW9raW5nIGhhcyBhbiBlZmZlY3Qgb24gdGhlIEZFViBvZiBjaGlsZHJlbi4KCk5vdGU6IHRvIGFuYWx5c2UgdGhpcyBkYXRhc2V0IHByb3Blcmx5LCB3ZSB3aWxsIG5lZWQgc29tZQpyZWxhdGl2ZWx5IGFkdmFuY2VkIG1vZGVsaW5nIHRlY2huaXF1ZXMuIEF0IHRoZSBlbmQgb2YgdGhpcwp3ZWVrLCB5b3Ugd2lsbCBoYXZlIHNlZW4gYWxsIHRocmVlIHJlcXVpcmVkIHN0ZXBzIHRvIGFuYWx5c2UKc3VjaCBhIGRhdGFzZXQhIEZvciBub3csIHdlIHdpbGwgbGltaXQgb3Vyc2VsdmVzIHRvIGV4cGxvcmluZwp0aGUgZGF0YS4KCiMgTG9hZCBsaWJyYXJpZXMKCklmIHlvdSBkbyBub3QgaGF2ZSB0aGVzZSBsaWJyYXJpZXMgaW5zdGFsbGVkLCBtYWtlIHN1cmUgdG8gaW5zdGFsbCB0aGVtIGZpcnN0CmJ5IHVzaW5nIHRoZSBgaW5zdGFsbC5wYWNrYWdlcygpYCBmdW5jdGlvbiB3aXRoIG1pc3NpbmcgdGhlIHBhY2thZ2UgbmFtZSBpbnNpZGUKdGhlIHBhcmVudGhlc2VzIChhbmQgdXNpbmcgcXVvdGF0aW9uIG1hcmtzLCBsaWtlIGBpbnN0YWxsLnBhY2thZ2VzKCJjYXIiKWApCgpgYGB7ciwgbWVzc2FnZSA9IEZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KHJlYWRyKQpsaWJyYXJ5KGRwbHlyKQpsaWJyYXJ5KHRpZHl2ZXJzZSkKbGlicmFyeShnZ3Bsb3QyKQpsaWJyYXJ5KGNhcikKYGBgCgojIEltcG9ydCB0aGUgZGF0YQoKTm90ZTogYGZldi50eHRgIGlzIGEgdGFiLXNlcGFyYXRlZCBmaWxlOiBtYWtlIHN1cmUgdG8gc2VsZWN0IHRoZSBjb3JyZWN0IGByZWFkcmAKZnVuY3Rpb24hCgpgYGB7cn0KZmV2IDwtIHJlYWRfdHN2KCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL2Zldi50eHQiKQpoZWFkKGZldikKYGBgCgojIERhdGEgd3JhbmdsaW5nCgpUaGVyZSBhcmUgYSBmZXcgdGhpbmdzIGluIHRoZSBmb3JtYXR0aW5nIG9mIHRoZQpkYXRhIHRoYXQgY2FuIGJlIGltcHJvdmVkIHVwb246CgoxLiBCb3RoIGBnZW5kZXJgIGFuZCBgc21va2luZ2AgY2FuIGJlIHRyYW5zZm9ybWVkIHRvIGZhY3RvcnMuCgoyLiBUaGUgYGhlaWdodGAgdmFyaWFibGUgaXMgd3JpdHRlbiBpbiBpbmNoZXMuIEFzc3VtaW5nIHRoYXQKdGhpcyBhdWRpZW5jZSBpcyBtYWlubHkgUG9ydHVndWVzZS9CZWxnaWFuLCBpbmNoZXMgYXJlIGhhcmQgdG8KaW50ZXJwcmV0LiBMZXQncyBhZGQgYSBuZXcgY29sdW1uLCBgaGVpZ2h0X2NtYCwgd2l0aCB0aGUgdmFsdWVzCmNvbnZlcnRlZCB0byBjZW50aW1ldGVycy4KCmBgYHtyfQpmZXYgPC0gZmV2ICU+JQogIG11dGF0ZShnZW5kZXIgPSBhcy5mYWN0b3IoZ2VuZGVyKSkgJT4lCiAgbXV0YXRlKHNtb2tpbmcgPSBhcy5mYWN0b3Ioc21va2luZykpICU+JQogIG11dGF0ZShoZWlnaHRfY20gPSBoZWlnaHQgKiAyLjU0KQoKaGVhZChmZXYpCmBgYAoKVGhhdCdzIGJldHRlciEKCiMgRGF0YSBleHBsb3JhdGlvbgoKTm93LCBsZXQncyBtYWtlIGEgZmlyc3QgZXhwbG9yYXRpdmUgcGxvdCwgc2hvd2luZwpvbmx5IHRoZSBGRVYgZm9yIGJvdGggc21va2luZyBjYXRlZ29yaWVzLgoKV2hpY2ggdHlwZSBvZiBwbG90IGRvIHlvdSBzdWdnZXN0PwoKYGBge3J9CmZldiAlPiUKICBnZ3Bsb3QoYWVzKHggPSBzbW9raW5nLCB5ID0gZmV2LCBmaWxsID0gc21va2luZykpICsKICBzY2FsZV9maWxsX21hbnVhbCh2YWx1ZXMgPSBjKCJkaW1ncmV5IiwgImZpcmVicmljayIpKSArCiAgdGhlbWVfYncoKSArCiAgZ2VvbV9ib3hwbG90KG91dGxpZXIuc2hhcGUgPSBOQSkgKwogIGdlb21faml0dGVyKHdpZHRoID0gMC4yLCBzaXplID0gMC4xKSArCiAgZ2d0aXRsZSgiQm94cGxvdCBvZiBGRVYgdmVyc3VzIHNtb2tpbmciKSArCiAgeWxhYigiZmV2IChsKSIpICsKICB4bGFiKCJzbW9raW5nIHN0YXR1cyIpCmBgYAoKRGlkIHlvdSBleHBlY3QgdGhlc2UgcmVzdWx0cz8KCkl0IGFwcGVhcnMgdGhhdCBjaGlsZHJlbiB0aGF0IHNtb2tlIGhhdmUgYSBoaWdoZXIKbWVkaWFuIEZFViB0aGFuIGNoaWxkcmVuIHRoYXQgZG8gbm90IHNtb2tlLgpTaG91bGQgd2UgY2hhbmdlIGxlZ2lzbGF0aW9uIHdvcmxkd2lkZSBhbmQgbWFrZQpzbW9raW5nIG9ibGlnYXRvcnkgZm9yIGNoaWxkcmVuPwoKTWF5YmUgdGhlcmUgaXMgc29tZXRoaW5nIGVsc2UgZ29pbmcgb24gaW4gdGhlIGRhdGEuCk5vdywgd2Ugd2lsbCBnZW5lcmF0ZSBhIHNpbWlsYXIgcGxvdCwgYnV0IHdlIHdpbGwKc3RyYXRpZnkgdGhlIGRhdGEgYmFzZWQgb24gYWdlIChhZ2UgYXMgZmFjdG9yKS4KCmBgYHtyfQpmZXYgJT4lCiAgZ2dwbG90KGFlcyh4ID0gYXMuZmFjdG9yKGFnZSksIHkgPSBmZXYsIGZpbGwgPSBzbW9raW5nKSkgKwogIGdlb21fYm94cGxvdChvdXRsaWVyLnNoYXBlID0gTkEpICsKICBnZW9tX3BvaW50KHdpZHRoID0gMC4yLCBzaXplID0gMC4xLCBwb3NpdGlvbiA9IHBvc2l0aW9uX2ppdHRlcmRvZGdlKCkpICsKICB0aGVtZV9idygpICsKICBzY2FsZV9maWxsX21hbnVhbCh2YWx1ZXMgPSBjKCJkaW1ncmV5IiwgImZpcmVicmljayIpKSArCiAgZ2d0aXRsZSgiQm94cGxvdCBvZiBGRVYgdmVyc3VzIHNtb2tpbmcsIHN0cmF0aWZpZWQgb24gYWdlIikgKwogIHlsYWIoImZldiAobCkiKSArCiAgeGxhYigic21va2luZyBzdGF0dXMiKQpgYGAKClRoaXMgcGxvdCBzZWVtcyB0byBhbHJlYWR5IGJlIG11Y2ggbW9yZSBwbGF1c2libGUuIEZpcnN0LCBpdCBzZWVtcwp0aGF0IHdlIGRvIG5vdCBoYXZlIGFueSBzbW9raW5nIGNoaWxkcmVuIG9mIGFnZXMgNiwgNyBvciA4LgpTZWNvbmQsIHdoZW4gbG9va2luZyBhdCB0aGUgcmVzdWx0cyBwZXIgYWdlICJjYXRlZ29yeSIsIGl0IHNlZW1zCm5vIGxvbmdlciB0aGUgY2FzZSB0aGF0IHNtb2tlcnMgaGF2ZSBhIG11Y2ggaGlnaGVyIEZFVgp0aGFuIG5vbi1zbW9rZXJzOyBmb3IgdGhlIGhpZ2hlciBhZ2VzLCB0aGUgY29udHJhcnkKc2VlbXMgdHJ1ZS4KClRoaXMgc2hvd3MgdGhhdCB0YWtpbmcgaW50byBhY2NvdW50IGltcG9ydGFudCBjb25mb3VuZGVycwooaW4gdGhpcyBjYXNlKSBpcyBjcnVjaWFsISBJZiB3ZSBzaW1wbHkgYW5hbHlzZWQgYmFzZWQgb24KdGhlIHNtb2tpbmcgc3RhdHVzIGFuZCBGRVYgdmFsdWVzIG9ubHksIHdlIHByb2JhYmx5IHdvdWxkJ3ZlCm9idGFpbmVkIGNvbXBsZXRlbHkgaW5jb3JyZWN0IHJlc3VsdHMuCgpDYW4gd2UgcHJvdmlkZSBhbiBldmVuIGJldHRlciB2aXN1YWxpemF0aW9uIG9mIHRoZSBkYXRhLCB0YWtpbmcKaW50byBhY2NvdW50IG1vcmUgdXNlZnVsIGV4cGxhbmF0b3J5IHZhcmlhYmxlcyB3aXRoIHJlc3BlY3QKdG8gdGhlIEZFVj8KCmBgYHtyfQpmZXYgJT4lCiAgZ2dwbG90KGFlcyh4ID0gYXMuZmFjdG9yKGFnZSksIHkgPSBmZXYsIGZpbGwgPSBzbW9raW5nKSkgKwogIGdlb21fYm94cGxvdChvdXRsaWVyLnNoYXBlID0gTkEpICsKICBnZW9tX3BvaW50KHdpZHRoID0gMC4yLCBzaXplID0gMC4xLCBwb3NpdGlvbiA9IHBvc2l0aW9uX2ppdHRlcmRvZGdlKCkpICsKICB0aGVtZV9idygpICsKICBzY2FsZV9maWxsX21hbnVhbCh2YWx1ZXMgPSBjKCJkaW1ncmV5IiwgImZpcmVicmljayIpKSArCiAgZ2d0aXRsZSgiQm94cGxvdCBvZiBGRVYgdmVyc3VzIHNtb2tpbmcsIHN0cmF0aWZpZWQgb24gYWdlIGFuZCBnZW5kZXIiKSArCiAgeWxhYigiZmV2IChsKSIpICsKICB4bGFiKCJzbW9raW5nIHN0YXR1cyIpICsKICBmYWNldF9ncmlkKHJvd3MgPSB2YXJzKGdlbmRlcikpCmBgYAoKVGhpcyBwbG90IGhvbGRzIG9uZSBleHRyYSBsZXZlbCBvZiBpbmZvcm1hdGlvbiwgdGhlIGdlbmRlcgpvZiB0aGUgY2hpbGQuIEVzcGVjaWFsbHkgZm9yIGhpZ2hlciBhZ2VzLCB0aGUgbWVkaWFuIEZFVgppcyBoaWdoZXIgZm9yIG1hbGVzIGFzIGNvbXBhcmVkIHRvIGZlbWFsZXMuCgpUaGUgb25seSBzb3VyY2Ugb2YgaW5mb3JtYXRpb24gdGhhdCBpcyBsYWNraW5nIGlzIGBoZWlnaHRgLgpUbyBsb29rIGF0IHRoZSBlZmZlY3Qgb2YgaGVpZ2h0LCB3ZSBjb3VsZCBzaW1wbHkgbWFrZSBhCnNjYXR0ZXJwbG90IGRpc3BsYXlpbmcgdGhlIEZFViBpbiBmdW5jdGlvbiBvZiBhIGNoaWxkJ3MKaGVpZ2h0IChpbiBjbSkuIEFkZGl0aW9uYWxseSwgd2UgY291bGQgY29sb3IgdGhlIGRvdHMgYmFzZWQKb24gZ2VuZGVyLgoKYGBge3J9CmZldiAlPiUKICBnZ3Bsb3QoYWVzKHggPSBoZWlnaHRfY20sIHkgPSBmZXYsIGNvbG9yID0gZ2VuZGVyKSkgKwogIGdlb21fcG9pbnQoKSArCiAgc2NhbGVfY29sb3JfbWFudWFsKHZhbHVlcyA9IGMoImRhcmtvcmNoaWQiLCAib2xpdmVkcmFiNCIpKSArCiAgdGhlbWVfYncoKSArCiAgZ2d0aXRsZSgiQm94cGxvdCBvZiBGRVYgdmVyc3VzIGhlaWdodCIpICsKICB5bGFiKCJmZXYgKGwpIikgKwogIHhsYWIoImhlaWdodCAoY20pIikKYGBgCgpUaGVyZSBpcyBhIGNsZWFyIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIGhlaWdodCBhbmQgRkVWLgpJbiBhZGRpdGlvbiwgd2Ugc2VlIHRoYXQgZm9yIHRoZSBsYXJnZSBoZWlnaHQgdmFsdWVzCig+MTc1Y20pLCB3ZSBtYWlubHkgZmluZCBtYWxlIHN1YmplY3RzLgo=</div>

@@ -549,39 +549,28 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 9.1: Non-parametric statistics on
-the shrimps dataset - solution</h1>
+<h1 class="title toc-ignore">Exercise 9.1: Non-parametric statistics on the shrimps dataset - solution</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="the-shrimps-dataset" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> The shrimps
-dataset</h1>
-<p>Dataset on the accumulation of PCBs (Polychlorinated biphenyls) in
-the adipose tissue of shrimps. PCBs are often present in coolants, and
-are know to accumulate easily in the adipose tissue of shrimps. In this
-experiment, two groups of 18 samples (each 100 grams) of shrimps each
-were cultivated in different conditions, one control condition and one
-condition where the medium was poluted with PCBs. Note that the PCB
-concentrations were measured in pg/g adipose tissue.</p>
+<h1><span class="header-section-number">1</span> The shrimps dataset</h1>
+<p>Dataset on the accumulation of PCBs (Polychlorinated biphenyls) in the adipose tissue of shrimps. PCBs are often present in coolants, and are know to accumulate easily in the adipose tissue of shrimps. In this experiment, two groups of 18 samples (each 100 grams) of shrimps each were cultivated in different conditions, one control condition and one condition where the medium was poluted with PCBs. Note that the PCB concentrations were measured in pg/g adipose tissue.</p>
 </div>
 <div id="goal" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Goal</h1>
-<p>The research question is; is there an effect of the growth condition
-on the PCB concentration in the adipose tissue of shrimps?</p>
+<p>The research question is; is there an effect of the growth condition on the PCB concentration in the adipose tissue of shrimps?</p>
 <p>Load libraries:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.3.5     ✔ purrr   0.3.4
 ## ✔ tibble  3.1.6     ✔ dplyr   1.0.8
 ## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
 ## ✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
@@ -593,8 +582,8 @@ on the PCB concentration in the adipose tissue of shrimps?</p>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(shrimps)</span></code></pre></div>
 <pre><code>## Rows: 36
 ## Columns: 2
-## $ PCB.conc &lt;dbl&gt; 29.7, 24.5, 97.7, 39.1, 22.6, 32.4, 27.7, 100.1, 40.1, 23.3, 33.5, 28.0, 101.5, 42.5, 26.2, 35.8, 30.…
-## $ group    &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,…</code></pre>
+## $ PCB.conc &lt;dbl&gt; 29.7, 24.5, 97.7, 39.1, 22.6, 32.4, 27.7, 100.1, 40.1, 23.3, …
+## $ group    &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2…</code></pre>
 </div>
 <div id="data-tidying" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Data tidying</h1>
@@ -623,29 +612,19 @@ on the PCB concentration in the adipose tissue of shrimps?</p>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">5</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;black&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: `fun.y` is deprecated. Use `fun` instead.</code></pre>
 <p><img src="05_4_shrimps_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>We can see that for group 1 we have four very clear outliers in the
-data. These values were double-checked (i.e for typing errors), but
-there was no reason found to believe that these values are
-incorrect.</p>
+<p>We can see that for group 1 we have four very clear outliers in the data. These values were double-checked (i.e for typing errors), but there was no reason found to believe that these values are incorrect.</p>
 </div>
 <div id="analysis" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Analysis</h1>
-<p>A good way for testing the research hypothesis is to perform an
-unpaired two-sample t-test to find out whether there is a significant
-difference in the mean PCB concentrations between both groups of
-samples. Before we can do this, we must check if all the required
-assumptions are met.</p>
+<p>A good way for testing the research hypothesis is to perform an unpaired two-sample t-test to find out whether there is a significant difference in the mean PCB concentrations between both groups of samples. Before we can do this, we must check if all the required assumptions are met.</p>
 <div id="assumptions" class="section level2" number="6.1">
 <h2><span class="header-section-number">6.1</span> Assumptions</h2>
 <ol style="list-style-type: decimal">
 <li>The observations are independent of each other (in both groups)</li>
-<li>The data (PCB.conc) must be normally distributed (in both
-groups)</li>
+<li>The data (PCB.conc) must be normally distributed (in both groups)</li>
 <li>The variance is equal in the two groups.</li>
 </ol>
-<p>The first assumption is met, as we randomly selected shrimps and
-submitted them to one of two growth conditions. No underlying
-correlation patterns are expected.</p>
+<p>The first assumption is met, as we randomly selected shrimps and submitted them to one of two growth conditions. No underlying correlation patterns are expected.</p>
 <p>We can check the second assumption with a QQ-plot.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>shrimps <span class="sc">%&gt;%</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> PCB.conc)) <span class="sc">+</span></span>
@@ -653,13 +632,8 @@ correlation patterns are expected.</p>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>group)</span></code></pre></div>
 <p><img src="05_4_shrimps_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>We clearly see that we have strong deviations from normality. Many
-datapoints do not lie near the quantile-quantile line. As such, we may
-conclude that our data are not normally distributed. In addition, the
-boxplots suggest that the variability differs between the two
-groups.</p>
-<p>Given the location of the outliers transformation will not help
-here.As such, we are not allowed to perform the t-test.</p>
+<p>We clearly see that we have strong deviations from normality. Many datapoints do not lie near the quantile-quantile line. As such, we may conclude that our data are not normally distributed. In addition, the boxplots suggest that the variability differs between the two groups.</p>
+<p>Given the location of the outliers transformation will not help here.As such, we are not allowed to perform the t-test.</p>
 </div>
 </div>
 

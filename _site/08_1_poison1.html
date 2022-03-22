@@ -446,35 +446,23 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 8.1: Additive linear model on the
-poison dataset</h1>
+<h1 class="title toc-ignore">Exercise 8.1: Additive linear model on the poison dataset</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="the-poison-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> The poison dataset</h1>
-<p>In this experiment, 96 fish (dojofish, goldfish and zebrafish) were
-placed separately in a tank with two liters of water and a certain dose
-(in mg) of the poison EI-43,064. The resistance of the fish against the
-poison was measured as the amount of minutes the fish survived after
-being exposed to the poison (<code>Surv_time</code>, in minutes).
-Additionally, the weight of each fish was measured.</p>
+<p>In this experiment, 96 fish (dojofish, goldfish and zebrafish) were placed separately in a tank with two liters of water and a certain dose (in mg) of the poison EI-43,064. The resistance of the fish against the poison was measured as the amount of minutes the fish survived after being exposed to the poison (<code>Surv_time</code>, in minutes). Additionally, the weight of each fish was measured.</p>
 </div>
 <div id="goal" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Goal</h1>
-<p>In this tutorial session we will focus on <strong>Dojofish</strong>,
-and we will model the survival time in function of the poison dose while
-correcting for the weight of the fish.</p>
+<p>In this tutorial session we will focus on <strong>Dojofish</strong>, and we will model the survival time in function of the poison dose while correcting for the weight of the fish.</p>
 <ol style="list-style-type: decimal">
-<li><p>We will first analyse the survival data by only considering the
-dose as an explanatory variable for survival time</p></li>
-<li><p>Next we will model the survival data with and additive model for
-dose and weight</p></li>
+<li><p>We will first analyse the survival data by only considering the dose as an explanatory variable for survival time</p></li>
+<li><p>Next we will model the survival data with and additive model for dose and weight</p></li>
 </ol>
 <p>Load libraries</p>
 </div>
@@ -487,41 +475,23 @@ dose and weight</p></li>
 <ol style="list-style-type: decimal">
 <li><p>Capitalise the fist column name</p></li>
 <li><p>Set the Species column as a factor</p></li>
-<li><p>Change the species factor levels from “0” to Dojofish.
-<em>Hint</em>: use the <code>fct_recode</code> function.</p></li>
-<li><p>In the previous analysis on this dataset
-(<code>Simple linear regression session</code>), we performed a
-log-transformation on the response variable <code>Surv_time</code> to
-meet the normality and homoscedasticity assumptions of the linear model.
-Here, we will immediately work with log-transformed survival times;
-store these in the new variable <code>log2Surv_time</code> and remove
-the non-transformed values.</p></li>
-<li><p>Subset the data to only retain <strong>dojofish</strong> (species
-“0”).</p></li>
+<li><p>Change the species factor levels from “0” to Dojofish. <em>Hint</em>: use the <code>fct_recode</code> function.</p></li>
+<li><p>In the previous analysis on this dataset (<code>Simple linear regression session</code>), we performed a log-transformation on the response variable <code>Surv_time</code> to meet the normality and homoscedasticity assumptions of the linear model. Here, we will immediately work with log-transformed survival times; store these in the new variable <code>log2Surv_time</code> and remove the non-transformed values.</p></li>
+<li><p>Subset the data to only retain <strong>dojofish</strong> (species “0”).</p></li>
 </ol>
 </div>
 <div id="data-exploration" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Data exploration</h1>
-<p>Prior to the analysis, we should explore our data. To start our data
-exploration, we will make use of the <code>ggpairs</code> function of
-the <code>GGally</code> R package. This function will generate a
-visualization containing multiple panels, which display (1) univariate
-plots of the different variables in our dataset, (2) bivariate plots and
-(3) correlation coefficients between the different variables.</p>
+<p>Prior to the analysis, we should explore our data. To start our data exploration, we will make use of the <code>ggpairs</code> function of the <code>GGally</code> R package. This function will generate a visualization containing multiple panels, which display (1) univariate plots of the different variables in our dataset, (2) bivariate plots and (3) correlation coefficients between the different variables.</p>
 </div>
-<div id="question-1-simple-linear-regression" class="section level1"
-number="6">
-<h1><span class="header-section-number">6</span> Question 1: simple
-linear regression</h1>
+<div id="question-1-simple-linear-regression" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Question 1: simple linear regression</h1>
 <div id="model-specification" class="section level2" number="6.1">
-<h2><span class="header-section-number">6.1</span> Model
-specification</h2>
-<p>Describe the model that you will use for this simple linear
-regression analysis.</p>
+<h2><span class="header-section-number">6.1</span> Model specification</h2>
+<p>Describe the model that you will use for this simple linear regression analysis.</p>
 </div>
 <div id="assess-model-assumptions" class="section level2" number="6.2">
-<h2><span class="header-section-number">6.2</span> Assess model
-assumptions</h2>
+<h2><span class="header-section-number">6.2</span> Assess model assumptions</h2>
 </div>
 <div id="inference" class="section level2" number="6.3">
 <h2><span class="header-section-number">6.3</span> Inference</h2>
@@ -532,20 +502,14 @@ assumptions</h2>
 <p>On the transformed and the original scale.</p>
 </div>
 </div>
-<div id="question-2-analysis-with-additive-effect-for-weight"
-class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Question 2: Analysis
-with additive effect for weight</h1>
+<div id="question-2-analysis-with-additive-effect-for-weight" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Question 2: Analysis with additive effect for weight</h1>
 <div id="model-specification-1" class="section level2" number="7.1">
-<h2><span class="header-section-number">7.1</span> Model
-specification</h2>
-<p>Describe the model that you will use for this additive linear
-model.</p>
+<h2><span class="header-section-number">7.1</span> Model specification</h2>
+<p>Describe the model that you will use for this additive linear model.</p>
 </div>
-<div id="assess-model-assumptions-1" class="section level2"
-number="7.2">
-<h2><span class="header-section-number">7.2</span> Assess model
-assumptions</h2>
+<div id="assess-model-assumptions-1" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Assess model assumptions</h2>
 </div>
 <div id="inference-1" class="section level2" number="7.3">
 <h2><span class="header-section-number">7.3</span> Inference</h2>

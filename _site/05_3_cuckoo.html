@@ -549,33 +549,18 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 5.3: Hypothesis testing on the
-cuckoo dataset</h1>
+<h1 class="title toc-ignore">Exercise 5.3: Hypothesis testing on the cuckoo dataset</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="cuckoo-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Cuckoo dataset</h1>
-<p>The common cuckoo does not build its own nest: it prefers to lay its
-eggs in another birds’ nest. It is known, since 1892, that the type of
-cuckoo bird eggs are different between different locations. In a study
-from 1940, it was shown that cuckoos return to the same nesting area
-each year, and that they always pick the same bird species to be a
-“foster parent” for their eggs.</p>
-<p>Over the years, this has lead to the development of geographically
-determined subspecies of cuckoos. These subspecies have evolved in such
-a way that their eggs look as similar as possible as those of their
-foster parents.</p>
-<p>The cuckoo dataset contains information on 120 Cuckoo eggs, obtained
-from randomly selected “foster” nests. For these eggs, researchers have
-measured the <code>length</code> (in mm) and established the
-<code>type</code> (species) of foster parent. The type column is coded
-as follows:</p>
+<p>The common cuckoo does not build its own nest: it prefers to lay its eggs in another birds’ nest. It is known, since 1892, that the type of cuckoo bird eggs are different between different locations. In a study from 1940, it was shown that cuckoos return to the same nesting area each year, and that they always pick the same bird species to be a “foster parent” for their eggs.</p>
+<p>Over the years, this has lead to the development of geographically determined subspecies of cuckoos. These subspecies have evolved in such a way that their eggs look as similar as possible as those of their foster parents.</p>
+<p>The cuckoo dataset contains information on 120 Cuckoo eggs, obtained from randomly selected “foster” nests. For these eggs, researchers have measured the <code>length</code> (in mm) and established the <code>type</code> (species) of foster parent. The type column is coded as follows:</p>
 <ul>
 <li><code>type=1</code>: Meadow pipit</li>
 <li><code>type=2</code>: Tree pipit</li>
@@ -587,22 +572,14 @@ as follows:</p>
 </div>
 <div id="goal" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Goal</h1>
-<p>The researchers want to test if the type of foster parent has an
-effect on the average length of the cuckoo eggs.</p>
-<p>In theory, they want to study this for all six species. However, a
-t-test can only be used to study mean differences between two groups. If
-we want to analyze multiple groups, there are two options.</p>
+<p>The researchers want to test if the type of foster parent has an effect on the average length of the cuckoo eggs.</p>
+<p>In theory, they want to study this for all six species. However, a t-test can only be used to study mean differences between two groups. If we want to analyze multiple groups, there are two options.</p>
 <ol style="list-style-type: decimal">
-<li><p>We perform t-tests on all pairwise combinations of types. This
-mean we need to perform n*(n-1)/2 = 15 t-tests.</p></li>
+<li><p>We perform t-tests on all pairwise combinations of types. This mean we need to perform n*(n-1)/2 = 15 t-tests.</p></li>
 <li><p>We perform an ANOVA analysis.</p></li>
 </ol>
-<p>The second strategy is much more efficient and has a higher
-statistical power. <strong>We will learn about ANOVA in chapter
-7</strong>.</p>
-<p>In the current tutorial, we will assess a single pairwise comparison,
-between the European robin and the European wren. In later tutorials, we
-revisit this dataset and analyse all data.</p>
+<p>The second strategy is much more efficient and has a higher statistical power. <strong>We will learn about ANOVA in chapter 7</strong>.</p>
+<p>In the current tutorial, we will assess a single pairwise comparison, between the European robin and the European wren. In later tutorials, we revisit this dataset and analyse all data.</p>
 <p>Load the required libraries</p>
 </div>
 <div id="import-data" class="section level1" number="3">
@@ -610,10 +587,7 @@ revisit this dataset and analyse all data.</p>
 </div>
 <div id="tidy-data" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Tidy data</h1>
-<p>For this exercise, we only care about the European robin and the
-Eurasian wren. Therefore, we can remove the observations of the other
-types. In addition, it seems that the <code>tpye</code> column rather
-than a factor. Let’s fix this:</p>
+<p>For this exercise, we only care about the European robin and the Eurasian wren. Therefore, we can remove the observations of the other types. In addition, it seems that the <code>tpye</code> column rather than a factor. Let’s fix this:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Cuckoo <span class="ot">&lt;-</span> Cuckoo <span class="sc">%&gt;%</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;4&quot;</span>, <span class="st">&quot;6&quot;</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">as.factor</span>(type))</span></code></pre></div>
@@ -629,14 +603,10 @@ than a factor. Let’s fix this:</p>
 <ol style="list-style-type: decimal">
 <li><p>What do you observe?</p></li>
 <li><p>How will you model the data?</p></li>
-<li><p>Translate the research question in a null and alternative
-hypothesis</p></li>
-<li><p>Which test will you use to assess the research
-hypothesis?</p></li>
-<li><p>Formulate the assumptions of the test and assess the assumptions
-using diagnostic plots.</p></li>
-<li><p>If all assumptions to perform the test, complete the analysis and
-formulate a proper conclusion.</p></li>
+<li><p>Translate the research question in a null and alternative hypothesis</p></li>
+<li><p>Which test will you use to assess the research hypothesis?</p></li>
+<li><p>Formulate the assumptions of the test and assess the assumptions using diagnostic plots.</p></li>
+<li><p>If all assumptions to perform the test, complete the analysis and formulate a proper conclusion.</p></li>
 </ol>
 </div>
 

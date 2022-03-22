@@ -549,47 +549,37 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 9.1: Non-parametric statistics on
-the shrimps dataset - solution</h1>
+<h1 class="title toc-ignore">Exercise 9.1: Non-parametric statistics on the shrimps dataset - solution</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="the-shrimps-dataset" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> The shrimps
-dataset</h1>
-<p>Dataset on the accumulation of PCBs (Polychlorinated biphenyls) in
-the adipose tissue of shrimps. PCBs are often present in coolants, and
-are know to accumulate easily in the adipose tissue of shrimps. In this
-experiment, two groups of 18 samples (each 100 grams) of shrimps each
-were cultivated in different conditions, one control condition and one
-condition where the medium was poluted with PCBs. Note that the PCB
-concentrations were measured in pg/g adipose tissue.</p>
+<h1><span class="header-section-number">1</span> The shrimps dataset</h1>
+<p>Dataset on the accumulation of PCBs (Polychlorinated biphenyls) in the adipose tissue of shrimps. PCBs are often present in coolants, and are know to accumulate easily in the adipose tissue of shrimps. In this experiment, two groups of 18 samples (each 100 grams) of shrimps each were cultivated in different conditions, one control condition and one condition where the medium was poluted with PCBs. Note that the PCB concentrations were measured in pg/g adipose tissue.</p>
 </div>
 <div id="goal" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Goal</h1>
-<p>The research question is; is there an effect of the growth condition
-on the PCB concentration in the adipose tissue of shrimps?</p>
+<p>The research question is; is there an effect of the growth condition on the PCB concentration in the adipose tissue of shrimps?</p>
 <p>Load libraries:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
-<pre><code>## ── Attaching packages ──────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.3.5     ✔ purrr   0.3.4
 ## ✔ tibble  3.1.6     ✔ dplyr   1.0.8
 ## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
 ## ✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ─────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
 <div id="import-the-data" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Import the data</h1>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>shrimps <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/shrimps.txt&quot;</span>,</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(shrimps)</span></code></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">header =</span> <span class="cn">TRUE</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(shrimps)</span></code></pre></div>
 <pre><code>## Rows: 36
 ## Columns: 2
 ## $ PCB.conc &lt;dbl&gt; 29.7, 24.5, 97.7, 39.1, 22.6, 32.4, 27.7, 100.1, 40.1, 23.3, …
@@ -612,74 +602,45 @@ on the PCB concentration in the adipose tissue of shrimps?</p>
 </div>
 <p>Visualize the data:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>shrimps <span class="sc">%&gt;%</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>group,<span class="at">y=</span>PCB.conc,<span class="at">fill=</span>group)) <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;RdGy&quot;</span>) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> PCB.conc, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;RdGy&quot;</span>) <span class="sc">+</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape=</span><span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Boxplot of the PCB concentrations in two groups of shrimps&quot;</span>) <span class="sc">+</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;PCB concentration (pg/g)&quot;</span>) <span class="sc">+</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y=</span>mean, <span class="at">geom=</span><span class="st">&quot;point&quot;</span>, <span class="at">shape=</span><span class="dv">5</span>, <span class="at">size=</span><span class="dv">3</span>, <span class="at">color=</span><span class="st">&quot;black&quot;</span>, <span class="at">fill=</span><span class="st">&quot;black&quot;</span>)</span></code></pre></div>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">5</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;black&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: `fun.y` is deprecated. Use `fun` instead.</code></pre>
 <p><img src="09_1_shrimps_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>We can see that for group 1 we have four very clear outliers in the
-data. These values were double-checked (i.e for typing errors), but
-there was no reason found to believe that these values are
-incorrect.</p>
+<p>We can see that for group 1 we have four very clear outliers in the data. These values were double-checked (i.e for typing errors), but there was no reason found to believe that these values are incorrect.</p>
 </div>
 <div id="analysis" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Analysis</h1>
-<p>A good way for testing the research hypothesis is to perform an
-unpaired two-sample t-test to find out whether there is a significant
-difference in the mean PCB concentrations between both groups of
-samples. Before we can do this, we must check if all the required
-assumptions are met.</p>
+<p>A good way for testing the research hypothesis is to perform an unpaired two-sample t-test to find out whether there is a significant difference in the mean PCB concentrations between both groups of samples. Before we can do this, we must check if all the required assumptions are met.</p>
 <div id="assumptions" class="section level2" number="6.1">
 <h2><span class="header-section-number">6.1</span> Assumptions</h2>
 <ol style="list-style-type: decimal">
 <li>The observations are independent of each other (in both groups)</li>
-<li>The data (PCB.conc) must be normally distributed (in both
-groups)</li>
+<li>The data (PCB.conc) must be normally distributed (in both groups)</li>
 <li>The variance is equal in the two groups.</li>
 </ol>
-<p>The first assumption is met, as we randomly selected shrimps and
-submitted them to one of two growth conditions. No underlying
-correlation patterns are expected.</p>
+<p>The first assumption is met, as we randomly selected shrimps and submitted them to one of two growth conditions. No underlying correlation patterns are expected.</p>
 <p>We can check the second assumption with a QQ-plot.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>shrimps <span class="sc">%&gt;%</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample=</span>PCB.conc)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> PCB.conc)) <span class="sc">+</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>group)</span></code></pre></div>
 <p><img src="09_1_shrimps_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>We clearly see that we have strong deviations from normality. Many
-datapoints do not lie near the quantile-quantile line. As such, we may
-conclude that our data are not normally distributed. In addition, the
-boxplots suggest that the variability differs between the two
-groups.</p>
-<p>As such, we are not allowed to perform the t-test. Given the location
-of the outliers transformation will not help, so we will resort to
-non-parametric tests, i.e. to the Wilcoxon rank-sum test.</p>
+<p>We clearly see that we have strong deviations from normality. Many datapoints do not lie near the quantile-quantile line. As such, we may conclude that our data are not normally distributed. In addition, the boxplots suggest that the variability differs between the two groups.</p>
+<p>As such, we are not allowed to perform the t-test. Given the location of the outliers transformation will not help, so we will resort to non-parametric tests, i.e. to the Wilcoxon rank-sum test.</p>
 </div>
 <div id="wilcoxon-rank-sum-test" class="section level2" number="6.2">
-<h2><span class="header-section-number">6.2</span> Wilcoxon rank-sum
-test</h2>
-<p>The Wilcoxon rank-sum test (or the Mann-Whitney U test) is an
-important non-parametric data analysis method. In rank-based tests, the
-data <span class="math inline">\(Y_i\)</span> are first transformed to
-its ranked equivalent <span class="math display">\[ R_i=R(Y_i) =
-\#\{Y_j: Y_j\leq Y_i; j=1,\ldots, n\}. \]</span></p>
-<p>Ranks are very robust to outliers. For instance, it does not matter
-if the highest value in an hypothetical dataset has a value of 10 or
-100; it will keep the same rank (highest rank).</p>
-<p>Note, that there might be ties in the data, e.g., if two samples of
-shrimps have an equal concentration of PCBs. In this case, the Wilcoxon
-rank-sum test will compute mid-ranks, which are calculated as follows;
-<span class="math display">\[R(Y_i) = \frac{\sum\limits_{\forall j :
-Y_j=Y_i}R(Y_j)}{\#{\forall j:Y_j=Y_i}}  \]</span> i.e., the midrank is
-equal to the mean of the ranks of equal observations.</p>
-<p>After computing the ranks and midranks, the Wilcoxon test will
-compare the mean rank between both treatment groups:</p>
+<h2><span class="header-section-number">6.2</span> Wilcoxon rank-sum test</h2>
+<p>The Wilcoxon rank-sum test (or the Mann-Whitney U test) is an important non-parametric data analysis method. In rank-based tests, the data <span class="math inline">\(Y_i\)</span> are first transformed to its ranked equivalent <span class="math display">\[ R_i=R(Y_i) = \#\{Y_j: Y_j\leq Y_i; j=1,\ldots, n\}. \]</span></p>
+<p>Ranks are very robust to outliers. For instance, it does not matter if the highest value in an hypothetical dataset has a value of 10 or 100; it will keep the same rank (highest rank).</p>
+<p>Note, that there might be ties in the data, e.g., if two samples of shrimps have an equal concentration of PCBs. In this case, the Wilcoxon rank-sum test will compute mid-ranks, which are calculated as follows; <span class="math display">\[R(Y_i) = \frac{\sum\limits_{\forall j : Y_j=Y_i}R(Y_j)}{\#{\forall j:Y_j=Y_i}}  \]</span> i.e., the midrank is equal to the mean of the ranks of equal observations.</p>
+<p>After computing the ranks and midranks, the Wilcoxon test will compare the mean rank between both treatment groups:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>PCB_1 <span class="ot">&lt;-</span> shrimps <span class="sc">%&gt;%</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(group <span class="sc">==</span> <span class="st">&quot;1&quot;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(PCB.conc)</span>
@@ -696,56 +657,37 @@ compare the mean rank between both treatment groups:</p>
 ## W = 88, p-value = 0.01871
 ## alternative hypothesis: true location shift is not equal to 0</code></pre>
 <p>or, equivalently;</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(PCB.conc<span class="sc">~</span>group, <span class="at">data =</span> shrimps)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(PCB.conc <span class="sc">~</span> group, <span class="at">data =</span> shrimps)</span></code></pre></div>
 <pre><code>## 
 ##  Wilcoxon rank sum exact test
 ## 
 ## data:  PCB.conc by group
 ## W = 88, p-value = 0.01871
 ## alternative hypothesis: true location shift is not equal to 0</code></pre>
-<p>We find that the test is significant on the 5% significance level (p
-= 0.01871). The value W=88 could be calculated manually as the
-Mann-Withney statistic that counts how many times a value from group 1
-is larger or equal than values of group 2.</p>
+<p>We find that the test is significant on the 5% significance level (p = 0.01871). The value W=88 could be calculated manually as the Mann-Withney statistic that counts how many times a value from group 1 is larger or equal than values of group 2.</p>
 <div id="interpretation" class="section level3" number="6.2.1">
 <h3><span class="header-section-number">6.2.1</span> Interpretation</h3>
-<p>The interpretation of the Wilcoxon rank-sum test is slightly more
-challenging than that of a t-test. Since we are no longer interpreting
-differences in the distributions between the groups in terms of the
-average differences but in in terms of the <em>probabilistic
-index</em>.</p>
-<p>The null hypothesis of the Wilcoxon test states that the
-distributions are equal for both groups:</p>
+<p>The interpretation of the Wilcoxon rank-sum test is slightly more challenging than that of a t-test. Since we are no longer interpreting differences in the distributions between the groups in terms of the average differences but in in terms of the <em>probabilistic index</em>.</p>
+<p>The null hypothesis of the Wilcoxon test states that the distributions are equal for both groups:</p>
 <p><span class="math display">\[ H_0: f_1 = f_2 \]</span></p>
-<p>In words: the distribution of PCB concentrations in shrimps are equal
-for both treatment conditions.</p>
+<p>In words: the distribution of PCB concentrations in shrimps are equal for both treatment conditions.</p>
 <p>against the alternative hypothesis that</p>
-<p><span class="math display">\[ H_1: P(Y_{1} \geq Y_{2}) \ne 1/2
-\]</span></p>
-<p>In words: The probability that a random observation of a PCB
-concentration derived from shrimps that was grown in the control
-condition <em>is larger than or equal to</em> than a random observation
-of a PCB concentration derived from a shrimps that was grown in the
-other condition <em>is not equal to 50%</em>.</p>
-<p>We can estimate this probability based on the observed test
-statistic.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> n2 <span class="ot">&lt;-</span> <span class="dv">18</span> <span class="co">#18 observations in each group</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>WObs <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(PCB.conc<span class="sc">~</span>group, <span class="at">data=</span>shrimps)<span class="sc">$</span>statistic <span class="co"># get the observed test statistic</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>WObs<span class="sc">/</span>(n1<span class="sc">*</span>n2)</span></code></pre></div>
+<p><span class="math display">\[ H_1: P(Y_{1} \geq Y_{2}) \ne 1/2 \]</span></p>
+<p>In words: The probability that a random observation of a PCB concentration derived from shrimps that was grown in the control condition <em>is larger than or equal to</em> than a random observation of a PCB concentration derived from a shrimps that was grown in the other condition <em>is not equal to 50%</em>.</p>
+<p>We can estimate this probability based on the observed test statistic.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> n2 <span class="ot">&lt;-</span> <span class="dv">18</span> <span class="co"># 18 observations in each group</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>WObs <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(PCB.conc <span class="sc">~</span> group, <span class="at">data =</span> shrimps)<span class="sc">$</span>statistic <span class="co"># get the observed test statistic</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>WObs <span class="sc">/</span> (n1 <span class="sc">*</span> n2)</span></code></pre></div>
 <pre><code>##         W 
 ## 0.2716049</code></pre>
 <p>We can see that the point estimate of this probability is 27.2%.</p>
 <p>We can interpret it as follows;</p>
-<p>There is a probability of 27.2% that the PCB concentration in a
-random shrimp that was grown in the control condition is greater than or
-equal to the PCB concentration in a random shrimp that was grown in the
-treatment condition. This probability is significantly different from
-50% on the 5% significance level (p = 0.01871).</p>
+<p>There is a probability of 27.2% that the PCB concentration in a random shrimp that was grown in the control condition is greater than or equal to the PCB concentration in a random shrimp that was grown in the treatment condition. This probability is significantly different from 50% on the 5% significance level (p = 0.01871).</p>
 </div>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgOS4xOiBOb24tcGFyYW1ldHJpYyBzdGF0aXN0aWNzIG9uIHRoZSBzaHJpbXBzIGRhdGFzZXQgLSBzb2x1dGlvbiIKYXV0aG9yOiAiTGlldmVuIENsZW1lbnQgYW5kIEplcm9lbiBHaWxpcyIKZGF0ZTogInN0YXRPbWljcywgR2hlbnQgVW5pdmVyc2l0eSAoaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSIKLS0tCgojIFRoZSBzaHJpbXBzIGRhdGFzZXQKCkRhdGFzZXQgb24gdGhlIGFjY3VtdWxhdGlvbiBvZiBQQ0JzIChQb2x5Y2hsb3JpbmF0ZWQgYmlwaGVueWxzKQppbiB0aGUgYWRpcG9zZSB0aXNzdWUgb2Ygc2hyaW1wcy4gUENCcyBhcmUgb2Z0ZW4gcHJlc2VudCBpbiBjb29sYW50cywgYW5kIGFyZQprbm93IHRvIGFjY3VtdWxhdGUgZWFzaWx5IGluIHRoZSBhZGlwb3NlIHRpc3N1ZSBvZiBzaHJpbXBzLiBJbiB0aGlzIGV4cGVyaW1lbnQsCnR3byBncm91cHMgb2YgMTggc2FtcGxlcyAoZWFjaCAxMDAgZ3JhbXMpIG9mIHNocmltcHMgZWFjaCB3ZXJlIGN1bHRpdmF0ZWQKaW4gZGlmZmVyZW50IGNvbmRpdGlvbnMsIG9uZSBjb250cm9sIGNvbmRpdGlvbiBhbmQgb25lIGNvbmRpdGlvbgp3aGVyZSB0aGUgbWVkaXVtIHdhcyBwb2x1dGVkIHdpdGggUENCcy4gTm90ZSB0aGF0IHRoZSBQQ0IgY29uY2VudHJhdGlvbnMgd2VyZQptZWFzdXJlZCBpbiBwZy9nIGFkaXBvc2UgdGlzc3VlLgoKIyBHb2FsCgpUaGUgcmVzZWFyY2ggcXVlc3Rpb24gaXM7IGlzIHRoZXJlIGFuIGVmZmVjdCBvZiB0aGUKZ3Jvd3RoIGNvbmRpdGlvbiBvbiB0aGUgUENCIGNvbmNlbnRyYXRpb24gaW4gdGhlIGFkaXBvc2UKdGlzc3VlIG9mIHNocmltcHM/CgpMb2FkIGxpYnJhcmllczoKCmBgYHtyfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKYGBgCgojIEltcG9ydCB0aGUgZGF0YQoKYGBge3J9CnNocmltcHMgPC0gcmVhZC50YWJsZSgiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9zaHJpbXBzLnR4dCIsCiAgICAgICAgICAgICAgICAgICAgICBoZWFkZXIgPSBUUlVFKQpnbGltcHNlKHNocmltcHMpCmBgYAoKIyBEYXRhIHRpZHlpbmcKCmBgYHtyfQpzaHJpbXBzIDwtIHNocmltcHMgJT4lCiAgbXV0YXRlKGdyb3VwID0gYXMuZmFjdG9yKGdyb3VwKSkKYGBgCgojIERhdGEgZXhwbG9yYXRpb24KClRoZSBmaXJzdCBzdGVwIGlzIHRvIGV4cGxvcmUgdGhlIGRhdGEuCgpgYGB7cn0Kc2hyaW1wcyAlPiUKICBjb3VudChncm91cCkKYGBgCgpWaXN1YWxpemUgdGhlIGRhdGE6CgpgYGB7cn0Kc2hyaW1wcyAlPiUKICBnZ3Bsb3QoYWVzKHg9Z3JvdXAseT1QQ0IuY29uYyxmaWxsPWdyb3VwKSkgKwogIHNjYWxlX2ZpbGxfYnJld2VyKHBhbGV0dGU9IlJkR3kiKSArCiAgdGhlbWVfYncoKSArCiAgZ2VvbV9ib3hwbG90KG91dGxpZXIuc2hhcGU9TkEpICsKICBnZW9tX2ppdHRlcih3aWR0aCA9IDAuMikgKwogIGdndGl0bGUoIkJveHBsb3Qgb2YgdGhlIFBDQiBjb25jZW50cmF0aW9ucyBpbiB0d28gZ3JvdXBzIG9mIHNocmltcHMiKSArCiAgeWxhYigiUENCIGNvbmNlbnRyYXRpb24gKHBnL2cpIikgKwogIHN0YXRfc3VtbWFyeShmdW4ueT1tZWFuLCBnZW9tPSJwb2ludCIsIHNoYXBlPTUsIHNpemU9MywgY29sb3I9ImJsYWNrIiwgZmlsbD0iYmxhY2siKQpgYGAKCldlIGNhbiBzZWUgdGhhdCBmb3IgZ3JvdXAgMSB3ZSBoYXZlIGZvdXIgdmVyeSBjbGVhciBvdXRsaWVycwppbiB0aGUgZGF0YS4gVGhlc2UgdmFsdWVzIHdlcmUgZG91YmxlLWNoZWNrZWQgKGkuZSBmb3IKdHlwaW5nIGVycm9ycyksIGJ1dCB0aGVyZSB3YXMgbm8gcmVhc29uIGZvdW5kIHRvIGJlbGlldmUKdGhhdCB0aGVzZSB2YWx1ZXMgYXJlIGluY29ycmVjdC4KCiMgQW5hbHlzaXMKCkEgZ29vZCB3YXkgZm9yCnRlc3RpbmcgdGhlIHJlc2VhcmNoIGh5cG90aGVzaXMgaXMgdG8gcGVyZm9ybSBhbiB1bnBhaXJlZAp0d28tc2FtcGxlIHQtdGVzdCB0byBmaW5kIG91dCB3aGV0aGVyIHRoZXJlIGlzIGEgc2lnbmlmaWNhbnQKZGlmZmVyZW5jZSBpbiB0aGUgbWVhbiBQQ0IgY29uY2VudHJhdGlvbnMgYmV0d2VlbiBib3RoIGdyb3VwcwpvZiBzYW1wbGVzLiBCZWZvcmUgd2UgY2FuIGRvIHRoaXMsIHdlIG11c3QgY2hlY2sgaWYgYWxsIHRoZQpyZXF1aXJlZCBhc3N1bXB0aW9ucyBhcmUgbWV0LgoKIyMgQXNzdW1wdGlvbnMKCjEuIFRoZSBvYnNlcnZhdGlvbnMgYXJlIGluZGVwZW5kZW50IG9mIGVhY2ggb3RoZXIgKGluIGJvdGggZ3JvdXBzKQoyLiBUaGUgZGF0YSAoUENCLmNvbmMpIG11c3QgYmUgbm9ybWFsbHkgZGlzdHJpYnV0ZWQgKGluIGJvdGggZ3JvdXBzKQozLiBUaGUgdmFyaWFuY2UgaXMgZXF1YWwgaW4gdGhlIHR3byBncm91cHMuCgpUaGUgZmlyc3QgYXNzdW1wdGlvbiBpcyBtZXQsIGFzIHdlIHJhbmRvbWx5IHNlbGVjdGVkIHNocmltcHMgYW5kCnN1Ym1pdHRlZCB0aGVtIHRvIG9uZSBvZiB0d28gZ3Jvd3RoIGNvbmRpdGlvbnMuIE5vIHVuZGVybHlpbmcKY29ycmVsYXRpb24gcGF0dGVybnMgYXJlIGV4cGVjdGVkLgoKV2UgY2FuIGNoZWNrIHRoZSBzZWNvbmQgYXNzdW1wdGlvbiB3aXRoIGEgUVEtcGxvdC4KCmBgYHtyfQpzaHJpbXBzICU+JQogIGdncGxvdChhZXMoc2FtcGxlPVBDQi5jb25jKSkgKwogIGdlb21fcXEoKSArCiAgZ2VvbV9xcV9saW5lKCkgKwogIGZhY2V0X2dyaWQofmdyb3VwKQpgYGAKCldlIGNsZWFybHkgc2VlIHRoYXQgd2UgaGF2ZSBzdHJvbmcgZGV2aWF0aW9ucyBmcm9tCm5vcm1hbGl0eS4gTWFueSBkYXRhcG9pbnRzIGRvIG5vdCBsaWUgbmVhciB0aGUgcXVhbnRpbGUtcXVhbnRpbGUKbGluZS4gQXMgc3VjaCwgd2UgbWF5IGNvbmNsdWRlIHRoYXQgb3VyIGRhdGEgYXJlIG5vdCBub3JtYWxseSBkaXN0cmlidXRlZC4KSW4gYWRkaXRpb24sIHRoZSBib3hwbG90cyBzdWdnZXN0IHRoYXQgdGhlCnZhcmlhYmlsaXR5IGRpZmZlcnMgYmV0d2VlbiB0aGUgdHdvIGdyb3Vwcy4KCkFzIHN1Y2gsIHdlIGFyZSBub3QgYWxsb3dlZCB0byBwZXJmb3JtIHRoZSB0LXRlc3QuCkdpdmVuIHRoZSBsb2NhdGlvbiBvZiB0aGUgb3V0bGllcnMgdHJhbnNmb3JtYXRpb24gd2lsbCBub3QgaGVscCwgc28gd2Ugd2lsbCByZXNvcnQgdG8gbm9uLXBhcmFtZXRyaWMKdGVzdHMsIGkuZS4gdG8gdGhlIFdpbGNveG9uIHJhbmstc3VtIHRlc3QuCgojIyBXaWxjb3hvbiByYW5rLXN1bSB0ZXN0CgpUaGUgV2lsY294b24gcmFuay1zdW0gdGVzdCAob3IgdGhlIE1hbm4tV2hpdG5leSBVIHRlc3QpIGlzIGFuIGltcG9ydGFudApub24tcGFyYW1ldHJpYyBkYXRhIGFuYWx5c2lzIG1ldGhvZC4gSW4gcmFuay1iYXNlZCB0ZXN0cywgdGhlIGRhdGEKJFlfaSQgYXJlIGZpcnN0IHRyYW5zZm9ybWVkIHRvIGl0cyByYW5rZWQgZXF1aXZhbGVudApcWyBSX2k9UihZX2kpID0gXCNce1lfajogWV9qXGxlcSBZX2k7IGo9MSxcbGRvdHMsIG5cfS4gXF0KClJhbmtzIGFyZSB2ZXJ5IHJvYnVzdCB0byBvdXRsaWVycy4gRm9yIGluc3RhbmNlLCBpdCBkb2VzIG5vdAptYXR0ZXIgaWYgdGhlIGhpZ2hlc3QgdmFsdWUgaW4gYW4gaHlwb3RoZXRpY2FsIGRhdGFzZXQgaGFzIGEKdmFsdWUgb2YgMTAgb3IgMTAwOyBpdCB3aWxsIGtlZXAgdGhlIHNhbWUgcmFuayAoaGlnaGVzdCByYW5rKS4KCk5vdGUsIHRoYXQgdGhlcmUgbWlnaHQgYmUgdGllcyBpbiB0aGUgZGF0YSwgZS5nLiwgaWYKdHdvIHNhbXBsZXMgb2Ygc2hyaW1wcyBoYXZlIGFuIGVxdWFsIGNvbmNlbnRyYXRpb24gb2YgUENCcy4KSW4gdGhpcyBjYXNlLCB0aGUgV2lsY294b24gcmFuay1zdW0gdGVzdCB3aWxsIGNvbXB1dGUKbWlkLXJhbmtzLCB3aGljaCBhcmUgY2FsY3VsYXRlZCBhcyBmb2xsb3dzOwpcW1IoWV9pKSA9IFxmcmFje1xzdW1cbGltaXRzX3tcZm9yYWxsIGogOiBZX2o9WV9pfVIoWV9qKX17XCN7XGZvcmFsbCBqOllfaj1ZX2l9fSAgXF0KaS5lLiwgdGhlIG1pZHJhbmsgaXMgZXF1YWwgdG8gdGhlIG1lYW4gb2YgdGhlIHJhbmtzIG9mIGVxdWFsCm9ic2VydmF0aW9ucy4KCkFmdGVyIGNvbXB1dGluZyB0aGUgcmFua3MgYW5kIG1pZHJhbmtzLCB0aGUgV2lsY294b24gdGVzdCB3aWxsCmNvbXBhcmUgdGhlIG1lYW4gcmFuayBiZXR3ZWVuIGJvdGggdHJlYXRtZW50IGdyb3VwczoKCmBgYHtyfQpQQ0JfMSA8LSBzaHJpbXBzICU+JQogIGZpbHRlcihncm91cCA9PSAiMSIpICU+JQogIHB1bGwoUENCLmNvbmMpCgpQQ0JfMiA8LSBzaHJpbXBzICU+JQogIGZpbHRlcihncm91cCA9PSAiMiIpICU+JQogIHB1bGwoUENCLmNvbmMpCgp3aWxjb3gudGVzdChQQ0JfMSwgUENCXzIpCmBgYAoKb3IsIGVxdWl2YWxlbnRseTsKCmBgYHtyfQp3aWxjb3gudGVzdChQQ0IuY29uY35ncm91cCwgZGF0YSA9IHNocmltcHMpCmBgYAoKV2UgZmluZCB0aGF0IHRoZSB0ZXN0IGlzIHNpZ25pZmljYW50IG9uIHRoZSA1JQpzaWduaWZpY2FuY2UgbGV2ZWwgKHAgPSAwLjAxODcxKS4gVGhlIHZhbHVlIFc9ODgKY291bGQgYmUgY2FsY3VsYXRlZCBtYW51YWxseSBhcyB0aGUgTWFubi1XaXRobmV5IHN0YXRpc3RpYwp0aGF0IGNvdW50cyBob3cgbWFueSB0aW1lcyBhIHZhbHVlIGZyb20gZ3JvdXAgMSBpcyBsYXJnZXIgb3IgZXF1YWwgdGhhbiB2YWx1ZXMgb2YgZ3JvdXAgMi4KCiMjIyBJbnRlcnByZXRhdGlvbgoKVGhlIGludGVycHJldGF0aW9uIG9mIHRoZSBXaWxjb3hvbiByYW5rLXN1bSB0ZXN0IGlzCnNsaWdodGx5IG1vcmUgY2hhbGxlbmdpbmcgdGhhbiB0aGF0IG9mIGEgdC10ZXN0LgpTaW5jZSB3ZSBhcmUgbm8gbG9uZ2VyIGludGVycHJldGluZyBkaWZmZXJlbmNlcyBpbiB0aGUgZGlzdHJpYnV0aW9ucyBiZXR3ZWVuIHRoZSBncm91cHMgaW4gdGVybXMgb2YgdGhlIGF2ZXJhZ2UgZGlmZmVyZW5jZXMgYnV0IGluIGluIHRlcm1zIG9mIHRoZQoqcHJvYmFiaWxpc3RpYyBpbmRleCouCgpUaGUgbnVsbCBoeXBvdGhlc2lzIG9mIHRoZSBXaWxjb3hvbiB0ZXN0IHN0YXRlcyB0aGF0CnRoZSBkaXN0cmlidXRpb25zCmFyZSBlcXVhbCBmb3IgYm90aCBncm91cHM6CgpcWyBIXzA6IGZfMSA9IGZfMiBcXQoKSW4gd29yZHM6IHRoZSBkaXN0cmlidXRpb24gb2YgUENCIGNvbmNlbnRyYXRpb25zIGluCnNocmltcHMgYXJlIGVxdWFsIGZvciBib3RoIHRyZWF0bWVudCBjb25kaXRpb25zLgoKYWdhaW5zdCB0aGUgYWx0ZXJuYXRpdmUgaHlwb3RoZXNpcyB0aGF0CgpcWyBIXzE6IFAoWV97MX0gXGdlcSBZX3syfSkgXG5lIDEvMiBcXQoKSW4gd29yZHM6IFRoZSBwcm9iYWJpbGl0eSB0aGF0IGEgcmFuZG9tIG9ic2VydmF0aW9uIG9mIGEKUENCIGNvbmNlbnRyYXRpb24gZGVyaXZlZCBmcm9tIHNocmltcHMgdGhhdAp3YXMgZ3Jvd24gaW4gdGhlIGNvbnRyb2wgY29uZGl0aW9uICppcyBsYXJnZXIgdGhhbiBvciBlcXVhbCB0byoKdGhhbiBhIHJhbmRvbSBvYnNlcnZhdGlvbiBvZiBhIFBDQiBjb25jZW50cmF0aW9uCmRlcml2ZWQgZnJvbSBhIHNocmltcHMgdGhhdCB3YXMgZ3Jvd24gaW4KdGhlIG90aGVyIGNvbmRpdGlvbiAqaXMgbm90IGVxdWFsIHRvIDUwJSouCgpXZSBjYW4gZXN0aW1hdGUgdGhpcyBwcm9iYWJpbGl0eSBiYXNlZCBvbiB0aGUgb2JzZXJ2ZWQgdGVzdCBzdGF0aXN0aWMuCgpgYGB7cn0KbjEgPC0gbjIgPC0gMTggIzE4IG9ic2VydmF0aW9ucyBpbiBlYWNoIGdyb3VwCldPYnMgPC0gd2lsY294LnRlc3QoUENCLmNvbmN+Z3JvdXAsIGRhdGE9c2hyaW1wcykkc3RhdGlzdGljICMgZ2V0IHRoZSBvYnNlcnZlZCB0ZXN0IHN0YXRpc3RpYwpXT2JzLyhuMSpuMikKYGBgCgpXZSBjYW4gc2VlIHRoYXQgdGhlIHBvaW50IGVzdGltYXRlIG9mIHRoaXMgcHJvYmFiaWxpdHkKaXMgYHIgcm91bmQoV09icy8objEqbjIpLDMpKjEwMGAlLgoKV2UgY2FuIGludGVycHJldCBpdCBhcyBmb2xsb3dzOwoKVGhlcmUgaXMgYSBwcm9iYWJpbGl0eSBvZiAyNy4yJSB0aGF0IHRoZSBQQ0IgY29uY2VudHJhdGlvbiBpbiBhIHJhbmRvbQpzaHJpbXAgdGhhdCB3YXMgZ3Jvd24gaW4gdGhlIGNvbnRyb2wgY29uZGl0aW9uIGlzCmdyZWF0ZXIgdGhhbiBvciBlcXVhbCB0byB0aGUgUENCIGNvbmNlbnRyYXRpb24gaW4gYSByYW5kb20Kc2hyaW1wIHRoYXQgd2FzIGdyb3duIGluIHRoZSB0cmVhdG1lbnQgY29uZGl0aW9uLiBUaGlzIHByb2JhYmlsaXR5IGlzIHNpZ25pZmljYW50bHkgZGlmZmVyZW50IGZyb20gNTAlIG9uIHRoZSA1JSBzaWduaWZpY2FuY2UgbGV2ZWwgKHAgPSAwLjAxODcxKS4K</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgOS4xOiBOb24tcGFyYW1ldHJpYyBzdGF0aXN0aWNzIG9uIHRoZSBzaHJpbXBzIGRhdGFzZXQgLSBzb2x1dGlvbiIKYXV0aG9yOiAiTGlldmVuIENsZW1lbnQgYW5kIEplcm9lbiBHaWxpcyIKZGF0ZTogInN0YXRPbWljcywgR2hlbnQgVW5pdmVyc2l0eSAoaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSIKLS0tCgojIFRoZSBzaHJpbXBzIGRhdGFzZXQKCkRhdGFzZXQgb24gdGhlIGFjY3VtdWxhdGlvbiBvZiBQQ0JzIChQb2x5Y2hsb3JpbmF0ZWQgYmlwaGVueWxzKQppbiB0aGUgYWRpcG9zZSB0aXNzdWUgb2Ygc2hyaW1wcy4gUENCcyBhcmUgb2Z0ZW4gcHJlc2VudCBpbiBjb29sYW50cywgYW5kIGFyZQprbm93IHRvIGFjY3VtdWxhdGUgZWFzaWx5IGluIHRoZSBhZGlwb3NlIHRpc3N1ZSBvZiBzaHJpbXBzLiBJbiB0aGlzIGV4cGVyaW1lbnQsCnR3byBncm91cHMgb2YgMTggc2FtcGxlcyAoZWFjaCAxMDAgZ3JhbXMpIG9mIHNocmltcHMgZWFjaCB3ZXJlIGN1bHRpdmF0ZWQKaW4gZGlmZmVyZW50IGNvbmRpdGlvbnMsIG9uZSBjb250cm9sIGNvbmRpdGlvbiBhbmQgb25lIGNvbmRpdGlvbgp3aGVyZSB0aGUgbWVkaXVtIHdhcyBwb2x1dGVkIHdpdGggUENCcy4gTm90ZSB0aGF0IHRoZSBQQ0IgY29uY2VudHJhdGlvbnMgd2VyZQptZWFzdXJlZCBpbiBwZy9nIGFkaXBvc2UgdGlzc3VlLgoKIyBHb2FsCgpUaGUgcmVzZWFyY2ggcXVlc3Rpb24gaXM7IGlzIHRoZXJlIGFuIGVmZmVjdCBvZiB0aGUKZ3Jvd3RoIGNvbmRpdGlvbiBvbiB0aGUgUENCIGNvbmNlbnRyYXRpb24gaW4gdGhlIGFkaXBvc2UKdGlzc3VlIG9mIHNocmltcHM/CgpMb2FkIGxpYnJhcmllczoKCmBgYHtyfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKYGBgCgojIEltcG9ydCB0aGUgZGF0YQoKYGBge3J9CnNocmltcHMgPC0gcmVhZC50YWJsZSgiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9zaHJpbXBzLnR4dCIsCiAgaGVhZGVyID0gVFJVRQopCmdsaW1wc2Uoc2hyaW1wcykKYGBgCgojIERhdGEgdGlkeWluZwoKYGBge3J9CnNocmltcHMgPC0gc2hyaW1wcyAlPiUKICBtdXRhdGUoZ3JvdXAgPSBhcy5mYWN0b3IoZ3JvdXApKQpgYGAKCiMgRGF0YSBleHBsb3JhdGlvbgoKVGhlIGZpcnN0IHN0ZXAgaXMgdG8gZXhwbG9yZSB0aGUgZGF0YS4KCmBgYHtyfQpzaHJpbXBzICU+JQogIGNvdW50KGdyb3VwKQpgYGAKClZpc3VhbGl6ZSB0aGUgZGF0YToKCmBgYHtyfQpzaHJpbXBzICU+JQogIGdncGxvdChhZXMoeCA9IGdyb3VwLCB5ID0gUENCLmNvbmMsIGZpbGwgPSBncm91cCkpICsKICBzY2FsZV9maWxsX2JyZXdlcihwYWxldHRlID0gIlJkR3kiKSArCiAgdGhlbWVfYncoKSArCiAgZ2VvbV9ib3hwbG90KG91dGxpZXIuc2hhcGUgPSBOQSkgKwogIGdlb21faml0dGVyKHdpZHRoID0gMC4yKSArCiAgZ2d0aXRsZSgiQm94cGxvdCBvZiB0aGUgUENCIGNvbmNlbnRyYXRpb25zIGluIHR3byBncm91cHMgb2Ygc2hyaW1wcyIpICsKICB5bGFiKCJQQ0IgY29uY2VudHJhdGlvbiAocGcvZykiKSArCiAgc3RhdF9zdW1tYXJ5KGZ1bi55ID0gbWVhbiwgZ2VvbSA9ICJwb2ludCIsIHNoYXBlID0gNSwgc2l6ZSA9IDMsIGNvbG9yID0gImJsYWNrIiwgZmlsbCA9ICJibGFjayIpCmBgYAoKV2UgY2FuIHNlZSB0aGF0IGZvciBncm91cCAxIHdlIGhhdmUgZm91ciB2ZXJ5IGNsZWFyIG91dGxpZXJzCmluIHRoZSBkYXRhLiBUaGVzZSB2YWx1ZXMgd2VyZSBkb3VibGUtY2hlY2tlZCAoaS5lIGZvcgp0eXBpbmcgZXJyb3JzKSwgYnV0IHRoZXJlIHdhcyBubyByZWFzb24gZm91bmQgdG8gYmVsaWV2ZQp0aGF0IHRoZXNlIHZhbHVlcyBhcmUgaW5jb3JyZWN0LgoKIyBBbmFseXNpcwoKQSBnb29kIHdheSBmb3IKdGVzdGluZyB0aGUgcmVzZWFyY2ggaHlwb3RoZXNpcyBpcyB0byBwZXJmb3JtIGFuIHVucGFpcmVkCnR3by1zYW1wbGUgdC10ZXN0IHRvIGZpbmQgb3V0IHdoZXRoZXIgdGhlcmUgaXMgYSBzaWduaWZpY2FudApkaWZmZXJlbmNlIGluIHRoZSBtZWFuIFBDQiBjb25jZW50cmF0aW9ucyBiZXR3ZWVuIGJvdGggZ3JvdXBzCm9mIHNhbXBsZXMuIEJlZm9yZSB3ZSBjYW4gZG8gdGhpcywgd2UgbXVzdCBjaGVjayBpZiBhbGwgdGhlCnJlcXVpcmVkIGFzc3VtcHRpb25zIGFyZSBtZXQuCgojIyBBc3N1bXB0aW9ucwoKMS4gVGhlIG9ic2VydmF0aW9ucyBhcmUgaW5kZXBlbmRlbnQgb2YgZWFjaCBvdGhlciAoaW4gYm90aCBncm91cHMpCjIuIFRoZSBkYXRhIChQQ0IuY29uYykgbXVzdCBiZSBub3JtYWxseSBkaXN0cmlidXRlZCAoaW4gYm90aCBncm91cHMpCjMuIFRoZSB2YXJpYW5jZSBpcyBlcXVhbCBpbiB0aGUgdHdvIGdyb3Vwcy4KClRoZSBmaXJzdCBhc3N1bXB0aW9uIGlzIG1ldCwgYXMgd2UgcmFuZG9tbHkgc2VsZWN0ZWQgc2hyaW1wcyBhbmQKc3VibWl0dGVkIHRoZW0gdG8gb25lIG9mIHR3byBncm93dGggY29uZGl0aW9ucy4gTm8gdW5kZXJseWluZwpjb3JyZWxhdGlvbiBwYXR0ZXJucyBhcmUgZXhwZWN0ZWQuCgpXZSBjYW4gY2hlY2sgdGhlIHNlY29uZCBhc3N1bXB0aW9uIHdpdGggYSBRUS1wbG90LgoKYGBge3J9CnNocmltcHMgJT4lCiAgZ2dwbG90KGFlcyhzYW1wbGUgPSBQQ0IuY29uYykpICsKICBnZW9tX3FxKCkgKwogIGdlb21fcXFfbGluZSgpICsKICBmYWNldF9ncmlkKH5ncm91cCkKYGBgCgpXZSBjbGVhcmx5IHNlZSB0aGF0IHdlIGhhdmUgc3Ryb25nIGRldmlhdGlvbnMgZnJvbQpub3JtYWxpdHkuIE1hbnkgZGF0YXBvaW50cyBkbyBub3QgbGllIG5lYXIgdGhlIHF1YW50aWxlLXF1YW50aWxlCmxpbmUuIEFzIHN1Y2gsIHdlIG1heSBjb25jbHVkZSB0aGF0IG91ciBkYXRhIGFyZSBub3Qgbm9ybWFsbHkgZGlzdHJpYnV0ZWQuCkluIGFkZGl0aW9uLCB0aGUgYm94cGxvdHMgc3VnZ2VzdCB0aGF0IHRoZQp2YXJpYWJpbGl0eSBkaWZmZXJzIGJldHdlZW4gdGhlIHR3byBncm91cHMuCgpBcyBzdWNoLCB3ZSBhcmUgbm90IGFsbG93ZWQgdG8gcGVyZm9ybSB0aGUgdC10ZXN0LgpHaXZlbiB0aGUgbG9jYXRpb24gb2YgdGhlIG91dGxpZXJzIHRyYW5zZm9ybWF0aW9uIHdpbGwgbm90IGhlbHAsIHNvIHdlIHdpbGwgcmVzb3J0IHRvIG5vbi1wYXJhbWV0cmljCnRlc3RzLCBpLmUuIHRvIHRoZSBXaWxjb3hvbiByYW5rLXN1bSB0ZXN0LgoKIyMgV2lsY294b24gcmFuay1zdW0gdGVzdAoKVGhlIFdpbGNveG9uIHJhbmstc3VtIHRlc3QgKG9yIHRoZSBNYW5uLVdoaXRuZXkgVSB0ZXN0KSBpcyBhbiBpbXBvcnRhbnQKbm9uLXBhcmFtZXRyaWMgZGF0YSBhbmFseXNpcyBtZXRob2QuIEluIHJhbmstYmFzZWQgdGVzdHMsIHRoZSBkYXRhCiRZX2kkIGFyZSBmaXJzdCB0cmFuc2Zvcm1lZCB0byBpdHMgcmFua2VkIGVxdWl2YWxlbnQKXFsgUl9pPVIoWV9pKSA9IFwjXHtZX2o6IFlfalxsZXEgWV9pOyBqPTEsXGxkb3RzLCBuXH0uIFxdCgpSYW5rcyBhcmUgdmVyeSByb2J1c3QgdG8gb3V0bGllcnMuIEZvciBpbnN0YW5jZSwgaXQgZG9lcyBub3QKbWF0dGVyIGlmIHRoZSBoaWdoZXN0IHZhbHVlIGluIGFuIGh5cG90aGV0aWNhbCBkYXRhc2V0IGhhcyBhCnZhbHVlIG9mIDEwIG9yIDEwMDsgaXQgd2lsbCBrZWVwIHRoZSBzYW1lIHJhbmsgKGhpZ2hlc3QgcmFuaykuCgpOb3RlLCB0aGF0IHRoZXJlIG1pZ2h0IGJlIHRpZXMgaW4gdGhlIGRhdGEsIGUuZy4sIGlmCnR3byBzYW1wbGVzIG9mIHNocmltcHMgaGF2ZSBhbiBlcXVhbCBjb25jZW50cmF0aW9uIG9mIFBDQnMuCkluIHRoaXMgY2FzZSwgdGhlIFdpbGNveG9uIHJhbmstc3VtIHRlc3Qgd2lsbCBjb21wdXRlCm1pZC1yYW5rcywgd2hpY2ggYXJlIGNhbGN1bGF0ZWQgYXMgZm9sbG93czsKXFtSKFlfaSkgPSBcZnJhY3tcc3VtXGxpbWl0c197XGZvcmFsbCBqIDogWV9qPVlfaX1SKFlfail9e1wje1xmb3JhbGwgajpZX2o9WV9pfX0gIFxdCmkuZS4sIHRoZSBtaWRyYW5rIGlzIGVxdWFsIHRvIHRoZSBtZWFuIG9mIHRoZSByYW5rcyBvZiBlcXVhbApvYnNlcnZhdGlvbnMuCgpBZnRlciBjb21wdXRpbmcgdGhlIHJhbmtzIGFuZCBtaWRyYW5rcywgdGhlIFdpbGNveG9uIHRlc3Qgd2lsbApjb21wYXJlIHRoZSBtZWFuIHJhbmsgYmV0d2VlbiBib3RoIHRyZWF0bWVudCBncm91cHM6CgpgYGB7cn0KUENCXzEgPC0gc2hyaW1wcyAlPiUKICBmaWx0ZXIoZ3JvdXAgPT0gIjEiKSAlPiUKICBwdWxsKFBDQi5jb25jKQoKUENCXzIgPC0gc2hyaW1wcyAlPiUKICBmaWx0ZXIoZ3JvdXAgPT0gIjIiKSAlPiUKICBwdWxsKFBDQi5jb25jKQoKd2lsY294LnRlc3QoUENCXzEsIFBDQl8yKQpgYGAKCm9yLCBlcXVpdmFsZW50bHk7CgpgYGB7cn0Kd2lsY294LnRlc3QoUENCLmNvbmMgfiBncm91cCwgZGF0YSA9IHNocmltcHMpCmBgYAoKV2UgZmluZCB0aGF0IHRoZSB0ZXN0IGlzIHNpZ25pZmljYW50IG9uIHRoZSA1JQpzaWduaWZpY2FuY2UgbGV2ZWwgKHAgPSAwLjAxODcxKS4gVGhlIHZhbHVlIFc9ODgKY291bGQgYmUgY2FsY3VsYXRlZCBtYW51YWxseSBhcyB0aGUgTWFubi1XaXRobmV5IHN0YXRpc3RpYwp0aGF0IGNvdW50cyBob3cgbWFueSB0aW1lcyBhIHZhbHVlIGZyb20gZ3JvdXAgMSBpcyBsYXJnZXIgb3IgZXF1YWwgdGhhbiB2YWx1ZXMgb2YgZ3JvdXAgMi4KCiMjIyBJbnRlcnByZXRhdGlvbgoKVGhlIGludGVycHJldGF0aW9uIG9mIHRoZSBXaWxjb3hvbiByYW5rLXN1bSB0ZXN0IGlzCnNsaWdodGx5IG1vcmUgY2hhbGxlbmdpbmcgdGhhbiB0aGF0IG9mIGEgdC10ZXN0LgpTaW5jZSB3ZSBhcmUgbm8gbG9uZ2VyIGludGVycHJldGluZyBkaWZmZXJlbmNlcyBpbiB0aGUgZGlzdHJpYnV0aW9ucyBiZXR3ZWVuIHRoZSBncm91cHMgaW4gdGVybXMgb2YgdGhlIGF2ZXJhZ2UgZGlmZmVyZW5jZXMgYnV0IGluIGluIHRlcm1zIG9mIHRoZQoqcHJvYmFiaWxpc3RpYyBpbmRleCouCgpUaGUgbnVsbCBoeXBvdGhlc2lzIG9mIHRoZSBXaWxjb3hvbiB0ZXN0IHN0YXRlcyB0aGF0CnRoZSBkaXN0cmlidXRpb25zCmFyZSBlcXVhbCBmb3IgYm90aCBncm91cHM6CgpcWyBIXzA6IGZfMSA9IGZfMiBcXQoKSW4gd29yZHM6IHRoZSBkaXN0cmlidXRpb24gb2YgUENCIGNvbmNlbnRyYXRpb25zIGluCnNocmltcHMgYXJlIGVxdWFsIGZvciBib3RoIHRyZWF0bWVudCBjb25kaXRpb25zLgoKYWdhaW5zdCB0aGUgYWx0ZXJuYXRpdmUgaHlwb3RoZXNpcyB0aGF0CgpcWyBIXzE6IFAoWV97MX0gXGdlcSBZX3syfSkgXG5lIDEvMiBcXQoKSW4gd29yZHM6IFRoZSBwcm9iYWJpbGl0eSB0aGF0IGEgcmFuZG9tIG9ic2VydmF0aW9uIG9mIGEKUENCIGNvbmNlbnRyYXRpb24gZGVyaXZlZCBmcm9tIHNocmltcHMgdGhhdAp3YXMgZ3Jvd24gaW4gdGhlIGNvbnRyb2wgY29uZGl0aW9uICppcyBsYXJnZXIgdGhhbiBvciBlcXVhbCB0byoKdGhhbiBhIHJhbmRvbSBvYnNlcnZhdGlvbiBvZiBhIFBDQiBjb25jZW50cmF0aW9uCmRlcml2ZWQgZnJvbSBhIHNocmltcHMgdGhhdCB3YXMgZ3Jvd24gaW4KdGhlIG90aGVyIGNvbmRpdGlvbiAqaXMgbm90IGVxdWFsIHRvIDUwJSouCgpXZSBjYW4gZXN0aW1hdGUgdGhpcyBwcm9iYWJpbGl0eSBiYXNlZCBvbiB0aGUgb2JzZXJ2ZWQgdGVzdCBzdGF0aXN0aWMuCgpgYGB7cn0KbjEgPC0gbjIgPC0gMTggIyAxOCBvYnNlcnZhdGlvbnMgaW4gZWFjaCBncm91cApXT2JzIDwtIHdpbGNveC50ZXN0KFBDQi5jb25jIH4gZ3JvdXAsIGRhdGEgPSBzaHJpbXBzKSRzdGF0aXN0aWMgIyBnZXQgdGhlIG9ic2VydmVkIHRlc3Qgc3RhdGlzdGljCldPYnMgLyAobjEgKiBuMikKYGBgCgpXZSBjYW4gc2VlIHRoYXQgdGhlIHBvaW50IGVzdGltYXRlIG9mIHRoaXMgcHJvYmFiaWxpdHkKaXMgYHIgcm91bmQoV09icy8objEqbjIpLDMpKjEwMGAlLgoKV2UgY2FuIGludGVycHJldCBpdCBhcyBmb2xsb3dzOwoKVGhlcmUgaXMgYSBwcm9iYWJpbGl0eSBvZiAyNy4yJSB0aGF0IHRoZSBQQ0IgY29uY2VudHJhdGlvbiBpbiBhIHJhbmRvbQpzaHJpbXAgdGhhdCB3YXMgZ3Jvd24gaW4gdGhlIGNvbnRyb2wgY29uZGl0aW9uIGlzCmdyZWF0ZXIgdGhhbiBvciBlcXVhbCB0byB0aGUgUENCIGNvbmNlbnRyYXRpb24gaW4gYSByYW5kb20Kc2hyaW1wIHRoYXQgd2FzIGdyb3duIGluIHRoZSB0cmVhdG1lbnQgY29uZGl0aW9uLiBUaGlzIHByb2JhYmlsaXR5IGlzIHNpZ25pZmljYW50bHkgZGlmZmVyZW50IGZyb20gNTAlIG9uIHRoZSA1JSBzaWduaWZpY2FuY2UgbGV2ZWwgKHAgPSAwLjAxODcxKS4K</div>
 <div class="footer">
     <hr>
     This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">

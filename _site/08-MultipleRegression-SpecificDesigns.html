@@ -549,12 +549,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">8.2. Multiple Regression - Factorial
-Designs</h1>
+<h1 class="title toc-ignore">8.2. Multiple Regression - Factorial Designs</h1>
 <h4 class="author">Lieven Clement</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
@@ -567,10 +564,8 @@ class="uri">https://statomics.github.io</a>)</h4>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span></code></pre></div>
 <div id="introduction" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
-<p>In this section we will illustrate how factorial designs can be
-analysed using the general linear model.</p>
-<p>We will focus on a two-way anova design where we will model a
-continous response with two factors.</p>
+<p>In this section we will illustrate how factorial designs can be analysed using the general linear model.</p>
+<p>We will focus on a two-way anova design where we will model a continous response with two factors.</p>
 </div>
 <div id="data" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Data</h1>
@@ -592,8 +587,7 @@ continous response with two factors.</p>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>rats <span class="sc">%&gt;%</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggpairs</span>()</span></code></pre></div>
 <p><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<p>The data exploration indicates that there seems to be an effect of
-both poison type and treatment.</p>
+<p>The data exploration indicates that there seems to be an effect of both poison type and treatment.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rats <span class="sc">%&gt;%</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> treat, <span class="at">y =</span> time)) <span class="sc">+</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
@@ -602,35 +596,23 @@ both poison type and treatment.</p>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;time (h)&quot;</span>)</span></code></pre></div>
 <p><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <ul>
-<li>There might be an interaction, i.e. the effect of the treatment
-might be different according to the poison that has been adopted.</li>
+<li>There might be an interaction, i.e. the effect of the treatment might be different according to the poison that has been adopted.</li>
 <li>The boxplots also indicate that the data are heteroscedastic.</li>
 </ul>
 </div>
 <div id="model" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Model</h1>
-<p>We will model the data with a main effect for poison and treatment
-and an poison <span class="math inline">\(\times\)</span> treatment
-interaction.</p>
+<p>We will model the data with a main effect for poison and treatment and an poison <span class="math inline">\(\times\)</span> treatment interaction.</p>
 <p><span class="math display">\[
 \begin{array}{lcl}
 y_i &amp;=&amp; \beta_0  +
 \beta_{II} x_{iII} + \beta_{III} x_{iIII} + \\
 &amp;&amp; \beta_{B} x_{iB}  + \beta_{C} x_{iC} + \beta_{D} x_{iD} + \\
-&amp;&amp;\beta_{II:B}x_{iII}x_{iB} + \beta_{II:C}x_{iII}x_{iC}  +
-\beta_{II:D}x_{iII}x_{iD} + \\
-&amp;&amp;\beta_{III:B}x_{iIII}x_{iB} + \beta_{III:C}x_{iIII}x_{iC}  +
-\beta_{III:D}x_{iIII}x_{iD} +
+&amp;&amp;\beta_{II:B}x_{iII}x_{iB} + \beta_{II:C}x_{iII}x_{iC}  + \beta_{II:D}x_{iII}x_{iD} + \\
+&amp;&amp;\beta_{III:B}x_{iIII}x_{iB} + \beta_{III:C}x_{iIII}x_{iC}  + \beta_{III:D}x_{iIII}x_{iD} +
 \epsilon_i
 \end{array}
-\]</span> with <span class="math inline">\(i = 1, \ldots, n\)</span>,
-<span class="math inline">\(n=48\)</span>, <span
-class="math inline">\(x_{iII}\)</span>, <span
-class="math inline">\(x_{iIII}\)</span>, <span
-class="math inline">\(x_{iB}\)</span>, <span
-class="math inline">\(x_{iC}\)</span> and <span
-class="math inline">\(x_{iD}\)</span> dummy variables for poison II,
-III, treatment B, C, and D, respectively.</p>
+\]</span> with <span class="math inline">\(i = 1, \ldots, n\)</span>, <span class="math inline">\(n=48\)</span>, <span class="math inline">\(x_{iII}\)</span>, <span class="math inline">\(x_{iIII}\)</span>, <span class="math inline">\(x_{iB}\)</span>, <span class="math inline">\(x_{iC}\)</span> and <span class="math inline">\(x_{iD}\)</span> dummy variables for poison II, III, treatment B, C, and D, respectively.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rats1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(time <span class="sc">~</span> poison <span class="sc">*</span> treat, rats)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rats1)</span></code></pre></div>
 <pre><code>
@@ -663,14 +645,11 @@ Multiple R-squared:  0.7335,    Adjusted R-squared:  0.6521
 F-statistic:  9.01 on 11 and 36 DF,  p-value: 1.986e-07</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rats1)</span></code></pre></div>
 <p><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-3-1.png" width="672" /><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-3-2.png" width="672" /><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-3-3.png" width="672" /><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
-<p>The errors, however, seem to be heteroscedastic and there seems to be
-a mean - variance relationship and they are also appear to be
-distributed with broader tails than the normal distribution.</p>
+<p>The errors, however, seem to be heteroscedastic and there seems to be a mean - variance relationship and they are also appear to be distributed with broader tails than the normal distribution.</p>
 <div id="transformations" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Transformations</h2>
 <div id="log-transformation" class="section level3" number="3.1.1">
-<h3><span class="header-section-number">3.1.1</span> log
-transformation</h3>
+<h3><span class="header-section-number">3.1.1</span> log transformation</h3>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>rats <span class="sc">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> treat, <span class="at">y =</span> <span class="fu">log2</span>(time))) <span class="sc">+</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
@@ -680,13 +659,10 @@ transformation</h3>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rats2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(time <span class="sc">%&gt;%</span> <span class="fu">log2</span>() <span class="sc">~</span> poison <span class="sc">*</span> treat, rats)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rats2)</span></code></pre></div>
 <p><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-4-2.png" width="672" /><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-4-3.png" width="672" /><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-4-4.png" width="672" /><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-4-5.png" width="672" /></p>
-<p>Log transformation does not remove the heteroscedasticity
-completely.</p>
+<p>Log transformation does not remove the heteroscedasticity completely.</p>
 </div>
-<div id="reciprocal-transformation" class="section level3"
-number="3.1.2">
-<h3><span class="header-section-number">3.1.2</span> Reciprocal
-transformation</h3>
+<div id="reciprocal-transformation" class="section level3" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Reciprocal transformation</h3>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>rats <span class="sc">%&gt;%</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> treat, <span class="at">y =</span> <span class="dv">1</span> <span class="sc">/</span> time)) <span class="sc">+</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
@@ -697,30 +673,23 @@ transformation</h3>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>rats3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="dv">1</span> <span class="sc">/</span> time <span class="sc">~</span> poison <span class="sc">*</span> treat, rats)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rats3)</span></code></pre></div>
 <p><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-5-2.png" width="672" /><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-5-3.png" width="672" /><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-5-4.png" width="672" /><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-5-5.png" width="672" /></p>
-<p>The reciprocal transformation seems to do perform better and can be
-interpreted as the rate of dying.</p>
+<p>The reciprocal transformation seems to do perform better and can be interpreted as the rate of dying.</p>
 </div>
 </div>
 </div>
 <div id="inference" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Inference</h1>
-<p>There are multiple interaction terms involved in the factorial
-design. We will first assess them together, which can be done using the
-anova table.</p>
+<p>There are multiple interaction terms involved in the factorial design. We will first assess them together, which can be done using the anova table.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(rats3, <span class="at">type =</span> <span class="st">&quot;III&quot;</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sum Sq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.24738304","2":"1","3":"103.039498","4":"4.158034e-12","_rn_":"(Intercept)"},{"1":"0.11103531","2":"2","3":"23.124105","4":"3.476712e-07","_rn_":"poison"},{"1":"0.03572343","2":"3","3":"4.959818","4":"5.535116e-03","_rn_":"treat"},{"1":"0.01570772","2":"6","3":"1.090425","4":"3.867329e-01","_rn_":"poison:treat"},{"1":"0.08643083","2":"36","3":"NA","4":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div id="removing-the-non-significant-interaction-term"
-class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> Removing the
-non-significant interaction term</h2>
+<div id="removing-the-non-significant-interaction-term" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Removing the non-significant interaction term</h2>
 <p>The interaction appears to be not significant at the 5% level.</p>
-<p>A common practice is to remove the interaction from the analysis. We
-then obtain an additive model and the effects of the two factors poison
-and treatment can be assessed separately.</p>
+<p>A common practice is to remove the interaction from the analysis. We then obtain an additive model and the effects of the two factors poison and treatment can be assessed separately.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>rats4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="dv">1</span> <span class="sc">/</span> time <span class="sc">~</span> poison <span class="sc">+</span> treat, rats)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rats4)</span></code></pre></div>
 <p><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-7-2.png" width="672" /><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-7-3.png" width="672" /><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-7-4.png" width="672" /></p>
@@ -730,11 +699,8 @@ and treatment can be assessed separately.</p>
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sum Sq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.5821881","2":"1","3":"239.39932","4":"5.936991e-19","_rn_":"(Intercept)"},{"1":"0.3487712","2":"2","3":"71.70843","4":"2.864848e-14","_rn_":"poison"},{"1":"0.2041429","2":"3","3":"27.98160","4":"4.191931e-10","_rn_":"treat"},{"1":"0.1021386","2":"42","3":"NA","4":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>The anova table shows that the effect of the poison and the treatment
-are both extremely significant (<span class="math inline">\(p&lt;&lt;
-0.001\)</span>).</p>
-<p>In the additive model we can assess the effect of the poison type and
-the treatments, separately in a post-hoc analysis.</p>
+<p>The anova table shows that the effect of the poison and the treatment are both extremely significant (<span class="math inline">\(p&lt;&lt; 0.001\)</span>).</p>
+<p>In the additive model we can assess the effect of the poison type and the treatments, separately in a post-hoc analysis.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>comparisons <span class="ot">&lt;-</span> <span class="fu">glht</span>(rats4, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">poison =</span> <span class="st">&quot;Tukey&quot;</span>, <span class="at">treat =</span> <span class="st">&quot;Tukey&quot;</span>))</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(comparisons)</span></code></pre></div>
 <pre><code>
@@ -747,7 +713,7 @@ Fit: lm(formula = 1/time ~ poison + treat, data = rats)
 
 Linear Hypotheses:
                       Estimate Std. Error t value Pr(&gt;|t|)    
-poison: II - I == 0    0.04686    0.01744   2.688  0.07357 .  
+poison: II - I == 0    0.04686    0.01744   2.688  0.07348 .  
 poison: III - I == 0   0.19964    0.01744  11.451  &lt; 0.001 ***
 poison: III - II == 0  0.15278    0.01744   8.763  &lt; 0.001 ***
 treat: B - A == 0     -0.16574    0.02013  -8.233  &lt; 0.001 ***
@@ -768,91 +734,67 @@ Multiple Comparisons of Means: Tukey Contrasts
 
 Fit: lm(formula = 1/time ~ poison + treat, data = rats)
 
-Quantile = 2.849
+Quantile = 2.8492
 95% family-wise confidence level
  
 
 Linear Hypotheses:
                       Estimate   lwr        upr       
-poison: II - I == 0    0.0468641 -0.0028082  0.0965364
-poison: III - I == 0   0.1996425  0.1499702  0.2493148
-poison: III - II == 0  0.1527784  0.1031061  0.2024506
-treat: B - A == 0     -0.1657402 -0.2230968 -0.1083836
-treat: C - A == 0     -0.0572135 -0.1145702  0.0001431
-treat: D - A == 0     -0.1358338 -0.1931904 -0.0784772
-treat: C - B == 0      0.1085267  0.0511701  0.1658833
-treat: D - B == 0      0.0299064 -0.0274502  0.0872630
-treat: D - C == 0     -0.0786203 -0.1359769 -0.0212637</code></pre>
+poison: II - I == 0    0.0468641 -0.0028126  0.0965409
+poison: III - I == 0   0.1996425  0.1499658  0.2493192
+poison: III - II == 0  0.1527784  0.1031016  0.2024551
+treat: B - A == 0     -0.1657402 -0.2231020 -0.1083785
+treat: C - A == 0     -0.0572135 -0.1145753  0.0001482
+treat: D - A == 0     -0.1358338 -0.1931956 -0.0784721
+treat: C - B == 0      0.1085267  0.0511649  0.1658884
+treat: D - B == 0      0.0299064 -0.0274553  0.0872682
+treat: D - C == 0     -0.0786203 -0.1359820 -0.0212585</code></pre>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(comparisons, <span class="at">yaxt =</span> <span class="st">&quot;none&quot;</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>contrastNames <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;II-I&quot;</span>, <span class="st">&quot;III-I&quot;</span>, <span class="st">&quot;III-II&quot;</span>, <span class="st">&quot;B-A&quot;</span>, <span class="st">&quot;C-A&quot;</span>, <span class="st">&quot;D-A&quot;</span>, <span class="st">&quot;C-B&quot;</span>, <span class="st">&quot;D-B&quot;</span>, <span class="st">&quot;D-C&quot;</span>)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>, <span class="at">at =</span> <span class="fu">c</span>(<span class="fu">length</span>(contrastNames)<span class="sc">:</span><span class="dv">1</span>), <span class="at">labels =</span> contrastNames, <span class="at">las =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
-<div id="keeping-the-non-significant-interaction-term"
-class="section level2" number="4.2">
-<h2><span class="header-section-number">4.2</span> Keeping the
-non-significant interaction term</h2>
-<p>We know that accepting the null hypothesis that there is no
-interaction is a weak conclusion. It is possible that the experiment was
-simply underpowered to pick up the interaction. We can choose to keep
-the interaction in the model.</p>
-<p>If the interaction were to be significant, this would mean that the
-effect of the poison changes according to the treatment and vice versa.
-Then, we cannot study the poison effects and treatment effects
-separately.</p>
+<div id="keeping-the-non-significant-interaction-term" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Keeping the non-significant interaction term</h2>
+<p>We know that accepting the null hypothesis that there is no interaction is a weak conclusion. It is possible that the experiment was simply underpowered to pick up the interaction. We can choose to keep the interaction in the model.</p>
+<p>If the interaction were to be significant, this would mean that the effect of the poison changes according to the treatment and vice versa. Then, we cannot study the poison effects and treatment effects separately.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ExploreModelMatrix<span class="sc">::</span><span class="fu">VisualizeDesign</span>(rats, <span class="sc">~</span> poison <span class="sc">*</span> treat)<span class="sc">$</span>plot</span></code></pre></div>
 <pre><code>[[1]]</code></pre>
 <p><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>Hence, in case of a significant interaction we should study the
-effect of the poison for each treatment separately:</p>
+<p>Hence, in case of a significant interaction we should study the effect of the poison for each treatment separately:</p>
 <ol style="list-style-type: decimal">
-<li>For treatment A we would have to assess the following
-comparisons:</li>
+<li>For treatment A we would have to assess the following comparisons:</li>
 </ol>
 <ul>
 <li>II-I: <span class="math inline">\(H_0: \beta_{II}=0\)</span></li>
 <li>III-I: <span class="math inline">\(H_0: \beta_{III}=0\)</span></li>
-<li>III-II: <span class="math inline">\(H_0:
-\beta_{III}-\beta_{II}=0\)</span></li>
+<li>III-II: <span class="math inline">\(H_0: \beta_{III}-\beta_{II}=0\)</span></li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
-<li>For treatment B we would have to assess the following
-comparisons:</li>
+<li>For treatment B we would have to assess the following comparisons:</li>
 </ol>
 <ul>
-<li>II-I: <span class="math inline">\(H_0:
-\beta_{II}+\beta_{II:B}=0\)</span></li>
-<li>III-I: <span class="math inline">\(H_0:
-\beta_{III}+\beta_{III:B}=0\)</span></li>
-<li>III-II: <span class="math inline">\(H_0:
-\beta_{III}+\beta_{III:B}-\beta_{II}-\beta_{II:B}=0\)</span></li>
+<li>II-I: <span class="math inline">\(H_0: \beta_{II}+\beta_{II:B}=0\)</span></li>
+<li>III-I: <span class="math inline">\(H_0: \beta_{III}+\beta_{III:B}=0\)</span></li>
+<li>III-II: <span class="math inline">\(H_0: \beta_{III}+\beta_{III:B}-\beta_{II}-\beta_{II:B}=0\)</span></li>
 </ul>
 <ol start="3" style="list-style-type: decimal">
-<li>For treatment C we would have to assess the following
-comparisons:</li>
+<li>For treatment C we would have to assess the following comparisons:</li>
 </ol>
 <ul>
-<li>II-I: <span class="math inline">\(H_0:
-\beta_{II}+\beta_{II:C}=0\)</span></li>
-<li>III-I: <span class="math inline">\(H_0:
-\beta_{III}+\beta_{III:C}=0\)</span></li>
-<li>III-II: <span class="math inline">\(H_0:
-\beta_{III}+\beta_{III:C}-\beta_{II}-\beta_{II:C}=0\)</span></li>
+<li>II-I: <span class="math inline">\(H_0: \beta_{II}+\beta_{II:C}=0\)</span></li>
+<li>III-I: <span class="math inline">\(H_0: \beta_{III}+\beta_{III:C}=0\)</span></li>
+<li>III-II: <span class="math inline">\(H_0: \beta_{III}+\beta_{III:C}-\beta_{II}-\beta_{II:C}=0\)</span></li>
 </ul>
 <ol start="4" style="list-style-type: decimal">
-<li>For treatment C we would have to assess the following
-comparisons:</li>
+<li>For treatment C we would have to assess the following comparisons:</li>
 </ol>
 <ul>
-<li>II-I: <span class="math inline">\(H_0:
-\beta_{II}+\beta_{II:D}=0\)</span></li>
-<li>III-I: <span class="math inline">\(H_0:
-\beta_{III}+\beta_{III:D}=0\)</span></li>
-<li>III-II: <span class="math inline">\(H_0:
-\beta_{III}+\beta_{III:D}-\beta_{II}-\beta_{II:D}=0\)</span></li>
+<li>II-I: <span class="math inline">\(H_0: \beta_{II}+\beta_{II:D}=0\)</span></li>
+<li>III-I: <span class="math inline">\(H_0: \beta_{III}+\beta_{III:D}=0\)</span></li>
+<li>III-II: <span class="math inline">\(H_0: \beta_{III}+\beta_{III:D}-\beta_{II}-\beta_{II:D}=0\)</span></li>
 </ul>
-<p>The same holds for assessing the effect of the treatment, which
-should be done for each poison separately:</p>
+<p>The same holds for assessing the effect of the treatment, which should be done for each poison separately:</p>
 <ol style="list-style-type: decimal">
 <li>Poison I</li>
 </ol>
@@ -860,46 +802,31 @@ should be done for each poison separately:</p>
 <li>B-A: <span class="math inline">\(H_0: \beta_{B}=0\)</span></li>
 <li>C-A: <span class="math inline">\(H_0: \beta_{C}=0\)</span></li>
 <li>D-A: <span class="math inline">\(H_0: \beta_{D}=0\)</span></li>
-<li>C-B: <span class="math inline">\(H_0:
-\beta_{C}-\beta_{B}=0\)</span></li>
-<li>D-B: <span class="math inline">\(H_0:
-\beta_{D}-\beta_{B}=0\)</span></li>
-<li>D-C: <span class="math inline">\(H_0:
-\beta_{D}-\beta_{C}=0\)</span></li>
+<li>C-B: <span class="math inline">\(H_0: \beta_{C}-\beta_{B}=0\)</span></li>
+<li>D-B: <span class="math inline">\(H_0: \beta_{D}-\beta_{B}=0\)</span></li>
+<li>D-C: <span class="math inline">\(H_0: \beta_{D}-\beta_{C}=0\)</span></li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
 <li>Poison II</li>
 </ol>
 <ul>
-<li>B-A: <span class="math inline">\(H_0:
-\beta_{B}+\beta_{II:B}=0\)</span></li>
-<li>C-A: <span class="math inline">\(H_0:
-\beta_{C}+\beta_{II:C}=0\)</span></li>
-<li>D-A: <span class="math inline">\(H_0:
-\beta_{D}+\beta_{II:D}=0\)</span></li>
-<li>C-B: <span class="math inline">\(H_0:
-\beta_{C}+\beta_{II:C}-\beta_{B}-\beta_{II:B}=0\)</span></li>
-<li>D-B: <span class="math inline">\(H_0:
-\beta_{D}+\beta_{II:D}-\beta_{B}-\beta_{II:B}=0\)</span></li>
-<li>D-C: <span class="math inline">\(H_0:
-\beta_{D}+\beta_{II:D}-\beta_{C}-\beta_{II:C}=0\)</span></li>
+<li>B-A: <span class="math inline">\(H_0: \beta_{B}+\beta_{II:B}=0\)</span></li>
+<li>C-A: <span class="math inline">\(H_0: \beta_{C}+\beta_{II:C}=0\)</span></li>
+<li>D-A: <span class="math inline">\(H_0: \beta_{D}+\beta_{II:D}=0\)</span></li>
+<li>C-B: <span class="math inline">\(H_0: \beta_{C}+\beta_{II:C}-\beta_{B}-\beta_{II:B}=0\)</span></li>
+<li>D-B: <span class="math inline">\(H_0: \beta_{D}+\beta_{II:D}-\beta_{B}-\beta_{II:B}=0\)</span></li>
+<li>D-C: <span class="math inline">\(H_0: \beta_{D}+\beta_{II:D}-\beta_{C}-\beta_{II:C}=0\)</span></li>
 </ul>
 <ol start="3" style="list-style-type: decimal">
 <li>Poison III</li>
 </ol>
 <ul>
-<li>B-A: <span class="math inline">\(H_0:
-\beta_{B}+\beta_{III:B}=0\)</span></li>
-<li>C-A: <span class="math inline">\(H_0:
-\beta_{C}+\beta_{III:C}=0\)</span></li>
-<li>D-A: <span class="math inline">\(H_0:
-\beta_{D}+\beta_{II:D}=0\)</span></li>
-<li>C-B: <span class="math inline">\(H_0:
-\beta_{C}+\beta_{III:C}-\beta_{B}-\beta_{III:B}=0\)</span></li>
-<li>D-B: <span class="math inline">\(H_0:
-\beta_{D}+\beta_{III:D}-\beta_{B}-\beta_{III:B}=0\)</span></li>
-<li>D-C: <span class="math inline">\(H_0:
-\beta_{D}+\beta_{III:D}-\beta_{C}-\beta_{III:C}=0\)</span></li>
+<li>B-A: <span class="math inline">\(H_0: \beta_{B}+\beta_{III:B}=0\)</span></li>
+<li>C-A: <span class="math inline">\(H_0: \beta_{C}+\beta_{III:C}=0\)</span></li>
+<li>D-A: <span class="math inline">\(H_0: \beta_{D}+\beta_{II:D}=0\)</span></li>
+<li>C-B: <span class="math inline">\(H_0: \beta_{C}+\beta_{III:C}-\beta_{B}-\beta_{III:B}=0\)</span></li>
+<li>D-B: <span class="math inline">\(H_0: \beta_{D}+\beta_{III:D}-\beta_{B}-\beta_{III:B}=0\)</span></li>
+<li>D-C: <span class="math inline">\(H_0: \beta_{D}+\beta_{III:D}-\beta_{C}-\beta_{III:C}=0\)</span></li>
 </ul>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>comparisonsInt <span class="ot">&lt;-</span> <span class="fu">glht</span>(rats3, <span class="at">linfct =</span> <span class="fu">c</span>(</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;poisonII = 0&quot;</span>,</span>
@@ -943,33 +870,22 @@ should be done for each poison separately:</p>
 <span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(comparisonsInt, <span class="at">yaxt =</span> <span class="st">&quot;none&quot;</span>)</span>
 <span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>, <span class="at">at =</span> <span class="fu">c</span>(<span class="fu">length</span>(contrastNames)<span class="sc">:</span><span class="dv">1</span>), <span class="at">labels =</span> contrastNames, <span class="at">las =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>Here, the interaction was not significant. Hence, the average effect
-of the poison type on the rate of dying does not change significantly
-according to the treatment and vice versa. In this case, it would make
-sense to estimate</p>
+<p>Here, the interaction was not significant. Hence, the average effect of the poison type on the rate of dying does not change significantly according to the treatment and vice versa. In this case, it would make sense to estimate</p>
 <ol style="list-style-type: decimal">
-<li>the effect size for each pairwise comparison of poisons by averaging
-it over all treatments and</li>
-<li>the effect size for each pairwise comparison of treatments by
-averaging it over all different poisons.</li>
+<li>the effect size for each pairwise comparison of poisons by averaging it over all treatments and</li>
+<li>the effect size for each pairwise comparison of treatments by averaging it over all different poisons.</li>
 </ol>
-<p>This should give us similar estimates as those obtained upon removing
-the interaction from the model.</p>
+<p>This should give us similar estimates as those obtained upon removing the interaction from the model.</p>
 <p>e.g. for poison III vs poison II that would result in</p>
 <ul>
 <li>III-II: <span class="math display">\[H_0:
-\frac{(\beta_{III}-\beta_{II}) + (\beta_{III} + \beta_{III:B}-\beta_{II}
-- \beta_{II:B}) + (\beta_{III} + \beta_{III:C}-\beta_{II} - \beta_{II:C}
-+ + (\beta_{III} + \beta_{III:D}-\beta_{II} - \beta_{II:D}) ) }{4}=0
+\frac{(\beta_{III}-\beta_{II}) + (\beta_{III} + \beta_{III:B}-\beta_{II} - \beta_{II:B}) + (\beta_{III} + \beta_{III:C}-\beta_{II} - \beta_{II:C} + + (\beta_{III} + \beta_{III:D}-\beta_{II} - \beta_{II:D}) ) }{4}=0
 \]</span> <span class="math display">\[
-H_0:\beta_{III} + \frac{1}{4} \times \beta_{III:B} +  \frac{1}{4}
-\times\beta_{III:C} +  \frac{1}{4} \times\beta_{III:D}
--\beta_{II} - \frac{1}{4} \times\beta_{II:B} -  \frac{1}{4}
-\times\beta_{II:C}  - \frac{1}{4} \times\beta_{II:D}=0
+H_0:\beta_{III} + \frac{1}{4} \times \beta_{III:B} +  \frac{1}{4} \times\beta_{III:C} +  \frac{1}{4} \times\beta_{III:D}
+-\beta_{II} - \frac{1}{4} \times\beta_{II:B} -  \frac{1}{4} \times\beta_{II:C}  - \frac{1}{4} \times\beta_{II:D}=0
 \]</span></li>
 </ul>
-<p>We can calculate the average contrast for each comparison of
-interest.</p>
+<p>We can calculate the average contrast for each comparison of interest.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>contrasts <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;poisonII + 1/4*poisonII:treatB + 1/4*poisonII:treatC + 1/4*poisonII:treatD = 0&quot;</span>,</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;poisonIII + 1/4*poisonIII:treatB + 1/4*poisonIII:treatC + 1/4*poisonIII:treatD= 0&quot;</span>,</span>
@@ -988,11 +904,8 @@ interest.</p>
 <span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>contrastNames <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;II-I&quot;</span>, <span class="st">&quot;III-I&quot;</span>, <span class="st">&quot;III-II&quot;</span>, <span class="st">&quot;B-A&quot;</span>, <span class="st">&quot;C-A&quot;</span>, <span class="st">&quot;D-A&quot;</span>, <span class="st">&quot;C-B&quot;</span>, <span class="st">&quot;D-B&quot;</span>, <span class="st">&quot;D-C&quot;</span>)</span>
 <span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>, <span class="at">at =</span> <span class="fu">c</span>(<span class="fu">length</span>(contrastNames)<span class="sc">:</span><span class="dv">1</span>), <span class="at">labels =</span> contrastNames, <span class="at">las =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="08-MultipleRegression-SpecificDesigns_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>Indeed, the effect sizes are exactly the same because the experiment
-is balanced.</p>
-<p>Note, that the standard errors differ slightly. Indeed the errors of
-both models will differ as well as the remaining degrees of freedom of
-the errors <span class="math inline">\(n-p\)</span>.</p>
+<p>Indeed, the effect sizes are exactly the same because the experiment is balanced.</p>
+<p>Note, that the standard errors differ slightly. Indeed the errors of both models will differ as well as the remaining degrees of freedom of the errors <span class="math inline">\(n-p\)</span>.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">Additive_coef =</span> <span class="fu">summary</span>(comparisons)<span class="sc">$</span>test<span class="sc">$</span>coef, <span class="at">Additive_se =</span> <span class="fu">summary</span>(comparisons)<span class="sc">$</span>test<span class="sc">$</span>sigma, <span class="at">Int_coef =</span> <span class="fu">summary</span>(comparisonsInt2)<span class="sc">$</span>test<span class="sc">$</span>coef, <span class="at">int_se =</span> <span class="fu">summary</span>(comparisonsInt2)<span class="sc">$</span>test<span class="sc">$</span>sigma) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">3</span>)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -1003,33 +916,10 @@ the errors <span class="math inline">\(n-p\)</span>.</p>
 </div>
 <div id="conclusion" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Conclusion</h1>
-<p>There is an extremely significant effect of the Poison and Treatment
-on the rate of dying of the rats (p &lt;&lt; 0.001).</p>
-<p>The effect of the poison does not significantly differ according to
-the treatment and vice versa (p = 0.387).</p>
-<p>The rate of dying is on average 0.2h<span
-class="math inline">\(^{-1}\)</span> and 0.15h<span
-class="math inline">\(^{-1}\)</span> higher for rats that are exposed to
-poison III that those exposed to poison I and II, respectively (both p
-&lt;&lt; 0.001, 95% CI III-I: [0.15, 0.25]h<span
-class="math inline">\(^{-1}\)</span>, 95% CI III-II: [0.1, 0.2]h<span
-class="math inline">\(^{-1}\)</span>) The average rate of dying was not
-significantly different between rats exposed to poison I and poison II
-(p=0.074).</p>
-<p>The rate of dying is on average 0.17h<span
-class="math inline">\(^{-1}\)</span> and 0.14h<span
-class="math inline">\(^{-1}\)</span> higher upon treatment A than upon
-treatment B and D, respectively (p &lt;&lt; 0.001, 95% CI B-A: [-0.22,
--0.11]h<span class="math inline">\(^{-1}\)</span>, 95% CI D-A: [-0.19,
--0.08]h<span class="math inline">\(^{-1}\)</span>). The rate of dying is
-on average 0.11h<span class="math inline">\(^{-1}\)</span> and
-0.08h<span class="math inline">\(^{-1}\)</span> higher upon treatment C
-than upon treatment B and D, respectively (C-B: p &lt;&lt; 0.001, 95% CI
-[0.05, 0.17]h<span class="math inline">\(^{-1}\)</span> , D-C: p =
-0.003, 95% CI [-0.14, -0.02]h<span
-class="math inline">\(^{-1}\)</span>). The average rate of dying was not
-significantly different between treatment C and A (p = 0.051), and,
-between treatment B and D (p = 0.61).</p>
+<p>There is an extremely significant effect of the Poison and Treatment on the rate of dying of the rats (p &lt;&lt; 0.001).</p>
+<p>The effect of the poison does not significantly differ according to the treatment and vice versa (p = 0.387).</p>
+<p>The rate of dying is on average 0.2h<span class="math inline">\(^{-1}\)</span> and 0.15h<span class="math inline">\(^{-1}\)</span> higher for rats that are exposed to poison III that those exposed to poison I and II, respectively (both p &lt;&lt; 0.001, 95% CI III-I: [0.15, 0.25]h<span class="math inline">\(^{-1}\)</span>, 95% CI III-II: [0.1, 0.2]h<span class="math inline">\(^{-1}\)</span>) The average rate of dying was not significantly different between rats exposed to poison I and poison II (p=0.074).</p>
+<p>The rate of dying is on average 0.17h<span class="math inline">\(^{-1}\)</span> and 0.14h<span class="math inline">\(^{-1}\)</span> higher upon treatment A than upon treatment B and D, respectively (p &lt;&lt; 0.001, 95% CI B-A: [-0.22, -0.11]h<span class="math inline">\(^{-1}\)</span>, 95% CI D-A: [-0.19, -0.08]h<span class="math inline">\(^{-1}\)</span>). The rate of dying is on average 0.11h<span class="math inline">\(^{-1}\)</span> and 0.08h<span class="math inline">\(^{-1}\)</span> higher upon treatment C than upon treatment B and D, respectively (C-B: p &lt;&lt; 0.001, 95% CI [0.05, 0.17]h<span class="math inline">\(^{-1}\)</span> , D-C: p = 0.003, 95% CI [-0.14, -0.02]h<span class="math inline">\(^{-1}\)</span>). The average rate of dying was not significantly different between treatment C and A (p = 0.051), and, between treatment B and D (p = 0.61).</p>
 <p>All p-values are corrected for multiple testing.</p>
 </div>
 

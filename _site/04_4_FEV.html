@@ -549,41 +549,23 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 4.4: Exploring the FEV
-dataset</h1>
+<h1 class="title toc-ignore">Exercise 4.4: Exploring the FEV dataset</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
-<p>In this tutorial, you will learn how to import, tidy, wrangle and
-visualize data yourself!</p>
+<p>In this tutorial, you will learn how to import, tidy, wrangle and visualize data yourself!</p>
 <div id="the-fev-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> The FEV dataset</h1>
-<p>The FEV, which is an acronym for
-<code>forced expiratory volume</code>, is a measure of how much air a
-person can exhale (in liters) during a forced breath. In this dataset,
-the FEV of 606 children, between the ages of 6 and 17, were measured.
-The dataset also provides additional information on these children:
-their <code>age</code>, their <code>height</code>, their
-<code>gender</code> and, most importantly, whether the child is a smoker
-or a non-smoker.</p>
-<p>The goal of this experiment was to find out whether or not smoking
-has an effect on the FEV of children.</p>
-<p>Note: to analyse this dataset properly, we will need some relatively
-advanced modeling techniques. At the end of this week, you will have
-seen all three required steps to analyse such a dataset! For now, we
-will limit ourselves to exploring the data.</p>
+<p>The FEV, which is an acronym for <code>forced expiratory volume</code>, is a measure of how much air a person can exhale (in liters) during a forced breath. In this dataset, the FEV of 606 children, between the ages of 6 and 17, were measured. The dataset also provides additional information on these children: their <code>age</code>, their <code>height</code>, their <code>gender</code> and, most importantly, whether the child is a smoker or a non-smoker.</p>
+<p>The goal of this experiment was to find out whether or not smoking has an effect on the FEV of children.</p>
+<p>Note: to analyse this dataset properly, we will need some relatively advanced modeling techniques. At the end of this week, you will have seen all three required steps to analyse such a dataset! For now, we will limit ourselves to exploring the data.</p>
 </div>
 <div id="load-libraries" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Load libraries</h1>
-<p>If you do not have these libraries installed, make sure to install
-them first by using the <code>install.packages()</code> function with
-missing the package name inside the parentheses (and using quotation
-marks, like <code>install.packages("car")</code>)</p>
+<p>If you do not have these libraries installed, make sure to install them first by using the <code>install.packages()</code> function with missing the package name inside the parentheses (and using quotation marks, like <code>install.packages("car")</code>)</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -592,33 +574,22 @@ marks, like <code>install.packages("car")</code>)</p>
 </div>
 <div id="import-the-data" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Import the data</h1>
-<p>Note: <code>fev.txt</code> is a tab-separated file: make sure to
-select the correct <code>readr</code> function!</p>
+<p>Note: <code>fev.txt</code> is a tab-separated file: make sure to select the correct <code>readr</code> function!</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
 <p>Have a first look at the data</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
-<p>There are a few things in the formatting of the data that can be
-improved upon:</p>
+<p>There are a few things in the formatting of the data that can be improved upon:</p>
 <ol style="list-style-type: decimal">
-<li><p>Both <code>gender</code> and <code>smoking</code> can be
-transformed to factors.</p></li>
-<li><p>The <code>height</code> variable is written in inches. Assuming
-that this audience is mainly Portuguese/Belgian, inches are hard to
-interpret. Let’s add a new column, <code>height_cm</code>, with the
-values converted to centimeters.</p></li>
+<li><p>Both <code>gender</code> and <code>smoking</code> can be transformed to factors.</p></li>
+<li><p>The <code>height</code> variable is written in inches. Assuming that this audience is mainly Portuguese/Belgian, inches are hard to interpret. Let’s add a new column, <code>height_cm</code>, with the values converted to centimeters.</p></li>
 </ol>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
 <p>That’s better!</p>
-<p>Now, let’s make a first explorative plot, showing only the FEV for
-both smoking categories.</p>
-<p>Which type of plot do you suggest? Generate a good-looking,
-informative representation of the data.</p>
+<p>Now, let’s make a first explorative plot, showing only the FEV for both smoking categories.</p>
+<p>Which type of plot do you suggest? Generate a good-looking, informative representation of the data.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
 <p>Did you expect these results?</p>
-<p>Maybe there is something else going on in the data. By taking more of
-the information in the dataset into account, can you provide a more
-detailed/accurate visualizition of the variables that effect the
-FEV?</p>
+<p>Maybe there is something else going on in the data. By taking more of the information in the dataset into account, can you provide a more detailed/accurate visualizition of the variables that effect the FEV?</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>...</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>

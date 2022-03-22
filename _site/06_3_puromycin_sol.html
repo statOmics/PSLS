@@ -549,12 +549,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 6.1: Linear regression on
-puromycin data</h1>
+<h1 class="title toc-ignore">Exercise 6.1: Linear regression on puromycin data</h1>
 <h4 class="author">Lieven Clement &amp; Alexandre Segers</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
@@ -563,15 +560,8 @@ class="uri">https://statomics.github.io</a>)</h4>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 <div id="puromycin-data" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Puromycin data</h1>
-<p>Data on the velocity of an enzymatic reaction were obtained by
-Treloar (1974). The number of counts per minute of radioactive product
-from the reaction was measured as a function of substrate concentration
-in parts per million (ppm) and from these counts the initial rate (or
-velocity) of the reaction was calculated (counts/min/min). The
-experiment was conducted once with the enzyme treated with Puromycin,
-and once with the enzyme untreated.</p>
-<p>Assess if there is an association between the substrate concentration
-and rate for the treated enzyme.</p>
+<p>Data on the velocity of an enzymatic reaction were obtained by Treloar (1974). The number of counts per minute of radioactive product from the reaction was measured as a function of substrate concentration in parts per million (ppm) and from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min). The experiment was conducted once with the enzyme treated with Puromycin, and once with the enzyme untreated.</p>
+<p>Assess if there is an association between the substrate concentration and rate for the treated enzyme.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Puromycin)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Puromycin <span class="ot">&lt;-</span> Puromycin <span class="sc">%&gt;%</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(state <span class="sc">==</span> <span class="st">&quot;treated&quot;</span>)</span></code></pre></div>
@@ -587,11 +577,8 @@ and rate for the treated enzyme.</p>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
 ## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <p><img src="06_3_puromycin_sol_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>The plot shows that there is a relation between the velocity and the
-concentration, however, the relation does not seem to be linear.</p>
-<p>We will assess the impact of log-transforming the concentration.
-Because the concentration is measured in ppm we will log<span
-class="math inline">\(_{10}\)</span> transform the data.</p>
+<p>The plot shows that there is a relation between the velocity and the concentration, however, the relation does not seem to be linear.</p>
+<p>We will assess the impact of log-transforming the concentration. Because the concentration is measured in ppm we will log<span class="math inline">\(_{10}\)</span> transform the data.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Puromycin <span class="sc">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> conc <span class="sc">%&gt;%</span> <span class="fu">log10</span>(), <span class="at">y =</span> rate)) <span class="sc">+</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
@@ -602,31 +589,15 @@ class="math inline">\(_{10}\)</span> transform the data.</p>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
 ## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <p><img src="06_3_puromycin_sol_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>The relation between the velocity and the log<span
-class="math inline">\(_{10}\)</span> transformed concentration seems to
-be linear.</p>
+<p>The relation between the velocity and the log<span class="math inline">\(_{10}\)</span> transformed concentration seems to be linear.</p>
 </div>
 </div>
 <div id="linear-regression" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Linear regression</h1>
 <p>We will fit the following model to the data</p>
-<p><span class="math inline">\(Y_i = \beta_0 + \beta_1 log_{10}(x_i) +
-\epsilon_i\)</span></p>
-<p>with <span class="math inline">\(Y_i\)</span> the reaction rate,
-<span class="math inline">\(x_i\)</span> the adopted concentration,
-<span class="math inline">\(\beta_0\)</span> the
-<strong>intercept</strong>, <span class="math inline">\(\beta_1\)</span>
-the slope or the <strong>effect of the log<span
-class="math inline">\(_{10}\)</span>(concentratie) on the average
-reaction rate</strong>, and <span
-class="math inline">\(\epsilon_i\)</span> the error term that is <span
-class="math inline">\(\epsilon_i\)</span> i.i.d. normally distributed
-with mean 0 and variance <span
-class="math inline">\(\sigma^2\)</span>.</p>
-<p>Note, that we write the substrate concentratio with a small letter
-because the predictor is not random. The researchers have chosen the
-substrate concentrations in the design phase and it is thus no random
-variable.</p>
+<p><span class="math inline">\(Y_i = \beta_0 + \beta_1 log_{10}(x_i) + \epsilon_i\)</span></p>
+<p>with <span class="math inline">\(Y_i\)</span> the reaction rate, <span class="math inline">\(x_i\)</span> the adopted concentration, <span class="math inline">\(\beta_0\)</span> the <strong>intercept</strong>, <span class="math inline">\(\beta_1\)</span> the slope or the <strong>effect of the log<span class="math inline">\(_{10}\)</span>(concentratie) on the average reaction rate</strong>, and <span class="math inline">\(\epsilon_i\)</span> the error term that is <span class="math inline">\(\epsilon_i\)</span> i.i.d. normally distributed with mean 0 and variance <span class="math inline">\(\sigma^2\)</span>.</p>
+<p>Note, that we write the substrate concentratio with a small letter because the predictor is not random. The researchers have chosen the substrate concentrations in the design phase and it is thus no random variable.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(rate <span class="sc">~</span> conc <span class="sc">%&gt;%</span> <span class="fu">log10</span>(), Puromycin)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span></code></pre></div>
 <pre><code>## 
@@ -656,19 +627,15 @@ variable.</p>
 <li>Normal distribution of the residuals</li>
 <li>Homoscedasticity</li>
 </ol>
-<p>We assume that the experiment was well designed and that the
-different reactions that were use in the experiment are independent.</p>
+<p>We assume that the experiment was well designed and that the different reactions that were use in the experiment are independent.</p>
 </div>
 <div id="linearity" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Linearity</h2>
 <p>We assess linearity in a residual analysis</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod1, <span class="at">which =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="06_3_puromycin_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>There seem to be small deviations for the residuals at high
-concentrations. However, we do not have many observation in the study so
-this might be caused by random varibility.</p>
-<p>We will use simulation to assess if we can observe similar residual
-plots if all assumptions for the linear model hold.</p>
+<p>There seem to be small deviations for the residuals at high concentrations. However, we do not have many observation in the study so this might be caused by random varibility.</p>
+<p>We will use simulation to assess if we can observe similar residual plots if all assumptions for the linear model hold.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1031</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> mod1 <span class="sc">%&gt;%</span> <span class="fu">sigma</span>()</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>dataHlp <span class="ot">&lt;-</span> Puromycin</span>
@@ -684,27 +651,19 @@ plots if all assumptions for the linear model hold.</p>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(simModels[[i]], <span class="at">which =</span> <span class="dv">1</span>)</span>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p><img src="06_3_puromycin_sol_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>We observe that similar deviations might be generated for a model
-where all assumptions are valid.</p>
+<p>We observe that similar deviations might be generated for a model where all assumptions are valid.</p>
 <div id="normality" class="section level3" number="2.2.1">
 <h3><span class="header-section-number">2.2.1</span> Normality</h3>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod1, <span class="at">which =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="06_3_puromycin_sol_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>The QQ-plot does not show large deviations from normality.</p>
 </div>
-<div id="homoscedasticity-equality-of-the-variance"
-class="section level3" number="2.2.2">
-<h3><span class="header-section-number">2.2.2</span> Homoscedasticity:
-equality of the variance</h3>
-<p>We can again use the residual plot for assessing this assumption or
-the plot were we plot the square root of the standardized residuals in
-function of the fit.</p>
+<div id="homoscedasticity-equality-of-the-variance" class="section level3" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Homoscedasticity: equality of the variance</h3>
+<p>We can again use the residual plot for assessing this assumption or the plot were we plot the square root of the standardized residuals in function of the fit.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod1, <span class="at">which =</span> <span class="dv">3</span>)</span></code></pre></div>
 <p><img src="06_3_puromycin_sol_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>We see that the spread of the majority of the residuals is more or
-less similar. However, the two residuals at low concentrations are
-slightly higher. Again we can use our simulations to show that similar
-deviations might occur for models where all assumptions hold.</p>
+<p>We see that the spread of the majority of the residuals is more or less similar. However, the two residuals at low concentrations are slightly higher. Again we can use our simulations to show that similar deviations might occur for models where all assumptions hold.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>))</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>) {</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(simModels[[i]], <span class="at">which =</span> <span class="dv">3</span>)</span>
@@ -716,15 +675,11 @@ deviations might occur for models where all assumptions hold.</p>
 <h2><span class="header-section-number">2.3</span> Inference</h2>
 <div id="hypotheses" class="section level3" number="2.3.1">
 <h3><span class="header-section-number">2.3.1</span> hypotheses</h3>
-<p>We want to assess if there is a linear association between the
-reaction rate and the log<span class="math inline">\(_{10}\)</span>
-transformed concentration.</p>
+<p>We want to assess if there is a linear association between the reaction rate and the log<span class="math inline">\(_{10}\)</span> transformed concentration.</p>
 <p>So we will assess</p>
-<p><span class="math inline">\(H_0\)</span>: <span
-class="math inline">\(\beta_1 = 0\)</span></p>
+<p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\beta_1 = 0\)</span></p>
 <p>against</p>
-<p><span class="math inline">\(H_A\)</span>: <span
-class="math inline">\(\beta_1 \ne 0\)</span></p>
+<p><span class="math inline">\(H_A\)</span>: <span class="math inline">\(\beta_1 \ne 0\)</span></p>
 <p>using a t-test on the slope parameter.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span></code></pre></div>
 <pre><code>## 
@@ -752,11 +707,7 @@ class="math inline">\(\beta_1 \ne 0\)</span></p>
 </div>
 <div id="conclusion" class="section level3" number="2.3.2">
 <h3><span class="header-section-number">2.3.2</span> Conclusion</h3>
-<p>There is an extremely significant linear association between the
-substrate concentration on the log-scale and the reaction rate
-(p&lt;&lt;0.001). A reaction at a substrate concentration that is 10
-times higher will have a reaction speed that is on average 85.4
-counts/min higher (95% CI [74, 96.9] counts/min).</p>
+<p>There is an extremely significant linear association between the substrate concentration on the log-scale and the reaction rate (p&lt;&lt;0.001). A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average 85.4 counts/min higher (95% CI [74, 96.9] counts/min).</p>
 </div>
 </div>
 </div>

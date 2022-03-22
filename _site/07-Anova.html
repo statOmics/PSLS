@@ -551,27 +551,21 @@ div.tocify {
 
 <h1 class="title toc-ignore">7. Analysis of Variance</h1>
 <h4 class="author">Lieven Clement</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
 <div id="prostacyclin-example" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Prostacyclin
-Example</h1>
-<p>Researchers study the effect of arachidonic acid on prostacyclin
-level in blood plasma. They use 3 different concentrations of
-arachidonic acid:</p>
+<h1><span class="header-section-number">1</span> Prostacyclin Example</h1>
+<p>Researchers study the effect of arachidonic acid on prostacyclin level in blood plasma. They use 3 different concentrations of arachidonic acid:</p>
 <ul>
 <li>low,</li>
 <li>medium and</li>
 <li>high dose</li>
 </ul>
-<p>Each treatment is adopted to 12 rats. They measure the prostacyclin
-levels in blood plasma using an elisa fluorescence measurement.</p>
+<p>Each treatment is adopted to 12 rats. They measure the prostacyclin levels in blood plasma using an elisa fluorescence measurement.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>prostacyclin <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;https://raw.githubusercontent.com/GTPB/PSLS20/master/data/prostacyclin.txt&quot;</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>prostacyclin<span class="sc">$</span>dose <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(prostacyclin<span class="sc">$</span>dose)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(prostacyclin)</span></code></pre></div>
@@ -594,54 +588,35 @@ levels in blood plasma using an elisa fluorescence measurement.</p>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>dose)</span></code></pre></div>
 <p><img src="07-Anova_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
-<p>The data in the three groups is approximately Normally distributed
-with equal variance: <span class="math display">\[Y_i \vert \text{group
-j} \sim N(\mu_j,\sigma^2),\]</span> with <span class="math inline">\(j=
-\text{1, 2, 3}\)</span></p>
+<p>The data in the three groups is approximately Normally distributed with equal variance: <span class="math display">\[Y_i \vert \text{group j} \sim N(\mu_j,\sigma^2),\]</span> with <span class="math inline">\(j= \text{1, 2, 3}\)</span></p>
 <div id="research-question" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Research
-Question</h2>
+<h2><span class="header-section-number">1.1</span> Research Question</h2>
 <p>Research question can translated in the following hypotheses</p>
 <ul>
-<li><p><span class="math inline">\(H_0\)</span>: the arachidonic acid
-concentration has no effect on the mean prostacyclin level in blood
-plasma in rats <span class="math display">\[
+<li><p><span class="math inline">\(H_0\)</span>: the arachidonic acid concentration has no effect on the mean prostacyclin level in blood plasma in rats <span class="math display">\[
 H_0:\mu_1=\mu_2 = \mu_3
 \]</span></p></li>
-<li><p><span class="math inline">\(H_1\)</span>: the arachidonic acid
-concentration has an effect on the mean prostacyclin level in blood
-plasma in rats, which implies that the at least two means are
-different.</p></li>
+<li><p><span class="math inline">\(H_1\)</span>: the arachidonic acid concentration has an effect on the mean prostacyclin level in blood plasma in rats, which implies that the at least two means are different.</p></li>
 </ul>
 <p>In terms of the model parameters this becomes</p>
 <p><span class="math display">\[
   H_0:\mu_1=\mu_2 = \mu_3
-\]</span> and <span class="math display">\[H_1: \exists\ j,k \in
-\{1,\ldots,g\} : \mu_j\neq\mu_k\]</span></p>
-<p>Alternative approach: split null hypothesis in partial hypotheses:
-<span class="math display">\[
+\]</span> and <span class="math display">\[H_1: \exists\ j,k \in \{1,\ldots,g\} : \mu_j\neq\mu_k\]</span></p>
+<p>Alternative approach: split null hypothesis in partial hypotheses: <span class="math display">\[
   H_{0jk}: \mu_j=\mu_k \text{ versus } H_{1jk}: \mu_j \neq \mu_k
 \]</span></p>
-<p>Each hypothesis can be tested via two-sample t-tests <span
-class="math inline">\(\rightarrow\)</span> multiple testing problem +
-loss of power.</p>
-<p><span class="math inline">\(\rightarrow\)</span> assess <span
-class="math inline">\(H_0:\mu_1=\mu_2=\mu_3\)</span> with a <em>single
-test</em>.</p>
+<p>Each hypothesis can be tested via two-sample t-tests <span class="math inline">\(\rightarrow\)</span> multiple testing problem + loss of power.</p>
+<p><span class="math inline">\(\rightarrow\)</span> assess <span class="math inline">\(H_0:\mu_1=\mu_2=\mu_3\)</span> with a <em>single test</em>.</p>
 </div>
 </div>
 <div id="analyse-of-variance" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Analyse of
-Variance</h1>
-<p>Correct solution for testing problem: ANalysis Of VAriance
-(ANOVA)</p>
+<h1><span class="header-section-number">2</span> Analyse of Variance</h1>
+<p>Correct solution for testing problem: ANalysis Of VAriance (ANOVA)</p>
 <ul>
 <li>We develop the method for 3 groups (prostacyclin example)</li>
 <li>Model data with linear model by using dummy variables.</li>
-<li>1 dummy variable less than the number of groups. Here we need 2
-dummy variables.</li>
-<li>Generalizing to g groups <span class="math inline">\(g&gt;3\)</span>
-is trivial (extra dummy variables)</li>
+<li>1 dummy variable less than the number of groups. Here we need 2 dummy variables.</li>
+<li>Generalizing to g groups <span class="math inline">\(g&gt;3\)</span> is trivial (extra dummy variables)</li>
 </ul>
 <div id="model" class="section level3" number="2.0.1">
 <h3><span class="header-section-number">2.0.1</span> Model</h3>
@@ -650,78 +625,47 @@ is trivial (extra dummy variables)</li>
   Y_i &amp;=&amp; \beta_0+\beta_1 x_{i1} +\beta_2 x_{i2} +\epsilon_i
 \end{eqnarray}\]</span></p>
 <ul>
-<li><span class="math inline">\(Y_i\)</span> de outcome for observation
-<span class="math inline">\(i\)</span> (<span
-class="math inline">\(i=1,\ldots, n\)</span>) </li>
-<li><span class="math inline">\(\epsilon_i\text{i.i.d.}
-N(0,\sigma^2)\)</span> </li>
-<li>and dummy variables <span class="math display">\[x_{i1} = \left\{
-\begin{array}{ll}
+<li><span class="math inline">\(Y_i\)</span> de outcome for observation <span class="math inline">\(i\)</span> (<span class="math inline">\(i=1,\ldots, n\)</span>) </li>
+<li><span class="math inline">\(\epsilon_i\text{i.i.d.} N(0,\sigma^2)\)</span> </li>
+<li>and dummy variables <span class="math display">\[x_{i1} = \left\{ \begin{array}{ll}
 1 &amp; \text{ if observation $i$ belongs to middle dose group (M)} \\
-0 &amp; \text{ if observation $i$ belongs to other dose group}
-\end{array}\right.\]</span> <span class="math display">\[x_{i2} =
-\left\{ \begin{array}{ll}
+0 &amp; \text{ if observation $i$ belongs to other dose group} \end{array}\right.\]</span> <span class="math display">\[x_{i2} = \left\{ \begin{array}{ll}
 1 &amp; \text{ if observation $i$ belongs to high dose group (H)} \\
-0 &amp; \text{if observation $i$ belongs to other dose group}
-\end{array}\right. .\]</span> </li>
-<li>Low dose group (L) with <span
-class="math inline">\(x_{i1}=x_{i2}=0\)</span> is <em>reference
-group</em></li>
+0 &amp; \text{if observation $i$ belongs to other dose group} \end{array}\right. .\]</span> </li>
+<li>Low dose group (L) with <span class="math inline">\(x_{i1}=x_{i2}=0\)</span> is <em>reference group</em></li>
 </ul>
-<p>Regression-model can be rewritten as a model for each group : <span
-class="math display">\[\begin{eqnarray*}
-Y_{i\vert \text{dose=L}} &amp;=&amp; \beta_0+\epsilon_i \\
-Y_{i\vert \text{dose=M}} &amp;=&amp; \beta_0+\beta_1+ \epsilon_i  \\
-Y_{i\vert \text{dose=H}} &amp;=&amp; \beta_0+\beta_2 + \epsilon_i
-\end{eqnarray*}\]</span> with <span class="math inline">\(\epsilon_i
-\sim N(0,\sigma^2)\)</span> </p>
-<p>Interpretation of model parameters: <span
-class="math display">\[\begin{eqnarray*}
-   \beta_0 &amp;=&amp;  \text{E}\left[Y_i \mid \text{treatment with low
-dose group L}\right] \\
-   \beta_1 &amp;=&amp;  (\beta_0+\beta_1)-\beta_0 = \text{E}\left[Y_i
-\mid \text{treatment M}\right] - \text{E}\left[Y_i \mid \text{treatment
-L}\right] \\
-   \beta_2 &amp;=&amp;  (\beta_0+\beta_2)-\beta_0 = \text{E}\left[Y_i
-\mid \text{treatment H}\right]-\text{E}\left[Y_i \mid \text{treatment
-L}\right].
-\end{eqnarray*}\]</span></p>
+<p>Regression-model can be rewritten as a model for each group :  <span class="math display">\[\begin{eqnarray*}
+ Y_{i\vert \text{dose=L}} &amp;=&amp; \beta_0+\epsilon_i \\
+ Y_{i\vert \text{dose=M}} &amp;=&amp; \beta_0+\beta_1+ \epsilon_i  \\
+ Y_{i\vert \text{dose=H}} &amp;=&amp; \beta_0+\beta_2 + \epsilon_i
+\end{eqnarray*}\]</span> with <span class="math inline">\(\epsilon_i \sim N(0,\sigma^2)\)</span> </p>
+<p>Interpretation of model parameters:  <span class="math display">\[\begin{eqnarray*}
+   \beta_0 &amp;=&amp;  \text{E}\left[Y_i \mid \text{treatment with low dose group L}\right] \\
+   \beta_1 &amp;=&amp;  (\beta_0+\beta_1)-\beta_0 = \text{E}\left[Y_i \mid \text{treatment M}\right] - \text{E}\left[Y_i \mid \text{treatment L}\right] \\
+   \beta_2 &amp;=&amp;  (\beta_0+\beta_2)-\beta_0 = \text{E}\left[Y_i \mid \text{treatment H}\right]-\text{E}\left[Y_i \mid \text{treatment L}\right].
+ \end{eqnarray*}\]</span></p>
 <ol style="list-style-type: decimal">
-<li><span class="math inline">\(\beta_0\)</span> is the mean outcome for
-group L </li>
-<li><span class="math inline">\(\beta_1\)</span> is effect (difference
-in mean concentration) of group M vs group L </li>
-<li><span class="math inline">\(\beta_2\)</span> is effect of group H vs
-group L</li>
+<li><span class="math inline">\(\beta_0\)</span> is the mean outcome for group L </li>
+<li><span class="math inline">\(\beta_1\)</span> is effect (difference in mean concentration) of group M vs group L </li>
+<li><span class="math inline">\(\beta_2\)</span> is effect of group H vs group L</li>
 </ol>
-<p>We reformulate the model by using <span
-class="math inline">\(\mu\)</span>-notations: <span
-class="math display">\[\begin{eqnarray*}
-  Y_{i\vert \text{dose=L}} &amp;=&amp; \beta_0+\epsilon_i =
-\mu_1+\epsilon_i \\
-  Y_{i\vert \text{dose=M}} &amp;=&amp; \beta_0+\beta_1+ \epsilon_i =
-\mu_2+\epsilon_i \\
-  Y_{i\vert \text{dose=H}} &amp;=&amp; \beta_0+\beta_2 + \epsilon_i =
-\mu_3+\epsilon_i .
-\end{eqnarray*}\]</span> with <span class="math inline">\(\epsilon_i
-\sim N(0,\sigma^2)\)</span> and <span class="math display">\[  \mu_j =
-\text{E}\left[Y_i \mid \text{treatment group } j\right].\]</span></p>
-<p>Original null hypothese <span
-class="math display">\[H_0:\mu_1=\mu_2=\mu_3\]</span> can be formulated
-as <span class="math display">\[H_0: \beta_1=\beta_2=0.\]</span></p>
+<p>We reformulate the model by using <span class="math inline">\(\mu\)</span>-notations:  <span class="math display">\[\begin{eqnarray*}
+  Y_{i\vert \text{dose=L}} &amp;=&amp; \beta_0+\epsilon_i = \mu_1+\epsilon_i \\
+  Y_{i\vert \text{dose=M}} &amp;=&amp; \beta_0+\beta_1+ \epsilon_i = \mu_2+\epsilon_i \\
+  Y_{i\vert \text{dose=H}} &amp;=&amp; \beta_0+\beta_2 + \epsilon_i = \mu_3+\epsilon_i .
+ \end{eqnarray*}\]</span> with <span class="math inline">\(\epsilon_i \sim N(0,\sigma^2)\)</span> and <span class="math display">\[  \mu_j = \text{E}\left[Y_i \mid \text{treatment group } j\right].\]</span></p>
+<p>Original null hypothese <span class="math display">\[H_0:\mu_1=\mu_2=\mu_3\]</span> can be formulated as <span class="math display">\[H_0: \beta_1=\beta_2=0.\]</span></p>
 <p>Model allows us to use all methods from linear regression.</p>
 <ul>
 <li>Parameter estimators for means, variances and standard errors </li>
-<li>Inference: Confidence intervals, hypothesis tests
+<li>Inference: Confidence intervals, hypothesis tests 
 <ul>
-<li>Test <span class="math inline">\(H_0: \beta_1=\beta_2=0\)</span>
-with <span class="math inline">\(F\)</span>-test.</li>
+<li>Test <span class="math inline">\(H_0: \beta_1=\beta_2=0\)</span> with <span class="math inline">\(F\)</span>-test.</li>
 </ul></li>
 </ul>
 </div>
 <div id="prostacyclin-example-1" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> Prostacyclin
-example</h2>
+<h2><span class="header-section-number">2.1</span> Prostacyclin example</h2>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(prostac <span class="sc">~</span> dose, <span class="at">data =</span> prostacyclin)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code></pre></div>
 <pre><code>
@@ -746,54 +690,34 @@ F-statistic: 13.94 on 2 and 33 DF,  p-value: 4.081e-05</code></pre>
 </div>
 </div>
 <div id="sum-of-squares-and-anova" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Sum of squares and
-Anova</h1>
-<p>Similar to simple linear regression we will use sum of squares to
-derive the F-test. <span class="math display">\[\begin{eqnarray*}
+<h1><span class="header-section-number">3</span> Sum of squares and Anova</h1>
+<p>Similar to simple linear regression we will use sum of squares to derive the F-test.  <span class="math display">\[\begin{eqnarray*}
 \text{SSR}&amp;=&amp;\sum\limits_{i=1}^n (\hat Y_i -\bar Y)^2\\
 &amp;=&amp; \sum\limits_{i=1}^n (\hat{g} (x_{i1},x_{i2}) - \bar Y)^2\\
-&amp;=&amp; \sum\limits_{i=1}^n
-(\hat\beta_0+\hat\beta_1x_{i1}+\hat\beta_2x_{i2}) - \bar Y)^2\\
-&amp;=&amp; \sum\limits_{i=1}^{n_1} (\hat\beta_0 - \bar Y)^2
-+\sum\limits_{i=1}^{n_2} (\hat\beta_0 + \hat\beta_1 - \bar
-Y)^2+\sum\limits_{i=1}^{n_3} (\hat\beta_0 + \hat\beta_2 - \bar Y)^2\\
-&amp;=&amp; \sum\limits_{i=1}^{n_1} (\bar Y_1- \bar Y)^2
-+\sum\limits_{i=1}^{n_2} (\bar Y_2- \bar Y)^2+\sum\limits_{i=1}^{n_3}
-(\bar Y_3 - \bar Y)^2\\
-\end{eqnarray*}\]</span> with <span class="math inline">\(n_1\)</span>,
-<span class="math inline">\(n_2\)</span> en <span
-class="math inline">\(n_3\)</span> the number of observations in each
-group (here <span class="math inline">\(n-1=n_2=n_3=12\)</span>).</p>
+&amp;=&amp; \sum\limits_{i=1}^n (\hat\beta_0+\hat\beta_1x_{i1}+\hat\beta_2x_{i2}) - \bar Y)^2\\
+&amp;=&amp; \sum\limits_{i=1}^{n_1} (\hat\beta_0 - \bar Y)^2 +\sum\limits_{i=1}^{n_2} (\hat\beta_0 + \hat\beta_1 - \bar Y)^2+\sum\limits_{i=1}^{n_3} (\hat\beta_0 + \hat\beta_2 - \bar Y)^2\\
+&amp;=&amp; \sum\limits_{i=1}^{n_1} (\bar Y_1- \bar Y)^2 +\sum\limits_{i=1}^{n_2} (\bar Y_2- \bar Y)^2+\sum\limits_{i=1}^{n_3} (\bar Y_3 - \bar Y)^2\\
+\end{eqnarray*}\]</span> with <span class="math inline">\(n_1\)</span>, <span class="math inline">\(n_2\)</span> en <span class="math inline">\(n_3\)</span> the number of observations in each group (here <span class="math inline">\(n-1=n_2=n_3=12\)</span>).</p>
 <p><span class="math display">\[\begin{eqnarray*}
 \text{SSR}&amp;=&amp;\sum\limits_{i=1}^n (\hat Y_i -\bar Y)^2
 \end{eqnarray*}\]</span></p>
 <ul>
-<li><p>Sum of squares is again equivalent with comparison of model (1)
-and reduced model with an intercept, only.</p></li>
-<li><p>For reduced model the intercept is estimated by the sample
-mean.</p></li>
+<li><p>Sum of squares is again equivalent with comparison of model (1) and reduced model with an intercept, only.</p></li>
+<li><p>For reduced model the intercept is estimated by the sample mean.</p></li>
 <li><p>This sum of squares has g-1=2 degrees of freedom:</p>
 <ul>
-<li>g=3 model parameters - 1 parameter to estimate overall sample mean
-or</li>
+<li>g=3 model parameters - 1 parameter to estimate overall sample mean or</li>
 <li>g=3 par. in complex model - 1 par. in reduced model.</li>
 </ul></li>
 </ul>
-<div id="decomposition-of-total-sum-of-squares" class="section level2"
-number="3.1">
-<h2><span class="header-section-number">3.1</span> Decomposition of
-Total Sum of Squares</h2>
+<div id="decomposition-of-total-sum-of-squares" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Decomposition of Total Sum of Squares</h2>
 <ul>
-<li>The convention in the Anova setting is to denote the sum of squares
-as SST, the <strong>Sum of Squares of the Treatment (treatment)</strong>
-or as SSBetween.</li>
-<li>The sum of squares of the regression indeed reflects the variability
-between the groups.</li>
-<li>The corresponding mean sum of squares becomes <span
-class="math inline">\(\text{MST}=\text{SST}/2\)</span>.</li>
+<li>The convention in the Anova setting is to denote the sum of squares as SST, the <strong>Sum of Squares of the Treatment (treatment)</strong> or as SSBetween.</li>
+<li>The sum of squares of the regression indeed reflects the variability between the groups.</li>
+<li>The corresponding mean sum of squares becomes <span class="math inline">\(\text{MST}=\text{SST}/2\)</span>.</li>
 </ul>
-<p>The decomposition of SSTot can be written as <span
-class="math display">\[
+<p>The decomposition of SSTot can be written as <span class="math display">\[
   \text{SSTot} = \text{SST} + \text{SSE}
 \]</span></p>
 <p>##SSTot</p>
@@ -805,26 +729,19 @@ class="math display">\[
 </div>
 <div id="anova-test" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Anova test</h2>
-<p>Test <span class="math inline">\(H_0: \beta_1=\beta_2=0\)</span> with
-<span class="math inline">\(F\)</span>-test. <span
-class="math display">\[
+<p>Test <span class="math inline">\(H_0: \beta_1=\beta_2=0\)</span> with <span class="math inline">\(F\)</span>-test. <span class="math display">\[
   F = \frac{\text{MST}}{\text{MSE}}
 \]</span></p>
 <p>with</p>
 <ul>
-<li><span class="math inline">\(\text{MST}=\text{SST}/(g-1)\)</span>
-</li>
-<li><span class="math inline">\(\text{MSE}=\text{SSE}/(n-p)\)</span>
-</li>
-<li>Test statistic compares the variability explained by model (MST)
-with the residual variability (MSE)</li>
+<li><span class="math inline">\(\text{MST}=\text{SST}/(g-1)\)</span> </li>
+<li><span class="math inline">\(\text{MSE}=\text{SSE}/(n-p)\)</span> </li>
+<li>Test statistic compares the variability explained by model (MST) with the residual variability (MSE)</li>
 </ul>
 <p>or</p>
 <ul>
-<li>Variability between groups (MST) to variability within groups (MSE)
-</li>
-<li>Under <span class="math inline">\(H_0\)</span>: <span
-class="math inline">\(F \sim F_{g-1,n-g}\)</span>, with g=3.</li>
+<li>Variability between groups (MST) to variability within groups (MSE) </li>
+<li>Under <span class="math inline">\(H_0\)</span>: <span class="math inline">\(F \sim F_{g-1,n-g}\)</span>, with g=3.</li>
 </ul>
 </div>
 <div id="anova-table" class="section level2" number="3.3">
@@ -865,20 +782,12 @@ class="math inline">\(F \sim F_{g-1,n-g}\)</span>, with g=3.</li>
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["int"],"align":["right"]},{"label":["Sum Sq"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Mean Sq"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"12657.93","3":"6328.9669","4":"13.94364","5":"4.081242e-05","_rn_":"dose"},{"1":"33","2":"14978.58","3":"453.8964","4":"NA","5":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<div
-id="f-distribution-with-critical-value-alpha5-and-observed-f-statistic-for-prostacyclin-example"
-class="section level3" number="3.3.1">
-<h3><span class="header-section-number">3.3.1</span> F-distribution with
-critical value (<span class="math inline">\(\alpha\)</span>=5%) and
-observed F-statistic for prostacyclin example</h3>
+<div id="f-distribution-with-critical-value-alpha5-and-observed-f-statistic-for-prostacyclin-example" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> F-distribution with critical value (<span class="math inline">\(\alpha\)</span>=5%) and observed F-statistic for prostacyclin example</h3>
 <p><img src="07-Anova_files/figure-html/prostacF-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
-<div
-id="f-distributions-with-different-number-of-degrees-of-freedom-in-the-nominator-and-denominator"
-class="section level3" number="3.3.2">
-<h3><span class="header-section-number">3.3.2</span> F-distributions
-with different number of degrees of freedom in the nominator and
-denominator</h3>
+<div id="f-distributions-with-different-number-of-degrees-of-freedom-in-the-nominator-and-denominator" class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> F-distributions with different number of degrees of freedom in the nominator and denominator</h3>
 <p><img src="07-Anova_files/figure-html/ftheo-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>###Prostacyclin example: which groups are different?</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code></pre></div>
@@ -901,69 +810,36 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 Residual standard error: 21.3 on 33 degrees of freedom
 Multiple R-squared:  0.458, Adjusted R-squared:  0.4252 
 F-statistic: 13.94 on 2 and 33 DF,  p-value: 4.081e-05</code></pre>
-<p>With model output we can assess if the mean prostacyclin
-concentration differs between middle and low dose group (<span
-class="math inline">\(\beta_1\)</span>: dose25), and, between high and
-low dose group (<span class="math inline">\(\beta_2\)</span>:
-dose50).</p>
+<p>With model output we can assess if the mean prostacyclin concentration differs between middle and low dose group (<span class="math inline">\(\beta_1\)</span>: dose25), and, between high and low dose group (<span class="math inline">\(\beta_2\)</span>: dose50).</p>
 <p>The p-values do not account for multiple testing.</p>
 </div>
 </div>
 </div>
-<div id="post-hoc-analysis-multiple-comparisons-of-means"
-class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Post hoc analysis:
-Multiple comparisons of means</h1>
+<div id="post-hoc-analysis-multiple-comparisons-of-means" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Post hoc analysis: Multiple comparisons of means</h1>
 <div id="naive-method" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Naive method</h2>
-<p>In the first part we developed the <span
-class="math inline">\(F\)</span>-test to assess</p>
-<p><span class="math display">\[  H_0: \mu_1=\cdots = \mu_g \text{
-versus } H_1: H_1: \exists\ j,k \in \{1,\ldots,g\} :
-\mu_j\neq\mu_k\]</span></p>
+<p>In the first part we developed the <span class="math inline">\(F\)</span>-test to assess</p>
+<p><span class="math display">\[  H_0: \mu_1=\cdots = \mu_g \text{ versus } H_1: H_1: \exists\ j,k \in \{1,\ldots,g\} : \mu_j\neq\mu_k\]</span></p>
 <ul>
-<li>If we reject <span class="math inline">\(H_0\)</span> we conclude
-that at least two means are different</li>
-<li>The method does not allow to identify which means are
-different.</li>
+<li>If we reject <span class="math inline">\(H_0\)</span> we conclude that at least two means are different</li>
+<li>The method does not allow to identify which means are different.</li>
 </ul>
-<p>A first naive method is to split <span
-class="math inline">\(H_0\)</span> in partial hypotheses <span
-class="math display">\[H_{0jk}: \mu_j=\mu_k \text{ versus } H_{1jk}:
-\mu_j \neq \mu_k\]</span></p>
+<p>A first naive method is to split <span class="math inline">\(H_0\)</span> in partial hypotheses <span class="math display">\[H_{0jk}: \mu_j=\mu_k \text{ versus } H_{1jk}: \mu_j \neq \mu_k\]</span></p>
 <ul>
-<li><p>Falsify partial null hypotheses with two-sample <span
-class="math inline">\(t\)</span>-testen</p></li>
-<li><p>Comparison of group <span class="math inline">\(j\)</span> with
-group <span class="math inline">\(k\)</span> with two-sample <span
-class="math inline">\(t\)</span>-test under the equality of means: <span
-class="math display">\[T_{jk} =
-\frac{\bar{Y}_j-\bar{Y}_k}{S_p\sqrt{\frac{1}{n_j}+\frac{1}{n_k}}} \sim
-t_{n-2}\]</span></p></li>
+<li><p>Falsify partial null hypotheses with two-sample <span class="math inline">\(t\)</span>-testen</p></li>
+<li><p>Comparison of group <span class="math inline">\(j\)</span> with group <span class="math inline">\(k\)</span> with two-sample <span class="math inline">\(t\)</span>-test under the equality of means: <span class="math display">\[T_{jk} = \frac{\bar{Y}_j-\bar{Y}_k}{S_p\sqrt{\frac{1}{n_j}+\frac{1}{n_k}}} \sim t_{n-2}\]</span></p></li>
 </ul>
 <p>With</p>
 <ul>
-<li><p><span class="math inline">\(S_p^2\)</span> the pooled variance
-estimator, <span class="math display">\[S_p^2 = \frac{(n_j-1)S_j^2 +
-(n_k-1)S_k^2}{n_j+n_k-2}\]</span></p></li>
-<li><p>with <span class="math inline">\(S_j^2\)</span> and <span
-class="math inline">\(S_k^2\)</span> the sample variances of group <span
-class="math inline">\(j\)</span> en <span
-class="math inline">\(k\)</span>, respectively.</p></li>
+<li><p><span class="math inline">\(S_p^2\)</span> the pooled variance estimator, <span class="math display">\[S_p^2 = \frac{(n_j-1)S_j^2 + (n_k-1)S_k^2}{n_j+n_k-2}\]</span></p></li>
+<li><p>with <span class="math inline">\(S_j^2\)</span> and <span class="math inline">\(S_k^2\)</span> the sample variances of group <span class="math inline">\(j\)</span> en <span class="math inline">\(k\)</span>, respectively.</p></li>
 </ul>
-<p>In ANOVA context we assume that the variance of <strong>all</strong>
-<span class="math inline">\(g\)</span> groups is equal, i.e. the
-residual variance <span class="math inline">\(\sigma^2\)</span>.</p>
+<p>In ANOVA context we assume that the variance of <strong>all</strong> <span class="math inline">\(g\)</span> groups is equal, i.e. the residual variance <span class="math inline">\(\sigma^2\)</span>.</p>
 <ul>
-<li><p>Use of <span class="math inline">\(S_p^2\)</span> is not
-efficient because it does not make use of all data</p></li>
-<li><p>We can gain efficiency by using MSE <span
-class="math display">\[\text{MSE}= \sum_{j=1}^g
-\frac{(n_j-1)S_j^2}{n-g}\]</span></p></li>
-<li><p>The <span class="math inline">\(t\)</span>-tests are thus best
-based on <span class="math display">\[T_{jk} =
-\frac{\bar{Y}_j-\bar{Y}_k}{\text{MSE}\sqrt{\frac{1}{n_j}+\frac{1}{n_k}}}
-\sim t_{n-g}.\]</span></p></li>
+<li><p>Use of <span class="math inline">\(S_p^2\)</span> is not efficient because it does not make use of all data</p></li>
+<li><p>We can gain efficiency by using MSE <span class="math display">\[\text{MSE}= \sum_{j=1}^g \frac{(n_j-1)S_j^2}{n-g}\]</span></p></li>
+<li><p>The <span class="math inline">\(t\)</span>-tests are thus best based on <span class="math display">\[T_{jk} = \frac{\bar{Y}_j-\bar{Y}_k}{\text{MSE}\sqrt{\frac{1}{n_j}+\frac{1}{n_k}}} \sim t_{n-g}.\]</span></p></li>
 </ul>
 <hr />
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(prostacyclin, <span class="fu">pairwise.t.test</span>(prostac, dose, <span class="st">&quot;none&quot;</span>))</span></code></pre></div>
@@ -977,31 +853,16 @@ data:  prostac and dose
 50 2e-05   0.00031
 
 P value adjustment method: none </code></pre>
-<p>When we perform <span class="math inline">\(m\)</span>-tests on the
-<span class="math inline">\(\alpha\)</span> significance level we cannot
-correctly control the type I error.</p>
+<p>When we perform <span class="math inline">\(m\)</span>-tests on the <span class="math inline">\(\alpha\)</span> significance level we cannot correctly control the type I error.</p>
 </div>
-<div id="we-show-with-simulation-that-naive-method-does-not-work"
-class="section level2" number="4.2">
-<h2><span class="header-section-number">4.2</span> We show with
-simulation that naive method does not work</h2>
+<div id="we-show-with-simulation-that-naive-method-does-not-work" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> We show with simulation that naive method does not work</h2>
 <ol style="list-style-type: decimal">
-<li>We simulate from an ANOVA model with <span
-class="math inline">\(g=3\)</span> groups.</li>
-<li>The means in the ANOVA model are equal to each other, so that <span
-class="math display">\[H_0: \mu_1=\mu_2=\mu_3\]</span>.</li>
-<li>For each simulated dataset we conduct <span
-class="math inline">\(m=3\)</span> pairwise two-sample <span
-class="math inline">\(t\)</span>-test</li>
-<li>As soon as one of the <span class="math inline">\(p\)</span>-values
-is below significance level <span
-class="math inline">\(\alpha=5\%\)</span>, we reject <span
-class="math inline">\(H_0: \mu_1=\mu_2=\mu_3\)</span> because two means
-are different according to the <span
-class="math inline">\(t\)</span>-tests.</li>
-<li>We rapport the relative frequency of rejection of the global null
-hypothesis, i.e. the probability on a type I error <span
-class="math inline">\(H_0: \mu_1=\mu_2=\mu_3\)</span>.</li>
+<li>We simulate from an ANOVA model with <span class="math inline">\(g=3\)</span> groups.</li>
+<li>The means in the ANOVA model are equal to each other, so that <span class="math display">\[H_0: \mu_1=\mu_2=\mu_3\]</span>.</li>
+<li>For each simulated dataset we conduct <span class="math inline">\(m=3\)</span> pairwise two-sample <span class="math inline">\(t\)</span>-test</li>
+<li>As soon as one of the <span class="math inline">\(p\)</span>-values is below significance level <span class="math inline">\(\alpha=5\%\)</span>, we reject <span class="math inline">\(H_0: \mu_1=\mu_2=\mu_3\)</span> because two means are different according to the <span class="math inline">\(t\)</span>-tests.</li>
+<li>We rapport the relative frequency of rejection of the global null hypothesis, i.e. the probability on a type I error <span class="math inline">\(H_0: \mu_1=\mu_2=\mu_3\)</span>.</li>
 </ol>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="co"># number of treatments (g=3)</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ni <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># number of observations in each group</span></span>
@@ -1023,71 +884,42 @@ class="math inline">\(H_0: \mu_1=\mu_2=\mu_3\)</span>.</li>
 <hr />
 <ul>
 <li><p>Probability on the type I error equals 12.1%</p></li>
-<li><p>It is more then twice <span
-class="math inline">\(\alpha=5\)</span>%.</p></li>
-<li><p>If we repeat the simulation with g = 5 groups (i.e. 10 pairwise
-t-tests) we find a type I error of 28.0% instead of the desired
-5%.</p></li>
-<li><p>The simulation study illustrates the
-<strong>multiplicity</strong> problem</p>
+<li><p>It is more then twice <span class="math inline">\(\alpha=5\)</span>%.</p></li>
+<li><p>If we repeat the simulation with g = 5 groups (i.e. 10 pairwise t-tests) we find a type I error of 28.0% instead of the desired 5%.</p></li>
+<li><p>The simulation study illustrates the <strong>multiplicity</strong> problem</p>
 <ul>
-<li>Classical p-values can only be compared with the significance level
-<span class="math inline">\(\alpha\)</span>, if the conclusion is based
-on a single p-value.</li>
-<li>Here the final decision is based on <span
-class="math inline">\(m=g\times(g-1)/2\)</span> <span
-class="math inline">\(p\)</span>-values.</li>
+<li>Classical p-values can only be compared with the significance level <span class="math inline">\(\alpha\)</span>, if the conclusion is based on a single p-value.</li>
+<li>Here the final decision is based on <span class="math inline">\(m=g\times(g-1)/2\)</span> <span class="math inline">\(p\)</span>-values.</li>
 </ul></li>
-<li><p>We first discuss on the extension of the concept of type I errors
-and then introduce some solutions</p></li>
+<li><p>We first discuss on the extension of the concept of type I errors and then introduce some solutions</p></li>
 </ul>
 </div>
 <div id="family-wise-error-rate" class="section level2" number="4.3">
-<h2><span class="header-section-number">4.3</span> Family-wise error
-rate</h2>
+<h2><span class="header-section-number">4.3</span> Family-wise error rate</h2>
 <ul>
-<li><p>When <span class="math inline">\(m&gt;1\)</span> tests are used
-to make one decision it is necessary to correct for the risk on false
-positive results (type I errors).</p></li>
-<li><p>Most procedures for multiple testing assume that <em>all <span
-class="math inline">\(m\)</span> null hypotheses are true</em>.</p></li>
-<li><p>So one tries to control the <em>risk on at least 1 false
-positive</em> on the <strong>family wise error rate (FWER) <span
-class="math inline">\(\alpha_F\)</span></strong>, typical <span
-class="math inline">\(\alpha_F=0.05\)</span>.</p></li>
+<li><p>When <span class="math inline">\(m&gt;1\)</span> tests are used to make one decision it is necessary to correct for the risk on false positive results (type I errors).</p></li>
+<li><p>Most procedures for multiple testing assume that <em>all <span class="math inline">\(m\)</span> null hypotheses are true</em>.</p></li>
+<li><p>So one tries to control the <em>risk on at least 1 false positive</em> on the <strong>family wise error rate (FWER) <span class="math inline">\(\alpha_F\)</span></strong>, typical <span class="math inline">\(\alpha_F=0.05\)</span>.</p></li>
 </ul>
 </div>
 <div id="bonferroni-correction" class="section level2" number="4.4">
-<h2><span class="header-section-number">4.4</span> Bonferroni
-correction</h2>
-<p>When we conduct <span class="math inline">\(m\)</span> independent
-test each on the significance level <span
-class="math inline">\(\alpha\)</span>, then <span
-class="math display">\[\begin{eqnarray*}
+<h2><span class="header-section-number">4.4</span> Bonferroni correction</h2>
+<p>When we conduct <span class="math inline">\(m\)</span> independent test each on the significance level <span class="math inline">\(\alpha\)</span>, then <span class="math display">\[\begin{eqnarray*}
 \alpha_F&amp;=&amp;\text{P}[\text{at least 1 Type I fout}]\\
 &amp;=&amp;1-(1-\alpha)^m \leq m\alpha
 \end{eqnarray*}\]</span></p>
 <ul>
-<li><p>If we assess 5 tests on the 5% significance level then the FWER
-<span class="math inline">\(\approx 25\%\)</span>. {10pt}</p></li>
-<li><p>By conducting them at the 1% significance level the FWER <span
-class="math inline">\(\approx 5\%\)</span>.</p></li>
-<li><p>The Bonferroni correction controls the FWER on <span
-class="math inline">\(\alpha_F\)</span> by setting <span
-class="math display">\[\alpha=\alpha_F/m\]</span> for each of the <span
-class="math inline">\(m\)</span> pairwise comparisons</p></li>
+<li><p>If we assess 5 tests on the 5% significance level then the FWER <span class="math inline">\(\approx 25\%\)</span>. {10pt}</p></li>
+<li><p>By conducting them at the 1% significance level the FWER <span class="math inline">\(\approx 5\%\)</span>.</p></li>
+<li><p>The Bonferroni correction controls the FWER on <span class="math inline">\(\alpha_F\)</span> by setting <span class="math display">\[\alpha=\alpha_F/m\]</span> for each of the <span class="math inline">\(m\)</span> pairwise comparisons</p></li>
 </ul>
 <p>An alternative approach is to report</p>
 <ol style="list-style-type: decimal">
-<li><em>adjusted p-values</em> that can be compared to the FWER <span
-class="math inline">\(\alpha_F\)</span> level: <span
-class="math display">\[\tilde{p}=min(m\times p,1)\]</span></li>
-<li>and <span class="math inline">\((1-\alpha_F/m)100\%\)</span>
-confidence intervals.</li>
+<li><em>adjusted p-values</em> that can be compared to the FWER <span class="math inline">\(\alpha_F\)</span> level: <span class="math display">\[\tilde{p}=min(m\times p,1)\]</span></li>
+<li>and <span class="math inline">\((1-\alpha_F/m)100\%\)</span> confidence intervals.</li>
 </ol>
 <div id="prostacyclin-example-2" class="section level3" number="4.4.1">
-<h3><span class="header-section-number">4.4.1</span> prostacyclin
-example</h3>
+<h3><span class="header-section-number">4.4.1</span> prostacyclin example</h3>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(prostacyclin, <span class="fu">pairwise.t.test</span>(prostac, dose, <span class="at">data =</span> prostacyclin, <span class="at">p.adjust.method =</span> <span class="st">&quot;bonferroni&quot;</span>))</span></code></pre></div>
 <pre><code>
     Pairwise comparisons using t tests with pooled SD 
@@ -1100,13 +932,9 @@ data:  prostac and dose
 
 P value adjustment method: bonferroni </code></pre>
 <ul>
-<li>The conclusions remain similar, except that the FWER is now
-controlled at <span class="math inline">\(\alpha_F=5\%\)</span> and that
-the <span class="math inline">\(\tilde{p}\)</span>-values are larger
-with a factor 3.</li>
+<li>The conclusions remain similar, except that the FWER is now controlled at <span class="math inline">\(\alpha_F=5\%\)</span> and that the <span class="math inline">\(\tilde{p}\)</span>-values are larger with a factor 3.</li>
 </ul>
-<p>The same analysis can be conducted in the <code>multcomp</code> R
-package that is developed for multiple testing in linear models.</p>
+<p>The same analysis can be conducted in the <code>multcomp</code> R package that is developed for multiple testing in linear models.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>model1.mcp <span class="ot">&lt;-</span> <span class="fu">glht</span>(model1, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">dose =</span> <span class="st">&quot;Tukey&quot;</span>))</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1.mcp, <span class="at">test =</span> <span class="fu">adjusted</span>(<span class="st">&quot;bonferroni&quot;</span>))</span></code></pre></div>
@@ -1126,14 +954,10 @@ Linear Hypotheses:
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 (Adjusted p values reported -- bonferroni method)</code></pre>
-<p>Note, that the user has to define custum functions to obtain
-Bonferonni adjusted confidence intervals.</p>
+<p>Note, that the user has to define custum functions to obtain Bonferonni adjusted confidence intervals.</p>
 <ul>
-<li><p>Bonferonni confidence intervals are not implemented because
-better methods exist for multiple testing.</p></li>
-<li><p>The function below is added here merely for completeness, but we
-will generally use the default method for multiple testing in
-multcomp.</p></li>
+<li><p>Bonferonni confidence intervals are not implemented because better methods exist for multiple testing.</p></li>
+<li><p>The function below is added here merely for completeness, but we will generally use the default method for multiple testing in multcomp.</p></li>
 </ul>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>calpha_bon_t <span class="ot">&lt;-</span> <span class="cf">function</span>(object, level) {</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abs</span>(</span>
@@ -1162,10 +986,8 @@ Linear Hypotheses:
 50 - 10 == 0  43.2583  21.3210  65.1957
 50 - 25 == 0  35.0000  13.0626  56.9374</code></pre>
 </div>
-<div id="evaluate-bonferroni-method-via-simulation"
-class="section level3" number="4.4.2">
-<h3><span class="header-section-number">4.4.2</span> Evaluate Bonferroni
-method via simulation</h3>
+<div id="evaluate-bonferroni-method-via-simulation" class="section level3" number="4.4.2">
+<h3><span class="header-section-number">4.4.2</span> Evaluate Bonferroni method via simulation</h3>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="co"># number of treatments (g=3)</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ni <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># number of observations in each group</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> g <span class="sc">*</span> ni <span class="co"># totaal number observation</span></span>
@@ -1185,12 +1007,8 @@ method via simulation</h3>
 <pre><code>[1] 0.0457</code></pre>
 <ul>
 <li><p>We find an FWER of 4.6%, which is slightly conservative.</p></li>
-<li><p>For simulations of <span class="math inline">\(g=5\)</span> group
-the FWER is <span class="math inline">\(4.1\%\)</span> (more
-conservative).</p></li>
-<li><p>By using Bonferroni the probability on at least one false
-positive result is lower than <span class="math inline">\(&lt;
-\alpha_F\)</span>.</p></li>
+<li><p>For simulations of <span class="math inline">\(g=5\)</span> group the FWER is <span class="math inline">\(4.1\%\)</span> (more conservative).</p></li>
+<li><p>By using Bonferroni the probability on at least one false positive result is lower than <span class="math inline">\(&lt; \alpha_F\)</span>.</p></li>
 <li><p>Power loss because the real FWER is smaller than 5%</p></li>
 </ul>
 </div>
@@ -1199,12 +1017,9 @@ positive result is lower than <span class="math inline">\(&lt;
 <h2><span class="header-section-number">4.5</span> Tukey Method</h2>
 <ul>
 <li><p>Less conservatieve</p></li>
-<li><p>Implementation approximates the null distribution of posthoc
-tests via simulations</p></li>
-<li><p>Results can change slightly if the posthoc analysis is
-repeated</p></li>
-<li><p>Details on the method falls outside the scope of the short
-course</p></li>
+<li><p>Implementation approximates the null distribution of posthoc tests via simulations</p></li>
+<li><p>Results can change slightly if the posthoc analysis is repeated</p></li>
+<li><p>Details on the method falls outside the scope of the short course</p></li>
 <li><p>Is the default method in the multcomp package:</p>
 <ul>
 <li>adjusted p-values</li>
@@ -1212,8 +1027,7 @@ course</p></li>
 </ul></li>
 </ul>
 <div id="captopril-example" class="section level3" number="4.5.1">
-<h3><span class="header-section-number">4.5.1</span> Captopril
-example</h3>
+<h3><span class="header-section-number">4.5.1</span> Captopril example</h3>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>model1.mcp <span class="ot">&lt;-</span> <span class="fu">glht</span>(model1, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">dose =</span> <span class="st">&quot;Tukey&quot;</span>))</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1.mcp)</span></code></pre></div>
 <pre><code>
@@ -1275,18 +1089,14 @@ Linear Hypotheses:
 </div>
 </div>
 </div>
-<div id="conclusions-prostacyclin-example" class="section level1"
-number="5">
-<h1><span class="header-section-number">5</span> Conclusions:
-Prostacyclin example</h1>
+<div id="conclusions-prostacyclin-example" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Conclusions: Prostacyclin example</h1>
 <p>Entire analysis for prostacyclin example</p>
 <ol style="list-style-type: decimal">
-<li><p>Anova before posthoc tests: F-test has a higher power than
-pairwise t-test</p>
+<li><p>Anova before posthoc tests: F-test has a higher power than pairwise t-test</p>
 <ul>
 <li>F-test uses all data</li>
-<li>For F-test we do not need to correct for multiple testing: one test
-is conducted for the general omnibus hypothesis</li>
+<li>For F-test we do not need to correct for multiple testing: one test is conducted for the general omnibus hypothesis</li>
 </ul></li>
 </ol>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(prostac <span class="sc">~</span> dose, <span class="at">data =</span> prostacyclin)</span>
@@ -1333,19 +1143,9 @@ Linear Hypotheses:
 50 - 10 == 0  43.2583  21.9264  64.5902
 50 - 25 == 0  35.0000  13.6681  56.3319</code></pre>
 <ul>
-<li>There is an extreme significant effect of arachidonic acid on the
-average prostacyclin blood concentration in rats (<span
-class="math inline">\(p&lt;0.001\)</span>). The average prostacyclin
-concentration is higher in the high dose group than in the low and
-moderate dose group (both p-values are smaller than <span
-class="math inline">\(p&lt;0.001\)</span>).</li>
-<li>The average concentration in the high dose group is 43.3ng/ml (95%
-CI [21.9,64.6]ng/ml) and 35ng/ml (95% BI [13.6,56.4]ng/ml) higher than
-in the low and middle dose group, respectively.</li>
-<li>The difference in average prostacyclin concentration between the
-moderate and low dose group is not significant (p=0.61). (All p-values
-and confidence intervals for post-hoc tests are corrected for multiple
-testing using the Tukey method).</li>
+<li>There is an extreme significant effect of arachidonic acid on the average prostacyclin blood concentration in rats (<span class="math inline">\(p&lt;0.001\)</span>). The average prostacyclin concentration is higher in the high dose group than in the low and moderate dose group (both p-values are smaller than <span class="math inline">\(p&lt;0.001\)</span>).</li>
+<li>The average concentration in the high dose group is 43.3ng/ml (95% CI [21.9,64.6]ng/ml) and 35ng/ml (95% BI [13.6,56.4]ng/ml) higher than in the low and middle dose group, respectively.</li>
+<li>The difference in average prostacyclin concentration between the moderate and low dose group is not significant (p=0.61). (All p-values and confidence intervals for post-hoc tests are corrected for multiple testing using the Tukey method).</li>
 </ul>
 </div>
 

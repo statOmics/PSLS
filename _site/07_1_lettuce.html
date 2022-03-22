@@ -549,51 +549,28 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 7.1: ANOVA on the lettuce
-dataset</h1>
+<h1 class="title toc-ignore">Exercise 7.1: ANOVA on the lettuce dataset</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="background" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Background</h1>
-<p>In agriculture, it is important to have a high yield of crops. For
-lettuce plants, plants with many leaves are known to be preferred by the
-consumers.</p>
-<p>One way to increase the number of leaves (or better, total leaf
-weight) is by using a fertilizer. Recently, there has been a tendency to
-rely more on natural fertilizers, such as compost. Near Ghent, the
-institute of research for agriculture and fishery is testing new,
-natural fertilization methods. One of these new fertilizers is called
-biochar. Biochar is a residual product from pyrolysis, a process in
-which biomass is burned under specific conditions (such as high
-pressure) in order to produce energy. Biochar is similar to charcoal,
-but has some very useful properties, such as retaining water in the
-soil. It also has a positive influence on the soil microbiome.</p>
+<p>In agriculture, it is important to have a high yield of crops. For lettuce plants, plants with many leaves are known to be preferred by the consumers.</p>
+<p>One way to increase the number of leaves (or better, total leaf weight) is by using a fertilizer. Recently, there has been a tendency to rely more on natural fertilizers, such as compost. Near Ghent, the institute of research for agriculture and fishery is testing new, natural fertilization methods. One of these new fertilizers is called biochar. Biochar is a residual product from pyrolysis, a process in which biomass is burned under specific conditions (such as high pressure) in order to produce energy. Biochar is similar to charcoal, but has some very useful properties, such as retaining water in the soil. It also has a positive influence on the soil microbiome.</p>
 </div>
 <div id="the-lettuce-dataset" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> The lettuce
-dataset</h1>
-<p>The researchers hypothesize that biochar, compost and a combination
-of both biochar and compost can have a different influence on the growth
-of lettuce plants. To this end, they grew up lettuce plants in a
-greenhouse. The pots were filled with one of four soil types;</p>
+<h1><span class="header-section-number">2</span> The lettuce dataset</h1>
+<p>The researchers hypothesize that biochar, compost and a combination of both biochar and compost can have a different influence on the growth of lettuce plants. To this end, they grew up lettuce plants in a greenhouse. The pots were filled with one of four soil types;</p>
 <ol style="list-style-type: decimal">
 <li>Soil only (control)</li>
 <li>Soil supplemented with biochar (refoak)</li>
 <li>Soil supplemented with compost (compost)</li>
 <li>Soil supplemented with both biochar and compost (cobc)</li>
 </ol>
-<p>The dataset <code>freshweight_lettuce.txt</code> contains the
-freshweight (in grams) for 28 lettuce plants (7 per condition). The
-researchers want to use an ANOVA test to assess if the treatments have a
-different effect on the growth of lettuce plants. If so, they will use a
-post-hoc test (Tuckey test) to discover which specific treatments have
-an effect.</p>
+<p>The dataset <code>freshweight_lettuce.txt</code> contains the freshweight (in grams) for 28 lettuce plants (7 per condition). The researchers want to use an ANOVA test to assess if the treatments have a different effect on the growth of lettuce plants. If so, they will use a post-hoc test (Tuckey test) to discover which specific treatments have an effect.</p>
 <p>Load the required libraries</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code></pre></div>
@@ -602,7 +579,7 @@ an effect.</p>
 <h1><span class="header-section-number">3</span> Data import</h1>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>lettuce <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/freshweight_lettuce.txt&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 28 Columns: 3
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (1): treatment
 ## dbl (2): id, freshweight
@@ -613,9 +590,9 @@ an effect.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(lettuce)</span></code></pre></div>
 <pre><code>## Rows: 28
 ## Columns: 3
-## $ id          &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,…
-## $ treatment   &lt;chr&gt; &quot;control&quot;, &quot;control&quot;, &quot;control&quot;, &quot;control&quot;, &quot;control&quot;, &quot;control&quot;, &quot;control&quot;, &quot;compost&quot;, &quot;compost&quot;,…
-## $ freshweight &lt;dbl&gt; 38, 34, 41, 43, 43, 29, 38, 59, 64, 57, 56, 50, 64, 62, 38, 34, 30, 42, 35, 36, 38, 57, 49, 52, 43…</code></pre>
+## $ id          &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,…
+## $ treatment   &lt;chr&gt; &quot;control&quot;, &quot;control&quot;, &quot;control&quot;, &quot;control&quot;, &quot;control&quot;, &quot;co…
+## $ freshweight &lt;dbl&gt; 38, 34, 41, 43, 43, 29, 38, 59, 64, 57, 56, 50, 64, 62, 38…</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## treatment to factor</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>lettuce <span class="ot">&lt;-</span> lettuce <span class="sc">%&gt;%</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">treatment =</span> <span class="fu">as.factor</span>(treatment))</span></code></pre></div>
@@ -635,21 +612,15 @@ an effect.</p>
 <p>Interpret the boxplots!</p>
 </div>
 <div id="questions-and-assignments" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Questions and
-assignments</h1>
+<h1><span class="header-section-number">5</span> Questions and assignments</h1>
 <ol style="list-style-type: decimal">
 <li>How will you model the data.</li>
 <li>Translate the research question into parameters of the model.</li>
 <li>Check the assumptions.</li>
 <li>If the assumptions are fulfilled you can fit model</li>
-<li>Further assess differences between the treatments in a post-hoc
-analysis if applicable.</li>
-<li>Question: can we extrapolate these results to another leaf
-vegetable, for instance, spinache?</li>
-<li>Question: Imaagine that all of the control and refoak plants were
-grown in 1 greenhouse and the other two conditions were grown in another
-greenhouse? How would this affect the model assumptions of linear
-ANOVA?</li>
+<li>Further assess differences between the treatments in a post-hoc analysis if applicable.</li>
+<li>Question: can we extrapolate these results to another leaf vegetable, for instance, spinache?</li>
+<li>Question: Imaagine that all of the control and refoak plants were grown in 1 greenhouse and the other two conditions were grown in another greenhouse? How would this affect the model assumptions of linear ANOVA?</li>
 </ol>
 </div>
 

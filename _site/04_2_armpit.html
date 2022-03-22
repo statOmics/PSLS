@@ -549,45 +549,31 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 4.2: Exploring the armpit
-dataset</h1>
+<h1 class="title toc-ignore">Exercise 4.2: Exploring the armpit dataset</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <p>In this exercise, we will explore the “smelly armpit” dataset.</p>
 <div id="smelly-armpit-dataset" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Smelly armpit
-dataset</h1>
-<p>Smelly armpits are not caused by sweat, itself. The smell is caused
-by specific micro-organisms belonging to the group of
-<em>Corynebacterium spp.</em> that metabolise sweat. Another group of
-abundant bacteria are the <em>Staphylococcus spp.</em>, these bacteria
-do not metabolise sweat in smelly compounds.</p>
-<p>The CMET-group at Ghent University does research to on transplanting
-the armpit microbiome to save people with smelly armpits.</p>
+<h1><span class="header-section-number">1</span> Smelly armpit dataset</h1>
+<p>Smelly armpits are not caused by sweat, itself. The smell is caused by specific micro-organisms belonging to the group of <em>Corynebacterium spp.</em> that metabolise sweat. Another group of abundant bacteria are the <em>Staphylococcus spp.</em>, these bacteria do not metabolise sweat in smelly compounds.</p>
+<p>The CMET-group at Ghent University does research to on transplanting the armpit microbiome to save people with smelly armpits.</p>
 <ul>
 <li><p>Proposed Therapy:</p>
 <ol style="list-style-type: decimal">
 <li>Remove armpit-microbiome with antibiotics</li>
-<li>Influence armpit microbiome with microbial transplant, see this 2
-minute talk on <a href="https://youtu.be/9RIFyqLXdVw">youtube</a></li>
+<li>Influence armpit microbiome with microbial transplant, see this 2 minute talk on <a href="https://youtu.be/9RIFyqLXdVw">youtube</a></li>
 </ol></li>
 <li><p>Experiment:</p>
 <ul>
-<li>20 students with smelly armpits are attributed to one of two
-treatment groups</li>
+<li>20 students with smelly armpits are attributed to one of two treatment groups</li>
 <li>placebo (only antibiotics)</li>
 <li>transplant (antibiotica followed by microbial transplant).</li>
 <li>The microbiome is sampled 6 weeks upon the treatment</li>
-<li>The relative abundance of <em>Staphylococcus spp.</em> on
-<em>Corynebacterium spp.</em> + <em>Staphylococcus spp.</em> in the
-microbiome is measured via DGGE (<em>Denaturing Gradient Gel
-Electrophoresis</em>).</li>
+<li>The relative abundance of <em>Staphylococcus spp.</em> on <em>Corynebacterium spp.</em> + <em>Staphylococcus spp.</em> in the microbiome is measured via DGGE (<em>Denaturing Gradient Gel Electrophoresis</em>).</li>
 </ul></li>
 </ul>
 <p>Load the libraries</p>
@@ -600,69 +586,40 @@ Electrophoresis</em>).</li>
 </div>
 <div id="goal" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Goal</h1>
-<p>The overarching goal of this study was to assess if the relative
-abundance <em>Staphylococcus spp.</em> in the microbiome of the armpit
-is affected by transplanting the microbiome. To this end, the
-researchers randomized patients to two treatments: A treatment with
-antibiotics only and a treatment with antibiotics and a microbial
-transplant.</p>
-<p>In the tutorial on hypotheses testing we will use a formal
-statistical test to generalize the results from the sample to that of
-the population. For this test to be valid, we have to assess following
-assumptions:</p>
+<p>The overarching goal of this study was to assess if the relative abundance <em>Staphylococcus spp.</em> in the microbiome of the armpit is affected by transplanting the microbiome. To this end, the researchers randomized patients to two treatments: A treatment with antibiotics only and a treatment with antibiotics and a microbial transplant.</p>
+<p>In the tutorial on hypotheses testing we will use a formal statistical test to generalize the results from the sample to that of the population. For this test to be valid, we have to assess following assumptions:</p>
 <ol style="list-style-type: decimal">
-<li><p>The data in each treatment group is normally
-distributed.</p></li>
-<li><p>The data from the two treatment groups has the same
-variance.</p></li>
+<li><p>The data in each treatment group is normally distributed.</p></li>
+<li><p>The data from the two treatment groups has the same variance.</p></li>
 </ol>
-<p>A statistical analysis always starts with a exploratory data analysis
-to get insight in the nature and distribution of the data, and to assess
-the assumptions of the downstream data analysis. Mastering this data
-exploration step is the purpose of the current exercise</p>
+<p>A statistical analysis always starts with a exploratory data analysis to get insight in the nature and distribution of the data, and to assess the assumptions of the downstream data analysis. Mastering this data exploration step is the purpose of the current exercise</p>
 </div>
 <div id="data-visualization" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Data visualization</h1>
-<p>A crucial first step in a data analysis is to visualize and to
-explore the raw data.</p>
-<p>First, try to make a histogram of the data. Fill in the missing parts
-in the chunk of code below to get a good-looking visualization:</p>
+<p>A crucial first step in a data analysis is to visualize and to explore the raw data.</p>
+<p>First, try to make a histogram of the data. Fill in the missing parts in the chunk of code below to get a good-looking visualization:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ap <span class="sc">%&gt;%</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>...,<span class="at">fill=</span>...)) <span class="sc">+</span> <span class="do">## fill in the correct values for x and fill</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(...)) <span class="sc">+</span> <span class="do">## fill in to put the histograms for both treatment conditions in a separate row</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;relative abundance (%)&quot;</span>)</span></code></pre></div>
-<p>Based on this plot, it seems that the relative abundance is higher
-for subjects who had the transplants. However, given the small sample
-size the histograms are not optimally informative. A better option for
-these data would be to show the data in a <code>boxplot</code>:</p>
+<p>Based on this plot, it seems that the relative abundance is higher for subjects who had the transplants. However, given the small sample size the histograms are not optimally informative. A better option for these data would be to show the data in a <code>boxplot</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ap <span class="sc">%&gt;%</span>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>...,<span class="at">y=</span>...,<span class="at">fill=</span>...)) <span class="sc">+</span></span></code></pre></div>
 <p>What do you observe?</p>
 </div>
 <div id="descriptive-statistics" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Descriptive
-statistics</h1>
-<p>Here, we will generate some informative descriptive statistics for
-the dataset.</p>
-<p>We first summarize the data and calculate the mean, standard
-deviation, number of observations and standard error and store the
-result in an object apRelSum via ’apRelSum&lt;-`</p>
+<h1><span class="header-section-number">5</span> Descriptive statistics</h1>
+<p>Here, we will generate some informative descriptive statistics for the dataset.</p>
+<p>We first summarize the data and calculate the mean, standard deviation, number of observations and standard error and store the result in an object apRelSum via ’apRelSum&lt;-`</p>
 <ol style="list-style-type: decimal">
-<li>We pipe the <code>ap</code> dataframe to the group_by function to
-group the data by treatment trt <code>group_by(trt)</code></li>
-<li>We pipe the result to the <code>summarize_at</code> function to
-summarize the “rel” variable and calculate the mean, standard deviation
-and the number of observations</li>
-<li>We pipe the result to the <code>mutate</code> function to make a new
-variable in the data frame that is named <code>se</code> for which we
-calculate the standard error</li>
+<li>We pipe the <code>ap</code> dataframe to the group_by function to group the data by treatment trt <code>group_by(trt)</code></li>
+<li>We pipe the result to the <code>summarize_at</code> function to summarize the “rel” variable and calculate the mean, standard deviation and the number of observations</li>
+<li>We pipe the result to the <code>mutate</code> function to make a new variable in the data frame that is named <code>se</code> for which we calculate the standard error</li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Use the instructions from above to generate the summary statistics</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
-<p>This concludes the data exploration. Tomorrow, we will learn how to
-formally test if the observed difference is <strong>statistically
-significant</strong>.</p>
+<p>This concludes the data exploration. Tomorrow, we will learn how to formally test if the observed difference is <strong>statistically significant</strong>.</p>
 </div>
 
 <div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgNC4yOiBFeHBsb3JpbmcgdGhlIGFybXBpdCBkYXRhc2V0IgphdXRob3I6ICJMaWV2ZW4gQ2xlbWVudCBhbmQgSmVyb2VuIEdpbGlzIgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgotLS0KCkluIHRoaXMgZXhlcmNpc2UsIHdlIHdpbGwgZXhwbG9yZSB0aGUgInNtZWxseSBhcm1waXQiIGRhdGFzZXQuCgojIFNtZWxseSBhcm1waXQgZGF0YXNldAoKU21lbGx5IGFybXBpdHMgYXJlIG5vdCBjYXVzZWQgYnkgc3dlYXQsIGl0c2VsZi4gVGhlIHNtZWxsIGlzIGNhdXNlZApieSBzcGVjaWZpYyBtaWNyby1vcmdhbmlzbXMgYmVsb25naW5nIHRvIHRoZSBncm91cCBvZgoqQ29yeW5lYmFjdGVyaXVtIHNwcC4qIHRoYXQgbWV0YWJvbGlzZSBzd2VhdC4gQW5vdGhlciBncm91cCBvZiBhYnVuZGFudCBiYWN0ZXJpYQphcmUgdGhlICpTdGFwaHlsb2NvY2N1cyBzcHAuKiwgdGhlc2UgYmFjdGVyaWEgZG8gbm90IG1ldGFib2xpc2Ugc3dlYXQgaW4gc21lbGx5CmNvbXBvdW5kcy4KClRoZSBDTUVULWdyb3VwIGF0IEdoZW50IFVuaXZlcnNpdHkgZG9lcyByZXNlYXJjaCB0byBvbiB0cmFuc3BsYW50aW5nIHRoZSBhcm1waXQKbWljcm9iaW9tZSB0byBzYXZlIHBlb3BsZSB3aXRoIHNtZWxseSBhcm1waXRzLgoKLSBQcm9wb3NlZCBUaGVyYXB5OgogIAkxLiBSZW1vdmUgYXJtcGl0LW1pY3JvYmlvbWUgd2l0aCBhbnRpYmlvdGljcwogICAgMi4gSW5mbHVlbmNlIGFybXBpdCBtaWNyb2Jpb21lIHdpdGggbWljcm9iaWFsIHRyYW5zcGxhbnQsIHNlZSB0aGlzIDIgbWludXRlCiAgICAgICB0YWxrIG9uIFt5b3V0dWJlXShodHRwczovL3lvdXR1LmJlLzlSSUZ5cUxYZFZ3KQoKLSBFeHBlcmltZW50OgoKICAgIC0gMjAgc3R1ZGVudHMgd2l0aCBzbWVsbHkgYXJtcGl0cyBhcmUgYXR0cmlidXRlZCB0byBvbmUgb2YKICAgICAgdHdvIHRyZWF0bWVudCBncm91cHMKICAgIC0gcGxhY2VibyAob25seSBhbnRpYmlvdGljcykKICAgIC0gdHJhbnNwbGFudCAoYW50aWJpb3RpY2EgZm9sbG93ZWQgYnkgbWljcm9iaWFsIHRyYW5zcGxhbnQpLgogICAgLSBUaGUgbWljcm9iaW9tZSBpcyBzYW1wbGVkIDYgd2Vla3MgdXBvbiB0aGUgdHJlYXRtZW50CiAgICAtIFRoZSByZWxhdGl2ZSBhYnVuZGFuY2Ugb2YgKlN0YXBoeWxvY29jY3VzIHNwcC4qIG9uCiAgICAgICpDb3J5bmViYWN0ZXJpdW0gc3BwLiogKyAqU3RhcGh5bG9jb2NjdXMgc3BwLiogaW4gdGhlCiAgICAgIG1pY3JvYmlvbWUgaXMgbWVhc3VyZWQgdmlhIERHR0UgKCpEZW5hdHVyaW5nIEdyYWRpZW50IEdlbAogICAgICBFbGVjdHJvcGhvcmVzaXMqKS4KCkxvYWQgdGhlIGxpYnJhcmllcwoKYGBge3IsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKCiMgSW1wb3J0IHRoZSBkYXRhc2V0CgpgYGB7ciwgZXZhbD1GQUxTRX0KYXAgPC0KYGBgCgpgYGB7ciwgZXZhbD1GQUxTRX0KZ2xpbXBzZShhcCkKYGBgCgojIEdvYWwKClRoZSBvdmVyYXJjaGluZyBnb2FsIG9mIHRoaXMgc3R1ZHkgd2FzIHRvIGFzc2VzcyBpZiB0aGUgcmVsYXRpdmUgYWJ1bmRhbmNlCipTdGFwaHlsb2NvY2N1cyBzcHAuKiBpbiB0aGUgbWljcm9iaW9tZSBvZiB0aGUgYXJtcGl0IGlzIGFmZmVjdGVkIGJ5CnRyYW5zcGxhbnRpbmcgdGhlIG1pY3JvYmlvbWUuIFRvIHRoaXMgZW5kLCB0aGUgcmVzZWFyY2hlcnMgcmFuZG9taXplZCBwYXRpZW50cwp0byB0d28gdHJlYXRtZW50czogQSB0cmVhdG1lbnQgd2l0aCBhbnRpYmlvdGljcyBvbmx5IGFuZCBhIHRyZWF0bWVudCB3aXRoCmFudGliaW90aWNzIGFuZCBhIG1pY3JvYmlhbCB0cmFuc3BsYW50LgoKSW4gdGhlIHR1dG9yaWFsIG9uIGh5cG90aGVzZXMgdGVzdGluZyB3ZSB3aWxsIHVzZSBhIGZvcm1hbCBzdGF0aXN0aWNhbCB0ZXN0IHRvCmdlbmVyYWxpemUgdGhlIHJlc3VsdHMgZnJvbSB0aGUgc2FtcGxlIHRvIHRoYXQgb2YgdGhlIHBvcHVsYXRpb24uCkZvciB0aGlzIHRlc3QgdG8gYmUgdmFsaWQsIHdlIGhhdmUgdG8gYXNzZXNzIGZvbGxvd2luZyBhc3N1bXB0aW9uczoKCjEuIFRoZSBkYXRhIGluIGVhY2ggdHJlYXRtZW50IGdyb3VwIGlzIG5vcm1hbGx5IGRpc3RyaWJ1dGVkLgoKMi4gVGhlIGRhdGEgZnJvbSB0aGUgdHdvIHRyZWF0bWVudCBncm91cHMgaGFzIHRoZSBzYW1lIHZhcmlhbmNlLgoKQSBzdGF0aXN0aWNhbCBhbmFseXNpcyBhbHdheXMgc3RhcnRzIHdpdGggYSBleHBsb3JhdG9yeSBkYXRhIGFuYWx5c2lzIHRvIGdldAppbnNpZ2h0IGluIHRoZSBuYXR1cmUgYW5kIGRpc3RyaWJ1dGlvbiBvZiB0aGUgZGF0YSwgYW5kIHRvIGFzc2VzcyB0aGUKYXNzdW1wdGlvbnMgb2YgdGhlIGRvd25zdHJlYW0gZGF0YSBhbmFseXNpcy4gTWFzdGVyaW5nIHRoaXMgZGF0YSBleHBsb3JhdGlvbgpzdGVwIGlzIHRoZSBwdXJwb3NlIG9mIHRoZSBjdXJyZW50IGV4ZXJjaXNlCgojIERhdGEgdmlzdWFsaXphdGlvbgoKQSBjcnVjaWFsIGZpcnN0IHN0ZXAgaW4gYSBkYXRhIGFuYWx5c2lzIGlzIHRvIHZpc3VhbGl6ZSBhbmQgdG8gZXhwbG9yZSB0aGUgcmF3CmRhdGEuCgpGaXJzdCwgdHJ5IHRvIG1ha2UgYSBoaXN0b2dyYW0gb2YgdGhlIGRhdGEuIEZpbGwgaW4gdGhlCm1pc3NpbmcgcGFydHMgaW4gdGhlIGNodW5rIG9mIGNvZGUgYmVsb3cgdG8gZ2V0IGEgZ29vZC1sb29raW5nCnZpc3VhbGl6YXRpb246CgpgYGB7ciwgZXZhbD1GQUxTRX0KYXAgJT4lCiAgZ2dwbG90KGFlcyh4PS4uLixmaWxsPS4uLikpICsgIyMgZmlsbCBpbiB0aGUgY29ycmVjdCB2YWx1ZXMgZm9yIHggYW5kIGZpbGwKICBnZW9tX2hpc3RvZ3JhbSgpICsKICBmYWNldF9ncmlkKHJvd3MgPSB2YXJzKC4uLikpICsgIyMgZmlsbCBpbiB0byBwdXQgdGhlIGhpc3RvZ3JhbXMgZm9yIGJvdGggdHJlYXRtZW50IGNvbmRpdGlvbnMgaW4gYSBzZXBhcmF0ZSByb3cKICB0aGVtZV9idygpICsKICB4bGFiKCJyZWxhdGl2ZSBhYnVuZGFuY2UgKCUpIikKYGBgCgpCYXNlZCBvbiB0aGlzIHBsb3QsIGl0IHNlZW1zIHRoYXQgdGhlIHJlbGF0aXZlIGFidW5kYW5jZQppcyBoaWdoZXIgZm9yIHN1YmplY3RzIHdobyBoYWQgdGhlIHRyYW5zcGxhbnRzLgpIb3dldmVyLCBnaXZlbiB0aGUgc21hbGwgc2FtcGxlIHNpemUgdGhlIGhpc3RvZ3JhbXMKYXJlIG5vdCBvcHRpbWFsbHkgaW5mb3JtYXRpdmUuIEEgYmV0dGVyIG9wdGlvbiBmb3IgdGhlc2UgZGF0YSB3b3VsZCBiZSB0bwpzaG93IHRoZSBkYXRhIGluIGEgYGJveHBsb3RgOgoKYGBge3IsIGV2YWw9RkFMU0V9CmFwICU+JSAgZ2dwbG90KGFlcyh4PS4uLix5PS4uLixmaWxsPS4uLikpICsKYGBgCgpXaGF0IGRvIHlvdSBvYnNlcnZlPwoKIyBEZXNjcmlwdGl2ZSBzdGF0aXN0aWNzCgpIZXJlLCB3ZSB3aWxsIGdlbmVyYXRlIHNvbWUgaW5mb3JtYXRpdmUgZGVzY3JpcHRpdmUgc3RhdGlzdGljcwpmb3IgdGhlIGRhdGFzZXQuCgpXZSBmaXJzdCBzdW1tYXJpemUgdGhlIGRhdGEgYW5kIGNhbGN1bGF0ZSB0aGUgbWVhbiwgc3RhbmRhcmQKZGV2aWF0aW9uLCBudW1iZXIgb2Ygb2JzZXJ2YXRpb25zIGFuZCBzdGFuZGFyZCBlcnJvciBhbmQgc3RvcmUgdGhlCnJlc3VsdCBpbiBhbiBvYmplY3QgYXBSZWxTdW0gdmlhICdhcFJlbFN1bTwtYAoKMS4gV2UgcGlwZSB0aGUgYGFwYCBkYXRhZnJhbWUgdG8gdGhlIGdyb3VwX2J5IGZ1bmN0aW9uIHRvIGdyb3VwCnRoZSBkYXRhIGJ5IHRyZWF0bWVudCB0cnQgYGdyb3VwX2J5KHRydClgCjIuIFdlIHBpcGUgdGhlIHJlc3VsdCB0byB0aGUgYHN1bW1hcml6ZV9hdGAgZnVuY3Rpb24gdG8gc3VtbWFyaXplCnRoZSAicmVsIiB2YXJpYWJsZSBhbmQgY2FsY3VsYXRlIHRoZSBtZWFuLCBzdGFuZGFyZCBkZXZpYXRpb24gYW5kCnRoZSBudW1iZXIgb2Ygb2JzZXJ2YXRpb25zCjMuIFdlIHBpcGUgdGhlIHJlc3VsdCB0byB0aGUgYG11dGF0ZWAgZnVuY3Rpb24gdG8gbWFrZSBhIG5ldwp2YXJpYWJsZSBpbiB0aGUgZGF0YSBmcmFtZSB0aGF0IGlzIG5hbWVkIGBzZWAgZm9yIHdoaWNoIHdlIGNhbGN1bGF0ZSB0aGUKc3RhbmRhcmQgZXJyb3IKCmBgYHtyLCBldmFsPUZBTFNFfQojIyBVc2UgdGhlIGluc3RydWN0aW9ucyBmcm9tIGFib3ZlIHRvIGdlbmVyYXRlIHRoZSBzdW1tYXJ5IHN0YXRpc3RpY3MKLi4uCmBgYAoKVGhpcyBjb25jbHVkZXMgdGhlIGRhdGEgZXhwbG9yYXRpb24uIFRvbW9ycm93LCB3ZSB3aWxsIGxlYXJuIGhvdyB0byBmb3JtYWxseQp0ZXN0IGlmIHRoZSBvYnNlcnZlZCBkaWZmZXJlbmNlIGlzICoqc3RhdGlzdGljYWxseSBzaWduaWZpY2FudCoqLgo=</div>

@@ -549,24 +549,16 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 4.3: Exploring the captopril
-dataset</h1>
+<h1 class="title toc-ignore">Exercise 4.3: Exploring the captopril dataset</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="the-captopril-dataset" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> The captopril
-dataset</h1>
-<p>The <code>captopril dataset</code> holds information on a small
-experiment with 15 patients that have increased blood pressure values.
-More specifically, for each patient we will have four values; one value
-for systolic blood pressure and one for diastolyic, both before and
-after treating the patient with a drug named captopril.</p>
+<h1><span class="header-section-number">1</span> The captopril dataset</h1>
+<p>The <code>captopril dataset</code> holds information on a small experiment with 15 patients that have increased blood pressure values. More specifically, for each patient we will have four values; one value for systolic blood pressure and one for diastolyic, both before and after treating the patient with a drug named captopril.</p>
 </div>
 <div id="import-the-data" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Import the data</h1>
@@ -577,21 +569,12 @@ after treating the patient with a drug named captopril.</p>
 </div>
 <div id="data-visualization" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Data visualization</h1>
-<p>Let’s say we now first want to visualize the data. One possibility to
-easily visualize the four types of blood pressure values is by adopting
-the <code>gather</code> function from tidyverse. It will reshape the
-dataframe, such that we have have a single variable <code>type</code>,
-which points at one of the four blood pressure types, and
-<code>bp</code>, which points at the actual value for each type for each
-patient.</p>
+<p>Let’s say we now first want to visualize the data. One possibility to easily visualize the four types of blood pressure values is by adopting the <code>gather</code> function from tidyverse. It will reshape the dataframe, such that we have have a single variable <code>type</code>, which points at one of the four blood pressure types, and <code>bp</code>, which points at the actual value for each type for each patient.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type, bp, <span class="sc">-</span>id)</span></code></pre></div>
 <div id="barplot" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Barplot</h2>
-<p>Not all visualization types will be equally informative. Let us first
-make a barplot of the data. A barplot is a plot that you will commonly
-find in scientific publication The code for generating such a barplot is
-provided below:</p>
+<p>Not all visualization types will be equally informative. Let us first make a barplot of the data. A barplot is a plot that you will commonly find in scientific publication The code for generating such a barplot is provided below:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type, bp, <span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span></span>
@@ -616,25 +599,15 @@ provided below:</p>
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean <span class="sc">-</span> se, <span class="at">ymax =</span> mean <span class="sc">+</span> se), <span class="at">width =</span> .<span class="dv">2</span>) <span class="sc">+</span></span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Barplot of different blood pressure measures&quot;</span>) <span class="sc">+</span></span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;blood pressure (mmHg)&quot;</span>)</span></code></pre></div>
-<p>A barplot, however, is not very informative. The height of the bars
-only provides us with information of the mean blood pressure. However,
-we don’t see the actual underlying values, so we for instance don’t have
-any information on the spread of the data. It is usually more
-informative to represent to underlying values as <em>raw</em> as
-possible. Note that it is possible to add the raw data on the barplot,
-but we still would not see any measures of the spread, such as the
-interquartile range.</p>
-<p><strong>Based on this critisism, can you think of a better</strong>
-<strong>visualization strategy for the captopril data?</strong></p>
+<p>A barplot, however, is not very informative. The height of the bars only provides us with information of the mean blood pressure. However, we don’t see the actual underlying values, so we for instance don’t have any information on the spread of the data. It is usually more informative to represent to underlying values as <em>raw</em> as possible. Note that it is possible to add the raw data on the barplot, but we still would not see any measures of the spread, such as the interquartile range.</p>
+<p><strong>Based on this critisism, can you think of a better</strong> <strong>visualization strategy for the captopril data?</strong></p>
 <p><strong>Add your proposed visualization strategy here</strong></p>
 </div>
 </div>
 <div id="descriptive-statistics" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Descriptive
-statistics</h1>
+<h1><span class="header-section-number">4</span> Descriptive statistics</h1>
 <ul>
-<li>Generate a code chunk to calculate useful summary statistics for the
-capropril data</li>
+<li>Generate a code chunk to calculate useful summary statistics for the capropril data</li>
 </ul>
 </div>
 

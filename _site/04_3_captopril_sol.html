@@ -549,24 +549,16 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 4.3: Exploring the captopril
-dataset</h1>
+<h1 class="title toc-ignore">Exercise 4.3: Exploring the captopril dataset</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="the-captopril-dataset" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> The captopril
-dataset</h1>
-<p>The <code>captopril dataset</code> holds information on a small
-experiment with 15 patients that have increased blood pressure values.
-More specifically, for each patient we will have four values; one value
-for systolic blood pressure and one for diastolyic, both before and
-after treating the patient with a drug named captopril.</p>
+<h1><span class="header-section-number">1</span> The captopril dataset</h1>
+<p>The <code>captopril dataset</code> holds information on a small experiment with 15 patients that have increased blood pressure values. More specifically, for each patient we will have four values; one value for systolic blood pressure and one for diastolyic, both before and after treating the patient with a drug named captopril.</p>
 </div>
 <div id="import-the-data" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Import the data</h1>
@@ -575,7 +567,7 @@ after treating the patient with a drug named captopril.</p>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 15 Columns: 5
-## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## dbl (5): id, SBPb, DBPb, SBPa, DBPa
 ## 
@@ -591,13 +583,7 @@ after treating the patient with a drug named captopril.</p>
 </div>
 <div id="data-visualization" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Data visualization</h1>
-<p>Let’s say we now first want to visualize the data. One possibility to
-easily visualize the four types of blood pressure values is by adopting
-the <code>gather</code> function from tidyverse. It will reshape the
-dataframe, such that we have have a single variable <code>type</code>,
-which points at one of the four blood pressure types, and
-<code>bp</code>, which points at the actual value for each type for each
-patient.</p>
+<p>Let’s say we now first want to visualize the data. One possibility to easily visualize the four types of blood pressure values is by adopting the <code>gather</code> function from tidyverse. It will reshape the dataframe, such that we have have a single variable <code>type</code>, which points at one of the four blood pressure types, and <code>bp</code>, which points at the actual value for each type for each patient.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type, bp, <span class="sc">-</span>id)</span></code></pre></div>
 <div data-pagedtable="false">
@@ -607,10 +593,7 @@ patient.</p>
 </div>
 <div id="barplot" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Barplot</h2>
-<p>Not all visualization types will be equally informative. Let us first
-make a barplot of the data. A barplot is a plot that you will commonly
-find in scientific publication The code for generating such a barplot is
-provided below:</p>
+<p>Not all visualization types will be equally informative. Let us first make a barplot of the data. A barplot is a plot that you will commonly find in scientific publication The code for generating such a barplot is provided below:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type, bp, <span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  Rmisc<span class="sc">::</span><span class="fu">summarySE</span>(<span class="at">measurevar =</span> <span class="st">&quot;bp&quot;</span>, <span class="at">groupvars =</span> <span class="st">&quot;type&quot;</span>) <span class="sc">%&gt;%</span></span>
@@ -622,25 +605,14 @@ provided below:</p>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Barplot of different blood pressure measures&quot;</span>) <span class="sc">+</span></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;blood pressure (mmHg)&quot;</span>)</span></code></pre></div>
 <p><img src="04_3_captopril_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>A barplot, however, is not very informative. The height of the bars
-only provides us with information of the mean blood pressure. However,
-we don’t see the actual underlying values, so we for instance don’t have
-any information on the spread of the data. It is usually more
-informative to represent to underlying values as <em>raw</em> as
-possible. Note that it is possible to add the raw data on the barplot,
-but we still would not see any measures of the spread, such as the
-interquartile range.</p>
-<p><strong>Based on this critisism, can you think of a better</strong>
-<strong>visualization strategy for the captopril data?</strong></p>
+<p>A barplot, however, is not very informative. The height of the bars only provides us with information of the mean blood pressure. However, we don’t see the actual underlying values, so we for instance don’t have any information on the spread of the data. It is usually more informative to represent to underlying values as <em>raw</em> as possible. Note that it is possible to add the raw data on the barplot, but we still would not see any measures of the spread, such as the interquartile range.</p>
+<p><strong>Based on this critisism, can you think of a better</strong> <strong>visualization strategy for the captopril data?</strong></p>
 <p><strong>Add your proposed visualization strategy here</strong></p>
 </div>
 <div id="boxplot" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Boxplot</h2>
-<p>It is usually more informative to represent to underlying values as
-<em>raw</em> as possible. Boxplots are ideal for this!</p>
-<p>Note that it in theory it is possible to add the raw data on the
-barplot, but we still would not see any measures of the spread, such as
-the interquartile range.</p>
+<p>It is usually more informative to represent to underlying values as <em>raw</em> as possible. Boxplots are ideal for this!</p>
+<p>Note that it in theory it is possible to add the raw data on the barplot, but we still would not see any measures of the spread, such as the interquartile range.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type, bp, <span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> type, <span class="at">y =</span> bp, <span class="at">fill =</span> type)) <span class="sc">+</span></span>
@@ -653,22 +625,12 @@ the interquartile range.</p>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">5</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;black&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: `fun.y` is deprecated. Use `fun` instead.</code></pre>
 <p><img src="04_3_captopril_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>With the boxplot, we get a lot of useful information. We immediately
-see multiple features of the spread of the data, such as the median, the
-25% and 75% quantiles and outliers. Since we only have 15 raw values
-(patients), we can easily add them to the plot without getting
-messy.</p>
-<p>In terms of interpretation, we can see that the median systolic and
-diastolic blood pressure values are lower after treatment with captopril
-than before. If we want to have visual inference on the mean values
-(cfr. class on t-test), we can add them to the plot
-<code>stat_summary</code> function.</p>
+<p>With the boxplot, we get a lot of useful information. We immediately see multiple features of the spread of the data, such as the median, the 25% and 75% quantiles and outliers. Since we only have 15 raw values (patients), we can easily add them to the plot without getting messy.</p>
+<p>In terms of interpretation, we can see that the median systolic and diastolic blood pressure values are lower after treatment with captopril than before. If we want to have visual inference on the mean values (cfr. class on t-test), we can add them to the plot <code>stat_summary</code> function.</p>
 </div>
 <div id="scatterplot" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Scatterplot</h2>
-<p>An important feature of this dataset is that it contains paired data;
-for each patient, we have blood pressure values (systolic and diastolic)
-before and after treatment with captopril.</p>
+<p>An important feature of this dataset is that it contains paired data; for each patient, we have blood pressure values (systolic and diastolic) before and after treatment with captopril.</p>
 <p>We can visualize this as follows;</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type, bp, <span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
@@ -686,8 +648,7 @@ before and after treatment with captopril.</p>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">group =</span> id)) <span class="sc">+</span></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
 <p><img src="04_3_captopril_sol_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>We see that for all patients, the systolic blood pressure is lower
-after captopril treatment than before.</p>
+<p>We see that for all patients, the systolic blood pressure is lower after captopril treatment than before.</p>
 <p>Note that we could not see this from the boxplot, directly;</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(type, bp, <span class="sc">-</span>id) <span class="sc">%&gt;%</span></span>
@@ -701,13 +662,8 @@ after captopril treatment than before.</p>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;blood pressure (mmHg)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">5</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;black&quot;</span>)</span></code></pre></div>
 <p><img src="04_3_captopril_sol_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>A typical next step is to perform a test to find out whether the mean
-systolic blood pressure value after captopril treatment is
-<em>significantly</em> different from the mean systolic blood pressure
-value before treatment.</p>
-<p>Analagously, we may subtract the <code>after</code> measurement from
-the <code>before</code> measurement, and test if the difference between
-the two sets of values is significantly different from zero.</p>
+<p>A typical next step is to perform a test to find out whether the mean systolic blood pressure value after captopril treatment is <em>significantly</em> different from the mean systolic blood pressure value before treatment.</p>
+<p>Analagously, we may subtract the <code>after</code> measurement from the <code>before</code> measurement, and test if the difference between the two sets of values is significantly different from zero.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>captopril <span class="sc">%&gt;%</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bp_diff =</span> SBPa <span class="sc">-</span> SBPb) <span class="sc">%&gt;%</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(bp_diff) <span class="sc">%&gt;%</span></span>
@@ -722,10 +678,7 @@ the two sets of values is significantly different from zero.</p>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="do">## adds horizontal line to plot</span></span></code></pre></div>
 <pre><code>## Warning: `fun.y` is deprecated. Use `fun` instead.</code></pre>
 <p><img src="04_3_captopril_sol_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>The mean difference is lower than zero. It seems that on average the
-captopril treatment has lowered the blood pressure by about 20 mmHg.
-Tomorrow, we will show how we can test if this reduction is
-significantly different from 0 mmHg.</p>
+<p>The mean difference is lower than zero. It seems that on average the captopril treatment has lowered the blood pressure by about 20 mmHg. Tomorrow, we will show how we can test if this reduction is significantly different from 0 mmHg.</p>
 </div>
 </div>
 

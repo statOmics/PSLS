@@ -549,12 +549,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">8.4. Multiple Regression: KPNA2 example -
-solution</h1>
+<h1 class="title toc-ignore">8.4. Multiple Regression: KPNA2 example - solution</h1>
 <h4 class="author">Lieven Clement</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
@@ -562,23 +559,14 @@ class="uri">https://statomics.github.io</a>)</h4>
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
 <div id="background" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Background</h1>
-<p>Histologic grade in breast cancer provides clinically important
-prognostic information. Researchers examined whether histologic grade
-was associated with gene expression profiles of breast cancers and
-whether such profiles could be used to improve histologic grading. In
-this tutorial we will assess the association between histologic grade
-and the expression of the KPNA2 gene that is known to be associated with
-poor BC prognosis. The patients, however, do not only differ in the
-histologic grade, but also on their lymph node status. The lymph nodes
-were not affected (0) or surgically removed (1).</p>
+<p>Histologic grade in breast cancer provides clinically important prognostic information. Researchers examined whether histologic grade was associated with gene expression profiles of breast cancers and whether such profiles could be used to improve histologic grading. In this tutorial we will assess the association between histologic grade and the expression of the KPNA2 gene that is known to be associated with poor BC prognosis. The patients, however, do not only differ in the histologic grade, but also on their lymph node status. The lymph nodes were not affected (0) or surgically removed (1).</p>
 <p>Load libraries</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 </div>
 <div id="data-analysis" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Data analysis</h1>
 <div id="import-kpna2-data-in-r" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> Import KPNA2 data in
-R</h2>
+<h2><span class="header-section-number">2.1</span> Import KPNA2 data in R</h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>kpna2 <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt&quot;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>kpna2</span></code></pre></div>
 <div data-pagedtable="false">
@@ -587,20 +575,14 @@ R</h2>
   </script>
 </div>
 </div>
-<div id="transform-the-variable-grade-and-node-to-a-factor"
-class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> Transform the
-variable grade and node to a factor</h2>
+<div id="transform-the-variable-grade-and-node-to-a-factor" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Transform the variable grade and node to a factor</h2>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>kpna2<span class="sc">$</span>grade <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(kpna2<span class="sc">$</span>grade)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>kpna2<span class="sc">$</span>node <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(kpna2<span class="sc">$</span>node)</span></code></pre></div>
 </div>
 <div id="data-exploration" class="section level2" number="2.3">
 <h2><span class="header-section-number">2.3</span> Data exploration</h2>
-<p>Histologic grade and lymph node status can be associated with the
-kpna2 gene expression. Moreover, it is also possible that the
-differential expression associated with histological grade is different
-in patients that have unaffected lymph nodes and patients for which the
-lymph nodes had to be removed.</p>
+<p>Histologic grade and lymph node status can be associated with the kpna2 gene expression. Moreover, it is also possible that the differential expression associated with histological grade is different in patients that have unaffected lymph nodes and patients for which the lymph nodes had to be removed.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>kpna2 <span class="sc">%&gt;%</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> node<span class="sc">:</span>grade, <span class="at">y =</span> gene, <span class="at">fill =</span> node<span class="sc">:</span>grade)) <span class="sc">+</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
@@ -610,35 +592,25 @@ lymph nodes had to be removed.</p>
 <ul>
 <li>An effect of the histological grade</li>
 <li>An effect of node status</li>
-<li>The differential expression associated to grade seems to differ
-according to the lymph node status (interaction)</li>
+<li>The differential expression associated to grade seems to differ according to the lymph node status (interaction)</li>
 <li>Mean variance relation?</li>
 </ul>
 </div>
 <div id="model" class="section level2" number="2.4">
 <h2><span class="header-section-number">2.4</span> Model</h2>
-<p>Histologic grade and lymph node status can be associated with the
-kpna2 gene expression. Moreover, it is also possible that the
-differential expression associated with histological grade is different
-in patients that have unaffected lymph nodes and patients for which the
-lymph nodes had to be removed. Hence, we will have to model the gene
-expression by using main effects for grade, node and a grade x node
-interaction.</p>
+<p>Histologic grade and lymph node status can be associated with the kpna2 gene expression. Moreover, it is also possible that the differential expression associated with histological grade is different in patients that have unaffected lymph nodes and patients for which the lymph nodes had to be removed. Hence, we will have to model the gene expression by using main effects for grade, node and a grade x node interaction.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model with main effects for histological grade and node and grade x node interaction</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(gene <span class="sc">~</span> grade <span class="sc">*</span> node, <span class="at">data =</span> kpna2)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit)</span></code></pre></div>
 <p><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-5-2.png" width="672" /><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-5-3.png" width="672" /><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-5-4.png" width="672" /></p>
-<p>The variance seems to increase with the mean. The QQ-plot of the
-residuals shows deviations from normality or some outliers.</p>
+<p>The variance seems to increase with the mean. The QQ-plot of the residuals shows deviations from normality or some outliers.</p>
 <p>We will first log transform the data.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(gene <span class="sc">%&gt;%</span> <span class="fu">log2</span>() <span class="sc">~</span> grade <span class="sc">*</span> node, <span class="at">data =</span> kpna2)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit)</span></code></pre></div>
 <p><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-6-2.png" width="672" /><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-6-3.png" width="672" /><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-6-4.png" width="672" /></p>
 <ul>
-<li>The variance is now more or less equal for every treatment x node
-combination.</li>
-<li>The QQ-plot of the residuals shows no deviations from
-normality.</li>
+<li>The variance is now more or less equal for every treatment x node combination.</li>
+<li>The QQ-plot of the residuals shows no deviations from normality.</li>
 </ul>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(fit, <span class="at">type =</span> <span class="st">&quot;III&quot;</span>)</span></code></pre></div>
@@ -647,41 +619,19 @@ normality.</li>
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sum Sq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"335.6676323","2":"1","3":"3351.610907","4":"9.530118e-24","_rn_":"(Intercept)"},{"1":"8.3420526","2":"1","3":"83.294639","4":"1.437549e-08","_rn_":"grade"},{"1":"1.2978311","2":"1","3":"12.958726","4":"1.789077e-03","_rn_":"node"},{"1":"0.9003583","2":"1","3":"8.989996","4":"7.102512e-03","_rn_":"grade:node"},{"1":"2.0030227","2":"20","3":"NA","4":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>The output shows that there is a very significant interaction (<span
-class="math inline">\(p=\)</span> 0.0071). Hence, the association of the
-histological grade on the gene expression differs according to the lymph
-node status and vice versa.</p>
-<p>The researchers are therefore interested in studying and reporting on
-the following hypotheses:</p>
+<p>The output shows that there is a very significant interaction (<span class="math inline">\(p=\)</span> 0.0071). Hence, the association of the histological grade on the gene expression differs according to the lymph node status and vice versa.</p>
+<p>The researchers are therefore interested in studying and reporting on the following hypotheses:</p>
 <ul>
-<li><p>Is the KPNA2 expression on average different between grade 3 and
-grade 1 tumors from patients with unaffected lymph nodes (by testing
-<span class="math inline">\(H_0: \log_2{FC}_{g3n0-g1n0}=0\text{ vs }H1:
-\log_2{FC}_{g3n0-g1n0}\neq 0\)</span>)</p></li>
-<li><p>Is the KPNA2 expression on average different between grade 3 and
-grade 1 tumors from patients with affected lymph nodes (by testing <span
-class="math inline">\(H_0: \log_2{FC}_{g3n1-g1n1}=0\text{ vs }H1:
-\log_2{FC}_{g3n1-g1n1}\neq 0\)</span>)</p></li>
-<li><p>Is the KPNA2 expression on average different in grade 1 tumors of
-patients with affected and patients with unaffected lymph nodes (by
-testing <span class="math inline">\(H_0: \log_2{FC}_{g1n1-g1n0}=0\text{
-vs }H1: \log_2{FC}_{g1n1-g1n0}\neq 0\)</span>)</p></li>
-<li><p>Is the KPNA2 expression on average different in grade 3 tumors of
-patients with affected and patients with unaffected lymph nodes (by
-testing <span class="math inline">\(H_0: \log_2{FC}_{g3n1-g3n0}=0\text{
-vs }H1: \log_2{FC}_{g3n1-g3n0}\neq 0\)</span>)</p></li>
-<li><p>Is the fold change of the KPNA2 gene between grade 3 and grade 1
-different according to the lymph node status and vice versa (tested
-already by assessing the interaction: <span class="math inline">\(H_0:
-\log_2{FC}_{g3n0-g1n0}=\log_2{FC}_{g3n1-g1n1} \text{ vs
-}H1:\log_2{FC}_{g3n0-g1n0}\neq\log_2{FC}_{g3n1-g1n1}\)</span>).</p></li>
+<li><p>Is the KPNA2 expression on average different between grade 3 and grade 1 tumors from patients with unaffected lymph nodes (by testing <span class="math inline">\(H_0: \log_2{FC}_{g3n0-g1n0}=0\text{ vs }H1: \log_2{FC}_{g3n0-g1n0}\neq 0\)</span>)</p></li>
+<li><p>Is the KPNA2 expression on average different between grade 3 and grade 1 tumors from patients with affected lymph nodes (by testing <span class="math inline">\(H_0: \log_2{FC}_{g3n1-g1n1}=0\text{ vs }H1: \log_2{FC}_{g3n1-g1n1}\neq 0\)</span>)</p></li>
+<li><p>Is the KPNA2 expression on average different in grade 1 tumors of patients with affected and patients with unaffected lymph nodes (by testing <span class="math inline">\(H_0: \log_2{FC}_{g1n1-g1n0}=0\text{ vs }H1: \log_2{FC}_{g1n1-g1n0}\neq 0\)</span>)</p></li>
+<li><p>Is the KPNA2 expression on average different in grade 3 tumors of patients with affected and patients with unaffected lymph nodes (by testing <span class="math inline">\(H_0: \log_2{FC}_{g3n1-g3n0}=0\text{ vs }H1: \log_2{FC}_{g3n1-g3n0}\neq 0\)</span>)</p></li>
+<li><p>Is the fold change of the KPNA2 gene between grade 3 and grade 1 different according to the lymph node status and vice versa (tested already by assessing the interaction: <span class="math inline">\(H_0: \log_2{FC}_{g3n0-g1n0}=\log_2{FC}_{g3n1-g1n1} \text{ vs }H1:\log_2{FC}_{g3n0-g1n0}\neq\log_2{FC}_{g3n1-g1n1}\)</span>).</p></li>
 </ul>
 </div>
 </div>
-<div id="interpretation-of-model-parameters-and-statistical-tests"
-class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Interpretation of model
-parameters and statistical tests</h1>
+<div id="interpretation-of-model-parameters-and-statistical-tests" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Interpretation of model parameters and statistical tests</h1>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ExploreModelMatrix<span class="sc">::</span><span class="fu">VisualizeDesign</span>(kpna2, <span class="sc">~</span> grade <span class="sc">*</span> node)<span class="sc">$</span>plotlist</span></code></pre></div>
 <pre><code>[[1]]</code></pre>
 <p><img src="08_4_kpna2_sol_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
@@ -732,119 +682,39 @@ grade3:node1   0.4022736   0.8492431</code></pre>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^-</span>CIfit[<span class="st">&quot;grade3:node1&quot;</span>, ]</span></code></pre></div>
 <pre><code>   2.5 %   97.5 % 
 2.485870 1.177519 </code></pre>
-<p>We model the log<span class="math inline">\(_2\)</span>-transformed
-intensities with the following model: <span class="math display">\[
+<p>We model the log<span class="math inline">\(_2\)</span>-transformed intensities with the following model: <span class="math display">\[
 y=\beta_0+\beta_{g3}x_{g3}+\beta_{n1}x_{n1}+\beta_{g3n1}x_{g3}x_{n1},
 \]</span></p>
-<p>with <span class="math inline">\(\beta_0\)</span> the intercept,
-<span class="math inline">\(\beta_{g3}\)</span> the main effect for
-grade, <span class="math inline">\(x_{g3}\)</span> a dummy variable for
-grade which is 0 for the control treatment in the absence of grade and 1
-for the treatment with grade, <span
-class="math inline">\(\beta_{n1}\)</span> the main effect for node,
-<span class="math inline">\(x_{n1}\)</span> a dummy variable that is 0
-for the measurements of patients with unaffected lymph nodes and 1 for
-patients for which the lymph nodes were removed and <span
-class="math inline">\(\beta_{g3n1}\)</span> the interaction effect
-between grade and node. To ease the interpretation of the parameters,
-<span class="math inline">\(\log_2\)</span> transformed geometric mean
-intensities are given for each treatment group as well as corresponding
-contrasts between treatments, which have an interpretation in terms of
-<span class="math inline">\(\log_2\)</span> transformed fold changes
-(FC).</p>
+<p>with <span class="math inline">\(\beta_0\)</span> the intercept, <span class="math inline">\(\beta_{g3}\)</span> the main effect for grade, <span class="math inline">\(x_{g3}\)</span> a dummy variable for grade which is 0 for the control treatment in the absence of grade and 1 for the treatment with grade, <span class="math inline">\(\beta_{n1}\)</span> the main effect for node, <span class="math inline">\(x_{n1}\)</span> a dummy variable that is 0 for the measurements of patients with unaffected lymph nodes and 1 for patients for which the lymph nodes were removed and <span class="math inline">\(\beta_{g3n1}\)</span> the interaction effect between grade and node. To ease the interpretation of the parameters, <span class="math inline">\(\log_2\)</span> transformed geometric mean intensities are given for each treatment group as well as corresponding contrasts between treatments, which have an interpretation in terms of <span class="math inline">\(\log_2\)</span> transformed fold changes (FC).</p>
 <ul>
-<li><p><span
-class="math inline">\(\log_2\hat{\mu}_{g1n0}=\hat\beta_0\)</span>, <span
-class="math inline">\(\log_2
-\hat{\mu}_{g3n0}=\hat\beta_0+\hat\beta_{g3}\)</span> –&gt; <span
-class="math inline">\(\log_2
-\widehat{FC}_{g3n0-g1n0}=\hat\beta_{g3}\)</span></p></li>
-<li><p><span class="math inline">\(\log_2
-\hat{\mu}_{g1n1}=\hat\beta_0+\hat\beta_{n1}\)</span>, <span
-class="math inline">\(\log_2 \hat
-{\mu}_{g3n1}=\hat\beta_0+\hat\beta_{g3}+\hat\beta_{n1}+\hat\beta_{g3n1}\)</span>
-–&gt; <span class="math inline">\(\log_2 \widehat{FC}_{g3n1-g1n1}=\hat
-\beta_{g3} +\hat\beta_{g3n1}\)</span></p></li>
-<li><p>Similarly, <span class="math inline">\(\log_2
-\widehat{FC}_{g1n1-g1n0}=\hat\beta_{n1}\)</span>, <span
-class="math inline">\(\log_2
-\widehat{FC}_{g3n1-g3n0}=\hat\beta_{n1}+\hat\beta_{g3n1}\)</span></p></li>
-<li><p><span
-class="math inline">\(\log_2\frac{\widehat{FC}_{g3n1-g1n1}}{\widehat{FC}_{g3n0-g1n0}}=\log_2\frac{\widehat{FC}_{g3n1-g3n0}}{\widehat{FC}_{g1n1-g1n0}}=\hat\beta_{g3n1}\)</span></p></li>
+<li><p><span class="math inline">\(\log_2\hat{\mu}_{g1n0}=\hat\beta_0\)</span>, <span class="math inline">\(\log_2 \hat{\mu}_{g3n0}=\hat\beta_0+\hat\beta_{g3}\)</span> –&gt; <span class="math inline">\(\log_2 \widehat{FC}_{g3n0-g1n0}=\hat\beta_{g3}\)</span></p></li>
+<li><p><span class="math inline">\(\log_2 \hat{\mu}_{g1n1}=\hat\beta_0+\hat\beta_{n1}\)</span>, <span class="math inline">\(\log_2 \hat {\mu}_{g3n1}=\hat\beta_0+\hat\beta_{g3}+\hat\beta_{n1}+\hat\beta_{g3n1}\)</span> –&gt; <span class="math inline">\(\log_2 \widehat{FC}_{g3n1-g1n1}=\hat \beta_{g3} +\hat\beta_{g3n1}\)</span></p></li>
+<li><p>Similarly, <span class="math inline">\(\log_2 \widehat{FC}_{g1n1-g1n0}=\hat\beta_{n1}\)</span>, <span class="math inline">\(\log_2 \widehat{FC}_{g3n1-g3n0}=\hat\beta_{n1}+\hat\beta_{g3n1}\)</span></p></li>
+<li><p><span class="math inline">\(\log_2\frac{\widehat{FC}_{g3n1-g1n1}}{\widehat{FC}_{g3n0-g1n0}}=\log_2\frac{\widehat{FC}_{g3n1-g3n0}}{\widehat{FC}_{g1n1-g1n0}}=\hat\beta_{g3n1}\)</span></p></li>
 </ul>
-<p>with <span class="math inline">\(\log_2\hat{\mu}_{g1n0}\)</span>,
-<span class="math inline">\(\log_2\hat{\mu}_{g3n0}\)</span>, <span
-class="math inline">\(\log_2\hat {\mu}_{g1n1}\)</span> and <span
-class="math inline">\(\log_2\hat{\mu}_{g3n1}\)</span> the estimated mean
-<span class="math inline">\(\log_2\)</span> transformed intensity for
-patients with grade 1 and node 0 status, grade 3 and node 0 status,
-grade 1 and node 1 status and grade 3 and node 1 status, respectively.
-With <span class="math inline">\(\log_2 \widehat{FC}_{b-a}\)</span> we
-indicate <span class="math inline">\(\log_2\)</span> transformed fold
-change estimates between treatment b and treatment a, i.e. <span
-class="math inline">\(\log_2 \widehat{FC}_{b-a}=\log_2
-\hat{\mu}_{b}-\log_2 \hat{\mu}_a=\log_2
-\frac{\hat{\mu}_{b}}{\hat{\mu}_{a}}\)</span>.</p>
-<p>The model immediately provides statistical tests for assessing the
-significance of fold changes between grade 3 and grade 1 for patients
-with unaffected lymph nodes (n=0) <span class="math inline">\(\log_2
-{FC}_{g3n0-g1n0}\)</span>, fold changes between the grade 1-node 1
-patients and grade 1- node 0 patients <span class="math inline">\(\log_2
-{FC}_{g1n1-g3n0}\)</span> and for differences in fold change related to
-histological grade for node 1 patients and node 0 patients. <span
-class="math inline">\(\log_2\frac{{FC}_{g3n1-g1n1}}{{FC}_{g3n0-g1n0}}\)</span>,
-the interaction term.</p>
+<p>with <span class="math inline">\(\log_2\hat{\mu}_{g1n0}\)</span>, <span class="math inline">\(\log_2\hat{\mu}_{g3n0}\)</span>, <span class="math inline">\(\log_2\hat {\mu}_{g1n1}\)</span> and <span class="math inline">\(\log_2\hat{\mu}_{g3n1}\)</span> the estimated mean <span class="math inline">\(\log_2\)</span> transformed intensity for patients with grade 1 and node 0 status, grade 3 and node 0 status, grade 1 and node 1 status and grade 3 and node 1 status, respectively. With <span class="math inline">\(\log_2 \widehat{FC}_{b-a}\)</span> we indicate <span class="math inline">\(\log_2\)</span> transformed fold change estimates between treatment b and treatment a, i.e. <span class="math inline">\(\log_2 \widehat{FC}_{b-a}=\log_2 \hat{\mu}_{b}-\log_2 \hat{\mu}_a=\log_2 \frac{\hat{\mu}_{b}}{\hat{\mu}_{a}}\)</span>.</p>
+<p>The model immediately provides statistical tests for assessing the significance of fold changes between grade 3 and grade 1 for patients with unaffected lymph nodes (n=0) <span class="math inline">\(\log_2 {FC}_{g3n0-g1n0}\)</span>, fold changes between the grade 1-node 1 patients and grade 1- node 0 patients <span class="math inline">\(\log_2 {FC}_{g1n1-g3n0}\)</span> and for differences in fold change related to histological grade for node 1 patients and node 0 patients. <span class="math inline">\(\log_2\frac{{FC}_{g3n1-g1n1}}{{FC}_{g3n0-g1n0}}\)</span>, the interaction term.</p>
 <p>Interpretation of the model parameters in the model output:</p>
 <ul>
-<li>The geometric mean intensity for grade 1 patients with unaffected
-lymph nodes equals <span class="math inline">\(\exp(\hat
-\beta_0)\)</span>= 178.48.
+<li>The geometric mean intensity for grade 1 patients with unaffected lymph nodes equals <span class="math inline">\(\exp(\hat \beta_0)\)</span>= 178.48.
 <ul>
-<li>When lymph nodes are unaffected, the expression is on average 3.18
-times higher for patients with histological grade 3 than patients with
-histological grade 1.</li>
-<li>The gene expression in histological grade 1 patients with affected
-lymph nodes is on average 1.58 times higher than for grade 1 patients
-with unaffected lymph nodes.</li>
+<li>When lymph nodes are unaffected, the expression is on average 3.18 times higher for patients with histological grade 3 than patients with histological grade 1.</li>
+<li>The gene expression in histological grade 1 patients with affected lymph nodes is on average 1.58 times higher than for grade 1 patients with unaffected lymph nodes.</li>
 </ul></li>
-<li>The fold change corresponding to histological grade is on average
-1.71 times lower in patients with affected lymph nodes as compared to
-patients with unaffected lymph node.</li>
+<li>The fold change corresponding to histological grade is on average 1.71 times lower in patients with affected lymph nodes as compared to patients with unaffected lymph node.</li>
 </ul>
-<p>For the remaining hypothesis of interest we will have to define
-contrasts: linear combinations of the model parameters and evaluate the
-contrasts with the multcomp package.</p>
-<p>The F-test showed an extremely significant association of the node
-status, hystological grade and/or the interaction between the node
-status and the grade (p&lt;&lt;0.001).</p>
+<p>For the remaining hypothesis of interest we will have to define contrasts: linear combinations of the model parameters and evaluate the contrasts with the multcomp package.</p>
+<p>The F-test showed an extremely significant association of the node status, hystological grade and/or the interaction between the node status and the grade (p&lt;&lt;0.001).</p>
 </div>
-<div id="assessing-the-significance-of-all-hypothesis-of-interest"
-class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Assessing the
-significance of all hypothesis of interest</h1>
-<p>We can assess all contrasts of interest using the multcomp package.
-This will also allow us to correct for multiple testing, since we assess
-multiple hypotheses to answer the relevant research question.</p>
+<div id="assessing-the-significance-of-all-hypothesis-of-interest" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Assessing the significance of all hypothesis of interest</h1>
+<p>We can assess all contrasts of interest using the multcomp package. This will also allow us to correct for multiple testing, since we assess multiple hypotheses to answer the relevant research question.</p>
 <ul>
-<li><span class="math inline">\(H_0: \log_2{FC}_{g3n0-g1n0}=
-\beta_{g3}=0\)</span> <span class="math inline">\(\rightarrow\)</span>
-“grade3 = 0”</li>
-<li><span class="math inline">\(H_0: \log_2{FC}_{g3n1-g1n1}= \beta_{g3}
-+ \hat\beta_{g3n1}=0\)</span> <span
-class="math inline">\(\rightarrow\)</span> “grade3+grade3:node1 =
-0”</li>
-<li><span class="math inline">\(H_0: \log_2{FC}_{g1n1-g1n0}=
-\beta_{n1}\)</span> <span class="math inline">\(\rightarrow\)</span>
-“node1 = 0”</li>
-<li><span class="math inline">\(H_0: \log_2{FC}_{g3n1-g3n0}= \beta_{n1}
-+ \hat\beta_{g3n1}=0\)</span> <span
-class="math inline">\(\rightarrow\)</span> “node1+grade3:node1 = 0”</li>
-<li><span class="math inline">\(H_0: \log_2{FC}_{g3n1-g1n1} -
-\log_2{FC}_{g3n0-g1n0} = \hat\beta_{g3n1}=0\)</span>, note that the
-latter hypothesis is also equivalent to <span class="math inline">\(H_0:
-\log_2{FC}_{g3n1-g3n0} - \log_2{FC}_{g1n1-g1n0} =
-\hat\beta_{g3n1}=0\)</span> <span
-class="math inline">\(\rightarrow\)</span> “grade3:node1 = 0”</li>
+<li><span class="math inline">\(H_0: \log_2{FC}_{g3n0-g1n0}= \beta_{g3}=0\)</span> <span class="math inline">\(\rightarrow\)</span> “grade3 = 0”</li>
+<li><span class="math inline">\(H_0: \log_2{FC}_{g3n1-g1n1}= \beta_{g3} + \hat\beta_{g3n1}=0\)</span> <span class="math inline">\(\rightarrow\)</span> “grade3+grade3:node1 = 0”</li>
+<li><span class="math inline">\(H_0: \log_2{FC}_{g1n1-g1n0}= \beta_{n1}\)</span> <span class="math inline">\(\rightarrow\)</span> “node1 = 0”</li>
+<li><span class="math inline">\(H_0: \log_2{FC}_{g3n1-g3n0}= \beta_{n1} + \hat\beta_{g3n1}=0\)</span> <span class="math inline">\(\rightarrow\)</span> “node1+grade3:node1 = 0”</li>
+<li><span class="math inline">\(H_0: \log_2{FC}_{g3n1-g1n1} - \log_2{FC}_{g3n0-g1n0} = \hat\beta_{g3n1}=0\)</span>, note that the latter hypothesis is also equivalent to <span class="math inline">\(H_0: \log_2{FC}_{g3n1-g3n0} - \log_2{FC}_{g1n1-g1n0} = \hat\beta_{g3n1}=0\)</span> <span class="math inline">\(\rightarrow\)</span> “grade3:node1 = 0”</li>
 </ul>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>fitGlht <span class="ot">&lt;-</span> <span class="fu">glht</span>(fit, <span class="at">linfct =</span> <span class="fu">c</span>(<span class="st">&quot;grade3 = 0&quot;</span>, <span class="st">&quot;grade3+grade3:node1 = 0&quot;</span>, <span class="st">&quot;node1 = 0&quot;</span>, <span class="st">&quot;node1+grade3:node1 = 0&quot;</span>, <span class="st">&quot;grade3:node1 = 0&quot;</span>))</span>
@@ -858,9 +728,9 @@ Linear Hypotheses:
                            Estimate Std. Error t value Pr(&gt;|t|)    
 grade3 == 0                  1.6675     0.1827   9.127  &lt; 0.001 ***
 grade3 + grade3:node1 == 0   0.8928     0.1827   4.886  &lt; 0.001 ***
-node1 == 0                   0.6577     0.1827   3.600  0.00691 ** 
-node1 + grade3:node1 == 0   -0.1170     0.1827  -0.640  0.89821    
-grade3:node1 == 0           -0.7748     0.2584  -2.998  0.02682 *  
+node1 == 0                   0.6577     0.1827   3.600  0.00706 ** 
+node1 + grade3:node1 == 0   -0.1170     0.1827  -0.640  0.89817    
+grade3:node1 == 0           -0.7748     0.2584  -2.998  0.02653 *  
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 (Adjusted p values reported -- single-step method)</code></pre>
@@ -870,62 +740,38 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 
 Fit: lm(formula = gene %&gt;% log2() ~ grade * node, data = kpna2)
 
-Quantile = 2.6975
+Quantile = 2.6954
 95% family-wise confidence level
  
 
 Linear Hypotheses:
                            Estimate lwr      upr     
-grade3 == 0                 1.66754  1.17467  2.16041
-grade3 + grade3:node1 == 0  0.89279  0.39992  1.38566
-node1 == 0                  0.65773  0.16486  1.15060
-node1 + grade3:node1 == 0  -0.11702 -0.60989  0.37585
-grade3:node1 == 0          -0.77475 -1.47177 -0.07773</code></pre>
+grade3 == 0                 1.66754  1.17506  2.16001
+grade3 + grade3:node1 == 0  0.89279  0.40031  1.38526
+node1 == 0                  0.65773  0.16526  1.15021
+node1 + grade3:node1 == 0  -0.11702 -0.60949  0.37546
+grade3:node1 == 0          -0.77475 -1.47122 -0.07829</code></pre>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^</span><span class="fu">confint</span>(fitGlht)<span class="sc">$</span>confint</span></code></pre></div>
 <pre><code>                       Estimate       lwr       upr
-grade3                3.1767209 2.2573244 4.4705829
-grade3 + grade3:node1 1.8567602 1.3193826 2.6130091
-node1                 1.5775997 1.1210158 2.2201480
-node1 + grade3:node1  0.9220906 0.6552220 1.2976533
-grade3:node1          0.5844896 0.3605193 0.9475998
+grade3                3.1767209 2.2573240 4.4705837
+grade3 + grade3:node1 1.8567602 1.3193823 2.6130095
+node1                 1.5775997 1.1210156 2.2201484
+node1 + grade3:node1  0.9220906 0.6552219 1.2976535
+grade3:node1          0.5844896 0.3605192 0.9476001
 attr(,&quot;conf.level&quot;)
 [1] 0.95
 attr(,&quot;calpha&quot;)
-[1] 2.697821</code></pre>
+[1] 2.697823</code></pre>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^-</span><span class="fu">confint</span>(fitGlht)<span class="sc">$</span>confint[<span class="st">&quot;grade3:node1&quot;</span>, ]</span></code></pre></div>
 <pre><code>Estimate      lwr      upr 
-1.710895 2.774478 1.055031 </code></pre>
+1.710895 2.774038 1.055198 </code></pre>
 </div>
 <div id="conclusion" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Conclusion</h1>
 <ul>
-<li><p>There is an extremely significant association between the KPNA2
-expression and hystological grade in patients with unaffected as well as
-in patients with affected lymph nodes (both p&lt;&lt;0.001). When lymph
-nodes are unaffected, the expression is on average 3.18 times higher for
-patients with histological grade 3 than patients with histological grade
-1 (95% CI [2.26, 4.47]). For patients with affected lymph nodes the
-expression is on average 1.86 times higher for patients with
-histological grade 3 tumors than patients with histological grade 1
-tumors (95% CI [1.32, 2.61]).</p></li>
-<li><p>The association between the KPNA2 expression with the lymph node
-status in grade 1 patients is very significant (<span
-class="math inline">\(p=\)</span> 0.0072). The KPNA2 expression in
-histological grade 1 patients with affected lymph nodes is on average
-1.58 times higher than for grade 1 patients with unaffected lymph nodes
-(95% CI [1.12, 2.22]). In grade 3 patients, however, this association is
-not significant (<span class="math inline">\(p=\)</span> 0.9, 95% CI
-[0.66, 1.3] ).</p></li>
-<li><p>There is also a significant interaction between the hystological
-grade and the lymph node status. So the association between the KPNA2
-expression and the histological grade depends on the lymph node status
-and vice versa (<span class="math inline">\(p=\)</span> 0.027). The fold
-change corresponding to histological grade is on average 1.71 times
-lower in patients with affected lymph nodes as compared to patients with
-unaffected lymph node (95% CI [1.06, 2.77]). (Similarly, the fold change
-corresponding to the node status is on average 1.71 times lower in
-patients with grade 3 tumors as compared to patients with grade 1
-tumors, 95% CI [1.06, 2.77])</p></li>
+<li><p>There is an extremely significant association between the KPNA2 expression and hystological grade in patients with unaffected as well as in patients with affected lymph nodes (both p&lt;&lt;0.001). When lymph nodes are unaffected, the expression is on average 3.18 times higher for patients with histological grade 3 than patients with histological grade 1 (95% CI [2.26, 4.47]). For patients with affected lymph nodes the expression is on average 1.86 times higher for patients with histological grade 3 tumors than patients with histological grade 1 tumors (95% CI [1.32, 2.61]).</p></li>
+<li><p>The association between the KPNA2 expression with the lymph node status in grade 1 patients is very significant (<span class="math inline">\(p=\)</span> 0.0072). The KPNA2 expression in histological grade 1 patients with affected lymph nodes is on average 1.58 times higher than for grade 1 patients with unaffected lymph nodes (95% CI [1.12, 2.22]). In grade 3 patients, however, this association is not significant (<span class="math inline">\(p=\)</span> 0.9, 95% CI [0.66, 1.3] ).</p></li>
+<li><p>There is also a significant interaction between the hystological grade and the lymph node status. So the association between the KPNA2 expression and the histological grade depends on the lymph node status and vice versa (<span class="math inline">\(p=\)</span> 0.027). The fold change corresponding to histological grade is on average 1.71 times lower in patients with affected lymph nodes as compared to patients with unaffected lymph node (95% CI [1.06, 2.77]). (Similarly, the fold change corresponding to the node status is on average 1.71 times lower in patients with grade 3 tumors as compared to patients with grade 1 tumors, 95% CI [1.06, 2.77])</p></li>
 </ul>
 </div>
 

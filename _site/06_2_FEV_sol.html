@@ -549,40 +549,28 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exeercise 6.2: Linear regression on the FEV
-dataset - solution</h1>
+<h1 class="title toc-ignore">Exeercise 6.2: Linear regression on the FEV dataset - solution</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
-<p>As an exercise on linear regression, we will analyse the FEV
-dataset.</p>
+<p>As an exercise on linear regression, we will analyse the FEV dataset.</p>
 <div id="the-fev-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> The FEV dataset</h1>
-<p>The FEV, which is an acronym for forced expiratory volume, is a
-measure of how much air a person can exhale (in liters) during a forced
-breath. In this dataset, the FEV of 606 children, between the ages of 6
-and 17, were measured. The dataset also provides additional information
-on these children: their <code>age</code>, their <code>height</code>,
-their <code>gender</code> and, most importantly, whether the child is a
-smoker or a non-smoker.</p>
-<p>The overarching goal of this experiment was to find out if smoking
-has an effect on the FEV of children.</p>
+<p>The FEV, which is an acronym for forced expiratory volume, is a measure of how much air a person can exhale (in liters) during a forced breath. In this dataset, the FEV of 606 children, between the ages of 6 and 17, were measured. The dataset also provides additional information on these children: their <code>age</code>, their <code>height</code>, their <code>gender</code> and, most importantly, whether the child is a smoker or a non-smoker.</p>
+<p>The overarching goal of this experiment was to find out if smoking has an effect on the FEV of children.</p>
 </div>
 <div id="load-the-required-libraries" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Load the required
-libraries</h1>
+<h1><span class="header-section-number">2</span> Load the required libraries</h1>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 </div>
 <div id="import-data" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Import data</h1>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fev <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/fev.txt&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 606 Columns: 5
-## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;\t&quot;
 ## chr (1): gender
 ## dbl (4): age, fev, height, smoking
@@ -595,15 +583,10 @@ libraries</h1>
 {"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["fev"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["height"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["gender"],"name":[4],"type":["chr"],"align":["left"]},{"label":["smoking"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"9","2":"1.708","3":"57.0","4":"f","5":"0"},{"1":"8","2":"1.724","3":"67.5","4":"f","5":"0"},{"1":"7","2":"1.720","3":"54.5","4":"f","5":"0"},{"1":"9","2":"1.558","3":"53.0","4":"m","5":"0"},{"1":"9","2":"1.895","3":"57.0","4":"m","5":"0"},{"1":"8","2":"2.336","3":"61.0","4":"f","5":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>There are a few things in the formatting of the data that can be
-improved upon:</p>
+<p>There are a few things in the formatting of the data that can be improved upon:</p>
 <ol style="list-style-type: decimal">
-<li><p>Both the <code>gender</code> and <code>smoking</code> can be
-transformed to factors.</p></li>
-<li><p>The <code>height</code> variable is written in inches. Assuming
-that this audience is mainly European, inches are hard to interpret.
-Let’s add a new column, <code>height_cm</code>, with the values
-converted to centimeter using the <code>mutate</code> function.</p></li>
+<li><p>Both the <code>gender</code> and <code>smoking</code> can be transformed to factors.</p></li>
+<li><p>The <code>height</code> variable is written in inches. Assuming that this audience is mainly European, inches are hard to interpret. Let’s add a new column, <code>height_cm</code>, with the values converted to centimeter using the <code>mutate</code> function.</p></li>
 </ol>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fev <span class="ot">&lt;-</span> fev <span class="sc">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gender =</span> <span class="fu">as.factor</span>(gender)) <span class="sc">%&gt;%</span></span>
@@ -619,8 +602,7 @@ converted to centimeter using the <code>mutate</code> function.</p></li>
 </div>
 <div id="data-exploration" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Data Exploration</h1>
-<p>Now, let’s make a first explorative boxplot, showing only the FEV for
-both smoking categories.</p>
+<p>Now, let’s make a first explorative boxplot, showing only the FEV for both smoking categories.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fev <span class="sc">%&gt;%</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> smoking, <span class="at">y =</span> fev, <span class="at">fill =</span> smoking)) <span class="sc">+</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;dimgrey&quot;</span>, <span class="st">&quot;firebrick&quot;</span>)) <span class="sc">+</span></span>
@@ -632,12 +614,8 @@ both smoking categories.</p>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;smoking status&quot;</span>)</span></code></pre></div>
 <p><img src="06_2_FEV_sol_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Did you expect these results?</p>
-<p>It appears that children that smoke have a higher median FEV than
-children that do not smoke. Should we change legislations worldwide and
-make smoking obligatory for children?</p>
-<p>Maybe there is something else going on in the data. Now, we will
-generate a similar plot, but we will stratify the data based on age (age
-as factor).</p>
+<p>It appears that children that smoke have a higher median FEV than children that do not smoke. Should we change legislations worldwide and make smoking obligatory for children?</p>
+<p>Maybe there is something else going on in the data. Now, we will generate a similar plot, but we will stratify the data based on age (age as factor).</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fev <span class="sc">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> age,</span>
@@ -653,16 +631,9 @@ as factor).</p>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;fev (l)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;smoking status&quot;</span>)</span></code></pre></div>
 <p><img src="06_2_FEV_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>This plot seems to already give us a more plausible picture. First,
-it seems that we do not have any smoking children of ages 6, 7 or 8.
-Second, when looking at the results per age “category”, it seems no
-longer the case that smokers have a much higher FEV than non-smokers;
-for the higher ages, the contrary seems true.</p>
-<p>This shows that taking into account confounders (in this case) is
-crucial! If we simply analyse the dataset based on the smoking status
-and FEV values only, our inference might be incorrect.</p>
-<p>Can we provide an even better visualization of the data, taking into
-account more useful explanatory variables with respect to the FEV?</p>
+<p>This plot seems to already give us a more plausible picture. First, it seems that we do not have any smoking children of ages 6, 7 or 8. Second, when looking at the results per age “category”, it seems no longer the case that smokers have a much higher FEV than non-smokers; for the higher ages, the contrary seems true.</p>
+<p>This shows that taking into account confounders (in this case) is crucial! If we simply analyse the dataset based on the smoking status and FEV values only, our inference might be incorrect.</p>
+<p>Can we provide an even better visualization of the data, taking into account more useful explanatory variables with respect to the FEV?</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fev <span class="sc">%&gt;%</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> age,</span>
@@ -678,13 +649,8 @@ account more useful explanatory variables with respect to the FEV?</p>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;fev (l)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;smoking status&quot;</span>)</span></code></pre></div>
 <p><img src="06_2_FEV_sol_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>This plot holds one extra level of information, the gender of the
-child. Especially for higher ages, the median FEV is higher for males as
-compared to females.</p>
-<p>The only source of information that is lacking is
-<code>height</code>. To look at the effect of height, we could simply
-make a scatterplot displaying the FEV in function of a child’s height
-(in cm). Additionally, we could color the dots based on gender.</p>
+<p>This plot holds one extra level of information, the gender of the child. Especially for higher ages, the median FEV is higher for males as compared to females.</p>
+<p>The only source of information that is lacking is <code>height</code>. To look at the effect of height, we could simply make a scatterplot displaying the FEV in function of a child’s height (in cm). Additionally, we could color the dots based on gender.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fev <span class="sc">%&gt;%</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> height_cm, <span class="at">y =</span> fev, <span class="at">color =</span> gender)) <span class="sc">+</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
@@ -694,17 +660,12 @@ make a scatterplot displaying the FEV in function of a child’s height
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;fev (l)&quot;</span>) <span class="sc">+</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;height (cm)&quot;</span>)</span></code></pre></div>
 <p><img src="06_2_FEV_sol_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>There is a clear relationship between height and FEV. In addition, we
-see that for the large height values (&gt;175cm), we mainly find male
-subjects.</p>
+<p>There is a clear relationship between height and FEV. In addition, we see that for the large height values (&gt;175cm), we mainly find male subjects.</p>
 </div>
 <div id="linear-regression-analysis" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Linear regression
-analysis</h1>
-<div id="assumptions-of-linear-regression" class="section level2"
-number="5.1">
-<h2><span class="header-section-number">5.1</span> Assumptions of linear
-regression</h2>
+<h1><span class="header-section-number">5</span> Linear regression analysis</h1>
+<div id="assumptions-of-linear-regression" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Assumptions of linear regression</h2>
 <p>List the assumptions:</p>
 <ol style="list-style-type: decimal">
 <li>The observations are independent</li>
@@ -712,71 +673,40 @@ regression</h2>
 <li>The residues of the model must be normally distributed</li>
 <li>Homoscedasticity of the data</li>
 </ol>
-<p>The subjects are sampled randomly from the population and can be
-assumed to be independent.</p>
+<p>The subjects are sampled randomly from the population and can be assumed to be independent.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(fev <span class="sc">~</span> smoking, <span class="at">data =</span> fev)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">## display the diagnostic plots of the model</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model)</span></code></pre></div>
 <p><img src="06_2_FEV_sol_files/figure-html/unnamed-chunk-8-1.png" width="672" /><img src="06_2_FEV_sol_files/figure-html/unnamed-chunk-8-2.png" width="672" /><img src="06_2_FEV_sol_files/figure-html/unnamed-chunk-8-3.png" width="672" /><img src="06_2_FEV_sol_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
 <p>We have four diagnostic plots:</p>
-<div id="linearity-with-the-residuals-vs-fitted-plot"
-class="section level3" number="5.1.1">
-<h3><span class="header-section-number">5.1.1</span> Linearity with the
-Residuals vs fitted plot</h3>
+<div id="linearity-with-the-residuals-vs-fitted-plot" class="section level3" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Linearity with the Residuals vs fitted plot</h3>
 <ul>
-<li>predictor of predictions <span
-class="math inline">\(\hat\beta_0+\hat\beta_1 x\)</span> on <span
-class="math inline">\(X\)</span>-axis</li>
-<li><em>residuals</em> on <span class="math inline">\(Y\)</span>-as
-<span
-class="math display">\[e_i=y_i-\hat{g}(x_i)=y_i-\hat\beta_0-\hat\beta_1\times
-x_i,\]</span> However, because smoking is a factor, the predictor
-variable <span class="math inline">\(x\)</span> in the model is a dummy
-variable that can only take two values (0: non-smoking or 1:
-smoking).</li>
+<li>predictor of predictions <span class="math inline">\(\hat\beta_0+\hat\beta_1 x\)</span> on <span class="math inline">\(X\)</span>-axis</li>
+<li><em>residuals</em> on <span class="math inline">\(Y\)</span>-as <span class="math display">\[e_i=y_i-\hat{g}(x_i)=y_i-\hat\beta_0-\hat\beta_1\times x_i,\]</span> However, because smoking is a factor, the predictor variable <span class="math inline">\(x\)</span> in the model is a dummy variable that can only take two values (0: non-smoking or 1: smoking).</li>
 </ul>
 </div>
 <div id="normal-q-q" class="section level3" number="5.1.2">
 <h3><span class="header-section-number">5.1.2</span> Normal Q-Q</h3>
 <ul>
-<li>QQ-plot of the residuals <span
-class="math inline">\(e_i\)</span>.</li>
+<li>QQ-plot of the residuals <span class="math inline">\(e_i\)</span>.</li>
 </ul>
-<p>The residuals of the linear regression model should be normally
-distributed. Based on the second diagnostic plot, the normality
-assumption is not met.</p>
+<p>The residuals of the linear regression model should be normally distributed. Based on the second diagnostic plot, the normality assumption is not met.</p>
 </div>
 <div id="homoscedasticity" class="section level3" number="5.1.3">
-<h3><span class="header-section-number">5.1.3</span>
-Homoscedasticity</h3>
+<h3><span class="header-section-number">5.1.3</span> Homoscedasticity</h3>
 <ul>
-<li>Square-root of the absolute value of standardized residuals in
-function of the fitted values</li>
+<li>Square-root of the absolute value of standardized residuals in function of the fitted values</li>
 </ul>
-<p>To meet the third assumption of linear regression, the variance on
-the <em>Square-root of the absolute value of standardized residuals</em>
-must be similar over the entire range of fitted values.</p>
-<p>However, because smoking is a factor the predictor variable <span
-class="math inline">\(x\)</span> in the model is a dummy variable that
-can only take two values (0: non-smoking or 1: smoking). So it is better
-to check this assumption using boxplots. In the data exploration we
-noticed that there is no big difference in the IQR range between smokers
-and non smokers.</p>
+<p>To meet the third assumption of linear regression, the variance on the <em>Square-root of the absolute value of standardized residuals</em> must be similar over the entire range of fitted values.</p>
+<p>However, because smoking is a factor the predictor variable <span class="math inline">\(x\)</span> in the model is a dummy variable that can only take two values (0: non-smoking or 1: smoking). So it is better to check this assumption using boxplots. In the data exploration we noticed that there is no big difference in the IQR range between smokers and non smokers.</p>
 </div>
 </div>
 <div id="log-transformation" class="section level2" number="5.2">
-<h2><span class="header-section-number">5.2</span> Log
-transformation</h2>
-<p>The normality assumption was not met. One possible way resolve this
-is by relying on the central limit theorem; given the large number of
-observations in this dataset, we would still be allowed to perform that
-assume normality. Another option is to try a log-transformation of the
-data. In this example, log-transforming the data makes perfect sense; we
-can then interpret difference in terms of log transformed fold changes,
-which is sensible for volume data.</p>
-<p>Here, we fit the log-linear model and generate diagnostic plots in
-order to assess the assumptions for linear regression.</p>
+<h2><span class="header-section-number">5.2</span> Log transformation</h2>
+<p>The normality assumption was not met. One possible way resolve this is by relying on the central limit theorem; given the large number of observations in this dataset, we would still be allowed to perform that assume normality. Another option is to try a log-transformation of the data. In this example, log-transforming the data makes perfect sense; we can then interpret difference in terms of log transformed fold changes, which is sensible for volume data.</p>
+<p>Here, we fit the log-linear model and generate diagnostic plots in order to assess the assumptions for linear regression.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>log.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(fev <span class="sc">%&gt;%</span> <span class="fu">log2</span>() <span class="sc">~</span> smoking, <span class="at">data =</span> fev)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(log.model)</span></code></pre></div>
 <p><img src="06_2_FEV_sol_files/figure-html/unnamed-chunk-9-1.png" width="672" /><img src="06_2_FEV_sol_files/figure-html/unnamed-chunk-9-2.png" width="672" /><img src="06_2_FEV_sol_files/figure-html/unnamed-chunk-9-3.png" width="672" /><img src="06_2_FEV_sol_files/figure-html/unnamed-chunk-9-4.png" width="672" /></p>
@@ -810,35 +740,22 @@ order to assess the assumptions for linear regression.</p>
 </div>
 <div id="conclusion" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Conclusion</h1>
-<div id="interpretation-on-the-log-scale" class="section level2"
-number="6.1">
-<h2><span class="header-section-number">6.1</span> Interpretation on the
-log scale</h2>
-<p>Currently, all the outcomes should be interpreted on the log-scale.
-Indeed, since we are now modelling <em>the <span
-class="math inline">\(\log_{2}\)</span> FEV</em></p>
+<div id="interpretation-on-the-log-scale" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Interpretation on the log scale</h2>
+<p>Currently, all the outcomes should be interpreted on the log-scale. Indeed, since we are now modelling <em>the <span class="math inline">\(\log_{2}\)</span> FEV</em></p>
 <p>We may interpret the output as follows:</p>
 <ul>
 <li>The slope:</li>
 </ul>
-<p>Smoking pupils on average have a log<span
-class="math inline">\(_{2}\)</span> FEV that is on average 0.33 higher
-than non-smoking pupils (95% CI [0.21, 0.44]). This difference is
-extremely significant on the 5% significance level (p &lt;&lt;
-0.001).</p>
+<p>Smoking pupils on average have a log<span class="math inline">\(_{2}\)</span> FEV that is on average 0.33 higher than non-smoking pupils (95% CI [0.21, 0.44]). This difference is extremely significant on the 5% significance level (p &lt;&lt; 0.001).</p>
 <ul>
 <li>The intercept:</li>
 </ul>
-<p>The average log<span class="math inline">\(_{2}\)</span> of FEV for
-children that do not smoke is 0.33 (95% CI [1.3, 1.37]).</p>
+<p>The average log<span class="math inline">\(_{2}\)</span> of FEV for children that do not smoke is 0.33 (95% CI [1.3, 1.37]).</p>
 </div>
-<div id="interpretation-on-the-original-scale" class="section level2"
-number="6.2">
-<h2><span class="header-section-number">6.2</span> Interpretation on the
-original scale</h2>
-<p>The interpretation the log-scale is quite difficult. However, if we
-backtransform we get an interpretation in terms of geometric means and
-fold changes.</p>
+<div id="interpretation-on-the-original-scale" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Interpretation on the original scale</h2>
+<p>The interpretation the log-scale is quite difficult. However, if we backtransform we get an interpretation in terms of geometric means and fold changes.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">^</span>(log.model<span class="sc">$</span>coefficients)</span></code></pre></div>
 <pre><code>## (Intercept)    smoking1 
 ##    2.516487    1.253463</code></pre>
@@ -851,33 +768,16 @@ fold changes.</p>
 <ul>
 <li>The slope:</li>
 </ul>
-<p>The geometric mean of the forced expiratory volume is a factor 1.25
-larger for smoking pupil than for non-smoking pupil (95% CI [1.16,
-1.36]). This difference is extremely significant (p &lt;&lt; 0.001).</p>
-<p>Note that we can also interpret as follows because the factor is
-between 1 and 2.</p>
-<p>The the forced expiratory volume is on average 25% larger for smoking
-pupils than for non-smoking pupils (95% CI [16, 36]).</p>
-<p><strong>NOTE THAT THE CONCLUSION IS WRONG BECAUSE THE TWO GROUPS OF
-PUPILS ARE NOT</strong> <strong>COMPARABLE. THERE IS
-CONFOUNDING!</strong></p>
-<p>Indeed, the FEV study is an observational study: smoking pupils are
-on average older than non-smoking pupils and age is associated with both
-the smoking behavior and long capacity. If we do not account for age the
-age effect is partially captured in the estimated effect for
-smoking!</p>
+<p>The geometric mean of the forced expiratory volume is a factor 1.25 larger for smoking pupil than for non-smoking pupil (95% CI [1.16, 1.36]). This difference is extremely significant (p &lt;&lt; 0.001).</p>
+<p>Note that we can also interpret as follows because the factor is between 1 and 2.</p>
+<p>The the forced expiratory volume is on average 25% larger for smoking pupils than for non-smoking pupils (95% CI [16, 36]).</p>
+<p><strong>NOTE THAT THE CONCLUSION IS WRONG BECAUSE THE TWO GROUPS OF PUPILS ARE NOT</strong> <strong>COMPARABLE. THERE IS CONFOUNDING!</strong></p>
+<p>Indeed, the FEV study is an observational study: smoking pupils are on average older than non-smoking pupils and age is associated with both the smoking behavior and long capacity. If we do not account for age the age effect is partially captured in the estimated effect for smoking!</p>
 <ul>
 <li>The intercept:</li>
 </ul>
-<p>The geometric mean of the forced experatory volume for non-smoking
-pupils is 2.52l (95% CI [2.45, 2.58]l). This value is extermely
-significantly larger than 1l (p &lt;&lt;&lt; 0.001). Note, that the
-statistical test on the intercept is typically not reported.</p>
-<p>In the tutorial of multiple regression, we will revisit this exercise
-and do an analysis where we correct for this confounder. More
-specifically, we will there study the association between smoking and
-FEV while accounting for differences in the age, height and gender of
-the children.</p>
+<p>The geometric mean of the forced experatory volume for non-smoking pupils is 2.52l (95% CI [2.45, 2.58]l). This value is extermely significantly larger than 1l (p &lt;&lt;&lt; 0.001). Note, that the statistical test on the intercept is typically not reported.</p>
+<p>In the tutorial of multiple regression, we will revisit this exercise and do an analysis where we correct for this confounder. More specifically, we will there study the association between smoking and FEV while accounting for differences in the age, height and gender of the children.</p>
 </div>
 </div>
 

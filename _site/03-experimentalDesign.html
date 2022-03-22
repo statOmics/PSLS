@@ -446,12 +446,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">3. Some concepts on experimental
-design</h1>
+<h1 class="title toc-ignore">3. Some concepts on experimental design</h1>
 <h4 class="author">Lieven Clement</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
@@ -460,23 +457,15 @@ class="uri">https://statomics.github.io</a>)</h4>
 <p><img src="03-experimentalDesign_files/figure-html/pop2Samp2Pop-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <hr />
 <div id="need-for-a-good-control" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Need for a good
-control</h1>
+<h1><span class="header-section-number">1</span> Need for a good control</h1>
 <ul>
 <li><p>A good control group is crucial.</p></li>
-<li><p>To assess the effect of an intervention, we need to compare a
-test and control group.</p></li>
-<li><p>This is often not possible in a pretest/post-test design:
-e.g. effect before and after administering a drug without the use of a
-placebo group.</p></li>
-<li><p>Groups in an observational study are often not comparable:
-advanced statistical methods are required to draw causal
-conclusions.</p></li>
+<li><p>To assess the effect of an intervention, we need to compare a test and control group.</p></li>
+<li><p>This is often not possible in a pretest/post-test design: e.g. effect before and after administering a drug without the use of a placebo group.</p></li>
+<li><p>Groups in an observational study are often not comparable: advanced statistical methods are required to draw causal conclusions.</p></li>
 <li><p>Double blinding</p></li>
 <li><p>We have to be aware of confounding!</p></li>
-<li><p>Randomized studies: random assignment of subjects in the study to
-the different treatment arms <span
-class="math inline">\(\rightarrow\)</span> comparable groups.</p></li>
+<li><p>Randomized studies: random assignment of subjects in the study to the different treatment arms <span class="math inline">\(\rightarrow\)</span> comparable groups.</p></li>
 </ul>
 <hr />
 </div>
@@ -486,27 +475,22 @@ class="math inline">\(\rightarrow\)</span> comparable groups.</p></li>
 <li>Randomization completely at random (no systematic allocation).</li>
 </ul>
 <div id="simple-randomization" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> Simple
-Randomization</h2>
+<h2><span class="header-section-number">2.1</span> Simple Randomization</h2>
 <ul>
-<li><p>Can lead to differences in the number of experimental units in
-each treatment arm</p></li>
+<li><p>Can lead to differences in the number of experimental units in each treatment arm</p></li>
 <li><p>in 5% of the cases we might observe an imbalance of</p>
 <ul>
 <li>of at least 60:40 in a study with 100 subjects, and</li>
 <li>of at least 531:469 in a study with 1000 subjects.</li>
 </ul></li>
-<li><p>This imbalance is not problematic, but causes a loss in
-precision.</p></li>
+<li><p>This imbalance is not problematic, but causes a loss in precision.</p></li>
 </ul>
 <hr />
 </div>
 <div id="balanced-randomization" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> Balanced
-Randomization</h2>
+<h2><span class="header-section-number">2.2</span> Balanced Randomization</h2>
 <ul>
-<li><p>Equal numbers of each treatment are assigned to a block of 2 or 4
-patients.</p>
+<li><p>Equal numbers of each treatment are assigned to a block of 2 or 4 patients.</p>
 <ul>
 <li><ol style="list-style-type: decimal">
 <li>AB, (2) BA</li>
@@ -515,29 +499,20 @@ patients.</p>
 <li>AABB, (2) ABAB, (3) ABBA, (4) BABA, (5) BAAB, (6) BBAA</li>
 </ol></li>
 </ul></li>
-<li><p>Balanced Randomization ensures <span
-class="math inline">\(\pm\)</span> the same number of people in the
-control and the treatment arm of the experiment.</p></li>
-<li><p>Does not make that we have an equal number of males with and
-without the treatment, etc.</p></li>
-<li><p>In small studies, it is possible that the groups are unbalanced
-in other characteristics (e.g. gender, race, age …)</p></li>
-<li><p>This is not problematic because it occurs at random, but, again
-it causes a loss in precision.</p></li>
+<li><p>Balanced Randomization ensures <span class="math inline">\(\pm\)</span> the same number of people in the control and the treatment arm of the experiment.</p></li>
+<li><p>Does not make that we have an equal number of males with and without the treatment, etc.</p></li>
+<li><p>In small studies, it is possible that the groups are unbalanced in other characteristics (e.g. gender, race, age …)</p></li>
+<li><p>This is not problematic because it occurs at random, but, again it causes a loss in precision.</p></li>
 </ul>
 <hr />
 </div>
 <div id="stratified-randomization" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> Stratified
-randomization</h2>
+<h2><span class="header-section-number">2.3</span> Stratified randomization</h2>
 <ul>
-<li>The imbalance according to for instance gender can be avoided using
-stratified Randomization: balanced randomization per stratum</li>
+<li>The imbalance according to for instance gender can be avoided using stratified Randomization: balanced randomization per stratum</li>
 </ul>
 <div class="figure">
-<img
-src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/stratification.png"
-style="width:50.0%" alt="" />
+<img src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/stratification.png" style="width:50.0%" alt="" />
 <p class="caption">Stratified Randomization</p>
 </div>
 <hr />
@@ -547,42 +522,30 @@ style="width:50.0%" alt="" />
 <h1><span class="header-section-number">3</span> Sample size</h1>
 <ul>
 <li><p>The sample size and the design are crucial.</p></li>
-<li><p>The larger the sample size, the more precise the
-results.</p></li>
+<li><p>The larger the sample size, the more precise the results.</p></li>
 </ul>
 </div>
 <div id="bad-design-example" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Bad design example</h1>
 <ul>
-<li><p>dm: diabetic medium, nd: non diabetic medium, co:
-control</p></li>
-<li><p>4 bio-reps, 2 techreps/biorep <img
-src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/qpcrBadDesign1.png"
-style="width:100.0%" /></p></li>
-<li><p>dm: diabetic medium, nd: non diabetic medium, co:
-control</p></li>
+<li><p>dm: diabetic medium, nd: non diabetic medium, co: control</p></li>
+<li><p>4 bio-reps, 2 techreps/biorep <img src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/qpcrBadDesign1.png" style="width:100.0%" /></p></li>
+<li><p>dm: diabetic medium, nd: non diabetic medium, co: control</p></li>
 <li><p>4 bio-reps, 2 techreps/biorep, 2 plates A &amp; B</p></li>
 <li><p>Treatment and plate almost entirely confounded</p></li>
 </ul>
-<p><img
-src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/qpcrBadDesign2.png"
-style="width:100.0%" /></p>
+<p><img src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/qpcrBadDesign2.png" style="width:100.0%" /></p>
 <hr />
 </div>
 <div id="wrap-up" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Wrap-up</h1>
 <ul>
 <li><p>Sample size is very important.</p></li>
-<li><p>To assess the effect of a treatment, we should compare comparable
-and representative groups of subjects with and without the treatment (a
-good control!).</p></li>
-<li><p>In observational studies, the researcher cannot choose the
-treatment. It was the patient or their MD who had chosen it</p></li>
-<li><p>In experimental studies, the researcher assigns the
-treatment.</p></li>
+<li><p>To assess the effect of a treatment, we should compare comparable and representative groups of subjects with and without the treatment (a good control!).</p></li>
+<li><p>In observational studies, the researcher cannot choose the treatment. It was the patient or their MD who had chosen it</p></li>
+<li><p>In experimental studies, the researcher assigns the treatment.</p></li>
 <li><p>Confounding can be avoided via randomization.</p></li>
-<li><p>We can also correct for confounding in the statistical analysis
-for the confounders that have been registered.</p></li>
+<li><p>We can also correct for confounding in the statistical analysis for the confounders that have been registered.</p></li>
 </ul>
 </div>
 

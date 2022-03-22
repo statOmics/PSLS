@@ -549,24 +549,21 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">8.3 Experimental Design II: Replication and
-Power</h1>
+<h1 class="title toc-ignore">8.3 Experimental Design II: Replication and Power</h1>
 <h4 class="author">Lieven Clement</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.3.5     ✔ purrr   0.3.4
 ## ✔ tibble  3.1.6     ✔ dplyr   1.0.8
 ## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
 ## ✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <div id="concepts" class="section level1" number="1">
@@ -574,31 +571,23 @@ class="uri">https://statomics.github.io</a>)</h4>
 <ul>
 <li>Experimental units representative for population: Randomisation</li>
 <li>Replication: technical vs biological, sample size - power</li>
-<li>Sources of variation: technical, biological, within subject, between
-subject</li>
+<li>Sources of variation: technical, biological, within subject, between subject</li>
 </ul>
 </div>
 <div id="replicatie" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Replicatie</h1>
-<p>Two pager on Replication in nature methods [<a
-href="https://www.nature.com/articles/nmeth.3091.pdf">PDF</a>] <embed
-src="https://www.nature.com/articles/nmeth.3091.pdf"
-style="width:100.0%" /></p>
+<p>Two pager on Replication in nature methods [<a href="https://www.nature.com/articles/nmeth.3091.pdf">PDF</a>] <embed src="https://www.nature.com/articles/nmeth.3091.pdf" style="width:100.0%" /></p>
 <div id="example" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Example</h2>
-<p>Consider a single cell RNA-seq experiment where researchers want to
-assess the effect of drug treatment on gene expression</p>
+<p>Consider a single cell RNA-seq experiment where researchers want to assess the effect of drug treatment on gene expression</p>
 <p>Potential research questions</p>
 <ul>
-<li>Is there a difference in average gene expression between treated and
-non treated samples</li>
-<li>Is there a difference in variability of gene expression between
-treated and non treated samples</li>
+<li>Is there a difference in average gene expression between treated and non treated samples</li>
+<li>Is there a difference in variability of gene expression between treated and non treated samples</li>
 </ul>
 </div>
 <div id="sources-of-variation" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> Sources of
-variation</h2>
+<h2><span class="header-section-number">2.2</span> Sources of variation</h2>
 <p>TABLE 1 NATURE METHODS | VOL.11 NO.9 | SEPTEMBER 2014 | 879 - 880</p>
 <table>
 <colgroup>
@@ -610,8 +599,7 @@ variation</h2>
 <tr class="header">
 <th align="center"></th>
 <th align="left">Replicate type</th>
-<th align="center">Replicate category<span
-class="math inline">\(^\text{a}\)</span></th>
+<th align="center">Replicate category<span class="math inline">\(^\text{a}\)</span></th>
 </tr>
 </thead>
 <tbody>
@@ -687,160 +675,93 @@ class="math inline">\(^\text{a}\)</span></th>
 </tr>
 <tr class="odd">
 <td align="center"></td>
-<td align="left">Reads with unique molecular identifier (UMI) from a
-given transcript molecule</td>
+<td align="left">Reads with unique molecular identifier (UMI) from a given transcript molecule</td>
 <td align="center">T</td>
 </tr>
 </tbody>
 </table>
 <ol style="list-style-type: lower-alpha">
-<li>Replicates are categorized as biological (B), technical (T) or of
-variable type (V).</li>
-<li>Sequence reads serve diverse purposes depending on the application
-and how reads are used in analysis.</li>
+<li>Replicates are categorized as biological (B), technical (T) or of variable type (V).</li>
+<li>Sequence reads serve diverse purposes depending on the application and how reads are used in analysis.</li>
 </ol>
 <hr />
 </div>
-<div id="at-which-level-should-we-replicate" class="section level2"
-number="2.3">
-<h2><span class="header-section-number">2.3</span> At which level should
-we replicate?</h2>
+<div id="at-which-level-should-we-replicate" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> At which level should we replicate?</h2>
 <ul>
-<li><span
-class="math inline">\(\text{var}(X)=\sigma^2_A+\sigma^2_C+\sigma^2_M=\sigma^2_{TOT}\)</span></li>
-<li><span
-class="math inline">\(\text{var}(\bar{X})=\frac{\sigma^2_A}{n_A}+\frac{\sigma^2_C}{n_A
-n_C} + \frac{\sigma^2_M}{n_A n_C n_M}\)</span></li>
+<li><span class="math inline">\(\text{var}(X)=\sigma^2_A+\sigma^2_C+\sigma^2_M=\sigma^2_{TOT}\)</span></li>
+<li><span class="math inline">\(\text{var}(\bar{X})=\frac{\sigma^2_A}{n_A}+\frac{\sigma^2_C}{n_A n_C} + \frac{\sigma^2_M}{n_A n_C n_M}\)</span></li>
 </ul>
-<p><img
-src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnmeth.3091/MediaObjects/41592_2014_Article_BFnmeth3091_Fig1_HTML.jpg" />
-Figure 1 NATURE METHODS | VOL.11 NO.9 | SEPTEMBER 2014 | 879 - 880</p>
+<p><img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fnmeth.3091/MediaObjects/41592_2014_Article_BFnmeth3091_Fig1_HTML.jpg" /> Figure 1 NATURE METHODS | VOL.11 NO.9 | SEPTEMBER 2014 | 879 - 880</p>
 <ol style="list-style-type: lower-alpha">
-<li>Three levels of replication (two biological, one technical) with
-animal, cell and measurement replicates normally distributed with a mean
-across animals of 10 and ratio of variances 1:2:0.5. Solid green
-(biological) and blue (technical) dots show how a measurement of the
-expression (X = 12) samples from all three sources of variation.
-Distribution s.d. is shown as horizontal lines.</li>
-<li>Expression variance, Var(X), and variance of expression mean,
-Var(<span class="math inline">\(\bar X\)</span>), computed across 10,000
-simulations of nAnCnM = 48 measurements for unique combinations of the
-number of animals (nA = 1 to 48), cells per animal (nC = 1 to 48) and
-technical replicate measurements per cell (nM = 1 and 3). The ratio of
-Var(X) and Var(<span class="math inline">\(\bar X\)</span>) is the
-effective sample size, n, which corresponds to the equivalent number of
-statistically independent measurements. Horizontal dashed lines
-correspond to biological and total variation. Error bars on Var(X) show
-s.d. from the 10,000 simulated samples (nM = 1).</li>
+<li>Three levels of replication (two biological, one technical) with animal, cell and measurement replicates normally distributed with a mean across animals of 10 and ratio of variances 1:2:0.5. Solid green (biological) and blue (technical) dots show how a measurement of the expression (X = 12) samples from all three sources of variation. Distribution s.d. is shown as horizontal lines.</li>
+<li>Expression variance, Var(X), and variance of expression mean, Var(<span class="math inline">\(\bar X\)</span>), computed across 10,000 simulations of nAnCnM = 48 measurements for unique combinations of the number of animals (nA = 1 to 48), cells per animal (nC = 1 to 48) and technical replicate measurements per cell (nM = 1 and 3). The ratio of Var(X) and Var(<span class="math inline">\(\bar X\)</span>) is the effective sample size, n, which corresponds to the equivalent number of statistically independent measurements. Horizontal dashed lines correspond to biological and total variation. Error bars on Var(X) show s.d. from the 10,000 simulated samples (nM = 1).</li>
 </ol>
 <hr />
 <ul>
-<li>Cost benefit trade-off: cost difference between biological and
-technical replicates</li>
-<li>Typically, biological variability is substantially larger than
-technical variability</li>
+<li>Cost benefit trade-off: cost difference between biological and technical replicates</li>
+<li>Typically, biological variability is substantially larger than technical variability</li>
 </ul>
-<p><span class="math inline">\(\rightarrow\)</span> commit resources to
-sampling biologically relevant variables</p>
-<p><span class="math inline">\(\rightarrow\)</span> unless measures of
-technical variability are of interest then increasing number of
-technical measurements is valuable.</p>
+<p><span class="math inline">\(\rightarrow\)</span> commit resources to sampling biologically relevant variables</p>
+<p><span class="math inline">\(\rightarrow\)</span> unless measures of technical variability are of interest then increasing number of technical measurements is valuable.</p>
 <ul>
-<li><p>Good experimental design practice includes planning for
-replication.</p>
+<li><p>Good experimental design practice includes planning for replication.</p>
 <ol style="list-style-type: decimal">
-<li>Identify the research questions to be answered with
-experiments.</li>
+<li>Identify the research questions to be answered with experiments.</li>
 <li>Determine proportion of variability induced by each step.</li>
-<li>Be aware for pseudoreplication and aim for statistically independent
-replicates.</li>
+<li>Be aware for pseudoreplication and aim for statistically independent replicates.</li>
 </ol></li>
 </ul>
 <hr />
 </div>
 </div>
-<div id="power-sample-size-and-other-design-aspects"
-class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Power, sample size and
-other design aspects</h1>
-<p>Reading materials: <a
-href="https://www.nature.com/articles/nmeth.2738.pdf">Nature Methods
-(2013), 10(12), 1139–1140</a></p>
-<div id="intermezzo-linear-regression-in-matrix-form"
-class="section level2" number="3.1">
-<h2><span class="header-section-number">3.1</span> Intermezzo linear
-regression in matrix form</h2>
+<div id="power-sample-size-and-other-design-aspects" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Power, sample size and other design aspects</h1>
+<p>Reading materials: <a href="https://www.nature.com/articles/nmeth.2738.pdf">Nature Methods (2013), 10(12), 1139–1140</a></p>
+<div id="intermezzo-linear-regression-in-matrix-form" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Intermezzo linear regression in matrix form</h2>
 <ul>
-<li>Linear regression is a very important statistical tool to study the
-association between variables and to build prediction models.</li>
+<li>Linear regression is a very important statistical tool to study the association between variables and to build prediction models.</li>
 </ul>
 <div id="scalar-form" class="section level3" number="3.1.1">
 <h3><span class="header-section-number">3.1.1</span> Scalar form</h3>
 <ul>
-<li>Consider a vector of predictors <span
-class="math inline">\(\mathbf{x}=(x_1,\ldots,x_p)\)</span> and</li>
+<li>Consider a vector of predictors <span class="math inline">\(\mathbf{x}=(x_1,\ldots,x_p)\)</span> and</li>
 <li>a real-valued response <span class="math inline">\(Y\)</span></li>
-<li>then the linear regression model can be written as <span
-class="math display">\[
-Y=f(\mathbf{x}) +\epsilon=\beta_0+\sum\limits_{j=1}^p x_j\beta_j +
-\epsilon
-\]</span> with i.i.d. <span class="math inline">\(\epsilon\sim
-N(0,\sigma^2)\)</span></li>
+<li>then the linear regression model can be written as <span class="math display">\[
+Y=f(\mathbf{x}) +\epsilon=\beta_0+\sum\limits_{j=1}^p x_j\beta_j + \epsilon
+\]</span> with i.i.d. <span class="math inline">\(\epsilon\sim N(0,\sigma^2)\)</span></li>
 </ul>
 </div>
 <div id="vectormatrix-form" class="section level3" number="3.1.2">
-<h3><span class="header-section-number">3.1.2</span> Vector/Matrix
-form</h3>
+<h3><span class="header-section-number">3.1.2</span> Vector/Matrix form</h3>
 <ul>
-<li><span class="math inline">\(n\)</span> observations <span
-class="math inline">\((\mathbf{x}_1,y_1) \ldots
-(\mathbf{x}_n,y_n)\)</span> with <span
-class="math inline">\(\mathbf{x}_1^T=[1 x_1 \ldots x_p]\)</span></li>
-<li>Regression in matrix notation <span
-class="math display">\[\mathbf{Y}=\mathbf{X\beta} +
-\mathbf{\epsilon}\]</span> with <span
-class="math inline">\(\mathbf{Y}=\left[\begin{array}{c}y_1\\
-\vdots\\y_n\end{array}\right]\)</span>, <span
-class="math inline">\(\mathbf{X}=\left[\begin{array}{cccc}
-1&amp;x_{11}&amp;\ldots&amp;x_{1p}\\ \vdots&amp;\vdots&amp;&amp;\vdots\\
-1&amp;x_{n1}&amp;\ldots&amp;x_{np} \end{array}\right]\)</span> or <span
-class="math inline">\(\mathbf{X}=\left[\begin{array}{c}
-\mathbf{x}_1^T\\\vdots\\\mathbf{x}_n^T\end{array}\right]\)</span>, <span
-class="math inline">\(\boldsymbol{\beta}=\left[\begin{array}{c}\beta_0\\
-\vdots\\ \beta_p\end{array}\right]\)</span> and <span
-class="math inline">\(\mathbf{\epsilon}=\left[\begin{array}{c}
-\epsilon_1 \\ \vdots \\ \epsilon_n\end{array}\right]\)</span></li>
+<li><span class="math inline">\(n\)</span> observations <span class="math inline">\((\mathbf{x}_1,y_1) \ldots (\mathbf{x}_n,y_n)\)</span> with <span class="math inline">\(\mathbf{x}_1^T=[1 x_1 \ldots x_p]\)</span></li>
+<li>Regression in matrix notation <span class="math display">\[\mathbf{Y}=\mathbf{X\beta} + \mathbf{\epsilon}\]</span> with <span class="math inline">\(\mathbf{Y}=\left[\begin{array}{c}y_1\\ \vdots\\y_n\end{array}\right]\)</span>, <span class="math inline">\(\mathbf{X}=\left[\begin{array}{cccc} 1&amp;x_{11}&amp;\ldots&amp;x_{1p}\\ \vdots&amp;\vdots&amp;&amp;\vdots\\ 1&amp;x_{n1}&amp;\ldots&amp;x_{np} \end{array}\right]\)</span> or <span class="math inline">\(\mathbf{X}=\left[\begin{array}{c} \mathbf{x}_1^T\\\vdots\\\mathbf{x}_n^T\end{array}\right]\)</span>, <span class="math inline">\(\boldsymbol{\beta}=\left[\begin{array}{c}\beta_0\\ \vdots\\ \beta_p\end{array}\right]\)</span> and <span class="math inline">\(\mathbf{\epsilon}=\left[\begin{array}{c} \epsilon_1 \\ \vdots \\ \epsilon_n\end{array}\right]\)</span></li>
 </ul>
 <hr />
 </div>
 </div>
 <div id="least-squares-ls" class="section level2" number="3.2">
-<h2><span class="header-section-number">3.2</span> Least Squares
-(LS)</h2>
+<h2><span class="header-section-number">3.2</span> Least Squares (LS)</h2>
 <ul>
-<li><p>Minimize the residual sum of squares <span
-class="math display">\[\begin{eqnarray*}
+<li><p>Minimize the residual sum of squares <span class="math display">\[\begin{eqnarray*}
 RSS(\boldsymbol{\beta})&amp;=&amp;\sum\limits_{i=1}^n e^2_i\\
-&amp;=&amp;\sum\limits_{i=1}^n \left(y_i-\beta_0-\sum\limits_{j=1}^p
-x_{ij}\beta_j\right)^2
+&amp;=&amp;\sum\limits_{i=1}^n \left(y_i-\beta_0-\sum\limits_{j=1}^p x_{ij}\beta_j\right)^2
 \end{eqnarray*}\]</span></p></li>
 <li><p>or in matrix notation</p></li>
 </ul>
 <p><span class="math display">\[
 \text{RSS}(\boldsymbol{\beta})=(\mathbf{Y}-\mathbf{X\beta})^T(\mathbf{Y}-\mathbf{X\beta})
 \]</span></p>
-<p><span class="math display">\[\rightarrow
-\hat{\boldsymbol{\beta}}=\text{argmin}_\beta \text{
-RSS}(\boldsymbol{\beta})\]</span></p>
+<p><span class="math display">\[\rightarrow \hat{\boldsymbol{\beta}}=\text{argmin}_\beta \text{ RSS}(\boldsymbol{\beta})\]</span></p>
 <hr />
 <div id="minimize-rss" class="section level3" number="3.2.1">
 <h3><span class="header-section-number">3.2.1</span> Minimize RSS</h3>
 <p><span class="math display">\[
 \begin{array}{ccc}
-\frac{\partial RSS}{\partial
-\boldsymbol{\beta}}&amp;=&amp;\mathbf{0}\\\\
-\frac{(\mathbf{Y}-\mathbf{X\beta})^T(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})}{\partial
-\boldsymbol{\beta}}&amp;=&amp;\mathbf{0}\\\\
+\frac{\partial RSS}{\partial \boldsymbol{\beta}}&amp;=&amp;\mathbf{0}\\\\
+\frac{(\mathbf{Y}-\mathbf{X\beta})^T(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})}{\partial \boldsymbol{\beta}}&amp;=&amp;\mathbf{0}\\\\
 -2\mathbf{X}^T(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})&amp;=&amp;\mathbf{0}\\\\
 \mathbf{X}^T\mathbf{X\beta}&amp;=&amp;\mathbf{X}^T\mathbf{Y}\\\\
 \hat{\boldsymbol{\beta}}&amp;=&amp;(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{Y}
@@ -850,8 +771,7 @@ RSS}(\boldsymbol{\beta})\]</span></p>
 </div>
 </div>
 <div id="variance-estimator" class="section level2" number="3.3">
-<h2><span class="header-section-number">3.3</span> Variance
-Estimator?</h2>
+<h2><span class="header-section-number">3.3</span> Variance Estimator?</h2>
 <p><span class="math display">\[
 \begin{array}{ccl}
 \hat{\boldsymbol{\Sigma}}_{\hat{\boldsymbol{\beta}}}
@@ -860,27 +780,20 @@ Estimator?</h2>
 &amp;=&amp;(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T(\mathbf{I}\sigma^2)\mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}
 \\\\
 &amp;=&amp;(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{I}\quad\mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\sigma^2\\\\
-%\hat{\boldmath{\Sigma}}_{\hat{\boldsymbol{\beta}}}&amp;=&amp;(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T
-\text{var}\left[\mathbf{Y}\right](\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}\\
+%\hat{\boldmath{\Sigma}}_{\hat{\boldsymbol{\beta}}}&amp;=&amp;(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T \text{var}\left[\mathbf{Y}\right](\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}\\
 &amp;=&amp;(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\sigma^2\\\\
 &amp;=&amp;(\mathbf{X}^T\mathbf{X})^{-1}\sigma^2
 \end{array}
 \]</span></p>
-<p>The uncertainty on the model parameters thus depends on the residual
-variability and the design!</p>
+<p>The uncertainty on the model parameters thus depends on the residual variability and the design!</p>
 <ul>
-<li>The larger <span
-class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> the more
-information the experiment contains on the model parameters and the
-smaller their variances and standard errors will be!</li>
+<li>The larger <span class="math inline">\(\mathbf{X}^T\mathbf{X}\)</span> the more information the experiment contains on the model parameters and the smaller their variances and standard errors will be!</li>
 <li>Factorial designs?</li>
 <li>Designs with continuous predictors?</li>
 </ul>
 <hr />
-<p>The effect size of interest is typically a linear combinations of the
-model parameters, i.e. <span class="math display">\[
-l_0 \times \beta_0 + l_1 \times \beta_1 + ... + l_{p-1} \times
-\beta_{p-1} = \mathbf{L}^T\boldsymbol{\beta}
+<p>The effect size of interest is typically a linear combinations of the model parameters, i.e. <span class="math display">\[
+l_0 \times \beta_0 + l_1 \times \beta_1 + ... + l_{p-1} \times \beta_{p-1} = \mathbf{L}^T\boldsymbol{\beta}
 \]</span></p>
 <p>The null hypothesis of our test statistics is than formulated as</p>
 <p><span class="math display">\[
@@ -891,73 +804,46 @@ H_0: \mathbf{L}^T\boldsymbol{\beta} = 0
 H_0: \mathbf{L}^T\boldsymbol{\beta} \neq 0
 \]</span> which can be assessed using a t-test statistic:</p>
 <p><span class="math display">\[
-t=\frac{\mathbf{L}^T\hat{\boldsymbol{\beta}} -
-0}{\text{se}_{\mathbf{L}^T\hat{\boldsymbol{\beta}}}}
-\]</span> which follows a t-distribution with n-p degrees of freedom
-under the null hypothesis when all assumptions for the linear model are
-valid.</p>
+t=\frac{\mathbf{L}^T\hat{\boldsymbol{\beta}} - 0}{\text{se}_{\mathbf{L}^T\hat{\boldsymbol{\beta}}}}
+\]</span> which follows a t-distribution with n-p degrees of freedom under the null hypothesis when all assumptions for the linear model are valid.</p>
 <p>So the power</p>
 <p><span class="math display">\[P(p &lt; 0.05 | H_1)\]</span></p>
 <p>will typically depends on</p>
 <ul>
-<li>the real effect size in the population <span
-class="math inline">\(\mathbf{L}^T\boldsymbol{\beta}\)</span>.</li>
+<li>the real effect size in the population <span class="math inline">\(\mathbf{L}^T\boldsymbol{\beta}\)</span>.</li>
 <li>Number of observations: SE and df of t-test.</li>
 <li>Choice of the design points.</li>
 <li>Choice of significance level.</li>
 </ul>
-<p>Similar to the introductory example, we can use simulations to assess
-the power.</p>
+<p>Similar to the introductory example, we can use simulations to assess the power.</p>
 </div>
 <div id="mouse-example" class="section level2" number="3.4">
 <h2><span class="header-section-number">3.4</span> Mouse example</h2>
 <ul>
-<li><p>In 2021 Choa et al. published that the cytokine Thymic stromal
-lymphopoietin (TSLP) induced fat loss through sebum secretion (talg).
-[<a
-href="https://www.science.org/doi/full/10.1126/science.abd2893">html</a>]
-[<a
-href="https://www.science.org/doi/pdf/10.1126/science.abd2893">PDF</a>]</p></li>
-<li><p>Suppose that you would like to set up a similar study to test if
-cytokine interleukin 25 (IL) also has beneficial effect.</p></li>
-<li><p>You plan to setup a study with a control group of high fat diet
-(HFD) fed mice and a treatment group that recieves the HFD and
-IL.</p></li>
-<li><p>What sample size do you need to pick up the effect of the
-treatment.</p></li>
+<li><p>In 2021 Choa et al. published that the cytokine Thymic stromal lymphopoietin (TSLP) induced fat loss through sebum secretion (talg). [<a href="https://www.science.org/doi/full/10.1126/science.abd2893">html</a>] [<a href="https://www.science.org/doi/pdf/10.1126/science.abd2893">PDF</a>]</p></li>
+<li><p>Suppose that you would like to set up a similar study to test if cytokine interleukin 25 (IL) also has beneficial effect.</p></li>
+<li><p>You plan to setup a study with a control group of high fat diet (HFD) fed mice and a treatment group that recieves the HFD and IL.</p></li>
+<li><p>What sample size do you need to pick up the effect of the treatment.</p></li>
 </ul>
-<div id="how-will-we-analyse-the-data-of-this-experiment"
-class="section level3" number="3.4.1">
-<h3><span class="header-section-number">3.4.1</span> How will we analyse
-the data of this experiment?</h3>
+<div id="how-will-we-analyse-the-data-of-this-experiment" class="section level3" number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> How will we analyse the data of this experiment?</h3>
 <hr />
 <ul>
-<li><p><span class="math inline">\(H_0\)</span>: The average weight
-difference is equal to zero</p></li>
-<li><p><span class="math inline">\(H-0\)</span>: The average weight
-difference is different from zero</p></li>
-<li><p>Two sample t-test or a t-test on the slope of a linear model with
-one dummy variable.</p></li>
+<li><p><span class="math inline">\(H_0\)</span>: The average weight difference is equal to zero</p></li>
+<li><p><span class="math inline">\(H-0\)</span>: The average weight difference is different from zero</p></li>
+<li><p>Two sample t-test or a t-test on the slope of a linear model with one dummy variable.</p></li>
 </ul>
-<p><span class="math display">\[ Y_i = \beta_0 + \beta_1 X_\text{iIL} +
-\epsilon_i\]</span></p>
+<p><span class="math display">\[ Y_i = \beta_0 + \beta_1 X_\text{iIL} + \epsilon_i\]</span></p>
 <p><span class="math display">\[
 \text{with }
-X_\text{iIL}=\begin{cases}X_{iIL}=0 &amp; \text{HFD}\\X_{iIL}=1 &amp;
-\text{HFD + IL}\end{cases}.
+X_\text{iIL}=\begin{cases}X_{iIL}=0 &amp; \text{HFD}\\X_{iIL}=1 &amp; \text{HFD + IL}\end{cases}.
 \]</span></p>
 <ul>
-<li><p>Estimated effect size <span class="math display">\[\hat\delta =
-\bar X_{IL} - \bar X_{c} = \hat \beta_1\]</span></p></li>
+<li><p>Estimated effect size <span class="math display">\[\hat\delta = \bar X_{IL} - \bar X_{c} = \hat \beta_1\]</span></p></li>
 <li><p>Test statistic <span class="math display">\[
-T = \frac{\bar{X}_{IL}-\bar{X}_{c}}{SD_\text{pooled} \times
-\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} =
-\frac{\hat\beta_1}{\text{SE}_{\hat\beta_1}}
+T = \frac{\bar{X}_{IL}-\bar{X}_{c}}{SD_\text{pooled} \times \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} = \frac{\hat\beta_1}{\text{SE}_{\hat\beta_1}}
 \]</span></p></li>
-<li><p><span class="math inline">\(\hat \beta_1\)</span> is an unbiased
-estimator of the real weight difference (<span
-class="math inline">\(\delta\)</span>) that would occur in the
-population of rats fed with HFD and rats fed with HFD + IL.</p></li>
+<li><p><span class="math inline">\(\hat \beta_1\)</span> is an unbiased estimator of the real weight difference (<span class="math inline">\(\delta\)</span>) that would occur in the population of rats fed with HFD and rats fed with HFD + IL.</p></li>
 </ul>
 </div>
 <div id="power" class="section level3" number="3.4.2">
@@ -966,38 +852,25 @@ population of rats fed with HFD and rats fed with HFD + IL.</p></li>
 P[p &lt; \alpha \vert \beta_1 \neq 0]
 \]</span></p>
 <ul>
-<li>Hence, the power will depend on the real weight difference between
-the group means <span class="math inline">\(\beta_1\)</span> in the
-population.</li>
+<li>Hence, the power will depend on the real weight difference between the group means <span class="math inline">\(\beta_1\)</span> in the population.</li>
 <li>The variability of the weight measurements</li>
-<li>The significance level <span
-class="math inline">\(\alpha\)</span></li>
-<li>Sample size <span class="math inline">\(n_{IL}\)</span> and <span
-class="math inline">\(n_c\)</span> in both groups</li>
+<li>The significance level <span class="math inline">\(\alpha\)</span></li>
+<li>Sample size <span class="math inline">\(n_{IL}\)</span> and <span class="math inline">\(n_c\)</span> in both groups</li>
 </ul>
 <p>We can estimate the power if</p>
 <ol style="list-style-type: decimal">
-<li>The assumptions of the model are met: weights are normally
-distributed with same variance</li>
+<li>The assumptions of the model are met: weights are normally distributed with same variance</li>
 </ol>
 <p>and we know</p>
 <ol start="2" style="list-style-type: decimal">
-<li>the standard deviation of the weight measurements around their
-average mean for HFD-fed mice</li>
+<li>the standard deviation of the weight measurements around their average mean for HFD-fed mice</li>
 <li>the real effect size in the population</li>
-<li><span class="math inline">\(n_1\)</span> and <span
-class="math inline">\(n_2\)</span></li>
+<li><span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span></li>
 </ol>
 </div>
-<div
-id="use-data-from-a-previous-experiment-to-get-insight-in-mice-data"
-class="section level3" number="3.4.3">
-<h3><span class="header-section-number">3.4.3</span> Use data from a
-previous experiment to get insight in mice data</h3>
-<p>Suppose that we have access to the data of a preliminary experiment
-(e.g. provided by Karen Svenson via Gary Churchill and Dan Gatti and
-partially funded by P50 GM070683 on <a
-href="http://genomicsclass.github.io/book/pages/random_variables.html">PH525x</a>)</p>
+<div id="use-data-from-a-previous-experiment-to-get-insight-in-mice-data" class="section level3" number="3.4.3">
+<h3><span class="header-section-number">3.4.3</span> Use data from a previous experiment to get insight in mice data</h3>
+<p>Suppose that we have access to the data of a preliminary experiment (e.g. provided by Karen Svenson via Gary Churchill and Dan Gatti and partially funded by P50 GM070683 on <a href="http://genomicsclass.github.io/book/pages/random_variables.html">PH525x</a>)</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mice <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/femaleMiceWeights.csv&quot;</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>mice <span class="sc">%&gt;%</span></span>
@@ -1046,22 +919,16 @@ href="http://genomicsclass.github.io/book/pages/random_variables.html">PH525x</a
 <ul>
 <li><p>The alternative hypothesis is complex.</p></li>
 <li><p>It includes all possible effects!</p></li>
-<li><p>In order to do the power analysis we will have to choose a
-minimum effect size that we would like to detect.</p></li>
-<li><p>Suppose that we would like to detect if the weight of the rats
-difference <span class="math inline">\(\delta\)</span> of at least
-10%.</p></li>
+<li><p>In order to do the power analysis we will have to choose a minimum effect size that we would like to detect.</p></li>
+<li><p>Suppose that we would like to detect if the weight of the rats difference <span class="math inline">\(\delta\)</span> of at least 10%.</p></li>
 </ul>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">round</span>(miceSum<span class="sc">$</span>mean[<span class="dv">2</span>] <span class="sc">*</span> .<span class="dv">1</span>, <span class="dv">1</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>delta</span></code></pre></div>
 <pre><code>## [1] -2.7</code></pre>
-<p>Note, that the average weight then would get close to that of the
-rats in our pilot experiment that were fed on the chow diet.</p>
-<p>We can set up a simulation study to assess the power of an experiment
-with 8 mice in each group:</p>
+<p>Note, that the average weight then would get close to that of the rats in our pilot experiment that were fed on the chow diet.</p>
+<p>We can set up a simulation study to assess the power of an experiment with 8 mice in each group:</p>
 <div id="one-simulation" class="section level4" number="3.4.3.1">
-<h4><span class="header-section-number">3.4.3.1</span> One
-simulation</h4>
+<h4><span class="header-section-number">3.4.3.1</span> One simulation</h4>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1423</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> n2 <span class="ot">&lt;-</span> <span class="dv">8</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> <span class="fu">round</span>(miceSum<span class="sc">$</span>mean[<span class="dv">2</span>], <span class="dv">1</span>)</span>
@@ -1077,20 +944,14 @@ simulation</h4>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)<span class="sc">$</span>coef[<span class="dv">2</span>, ]</span></code></pre></div>
 <pre><code>##   Estimate Std. Error    t value   Pr(&gt;|t|) 
 ##  2.5972480  1.7919658  1.4493848  0.1692595</code></pre>
-<p>For this simulated experiment we would not have been able to pick up
-the effect of the treatment at the significance level <span
-class="math inline">\(\alpha\)</span>=0.05 (p = <code>r</code>
-round(summary(fit)$coef[2,“Pr(&gt;|t|)”],2)`)!</p>
+<p>For this simulated experiment we would not have been able to pick up the effect of the treatment at the significance level <span class="math inline">\(\alpha\)</span>=0.05 (p = <code>r</code> round(summary(fit)$coef[2,“Pr(&gt;|t|)”],2)`)!</p>
 <ul>
-<li>We have to repeat the experiment many times to estimate the
-power.</li>
+<li>We have to repeat the experiment many times to estimate the power.</li>
 <li>We will therefore put our simulation in a general function.</li>
 </ul>
 </div>
-<div id="simulation-of-repeated-experiments" class="section level4"
-number="3.4.3.2">
-<h4><span class="header-section-number">3.4.3.2</span> Simulation of
-repeated experiments</h4>
+<div id="simulation-of-repeated-experiments" class="section level4" number="3.4.3.2">
+<h4><span class="header-section-number">3.4.3.2</span> Simulation of repeated experiments</h4>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span></code></pre></div>
 <pre><code>## Loading required package: mvtnorm</code></pre>
 <pre><code>## Loading required package: survival</code></pre>
@@ -1135,21 +996,14 @@ repeated experiments</h4>
 <span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## coefficients.Diethf        sigma.Diethf        tstat.Diethf             pvalues 
 ##           1.9444623           2.0931302           0.9289734           0.3686439</code></pre>
-<p>We now have a generic function that can simulate data from a normal
-distribution for every design. The function has arguments:</p>
+<p>We now have a generic function that can simulate data from a normal distribution for every design. The function has arguments:</p>
 <ul>
-<li><code>form</code>: One sided formula including the structure of the
-predictors in the model</li>
-<li><code>data</code>: Data frame with the predictor values for the
-design</li>
-<li><code>betas</code>: A vector with values for all mean model
-parameters</li>
+<li><code>form</code>: One sided formula including the structure of the predictors in the model</li>
+<li><code>data</code>: Data frame with the predictor values for the design</li>
+<li><code>betas</code>: A vector with values for all mean model parameters</li>
 <li><code>sd</code>: The standard deviation of the error</li>
-<li><code>contrasts</code>: a scalar or a vector with the null
-hypotheses that we would like to assess.</li>
-<li><code>simIndex</code>: an arbitrary argument that is not used by the
-function but that will allow it to be used in an sapply loop that runs
-from 1 up to the number of simulations.</li>
+<li><code>contrasts</code>: a scalar or a vector with the null hypotheses that we would like to assess.</li>
+<li><code>simIndex</code>: an arbitrary argument that is not used by the function but that will allow it to be used in an sapply loop that runs from 1 up to the number of simulations.</li>
 </ul>
 <p>Simulate nSim = 1000 repeated experiments:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1425</span>)</span>
@@ -1159,13 +1013,10 @@ from 1 up to the number of simulations.</li>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>power <span class="ot">&lt;-</span> <span class="fu">mean</span>(simResults[, <span class="dv">4</span>] <span class="sc">&lt;</span> alpha)</span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>power</span></code></pre></div>
 <pre><code>## [1] 0.221</code></pre>
-<p>We have a power of 22.1% to pick up the treatment effect when using 8
-bioreps in each treatment group.</p>
+<p>We have a power of 22.1% to pick up the treatment effect when using 8 bioreps in each treatment group.</p>
 </div>
-<div id="power-for-multiple-sample-sizes" class="section level4"
-number="3.4.3.3">
-<h4><span class="header-section-number">3.4.3.3</span> Power for
-multiple sample sizes</h4>
+<div id="power-for-multiple-sample-sizes" class="section level4" number="3.4.3.3">
+<h4><span class="header-section-number">3.4.3.3</span> Power for multiple sample sizes</h4>
 <p>We can now calculate the power for multiple sample sizes.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>power <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">n =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>), <span class="at">power =</span> <span class="cn">NA</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1187,15 +1038,9 @@ multiple sample sizes</h4>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
 <p><img src="08-experimentalDesignII_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
-<div
-id="assess-power-in-function-of-sample-size-for-different-effect-sizes"
-class="section level4" number="3.4.3.4">
-<h4><span class="header-section-number">3.4.3.4</span> Assess power in
-function of sample size for different effect sizes</h4>
-<p>Note, that - the sign of the delta is arbitrary because we test
-two-sided. - the intercept is arbitrary because we only asses <span
-class="math inline">\(\beta_0\)</span> - We therefore typically set
-<span class="math inline">\(\beta_0 = 0\)</span></p>
+<div id="assess-power-in-function-of-sample-size-for-different-effect-sizes" class="section level4" number="3.4.3.4">
+<h4><span class="header-section-number">3.4.3.4</span> Assess power in function of sample size for different effect sizes</h4>
+<p>Note, that - the sign of the delta is arbitrary because we test two-sided. - the intercept is arbitrary because we only asses <span class="math inline">\(\beta_0\)</span> - We therefore typically set <span class="math inline">\(\beta_0 = 0\)</span></p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>nSim <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>deltas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>)</span>
@@ -1220,10 +1065,7 @@ class="math inline">\(\beta_0\)</span> - We therefore typically set
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> power, <span class="at">col =</span> b1 <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())) <span class="sc">+</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
 <p><img src="08-experimentalDesignII_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>Note, that the power curves are still a bit choppy because we
-selected a limited number of sample sizes and because <code>nSim</code>
-simulations is not enough to get a good power estimate when the power is
-low.</p>
+<p>Note, that the power curves are still a bit choppy because we selected a limited number of sample sizes and because <code>nSim</code> simulations is not enough to get a good power estimate when the power is low.</p>
 </div>
 </div>
 </div>
@@ -1231,26 +1073,21 @@ low.</p>
 <div id="final-remarks" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Final remarks</h1>
 <ul>
-<li><p>The code can be easily extended towards other designs by
-altering</p>
+<li><p>The code can be easily extended towards other designs by altering</p>
 <ul>
 <li>predictor data</li>
 <li>formula</li>
 <li>contrast</li>
 </ul></li>
-<li><p>The simulations start to take long when you evaluate many
-scenario’s.</p>
+<li><p>The simulations start to take long when you evaluate many scenario’s.</p>
 <ul>
 <li>More efficient code using matrices</li>
 <li>For a two group comparison closed form solutions exist</li>
 </ul></li>
 </ul>
-<div id="more-efficient-code-based-on-matrix-algebra"
-class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> More efficient code
-based on matrix algebra</h2>
-<p>Code runs much faster. We now simulate 20 times more experiments in a
-much shorter time!</p>
+<div id="more-efficient-code-based-on-matrix-algebra" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> More efficient code based on matrix algebra</h2>
+<p>Code runs much faster. We now simulate 20 times more experiments in a much shorter time!</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>simFast <span class="ot">&lt;-</span> <span class="cf">function</span>(form, data, betas, sd, contrasts, <span class="at">alpha =</span> .<span class="dv">05</span>, <span class="at">nSim =</span> <span class="dv">10000</span>) {</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  ySim <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">nrow</span>(data) <span class="sc">*</span> nSim, <span class="at">sd =</span> sd)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dim</span>(ySim) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">nrow</span>(data), nSim)</span>
@@ -1276,7 +1113,8 @@ much shorter time!</p>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>deltas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>)</span>
 <span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>contrast <span class="ot">&lt;-</span> limma<span class="sc">::</span><span class="fu">makeContrasts</span>(<span class="st">&quot;Diethf&quot;</span>, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;(Intercept)&quot;</span>, <span class="st">&quot;Diethf&quot;</span>))</span></code></pre></div>
-<pre><code>## Warning in limma::makeContrasts(&quot;Diethf&quot;, levels = c(&quot;(Intercept)&quot;, &quot;Diethf&quot;)): Renaming (Intercept) to Intercept</code></pre>
+<pre><code>## Warning in limma::makeContrasts(&quot;Diethf&quot;, levels = c(&quot;(Intercept)&quot;, &quot;Diethf&quot;)):
+## Renaming (Intercept) to Intercept</code></pre>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>powerFast <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> <span class="fu">length</span>(ns) <span class="sc">*</span> <span class="fu">length</span>(deltas), <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(powerFast) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;b1&quot;</span>, <span class="st">&quot;n&quot;</span>, <span class="st">&quot;power&quot;</span>)</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>form <span class="ot">&lt;-</span> <span class="er">~</span>Diet</span>
@@ -1302,13 +1140,9 @@ much shorter time!</p>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
 <p><img src="08-experimentalDesignII_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
-<div
-id="more-efficient-code-based-on-closed-form-solution-that-exists-for-two-group-comparison"
-class="section level2" number="4.2">
-<h2><span class="header-section-number">4.2</span> More efficient code
-based on closed form solution that exists for two group comparison</h2>
-<p>For the two sample t-test a closed form estimate exists for the
-power. In this context the Cohen’s effect size is typically used:</p>
+<div id="more-efficient-code-based-on-closed-form-solution-that-exists-for-two-group-comparison" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> More efficient code based on closed form solution that exists for two group comparison</h2>
+<p>For the two sample t-test a closed form estimate exists for the power. In this context the Cohen’s effect size is typically used:</p>
 <p><span class="math inline">\(D = \frac{\delta}{SD}\)</span></p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.t.test</span>(<span class="at">n =</span> <span class="dv">8</span>, <span class="at">delta =</span> delta, <span class="at">sd =</span> sd, <span class="at">type =</span> <span class="st">&quot;two.sample&quot;</span>)</span></code></pre></div>
 <pre><code>## 
@@ -1322,8 +1156,7 @@ power. In this context the Cohen’s effect size is typically used:</p>
 ##     alternative = two.sided
 ## 
 ## NOTE: n is number in *each* group</code></pre>
-<p>Note, that this is very similar to the power that we calculated using
-the simulations!</p>
+<p>Note, that this is very similar to the power that we calculated using the simulations!</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">&lt;-</span> <span class="fu">round</span>(miceSum<span class="sc">$</span>sd[<span class="dv">2</span>], <span class="dv">1</span>)</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>ns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>)</span>

@@ -549,29 +549,20 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 6.1: Linear regression on the fish
-tank dataset - solution</h1>
+<h1 class="title toc-ignore">Exercise 6.1: Linear regression on the fish tank dataset - solution</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="fish-tank-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Fish tank dataset</h1>
-<p>In this experiment, 96 fish (dojofish, goldfish and zebrafish) were
-placed separately in a tank with two liters of water and a certain dose
-(in mg) of the poison EI-43,064. The resistance of the fish against the
-poison was measured as the amount of minutes the fish survived after
-being exposed to the poison (<code>Surv_time</code>, in minutes).
-Additionally, the weight of each fish was measured.</p>
+<p>In this experiment, 96 fish (dojofish, goldfish and zebrafish) were placed separately in a tank with two liters of water and a certain dose (in mg) of the poison EI-43,064. The resistance of the fish against the poison was measured as the amount of minutes the fish survived after being exposed to the poison (<code>Surv_time</code>, in minutes). Additionally, the weight of each fish was measured.</p>
 </div>
 <div id="goal" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Goal</h1>
-<p>The research goal is to study the association between the dose of the
-poison that was administered to the fish and their survival time.</p>
+<p>The research goal is to study the association between the dose of the poison that was administered to the fish and their survival time.</p>
 <p>Load the required libraries</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 </div>
@@ -581,16 +572,11 @@ poison that was administered to the fish and their survival time.</p>
 </div>
 <div id="data-tidying" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Data tidying</h1>
-<p>We can see a couple of things in the data that can be improved
-upon:</p>
+<p>We can see a couple of things in the data that can be improved upon:</p>
 <ol style="list-style-type: decimal">
-<li><p>Capitalise the fist column name. <em>Hint</em>: use the
-<code>rename</code> function.</p></li>
-<li><p>Set the Species column as a factor. <em>Hint</em>: use the
-<code>mutate</code> and <code>as.factor</code> functions.</p></li>
-<li><p>Change the species factor levels from 0, 1 and 2 to Dojofish,
-Goldfish and Zebrafish. <em>Hint</em>: use the <code>fct_recode</code>
-function inside the <code>mutate</code> function.</p></li>
+<li><p>Capitalise the fist column name. <em>Hint</em>: use the <code>rename</code> function.</p></li>
+<li><p>Set the Species column as a factor. <em>Hint</em>: use the <code>mutate</code> and <code>as.factor</code> functions.</p></li>
+<li><p>Change the species factor levels from 0, 1 and 2 to Dojofish, Goldfish and Zebrafish. <em>Hint</em>: use the <code>fct_recode</code> function inside the <code>mutate</code> function.</p></li>
 </ol>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>poison <span class="ot">&lt;-</span> poison <span class="sc">%&gt;%</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">&quot;Species&quot;</span> <span class="ot">=</span> <span class="st">&quot;species&quot;</span>) <span class="sc">%&gt;%</span></span>
@@ -614,9 +600,7 @@ function inside the <code>mutate</code> function.</p></li>
 {"columns":[{"label":["Species"],"name":[1],"type":["fct"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Dojofish","2":"39"},{"1":"Goldfish","2":"38"},{"1":"Zebrafish","2":"19"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>Make a suitable visualization of the association between the dose and
-the survival time. Additionally, add the fish species as a color to the
-plot.</p>
+<p>Make a suitable visualization of the association between the dose and the survival time. Additionally, add the fish species as a color to the plot.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>poison <span class="sc">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Dose, <span class="at">y =</span> Surv_time)) <span class="sc">+</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
@@ -630,53 +614,18 @@ plot.</p>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
 ## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <p><img src="06_1_poison_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>The linear regression line (black) is a good approximation of the
-best fitting smooth line (blue) through the data. Based on this figure,
-it seems realistic to suggest a linear relationship between dose and
-survival, where higher doses have lower survival times (as expected).
-However, before we start with the regression analysis we must check if
-all required assumptions are met.</p>
+<p>The linear regression line (black) is a good approximation of the best fitting smooth line (blue) through the data. Based on this figure, it seems realistic to suggest a linear relationship between dose and survival, where higher doses have lower survival times (as expected). However, before we start with the regression analysis we must check if all required assumptions are met.</p>
 </div>
-<div id="important-note-on-the-dataset" class="section level1"
-number="6">
-<h1><span class="header-section-number">6</span> Important note on the
-dataset</h1>
-<p>In this dataset, there are multiple variables can have an effect on
-the survival time of the fish. The most obvious one is the dose of
-poison that was administered (as displayed above). However, we could
-also imagine that heavier fish are less prone to the poison than light
-fish. Additionally, one fish species may be more resistant to the poison
-than the other.</p>
-<p>As such, not taking into account species into the analysis will
-introduce problems regarding the assumption of <em>independence</em> of
-the data. The assumption of <em>independence</em> entails that knowing
-the response value of one observation (fish) does not learn us anything
-about the response values for another variable. This will not be the
-case here; the response values (survival times) of fish of the same
-species will be much more alike compared to those of fish from another
-species.</p>
-<p>Thus, in order to correctly analyze this data, fish
-<code>species</code> and <code>weight</code> should be taken into
-consideration. <strong>For now, we will “avoid” taking into</strong>
-<strong>account the effect of species into the analysis by only
-performing an</strong> <strong>analysis for the dojofish</strong>. As
-such, we will filter the dataset so that it only contains observations
-for the Dojofish.</p>
+<div id="important-note-on-the-dataset" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Important note on the dataset</h1>
+<p>In this dataset, there are multiple variables can have an effect on the survival time of the fish. The most obvious one is the dose of poison that was administered (as displayed above). However, we could also imagine that heavier fish are less prone to the poison than light fish. Additionally, one fish species may be more resistant to the poison than the other.</p>
+<p>As such, not taking into account species into the analysis will introduce problems regarding the assumption of <em>independence</em> of the data. The assumption of <em>independence</em> entails that knowing the response value of one observation (fish) does not learn us anything about the response values for another variable. This will not be the case here; the response values (survival times) of fish of the same species will be much more alike compared to those of fish from another species.</p>
+<p>Thus, in order to correctly analyze this data, fish <code>species</code> and <code>weight</code> should be taken into consideration. <strong>For now, we will “avoid” taking into</strong> <strong>account the effect of species into the analysis by only performing an</strong> <strong>analysis for the dojofish</strong>. As such, we will filter the dataset so that it only contains observations for the Dojofish.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter the data so it only contains dojofish</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>poison_dojo <span class="ot">&lt;-</span> poison <span class="sc">%&gt;%</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Species <span class="sc">==</span> <span class="st">&quot;Dojofish&quot;</span>)</span></code></pre></div>
-<p>Later in the course, we will come back to this dataset and perform a
-analysis that allows us to assess the different research hypotheses for
-all fish species at once!</p>
-<p>The second predictor variable, <code>Weight</code>, still may
-influence our analysis; fish with higher weight are expected to be more
-resistant to the poison. <strong>If</strong> there would be a systematic
-bias in the experiment, e.g. if all lighter fish obtained a low dose of
-poison and heavier fish obtained a high dose of poison (so, if the dose
-was not correctly randomized accros the different weights), then we
-would not be able to correctly estimate the linear association between
-<code>Dose</code> and <code>survival</code>; indeed, this relationship
-would be confounded by the effect of weight.</p>
+<p>Later in the course, we will come back to this dataset and perform a analysis that allows us to assess the different research hypotheses for all fish species at once!</p>
+<p>The second predictor variable, <code>Weight</code>, still may influence our analysis; fish with higher weight are expected to be more resistant to the poison. <strong>If</strong> there would be a systematic bias in the experiment, e.g. if all lighter fish obtained a low dose of poison and heavier fish obtained a high dose of poison (so, if the dose was not correctly randomized accros the different weights), then we would not be able to correctly estimate the linear association between <code>Dose</code> and <code>survival</code>; indeed, this relationship would be confounded by the effect of weight.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>poison_dojo <span class="sc">%&gt;%</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Dose, <span class="at">y =</span> Weight)) <span class="sc">+</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
@@ -691,15 +640,7 @@ would be confounded by the effect of weight.</p>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;red&quot;</span></span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="06_1_poison_sol_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>In our dataset, there seems to be <strong>no systematic
-bias</strong>, i.e., no clear trend in the association between
-<code>Dose</code> and <code>Weight</code>. However, we do notice that
-the fish weights are not perfectly uniformly distributed across the
-different doses; we don’t see a clear trend, but we do see some
-fluctuations. To check if fluctuations of the size that we observe here
-could happen by random change if we carefully randomise, we may use
-simulations where we simulate the allocation of the fish to the
-different doses.</p>
+<p>In our dataset, there seems to be <strong>no systematic bias</strong>, i.e., no clear trend in the association between <code>Dose</code> and <code>Weight</code>. However, we do notice that the fish weights are not perfectly uniformly distributed across the different doses; we don’t see a clear trend, but we do see some fluctuations. To check if fluctuations of the size that we observe here could happen by random change if we carefully randomise, we may use simulations where we simulate the allocation of the fish to the different doses.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;gridExtra&#39;</code></pre>
@@ -728,20 +669,12 @@ different doses.</p>
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="fu">do.call</span>(gridExtra<span class="sc">::</span>grid.arrange, plots)</span></code></pre></div>
 <p><img src="06_1_poison_sol_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>In the above simulation, we randomly assigned the different fish to
-different poison doses. Even though we did this randomly, we still see
-that by random chance there can be fluctuations as large as the ones
-observed in our real dataset. As such, we may conclude that there is
-indeed <strong>no systematic bias</strong>, i.e., no clear trend in the
-association between <code>Dose</code> and <code>Weight</code>.</p>
+<p>In the above simulation, we randomly assigned the different fish to different poison doses. Even though we did this randomly, we still see that by random chance there can be fluctuations as large as the ones observed in our real dataset. As such, we may conclude that there is indeed <strong>no systematic bias</strong>, i.e., no clear trend in the association between <code>Dose</code> and <code>Weight</code>.</p>
 </div>
 <div id="linear-regression-analysis" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Linear regression
-analysis</h1>
-<div id="assumptions-of-linear-regression" class="section level2"
-number="7.1">
-<h2><span class="header-section-number">7.1</span> Assumptions of linear
-regression</h2>
+<h1><span class="header-section-number">7</span> Linear regression analysis</h1>
+<div id="assumptions-of-linear-regression" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Assumptions of linear regression</h2>
 <p>List assumptions:</p>
 <ol style="list-style-type: decimal">
 <li>The observations are independent of each other</li>
@@ -749,15 +682,8 @@ regression</h2>
 <li>The residues of the model must be normally distributed</li>
 <li>Homoscedasticity of the data</li>
 </ol>
-<p>The first assumption is <strong>met</strong> based on the
-experimental design. In the data exploration phase, we saw that there is
-no clear trend in the association between <code>Dose</code> and
-<code>Weight</code>. With respect to species, we have “avoided” taking
-into account the effect of species into the analysis by only performing
-an analysis for the dojofish.</p>
-<p>We will check the other assumptions by first fitting the linear model
-and plotting the output. As such, we will get all the required
-diagnostic plots.</p>
+<p>The first assumption is <strong>met</strong> based on the experimental design. In the data exploration phase, we saw that there is no clear trend in the association between <code>Dose</code> and <code>Weight</code>. With respect to species, we have “avoided” taking into account the effect of species into the analysis by only performing an analysis for the dojofish.</p>
+<p>We will check the other assumptions by first fitting the linear model and plotting the output. As such, we will get all the required diagnostic plots.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a linear regression model with &#39;Surv_time&#39; as response variable and</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># &#39;Dose&#39; as predictor variabele</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Surv_time <span class="sc">~</span> Dose, <span class="at">data =</span> poison_dojo)</span>
@@ -770,57 +696,31 @@ diagnostic plots.</p>
 <li>Linearity with the Residuals vs fitted plot</li>
 </ol>
 <ul>
-<li>predictor of predictions <span
-class="math inline">\(\hat\beta_0+\hat\beta_1 x\)</span> on <span
-class="math inline">\(X\)</span>-axis</li>
-<li><em>residuals</em> on <span class="math inline">\(Y\)</span>-as
-<span
-class="math display">\[e_i=y_i-\hat{g}(x_i)=y_i-\hat\beta_0-\hat\beta_1\times
-x_i,\]</span></li>
+<li>predictor of predictions <span class="math inline">\(\hat\beta_0+\hat\beta_1 x\)</span> on <span class="math inline">\(X\)</span>-axis</li>
+<li><em>residuals</em> on <span class="math inline">\(Y\)</span>-as <span class="math display">\[e_i=y_i-\hat{g}(x_i)=y_i-\hat\beta_0-\hat\beta_1\times x_i,\]</span></li>
 </ul>
-<p>If there would be a linear relationship in the data, the residuals
-are expected to be scattered at random around y=0 for the entire range
-of predicted values. This is clearly the case: the assumption of
-linearity is met.</p>
+<p>If there would be a linear relationship in the data, the residuals are expected to be scattered at random around y=0 for the entire range of predicted values. This is clearly the case: the assumption of linearity is met.</p>
 <ol start="3" style="list-style-type: decimal">
 <li>Normal Q-Q</li>
 </ol>
 <ul>
-<li>QQ-plot of the residuals <span
-class="math inline">\(e_i\)</span>.</li>
+<li>QQ-plot of the residuals <span class="math inline">\(e_i\)</span>.</li>
 </ul>
-<p>The residuals of the linear regression model should be normally
-distributed. Given the second diagnostic plot, this seems not to be the
-case. In stead, we observe a short left tail and a long right tail. The
-assumption of normal residues is <strong>not met.</strong></p>
+<p>The residuals of the linear regression model should be normally distributed. Given the second diagnostic plot, this seems not to be the case. In stead, we observe a short left tail and a long right tail. The assumption of normal residues is <strong>not met.</strong></p>
 <ol start="4" style="list-style-type: decimal">
 <li>Homoscedasticity</li>
 </ol>
 <ul>
-<li>Square-root of the absolute value of standardized residuals in
-function of the fitted values</li>
+<li>Square-root of the absolute value of standardized residuals in function of the fitted values</li>
 </ul>
-<p>To meet the third assumption of linear regression, the variance on
-the <em>Square-root of the absolute value of standardized residuals</em>
-must be similar over the entire range of fitted values. The smoother in
-the plot helps us with looking at this; it should be nicely horizontal
-over the entire range of fitted values. This seems not to be the case:
-for larger fitted values, the variance increase slightly. The assumption
-of homoscedasticity is <strong>not met.</strong></p>
-<p>Multiple assumptions are not met, so we may not continue by
-performing a linear regression.</p>
-<p>We can try to remediate these deviations by log-transforming the
-data. Indeed, data with heavy right tails can often be normalized by
-applying this strategy.</p>
-<p>Fit a (log-)linear model by log-transforming the response.Generate
-diagnostic plots and assess the assumptions.</p>
+<p>To meet the third assumption of linear regression, the variance on the <em>Square-root of the absolute value of standardized residuals</em> must be similar over the entire range of fitted values. The smoother in the plot helps us with looking at this; it should be nicely horizontal over the entire range of fitted values. This seems not to be the case: for larger fitted values, the variance increase slightly. The assumption of homoscedasticity is <strong>not met.</strong></p>
+<p>Multiple assumptions are not met, so we may not continue by performing a linear regression.</p>
+<p>We can try to remediate these deviations by log-transforming the data. Indeed, data with heavy right tails can often be normalized by applying this strategy.</p>
+<p>Fit a (log-)linear model by log-transforming the response.Generate diagnostic plots and assess the assumptions.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>log.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Surv_time <span class="sc">%&gt;%</span> <span class="fu">log10</span>() <span class="sc">~</span> Dose, <span class="at">data =</span> poison_dojo)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(log.model)</span></code></pre></div>
 <p><img src="06_1_poison_sol_files/figure-html/unnamed-chunk-11-1.png" width="672" /><img src="06_1_poison_sol_files/figure-html/unnamed-chunk-11-2.png" width="672" /><img src="06_1_poison_sol_files/figure-html/unnamed-chunk-11-3.png" width="672" /><img src="06_1_poison_sol_files/figure-html/unnamed-chunk-11-4.png" width="672" /></p>
-<p>Arguably, there might be some deviation from normality in the left
-tail of the distribution. However, when we would simulate data under the
-normality assumption, it seems that deviations of this size may be
-expected when normality is met:</p>
+<p>Arguably, there might be some deviation from normality in the left tail of the distribution. However, when we would simulate data under the normality assumption, it seems that deviations of this size may be expected when normality is met:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1406</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>nobs <span class="ot">&lt;-</span> <span class="fu">nrow</span>(poison_dojo)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -846,12 +746,9 @@ expected when normality is met:</p>
 <p><img src="06_1_poison_sol_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <ol style="list-style-type: decimal">
 <li>The independence assumption is met.</li>
-<li>Upon log-transformation, the linearity assumption is still
-<strong>met</strong>.</li>
-<li>Upon log-transformation, the normality assumption is also
-<strong>met</strong>.</li>
-<li>Upon log-transformation, the homoscedasticity assumption is also
-<strong>met</strong>.</li>
+<li>Upon log-transformation, the linearity assumption is still <strong>met</strong>.</li>
+<li>Upon log-transformation, the normality assumption is also <strong>met</strong>.</li>
+<li>Upon log-transformation, the homoscedasticity assumption is also <strong>met</strong>.</li>
 </ol>
 <p>Look at the output of the log-linear model:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(log.model)</span></code></pre></div>
@@ -879,38 +776,23 @@ expected when normality is met:</p>
 ## (Intercept)  0.7060342  1.1284104
 ## Dose        -0.4075255 -0.1381159</code></pre>
 </div>
-<div id="interpretation-on-the-log-scale" class="section level2"
-number="7.2">
-<h2><span class="header-section-number">7.2</span> Interpretation on the
-log scale</h2>
-<p>Currently, all the outcomes should be interpreted on the log-scale.
-Indeed, since we are now modelling <em>the log<span
-class="math inline">\(_{10}\)</span> of survival time</em>, we don’t
-have direct inference on survival time.</p>
+<div id="interpretation-on-the-log-scale" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Interpretation on the log scale</h2>
+<p>Currently, all the outcomes should be interpreted on the log-scale. Indeed, since we are now modelling <em>the log<span class="math inline">\(_{10}\)</span> of survival time</em>, we don’t have direct inference on survival time.</p>
 <p>As such, we may interpret the output as follows:</p>
 <ul>
 <li>The slope:</li>
 </ul>
-<p>Dojofish that are exposed to a higher dose of the poison will have a
-<span class="math inline">\(log_{10}\)</span> survival time that is on
-average 0.27 lower per gram of poison that was administered additionally
-(95% CI [0.71, 0.41, 1.13, 0.14]). This decrease in survival time is
-significant on the 5% significance level (p&lt;0.001).</p>
-<p>Note, that the study is an experimental study so we can conclude that
-there is a causal effect of the poison dose and the survival time.</p>
+<p>Dojofish that are exposed to a higher dose of the poison will have a <span class="math inline">\(log_{10}\)</span> survival time that is on average 0.27 lower per gram of poison that was administered additionally (95% CI [0.71, 0.41, 1.13, 0.14]). This decrease in survival time is significant on the 5% significance level (p&lt;0.001).</p>
+<p>Note, that the study is an experimental study so we can conclude that there is a causal effect of the poison dose and the survival time.</p>
 <ul>
 <li>The intercept:</li>
 </ul>
-<p>The average of the log10 of survival time for fish that were given a
-dose of 0 mg is 0.92.</p>
+<p>The average of the log10 of survival time for fish that were given a dose of 0 mg is 0.92.</p>
 </div>
-<div id="interpretation-on-the-original-scale" class="section level2"
-number="7.3">
-<h2><span class="header-section-number">7.3</span> Interpretation on the
-original scale</h2>
-<p>The interpretation the log-scale is quite difficult. To ease the
-interpretation, we will backtransform the results to the original scale
-(time in minutes). This we can do by</p>
+<div id="interpretation-on-the-original-scale" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Interpretation on the original scale</h2>
+<p>The interpretation the log-scale is quite difficult. To ease the interpretation, we will backtransform the results to the original scale (time in minutes). This we can do by</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span><span class="sc">^</span>(<span class="fu">summary</span>(log.model)<span class="sc">$</span>coefficients[, <span class="st">&quot;Estimate&quot;</span>])</span></code></pre></div>
 <pre><code>## (Intercept)        Dose 
 ##   8.2646094   0.5335551</code></pre>
@@ -923,22 +805,13 @@ interpretation, we will backtransform the results to the original scale
 <ul>
 <li>The slope:</li>
 </ul>
-<p>Dojo fish that are exposed to a higher dose of the poison will have a
-geometric mean of the survival time that is factor 0.53 (95% CI [0.39,
-0.73]) per gram of poison that they received more than fish exposed to a
-lower dose. This decrease is very significant on the 5% significance
-level (p&lt;0.001).</p>
+<p>Dojo fish that are exposed to a higher dose of the poison will have a geometric mean of the survival time that is factor 0.53 (95% CI [0.39, 0.73]) per gram of poison that they received more than fish exposed to a lower dose. This decrease is very significant on the 5% significance level (p&lt;0.001).</p>
 <ul>
 <li>The intercept:</li>
 </ul>
-<p>The geometric mean of the survival time for fish that were given a
-dose of 0 mg is 8.26 minutes.</p>
-<p>In other words, our analysis seems to suggest that fish in
-uncontaminated water would only survive for about 8 minutes! This seems
-a little bit <em>fishy</em>…</p>
-<p>Note, that this interpretation is not biologically relevant and is
-induced because we extrapolated considerably because all fish in the
-experiment were exposed to poison.</p>
+<p>The geometric mean of the survival time for fish that were given a dose of 0 mg is 8.26 minutes.</p>
+<p>In other words, our analysis seems to suggest that fish in uncontaminated water would only survive for about 8 minutes! This seems a little bit <em>fishy</em>…</p>
+<p>Note, that this interpretation is not biologically relevant and is induced because we extrapolated considerably because all fish in the experiment were exposed to poison.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> poison_dojo<span class="sc">$</span>Dose,</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> poison_dojo<span class="sc">$</span>Surv_time,</span>
@@ -952,22 +825,14 @@ experiment were exposed to poison.</p>
 <span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>summary_model <span class="ot">&lt;-</span> <span class="fu">summary</span>(model)</span>
 <span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">0</span>, summary_model<span class="sc">$</span>coefficients[<span class="st">&quot;(Intercept)&quot;</span>, <span class="st">&quot;Estimate&quot;</span>], <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span></code></pre></div>
 <p><img src="06_1_poison_sol_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-<p>We can see that the dose value of 0 mg does not fall within the same
-range as our data. The model is only valid in the range of data that we
-use to build the model on!</p>
-<p>However, in most applications we will never test for the intercept
-term.</p>
+<p>We can see that the dose value of 0 mg does not fall within the same range as our data. The model is only valid in the range of data that we use to build the model on!</p>
+<p>However, in most applications we will never test for the intercept term.</p>
 </div>
 </div>
 <div id="conclusion" class="section level1" number="8">
 <h1><span class="header-section-number">8</span> Conclusion</h1>
-<p>There is a very significant effect of the poison on survival of
-Dojofish (p&lt; 0.001). Dojofish that are exposed to a higher dose of
-the poison will have a survival time that decrease on average with a
-factor 1.87 per gram of poison that is added (95% CI [2.56, 1.37]).</p>
-<p>In the tutorial of multiple regression, we will revisit this
-exercise. More specifically, we will there study the association between
-dose and survival for all the species in the dataset.</p>
+<p>There is a very significant effect of the poison on survival of Dojofish (p&lt; 0.001). Dojofish that are exposed to a higher dose of the poison will have a survival time that decrease on average with a factor 1.87 per gram of poison that is added (95% CI [2.56, 1.37]).</p>
+<p>In the tutorial of multiple regression, we will revisit this exercise. More specifically, we will there study the association between dose and survival for all the species in the dataset.</p>
 </div>
 
 <div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgNi4xOiBMaW5lYXIgcmVncmVzc2lvbiBvbiB0aGUgZmlzaCB0YW5rIGRhdGFzZXQgLSBzb2x1dGlvbiIKYXV0aG9yOiAiTGlldmVuIENsZW1lbnQgYW5kIEplcm9lbiBHaWxpcyIKZGF0ZTogInN0YXRPbWljcywgR2hlbnQgVW5pdmVyc2l0eSAoaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSIKLS0tCgojIEZpc2ggdGFuayBkYXRhc2V0CgpJbiB0aGlzIGV4cGVyaW1lbnQsIDk2IGZpc2ggKGRvam9maXNoLCBnb2xkZmlzaCBhbmQgemVicmFmaXNoKQp3ZXJlIHBsYWNlZCBzZXBhcmF0ZWx5IGluIGEgdGFuayB3aXRoIHR3byBsaXRlcnMgb2Ygd2F0ZXIgYW5kCmEgY2VydGFpbiBkb3NlIChpbiBtZykgb2YgdGhlIHBvaXNvbiBFSS00MywwNjQuIFRoZSByZXNpc3RhbmNlCm9mIHRoZSBmaXNoIGFnYWluc3QgdGhlIHBvaXNvbiB3YXMgbWVhc3VyZWQgYXMgdGhlIGFtb3VudCBvZgptaW51dGVzIHRoZSBmaXNoIHN1cnZpdmVkIGFmdGVyIGJlaW5nIGV4cG9zZWQgdG8gdGhlIHBvaXNvbiAoYFN1cnZfdGltZWAsIGluCm1pbnV0ZXMpLiBBZGRpdGlvbmFsbHksIHRoZSB3ZWlnaHQgb2YgZWFjaCBmaXNoIHdhcyBtZWFzdXJlZC4KCiMgR29hbAoKVGhlIHJlc2VhcmNoIGdvYWwgaXMgdG8gc3R1ZHkgdGhlIGFzc29jaWF0aW9uIGJldHdlZW4gdGhlIGRvc2Ugb2YKdGhlIHBvaXNvbiB0aGF0IHdhcyBhZG1pbmlzdGVyZWQgdG8gdGhlIGZpc2ggYW5kIHRoZWlyCnN1cnZpdmFsIHRpbWUuCgpMb2FkIHRoZSByZXF1aXJlZCBsaWJyYXJpZXMKCmBgYHtyLCBtZXNzYWdlID0gRkFMU0V9CmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKCiMgSW1wb3J0IHRoZSBkYXRhCgpgYGB7ciwgbWVzc2FnZT1GQUxTRX0KcG9pc29uIDwtIHJlYWRfY3N2KCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL3BvaXNvbi5jc3YiKQpgYGAKCiMgRGF0YSB0aWR5aW5nCgpXZSBjYW4gc2VlIGEgY291cGxlIG9mIHRoaW5ncyBpbiB0aGUgZGF0YSB0aGF0IGNhbiBiZSBpbXByb3ZlZCB1cG9uOgoKMS4gQ2FwaXRhbGlzZSB0aGUgZmlzdCBjb2x1bW4gbmFtZS4gKkhpbnQqOiB1c2UgdGhlIGByZW5hbWVgIGZ1bmN0aW9uLgoKMi4gU2V0IHRoZSBTcGVjaWVzIGNvbHVtbiBhcyBhIGZhY3Rvci4gKkhpbnQqOiB1c2UgdGhlIGBtdXRhdGVgIGFuZCBgYXMuZmFjdG9yYApmdW5jdGlvbnMuCgozLiBDaGFuZ2UgdGhlIHNwZWNpZXMgZmFjdG9yIGxldmVscyBmcm9tIDAsIDEgYW5kIDIgdG8KRG9qb2Zpc2gsIEdvbGRmaXNoIGFuZCBaZWJyYWZpc2guICpIaW50KjogdXNlIHRoZSBgZmN0X3JlY29kZWAgZnVuY3Rpb24gaW5zaWRlCnRoZSBgbXV0YXRlYCBmdW5jdGlvbi4KCmBgYHtyfQpwb2lzb24gPC0gcG9pc29uICU+JQogIHJlbmFtZSgiU3BlY2llcyIgPSAic3BlY2llcyIpICU+JQogIG11dGF0ZShTcGVjaWVzID0gYXMuZmFjdG9yKFNwZWNpZXMpKSAlPiUKICBtdXRhdGUoU3BlY2llcyA9IGZjdF9yZWNvZGUoU3BlY2llcywgRG9qb2Zpc2ggPSAiMCIsIEdvbGRmaXNoID0gIjEiLCBaZWJyYWZpc2ggPSAiMiIpKQoKcG9pc29uCmBgYAoKIyBEYXRhIGV4cGxvcmF0aW9uCgpIb3cgbWFueSBmaXNoIGRvIHdlIGhhdmUgcGVyIHNwZWNpZXM/CgpgYGB7cn0KcG9pc29uICU+JQogIGNvdW50KFNwZWNpZXMpCmBgYAoKTWFrZSBhIHN1aXRhYmxlIHZpc3VhbGl6YXRpb24gb2YgdGhlIGFzc29jaWF0aW9uIGJldHdlZW4KdGhlIGRvc2UgYW5kIHRoZSBzdXJ2aXZhbCB0aW1lLiBBZGRpdGlvbmFsbHksIGFkZCB0aGUgZmlzaCBzcGVjaWVzCmFzIGEgY29sb3IgdG8gdGhlIHBsb3QuCgpgYGB7cn0KcG9pc29uICU+JQogIGdncGxvdChhZXMoeCA9IERvc2UsIHkgPSBTdXJ2X3RpbWUpKSArCiAgZ2VvbV9wb2ludCgpICsKICBzdGF0X3Ntb290aChtZXRob2QgPSAibG9lc3MiKSArCiAgZ2VvbV9zbW9vdGgobWV0aG9kID0gImxtIiwgY29sID0gImJsYWNrIikgKwogIHlsYWIoIlN1cnZpdmFsIHRpbWUgKG1pbikiKSArCiAgeGxhYigiRG9zZSAobWcpIikgKwogIGdlb21fcG9pbnQoYWVzKGNvbCA9IFNwZWNpZXMpKSArICMjIG5vdCBuZWNlc3NhcnksIGFkZGl0aW9uYWwgbGF5ZXIgb2YgaW5mb3JtYXRpb24KICBzY2FsZV9jb2xvcl9tYW51YWwodmFsdWVzID0gYygicmVkIiwgImRhcmtnb2xkZW5yb2QiLCAiYmxhY2siKSkgKwogIHRoZW1lX2J3KCkKYGBgCgpUaGUgbGluZWFyIHJlZ3Jlc3Npb24gbGluZSAoYmxhY2spIGlzIGEgZ29vZCBhcHByb3hpbWF0aW9uCm9mIHRoZSBiZXN0IGZpdHRpbmcgc21vb3RoIGxpbmUgKGJsdWUpIHRocm91Z2ggdGhlIGRhdGEuCkJhc2VkIG9uIHRoaXMgZmlndXJlLCBpdCBzZWVtcyByZWFsaXN0aWMgdG8gc3VnZ2VzdCBhIGxpbmVhcgpyZWxhdGlvbnNoaXAgYmV0d2VlbiBkb3NlIGFuZCBzdXJ2aXZhbCwgd2hlcmUgaGlnaGVyIGRvc2VzCmhhdmUgbG93ZXIgc3Vydml2YWwgdGltZXMgKGFzIGV4cGVjdGVkKS4gSG93ZXZlciwgYmVmb3JlIHdlCnN0YXJ0IHdpdGggdGhlIHJlZ3Jlc3Npb24gYW5hbHlzaXMgd2UgbXVzdCBjaGVjayBpZiBhbGwgcmVxdWlyZWQKYXNzdW1wdGlvbnMgYXJlIG1ldC4KCiMgSW1wb3J0YW50IG5vdGUgb24gdGhlIGRhdGFzZXQKCkluIHRoaXMgZGF0YXNldCwgdGhlcmUgYXJlIG11bHRpcGxlIHZhcmlhYmxlcyBjYW4gaGF2ZSBhbiBlZmZlY3Qgb24gdGhlIHN1cnZpdmFsCnRpbWUgb2YgdGhlIGZpc2guIFRoZSBtb3N0IG9idmlvdXMgb25lIGlzIHRoZSBkb3NlIG9mIHBvaXNvbiB0aGF0IHdhcwphZG1pbmlzdGVyZWQgKGFzIGRpc3BsYXllZCBhYm92ZSkuIEhvd2V2ZXIsIHdlIGNvdWxkIGFsc28gaW1hZ2luZSB0aGF0IGhlYXZpZXIKZmlzaCBhcmUgbGVzcyBwcm9uZSB0byB0aGUgcG9pc29uIHRoYW4gbGlnaHQgZmlzaC4gQWRkaXRpb25hbGx5LCBvbmUgZmlzaApzcGVjaWVzIG1heSBiZSBtb3JlIHJlc2lzdGFudCB0byB0aGUgcG9pc29uIHRoYW4gdGhlIG90aGVyLgoKQXMgc3VjaCwgbm90IHRha2luZyBpbnRvIGFjY291bnQgc3BlY2llcyBpbnRvIHRoZSBhbmFseXNpcyB3aWxsIGludHJvZHVjZQpwcm9ibGVtcyByZWdhcmRpbmcgdGhlIGFzc3VtcHRpb24gb2YgKmluZGVwZW5kZW5jZSogb2YgdGhlIGRhdGEuIFRoZSBhc3N1bXB0aW9uCm9mICppbmRlcGVuZGVuY2UqIGVudGFpbHMgdGhhdCBrbm93aW5nIHRoZSByZXNwb25zZSB2YWx1ZSBvZiBvbmUgb2JzZXJ2YXRpb24KKGZpc2gpIGRvZXMgbm90IGxlYXJuIHVzIGFueXRoaW5nIGFib3V0IHRoZSByZXNwb25zZSB2YWx1ZXMgZm9yIGFub3RoZXIKdmFyaWFibGUuIFRoaXMgd2lsbCBub3QgYmUgdGhlIGNhc2UgaGVyZTsgdGhlIHJlc3BvbnNlIHZhbHVlcyAoc3Vydml2YWwgdGltZXMpCm9mIGZpc2ggb2YgdGhlIHNhbWUgc3BlY2llcyB3aWxsIGJlIG11Y2ggbW9yZSBhbGlrZSBjb21wYXJlZCB0byB0aG9zZSBvZiBmaXNoCmZyb20gYW5vdGhlciBzcGVjaWVzLgoKVGh1cywgaW4gb3JkZXIgdG8gY29ycmVjdGx5IGFuYWx5emUgdGhpcyBkYXRhLCBmaXNoIGBzcGVjaWVzYCBhbmQgYHdlaWdodGAKc2hvdWxkIGJlIHRha2VuIGludG8gY29uc2lkZXJhdGlvbi4gKipGb3Igbm93LCB3ZSB3aWxsICJhdm9pZCIgdGFraW5nIGludG8qKgoqKmFjY291bnQgdGhlIGVmZmVjdCBvZiBzcGVjaWVzIGludG8gdGhlIGFuYWx5c2lzIGJ5IG9ubHkgcGVyZm9ybWluZyBhbioqCioqYW5hbHlzaXMgZm9yIHRoZSBkb2pvZmlzaCoqLiBBcyBzdWNoLCB3ZSB3aWxsIGZpbHRlciB0aGUgZGF0YXNldCBzbyB0aGF0Cml0IG9ubHkgY29udGFpbnMgb2JzZXJ2YXRpb25zIGZvciB0aGUgRG9qb2Zpc2guCgpgYGB7cn0KIyBmaWx0ZXIgdGhlIGRhdGEgc28gaXQgb25seSBjb250YWlucyBkb2pvZmlzaApwb2lzb25fZG9qbyA8LSBwb2lzb24gJT4lCiAgZmlsdGVyKFNwZWNpZXMgPT0gIkRvam9maXNoIikKYGBgCgpMYXRlciBpbiB0aGUgY291cnNlLCB3ZSB3aWxsIGNvbWUgYmFjayB0byB0aGlzIGRhdGFzZXQgYW5kIHBlcmZvcm0gYSBhbmFseXNpcwp0aGF0IGFsbG93cyB1cyB0byBhc3Nlc3MgdGhlIGRpZmZlcmVudCByZXNlYXJjaCBoeXBvdGhlc2VzIGZvciBhbGwgZmlzaCBzcGVjaWVzCmF0IG9uY2UhCgpUaGUgc2Vjb25kIHByZWRpY3RvciB2YXJpYWJsZSwgYFdlaWdodGAsIHN0aWxsIG1heSBpbmZsdWVuY2Ugb3VyIGFuYWx5c2lzOyBmaXNoCndpdGggaGlnaGVyIHdlaWdodCBhcmUgZXhwZWN0ZWQgdG8gYmUgbW9yZSByZXNpc3RhbnQgdG8gdGhlIHBvaXNvbi4gKipJZioqIHRoZXJlCndvdWxkIGJlIGEgc3lzdGVtYXRpYyBiaWFzIGluIHRoZSBleHBlcmltZW50LCBlLmcuIGlmIGFsbCBsaWdodGVyIGZpc2ggb2J0YWluZWQKYSBsb3cgZG9zZSAgb2YgcG9pc29uIGFuZCBoZWF2aWVyIGZpc2ggb2J0YWluZWQgYSBoaWdoIGRvc2Ugb2YgcG9pc29uCihzbywgaWYgdGhlIGRvc2Ugd2FzIG5vdCBjb3JyZWN0bHkgcmFuZG9taXplZCBhY2Nyb3MgdGhlIGRpZmZlcmVudCB3ZWlnaHRzKSwKdGhlbiB3ZSB3b3VsZCBub3QgYmUgYWJsZSB0byBjb3JyZWN0bHkgZXN0aW1hdGUgdGhlIGxpbmVhciBhc3NvY2lhdGlvbiBiZXR3ZWVuCmBEb3NlYCBhbmQgYHN1cnZpdmFsYDsgaW5kZWVkLCB0aGlzIHJlbGF0aW9uc2hpcCB3b3VsZCBiZSBjb25mb3VuZGVkIGJ5IHRoZQplZmZlY3Qgb2Ygd2VpZ2h0LgoKYGBge3IsIG1lc3NhZ2U9RkFMU0V9CnBvaXNvbl9kb2pvICU+JQogIGdncGxvdChhZXMoeCA9IERvc2UsIHkgPSBXZWlnaHQpKSArCiAgZ2VvbV9wb2ludCgpICsKICBnZ3RpdGxlKCJBc3NvY2lhdGlvbiBiZXR3ZWVuIGRvc2UgYW5kIHdlaWdodCIpICsKICB0aGVtZV9idygpICsKICBzdGF0X3N1bW1hcnkoCiAgICBnZW9tID0gInBvaW50IiwKICAgIGZ1biA9ICJtZWFuIiwKICAgIGNvbCA9ICJibGFjayIsCiAgICBzaXplID0gNCwKICAgIHNoYXBlID0gMjQsCiAgICBmaWxsID0gInJlZCIKICApCmBgYAoKSW4gb3VyIGRhdGFzZXQsIHRoZXJlIHNlZW1zIHRvIGJlICoqbm8gc3lzdGVtYXRpYyBiaWFzKiosIGkuZS4sIG5vIGNsZWFyIHRyZW5kCmluIHRoZSBhc3NvY2lhdGlvbiBiZXR3ZWVuIGBEb3NlYCBhbmQgYFdlaWdodGAuIEhvd2V2ZXIsIHdlIGRvIG5vdGljZSB0aGF0IHRoZQpmaXNoIHdlaWdodHMgYXJlIG5vdCBwZXJmZWN0bHkgdW5pZm9ybWx5IGRpc3RyaWJ1dGVkIGFjcm9zcyB0aGUgZGlmZmVyZW50IGRvc2VzOwp3ZSBkb24ndCBzZWUgYSBjbGVhciB0cmVuZCwgYnV0IHdlIGRvIHNlZSBzb21lIGZsdWN0dWF0aW9ucy4gVG8gY2hlY2sgaWYKZmx1Y3R1YXRpb25zIG9mIHRoZSBzaXplIHRoYXQgd2Ugb2JzZXJ2ZSBoZXJlIGNvdWxkIGhhcHBlbiBieSByYW5kb20gY2hhbmdlIGlmCndlIGNhcmVmdWxseSByYW5kb21pc2UsIHdlIG1heSB1c2Ugc2ltdWxhdGlvbnMgd2hlcmUgd2Ugc2ltdWxhdGUgdGhlIGFsbG9jYXRpb24Kb2YgdGhlIGZpc2ggdG8gdGhlIGRpZmZlcmVudCBkb3Nlcy4KCmBgYHtyfQpsaWJyYXJ5KGdyaWRFeHRyYSkKYGBgCgpgYGB7cn0Kc2V0LnNlZWQoMTM1MSkKCnBsb3RzIDwtIGxhcHBseSgKICAxOjksCiAgZnVuY3Rpb24oeCkgewogICAgcG9pc29uX2Rvam8gJT4lCiAgICAgIG11dGF0ZShEb3NlID0gc2FtcGxlKERvc2UpKSAlPiUgIyByYW5kb21pemF0aW9uCiAgICAgIGdncGxvdChhZXMoeCA9IERvc2UsIHkgPSBXZWlnaHQpKSArCiAgICAgIGdlb21fcG9pbnQoKSArCiAgICAgIHRoZW1lX2J3KCkgKwogICAgICBzdGF0X3N1bW1hcnkoCiAgICAgICAgZ2VvbSA9ICJwb2ludCIsCiAgICAgICAgZnVuID0gIm1lYW4iLAogICAgICAgIGNvbCA9ICJibGFjayIsCiAgICAgICAgc2l6ZSA9IDIsCiAgICAgICAgc2hhcGUgPSAyNCwKICAgICAgICBmaWxsID0gInJlZCIKICAgICAgKQogIH0KKQpkby5jYWxsKGdyaWRFeHRyYTo6Z3JpZC5hcnJhbmdlLCBwbG90cykKYGBgCgpJbiB0aGUgYWJvdmUgc2ltdWxhdGlvbiwgd2UgcmFuZG9tbHkgYXNzaWduZWQgdGhlIGRpZmZlcmVudCBmaXNoIHRvIGRpZmZlcmVudApwb2lzb24gZG9zZXMuIEV2ZW4gdGhvdWdoIHdlIGRpZCB0aGlzIHJhbmRvbWx5LCB3ZSBzdGlsbCBzZWUgdGhhdCBieSByYW5kb20KY2hhbmNlIHRoZXJlIGNhbiBiZSBmbHVjdHVhdGlvbnMgYXMgbGFyZ2UgYXMgdGhlIG9uZXMgb2JzZXJ2ZWQgaW4gb3VyIHJlYWwKZGF0YXNldC4gQXMgc3VjaCwgd2UgbWF5IGNvbmNsdWRlIHRoYXQgdGhlcmUgaXMgaW5kZWVkICoqbm8gc3lzdGVtYXRpYyBiaWFzKiosCmkuZS4sIG5vIGNsZWFyIHRyZW5kIGluIHRoZSBhc3NvY2lhdGlvbiBiZXR3ZWVuIGBEb3NlYCBhbmQgYFdlaWdodGAuCgojIExpbmVhciByZWdyZXNzaW9uIGFuYWx5c2lzCgojIyBBc3N1bXB0aW9ucyBvZiBsaW5lYXIgcmVncmVzc2lvbgoKTGlzdCBhc3N1bXB0aW9uczoKCjEuIFRoZSBvYnNlcnZhdGlvbnMgYXJlIGluZGVwZW5kZW50IG9mIGVhY2ggb3RoZXIKMi4gTGluZWFyaXR5IGJldHdlZW4gdGhlIHJlc3BvbnNlIGFuZCBwcmVkaWN0b3IgdmFyaWFibGUKMy4gVGhlIHJlc2lkdWVzIG9mIHRoZSBtb2RlbCBtdXN0IGJlIG5vcm1hbGx5IGRpc3RyaWJ1dGVkCjQuIEhvbW9zY2VkYXN0aWNpdHkgb2YgdGhlIGRhdGEKClRoZSBmaXJzdCBhc3N1bXB0aW9uIGlzICoqbWV0KiogYmFzZWQgb24gdGhlIGV4cGVyaW1lbnRhbCBkZXNpZ24uIEluIHRoZQpkYXRhIGV4cGxvcmF0aW9uIHBoYXNlLCB3ZSBzYXcgdGhhdCB0aGVyZSBpcyBubyBjbGVhciB0cmVuZCBpbiB0aGUgYXNzb2NpYXRpb24KYmV0d2VlbiBgRG9zZWAgYW5kIGBXZWlnaHRgLiBXaXRoIHJlc3BlY3QgdG8gc3BlY2llcywgd2UgaGF2ZSAiYXZvaWRlZCIgdGFraW5nCmludG8gYWNjb3VudCB0aGUgZWZmZWN0IG9mIHNwZWNpZXMgaW50byB0aGUgYW5hbHlzaXMgYnkgb25seSBwZXJmb3JtaW5nIGFuCmFuYWx5c2lzIGZvciB0aGUgZG9qb2Zpc2guCgpXZSB3aWxsIGNoZWNrIHRoZSBvdGhlciBhc3N1bXB0aW9ucyBieSBmaXJzdCBmaXR0aW5nIHRoZSBsaW5lYXIKbW9kZWwgYW5kIHBsb3R0aW5nIHRoZSBvdXRwdXQuIEFzIHN1Y2gsIHdlIHdpbGwgZ2V0IGFsbCB0aGUKcmVxdWlyZWQgZGlhZ25vc3RpYyBwbG90cy4KCmBgYHtyfQojIGZpdCBhIGxpbmVhciByZWdyZXNzaW9uIG1vZGVsIHdpdGggJ1N1cnZfdGltZScgYXMgcmVzcG9uc2UgdmFyaWFibGUgYW5kCiMgJ0Rvc2UnIGFzIHByZWRpY3RvciB2YXJpYWJlbGUKbW9kZWwgPC0gbG0oU3Vydl90aW1lIH4gRG9zZSwgZGF0YSA9IHBvaXNvbl9kb2pvKQoKIyMgZGlzcGxheSB0aGUgZGlhZ25vc3RpYyBwbG90cyBvZiB0aGUgbW9kZWwKcGxvdChtb2RlbCkKYGBgCgpXZSBoYXZlIGZvdXIgZGlhZ25vc3RpYyBwbG90czoKCjIuIExpbmVhcml0eSB3aXRoIHRoZSBSZXNpZHVhbHMgdnMgZml0dGVkIHBsb3QKCi0gcHJlZGljdG9yIG9mIHByZWRpY3Rpb25zICRcaGF0XGJldGFfMCtcaGF0XGJldGFfMSB4JCBvbiAkWCQtYXhpcwotICpyZXNpZHVhbHMqIG9uICRZJC1hcwokJGVfaT15X2ktXGhhdHtnfSh4X2kpPXlfaS1caGF0XGJldGFfMC1caGF0XGJldGFfMVx0aW1lcyB4X2ksJCQKCklmIHRoZXJlIHdvdWxkIGJlIGEgbGluZWFyIHJlbGF0aW9uc2hpcCBpbiB0aGUgZGF0YSwKdGhlIHJlc2lkdWFscyBhcmUgZXhwZWN0ZWQgdG8gYmUgc2NhdHRlcmVkIGF0IHJhbmRvbSBhcm91bmQgeT0wIGZvcgp0aGUgZW50aXJlIHJhbmdlIG9mIHByZWRpY3RlZCB2YWx1ZXMuIFRoaXMgaXMgY2xlYXJseQp0aGUgY2FzZTogdGhlIGFzc3VtcHRpb24gb2YgbGluZWFyaXR5IGlzIG1ldC4KCjMuIE5vcm1hbCBRLVEKCi0gUVEtcGxvdCBvZiB0aGUgcmVzaWR1YWxzICRlX2kkLgoKVGhlIHJlc2lkdWFscyBvZiB0aGUgbGluZWFyIHJlZ3Jlc3Npb24gbW9kZWwgc2hvdWxkIGJlIG5vcm1hbGx5CmRpc3RyaWJ1dGVkLiBHaXZlbiB0aGUgc2Vjb25kIGRpYWdub3N0aWMgcGxvdCwgdGhpcyBzZWVtcyBub3QKdG8gYmUgdGhlIGNhc2UuIEluIHN0ZWFkLCB3ZSBvYnNlcnZlIGEgc2hvcnQgbGVmdCB0YWlsIGFuZCBhCmxvbmcgcmlnaHQgdGFpbC4gVGhlIGFzc3VtcHRpb24gb2Ygbm9ybWFsIHJlc2lkdWVzIGlzICoqbm90IG1ldC4qKgoKNC4gSG9tb3NjZWRhc3RpY2l0eQoKLSBTcXVhcmUtcm9vdCBvZiB0aGUgYWJzb2x1dGUgdmFsdWUgb2Ygc3RhbmRhcmRpemVkIHJlc2lkdWFscwppbiBmdW5jdGlvbiBvZiB0aGUgZml0dGVkIHZhbHVlcwoKVG8gbWVldCB0aGUgdGhpcmQgYXNzdW1wdGlvbiBvZiBsaW5lYXIgcmVncmVzc2lvbiwgdGhlIHZhcmlhbmNlCm9uIHRoZSBfU3F1YXJlLXJvb3Qgb2YgdGhlIGFic29sdXRlIHZhbHVlIG9mIHN0YW5kYXJkaXplZCByZXNpZHVhbHNfCm11c3QgYmUgc2ltaWxhciBvdmVyIHRoZSBlbnRpcmUgcmFuZ2Ugb2YgZml0dGVkIHZhbHVlcy4gVGhlIHNtb290aGVyCmluIHRoZSBwbG90IGhlbHBzIHVzIHdpdGggbG9va2luZyBhdCB0aGlzOyBpdCBzaG91bGQgYmUgbmljZWx5Cmhvcml6b250YWwgb3ZlciB0aGUgZW50aXJlIHJhbmdlIG9mIGZpdHRlZCB2YWx1ZXMuIFRoaXMgc2VlbXMgbm90CnRvIGJlIHRoZSBjYXNlOiBmb3IgbGFyZ2VyIGZpdHRlZCB2YWx1ZXMsIHRoZSB2YXJpYW5jZSBpbmNyZWFzZSBzbGlnaHRseS4KVGhlIGFzc3VtcHRpb24gb2YgaG9tb3NjZWRhc3RpY2l0eSBpcyAqKm5vdCBtZXQuKioKCk11bHRpcGxlIGFzc3VtcHRpb25zIGFyZSBub3QgbWV0LCBzbyB3ZSBtYXkgbm90IGNvbnRpbnVlIGJ5IHBlcmZvcm1pbmcKYSBsaW5lYXIgcmVncmVzc2lvbi4KCldlIGNhbiB0cnkgdG8gcmVtZWRpYXRlIHRoZXNlIGRldmlhdGlvbnMgYnkgbG9nLXRyYW5zZm9ybWluZyB0aGUgZGF0YS4gSW5kZWVkLApkYXRhIHdpdGggaGVhdnkgcmlnaHQgdGFpbHMgY2FuIG9mdGVuIGJlIG5vcm1hbGl6ZWQgYnkgYXBwbHlpbmcgdGhpcyBzdHJhdGVneS4KCkZpdCBhIChsb2ctKWxpbmVhciBtb2RlbCBieSBsb2ctdHJhbnNmb3JtaW5nIHRoZSByZXNwb25zZS5HZW5lcmF0ZSBkaWFnbm9zdGljCnBsb3RzIGFuZCBhc3Nlc3MgdGhlIGFzc3VtcHRpb25zLgoKYGBge3J9CmxvZy5tb2RlbCA8LSBsbShTdXJ2X3RpbWUgJT4lIGxvZzEwKCkgfiBEb3NlLCBkYXRhID0gcG9pc29uX2Rvam8pCnBsb3QobG9nLm1vZGVsKQpgYGAKCkFyZ3VhYmx5LCB0aGVyZSBtaWdodCBiZSBzb21lIGRldmlhdGlvbiBmcm9tIG5vcm1hbGl0eSBpbiB0aGUgbGVmdCB0YWlsIG9mIHRoZQpkaXN0cmlidXRpb24uIEhvd2V2ZXIsIHdoZW4gd2Ugd291bGQgc2ltdWxhdGUgZGF0YSB1bmRlciB0aGUgbm9ybWFsaXR5CmFzc3VtcHRpb24sIGl0IHNlZW1zIHRoYXQgZGV2aWF0aW9ucyBvZiB0aGlzIHNpemUgbWF5IGJlIGV4cGVjdGVkIHdoZW4Kbm9ybWFsaXR5IGlzIG1ldDoKCmBgYHtyfQpzZXQuc2VlZCgxNDA2KQpub2JzIDwtIG5yb3cocG9pc29uX2Rvam8pCgpkYXRhLmZyYW1lKAogIHkgPSBjKAogICAgbG9nLm1vZGVsJHJlcywKICAgIHJub3JtKG5vYnMgKiA4LAogICAgICBzZCA9IHNpZ21hKGxvZy5tb2RlbCkKICAgICkKICApLAogIGxhYmVsID0gcmVwKAogICAgYygKICAgICAgIm9yaWciLAogICAgICBwYXN0ZTAoInNpbSIsIDE6OCkKICAgICksCiAgICBlYWNoID0gbm9icwogICkKKSAlPiUKICBnZ3Bsb3QoYWVzKHNhbXBsZSA9IHkpKSArCiAgZ2VvbV9xcSgpICsKICBnZW9tX3FxX2xpbmUoKSArCiAgZmFjZXRfd3JhcCh+bGFiZWwpCmBgYAoKMS4gVGhlIGluZGVwZW5kZW5jZSBhc3N1bXB0aW9uIGlzIG1ldC4KMi4gVXBvbiBsb2ctdHJhbnNmb3JtYXRpb24sIHRoZSBsaW5lYXJpdHkgYXNzdW1wdGlvbiBpcyBzdGlsbCAqKm1ldCoqLgozLiBVcG9uIGxvZy10cmFuc2Zvcm1hdGlvbiwgdGhlIG5vcm1hbGl0eSBhc3N1bXB0aW9uIGlzIGFsc28gKiptZXQqKi4KNC4gVXBvbiBsb2ctdHJhbnNmb3JtYXRpb24sIHRoZSBob21vc2NlZGFzdGljaXR5IGFzc3VtcHRpb24gaXMgYWxzbyAqKm1ldCoqLgoKTG9vayBhdCB0aGUgb3V0cHV0IG9mIHRoZSBsb2ctbGluZWFyIG1vZGVsOgoKYGBge3J9CnN1bW1hcnkobG9nLm1vZGVsKQpgYGAKCkNvbXB1dGUgdGhlIDk1JSBjb25maWRlbmNlIGludGVydmFsIG9uIHRoZSBtb2RlbCBwYXJhbWV0ZXJzOgoKYGBge3J9CmNvbmZpbnQobG9nLm1vZGVsKQpgYGAKCiMjIEludGVycHJldGF0aW9uIG9uIHRoZSBsb2cgc2NhbGUKCkN1cnJlbnRseSwgYWxsIHRoZSBvdXRjb21lcyBzaG91bGQgYmUgaW50ZXJwcmV0ZWQgb24gdGhlIGxvZy1zY2FsZS4KSW5kZWVkLCBzaW5jZSB3ZSBhcmUgbm93IG1vZGVsbGluZyAgX3RoZSBsb2ckX3sxMH0kIG9mIHN1cnZpdmFsIHRpbWVfLCB3ZQpkb24ndCBoYXZlIGRpcmVjdCBpbmZlcmVuY2Ugb24gc3Vydml2YWwgdGltZS4KCkFzIHN1Y2gsIHdlIG1heSBpbnRlcnByZXQgdGhlIG91dHB1dCBhcyBmb2xsb3dzOgoKLSBUaGUgc2xvcGU6CgpEb2pvZmlzaCB0aGF0IGFyZSBleHBvc2VkIHRvIGEgaGlnaGVyIGRvc2Ugb2YgdGhlIHBvaXNvbiB3aWxsIGhhdmUgYSAkbG9nX3sxMH0kCnN1cnZpdmFsIHRpbWUgdGhhdCBpcyBvbiBhdmVyYWdlIGByIGxvZy5tb2RlbCRjb2VmWzJdICU+JSBhYnMgJT4lIHJvdW5kKC4sMilgCmxvd2VyIHBlciBncmFtIG9mIHBvaXNvbiB0aGF0IHdhcyBhZG1pbmlzdGVyZWQgYWRkaXRpb25hbGx5Cig5NSUgQ0kgW2ByIGNvbmZpbnQobG9nLm1vZGVsKSAlPiUgYWJzICU+JSByb3VuZCguLDIpYF0pLiBUaGlzIGRlY3JlYXNlIGluCnN1cnZpdmFsIHRpbWUgaXMgc2lnbmlmaWNhbnQgb24gdGhlIDUlIHNpZ25pZmljYW5jZSBsZXZlbCAocDwwLjAwMSkuCgpOb3RlLCB0aGF0IHRoZSBzdHVkeSBpcyBhbiBleHBlcmltZW50YWwgc3R1ZHkgc28gd2UgY2FuIGNvbmNsdWRlIHRoYXQgdGhlcmUgaXMKYSBjYXVzYWwgZWZmZWN0IG9mIHRoZSBwb2lzb24gZG9zZSBhbmQgdGhlIHN1cnZpdmFsIHRpbWUuCgotIFRoZSBpbnRlcmNlcHQ6CgpUaGUgYXZlcmFnZSBvZiB0aGUgbG9nMTAgb2Ygc3Vydml2YWwgdGltZSBmb3IgZmlzaCB0aGF0CndlcmUgZ2l2ZW4gYSBkb3NlIG9mIDAgbWcgaXMgYHIgbG9nLm1vZGVsJGNvZWZbMV0gJT4lIGFicyAlPiUgcm91bmQoLiwyKWAuCgojIyBJbnRlcnByZXRhdGlvbiBvbiB0aGUgb3JpZ2luYWwgc2NhbGUKClRoZSBpbnRlcnByZXRhdGlvbiB0aGUgbG9nLXNjYWxlIGlzIHF1aXRlIGRpZmZpY3VsdC4gVG8gZWFzZQp0aGUgaW50ZXJwcmV0YXRpb24sIHdlIHdpbGwgYmFja3RyYW5zZm9ybSB0aGUgcmVzdWx0cyB0byB0aGUgb3JpZ2luYWwKc2NhbGUgKHRpbWUgaW4gbWludXRlcykuIFRoaXMgd2UgY2FuIGRvIGJ5CgpgYGB7cn0KMTBeKHN1bW1hcnkobG9nLm1vZGVsKSRjb2VmZmljaWVudHNbLCAiRXN0aW1hdGUiXSkKYGBgCgphbmQgb2YgdGhlaXIgY29uZmlkZW5jZSBpbnRlcnZhbHM6CgpgYGB7cn0KMTBeKGNvbmZpbnQobG9nLm1vZGVsKSkKYGBgCgpOb3csIHdlIGNhbiBpbnRlcnByZXQgdGhlIHJlc3VsdHMgaW4gdGVybXMgb2YgdGhlIGdlb21ldHJpYyBtZWFuOgoKLSBUaGUgc2xvcGU6CgpEb2pvIGZpc2ggdGhhdCBhcmUgZXhwb3NlZCB0byBhIGhpZ2hlciBkb3NlIG9mIHRoZSBwb2lzb24gd2lsbCBoYXZlIGEgZ2VvbWV0cmljCm1lYW4gb2YgdGhlIHN1cnZpdmFsIHRpbWUgdGhhdCBpcyBmYWN0b3IgYHIgcm91bmQoMTBebG9nLm1vZGVsJGNvZWZbMl0sMilgCig5NSUgQ0kgW2ByIHJvdW5kKDEwXihjb25maW50KGxvZy5tb2RlbClbMixdKSwyKWBdKSBwZXIgZ3JhbSBvZiBwb2lzb24gdGhhdCB0aGV5CnJlY2VpdmVkIG1vcmUgdGhhbiBmaXNoIGV4cG9zZWQgdG8gYSBsb3dlciBkb3NlLiBUaGlzIGRlY3JlYXNlIGlzIHZlcnkKc2lnbmlmaWNhbnQgb24gdGhlIDUlIHNpZ25pZmljYW5jZSBsZXZlbCAocDwwLjAwMSkuCgotIFRoZSBpbnRlcmNlcHQ6CgpUaGUgZ2VvbWV0cmljIG1lYW4gb2YgdGhlIHN1cnZpdmFsIHRpbWUgZm9yIGZpc2ggdGhhdCB3ZXJlIGdpdmVuIGEKZG9zZSBvZiAwIG1nIGlzIGByIHJvdW5kKDEwXmxvZy5tb2RlbCRjb2VmWzFdLDIpYCBtaW51dGVzLgoKSW4gb3RoZXIgd29yZHMsIG91ciBhbmFseXNpcyBzZWVtcyB0byBzdWdnZXN0IHRoYXQgZmlzaCBpbiB1bmNvbnRhbWluYXRlZCB3YXRlcgp3b3VsZCBvbmx5IHN1cnZpdmUgZm9yIGFib3V0IDggbWludXRlcyEgVGhpcyBzZWVtcyBhIGxpdHRsZSBiaXQgX2Zpc2h5Xy4uLgoKTm90ZSwgdGhhdCB0aGlzIGludGVycHJldGF0aW9uIGlzIG5vdCBiaW9sb2dpY2FsbHkgcmVsZXZhbnQgYW5kIGlzIGluZHVjZWQKYmVjYXVzZSB3ZSBleHRyYXBvbGF0ZWQgY29uc2lkZXJhYmx5IGJlY2F1c2UgYWxsIGZpc2ggaW4gdGhlIGV4cGVyaW1lbnQgd2VyZQpleHBvc2VkIHRvIHBvaXNvbi4KCmBgYHtyfQpwbG90KAogIHggPSBwb2lzb25fZG9qbyREb3NlLAogIHkgPSBwb2lzb25fZG9qbyRTdXJ2X3RpbWUsCiAgeGxhYiA9ICJEb3NlIChtZykiLAogIHlsYWIgPSAiU3Vydml2YWwgdGltZSAobWluKSIsCiAgeGxpbSA9IGMoMCwgMi4yKQopCmFibGluZShsc2ZpdChwb2lzb25fZG9qbyREb3NlLCBwb2lzb25fZG9qbyRTdXJ2X3RpbWUpLCBsdHkgPSAyKSAjIyBsdHk9MiBkcmF3cyBhIGRhc2hlZCBsaW5lCgojIyBhZGQgdGhlIGludGVyY2VwdCBhcyBhIHBvaW50CnN1bW1hcnlfbW9kZWwgPC0gc3VtbWFyeShtb2RlbCkKcG9pbnRzKDAsIHN1bW1hcnlfbW9kZWwkY29lZmZpY2llbnRzWyIoSW50ZXJjZXB0KSIsICJFc3RpbWF0ZSJdLCBjb2wgPSAicmVkIiwgcGNoID0gMTYpCmBgYAoKV2UgY2FuIHNlZSB0aGF0IHRoZSBkb3NlIHZhbHVlIG9mIDAgbWcgZG9lcyBub3QgZmFsbCB3aXRoaW4KdGhlIHNhbWUgcmFuZ2UgYXMgb3VyIGRhdGEuIFRoZSBtb2RlbCBpcyBvbmx5IHZhbGlkIGluIHRoZSByYW5nZSBvZgpkYXRhIHRoYXQgd2UgdXNlIHRvIGJ1aWxkIHRoZSBtb2RlbCBvbiEKCkhvd2V2ZXIsIGluIG1vc3QgYXBwbGljYXRpb25zIHdlIHdpbGwgbmV2ZXIgdGVzdCBmb3IgdGhlIGludGVyY2VwdCB0ZXJtLgoKIyBDb25jbHVzaW9uCgpUaGVyZSBpcyBhIHZlcnkgc2lnbmlmaWNhbnQgZWZmZWN0IG9mIHRoZSBwb2lzb24gb24gc3Vydml2YWwgb2YgRG9qb2Zpc2gKKHA8IDAuMDAxKS4gRG9qb2Zpc2ggdGhhdCBhcmUgZXhwb3NlZCB0byBhIGhpZ2hlciBkb3NlIG9mIHRoZSBwb2lzb24gd2lsbApoYXZlIGEgc3Vydml2YWwgdGltZSB0aGF0IGRlY3JlYXNlIG9uIGF2ZXJhZ2Ugd2l0aCBhIGZhY3RvcgpgciBsb2cubW9kZWwkY29lZlsyXSAlPiUgYWJzICU+JSAxMF4uICU+JSByb3VuZCguLDIpYCBwZXIgZ3JhbSBvZiBwb2lzb24gdGhhdAppcyBhZGRlZCAoOTUlIENJIFtgciBjb25maW50KGxvZy5tb2RlbClbMixdICU+JSBhYnMgJT4lIDEwXi4gJT4lIHJvdW5kKC4sMilgXSkuCgpJbiB0aGUgdHV0b3JpYWwgb2YgbXVsdGlwbGUgcmVncmVzc2lvbiwgd2Ugd2lsbCByZXZpc2l0IHRoaXMgZXhlcmNpc2UuCk1vcmUgc3BlY2lmaWNhbGx5LCB3ZSB3aWxsIHRoZXJlIHN0dWR5IHRoZSBhc3NvY2lhdGlvbiBiZXR3ZWVuIGRvc2UgYW5kIHN1cnZpdmFsCmZvciBhbGwgdGhlIHNwZWNpZXMgaW4gdGhlIGRhdGFzZXQuCg==</div>

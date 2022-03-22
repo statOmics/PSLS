@@ -549,12 +549,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 6.1: Linear regression on
-puromycin data</h1>
+<h1 class="title toc-ignore">Exercise 6.1: Linear regression on puromycin data</h1>
 <h4 class="author">Lieven Clement &amp; Alexandre Segers</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
@@ -562,78 +559,51 @@ class="uri">https://statomics.github.io</a>)</h4>
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
 <div id="puromycin-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Puromycin dataset</h1>
-<p>Data on the velocity of an enzymatic reaction were obtained by
-Treloar (1974). The number of counts per minute of radioactive product
-from the reaction was measured as a function of substrate concentration
-in parts per million (ppm) and from these counts the initial rate (or
-velocity) of the reaction was calculated (counts/min/min). The
-experiment was conducted once with the enzyme treated with Puromycin,
-and once with the enzyme untreated.</p>
+<p>Data on the velocity of an enzymatic reaction were obtained by Treloar (1974). The number of counts per minute of radioactive product from the reaction was measured as a function of substrate concentration in parts per million (ppm) and from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min). The experiment was conducted once with the enzyme treated with Puromycin, and once with the enzyme untreated.</p>
 </div>
 <div id="goal" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Goal</h1>
-<p>Assess if there is an association between the substrate concentration
-and rate for the <strong>treated</strong> enzyme.</p>
+<p>Assess if there is an association between the substrate concentration and rate for the <strong>treated</strong> enzyme.</p>
 <p>Import libraries</p>
 </div>
 <div id="import-data" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Import data</h1>
-<p>In contrast to the other datasets we have worked with so far, this
-dataset is not available through a URL link. In stead, the data is
-directly available from an R package that was pre-installed in your R
-working environment. As such, we can simply do</p>
+<p>In contrast to the other datasets we have worked with so far, this dataset is not available through a URL link. In stead, the data is directly available from an R package that was pre-installed in your R working environment. As such, we can simply do</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Puromycin)</span></code></pre></div>
-<p>and an object called <code>Puromycin</code> is immediately available
-in your working environment.</p>
+<p>and an object called <code>Puromycin</code> is immediately available in your working environment.</p>
 </div>
 <div id="data-wrangling" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Data wrangling</h1>
-<p>For this exercise, we only want to assess if there is an association
-between the substrate concentration and rate for the
-<strong>treated</strong> enzyme. As such, we should filter the data so
-that we are left with only the treated enzymes.</p>
+<p>For this exercise, we only want to assess if there is an association between the substrate concentration and rate for the <strong>treated</strong> enzyme. As such, we should filter the data so that we are left with only the treated enzymes.</p>
 </div>
 <div id="data-exploration" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Data exploration</h1>
-<p>Make a visualization that allows for exploring if there is a linear
-relationship between the substrate concentration and enzyme’s rate.</p>
+<p>Make a visualization that allows for exploring if there is a linear relationship between the substrate concentration and enzyme’s rate.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Puromycin <span class="sc">%&gt;%</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(...) <span class="sc">+</span> <span class="co"># select which elements of the dataset we need to visualize</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  ... <span class="co"># use a relevant plotting geometry</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">stat_smooth</span>(...) <span class="sc">+</span> <span class="co"># draw a smooth line through the data cloud</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(...) <span class="co"># draw a straight (linear regression) line through the data cloud</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>... <span class="co"># you can add some extra elements like axis labels, title, ...</span></span></code></pre></div>
-<p>Does the relationship look linear? Can you think of any other steps
-that we might take to assess this relationship?</p>
-<p>Now may we assume a linear relationship between the substrate
-concentration and the enzyme’s rate?</p>
+<p>Does the relationship look linear? Can you think of any other steps that we might take to assess this relationship?</p>
+<p>Now may we assume a linear relationship between the substrate concentration and the enzyme’s rate?</p>
 </div>
 <div id="linear-regression" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Linear regression</h1>
-<div id="formulate-the-research-question" class="section level2"
-number="6.1">
-<h2><span class="header-section-number">6.1</span> Formulate the
-research question</h2>
+<div id="formulate-the-research-question" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Formulate the research question</h2>
 </div>
 <div id="check-the-assumptions" class="section level2" number="6.2">
-<h2><span class="header-section-number">6.2</span> Check the
-assumptions</h2>
+<h2><span class="header-section-number">6.2</span> Check the assumptions</h2>
 </div>
-<div id="interpret-the-model-parameters-of-the-linear-model"
-class="section level2" number="6.3">
-<h2><span class="header-section-number">6.3</span> Interpret the model
-parameters of the linear model</h2>
+<div id="interpret-the-model-parameters-of-the-linear-model" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Interpret the model parameters of the linear model</h2>
 </div>
-<div
-id="interpret-the-results-both-for-the-intercept-as-well-as-for-the-slope"
-class="section level2" number="6.4">
-<h2><span class="header-section-number">6.4</span> Interpret the
-results, both for the intercept as well as for the slope</h2>
+<div id="interpret-the-results-both-for-the-intercept-as-well-as-for-the-slope" class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> Interpret the results, both for the intercept as well as for the slope</h2>
 </div>
-<div id="write-a-conclusion-that-answers-the-research-hypothesis."
-class="section level2" number="6.5">
-<h2><span class="header-section-number">6.5</span> Write a conclusion
-that answers the research hypothesis.</h2>
+<div id="write-a-conclusion-that-answers-the-research-hypothesis." class="section level2" number="6.5">
+<h2><span class="header-section-number">6.5</span> Write a conclusion that answers the research hypothesis.</h2>
 </div>
 </div>
 

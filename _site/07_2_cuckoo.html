@@ -446,33 +446,18 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 7.2: ANOVA on the cuckoo
-dataset</h1>
+<h1 class="title toc-ignore">Exercise 7.2: ANOVA on the cuckoo dataset</h1>
 <h4 class="author">Lieven Clement and Jeroen Gilis</h4>
-<h4 class="date">statOmics, Ghent University (<a
-href="https://statomics.github.io"
-class="uri">https://statomics.github.io</a>)</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
 <div id="cuckoo-dataset" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Cuckoo dataset</h1>
-<p>The common cuckoo does not build its own nest: it prefers to lay its
-eggs in another birds’ nest. It is known, since 1892, that the type of
-cuckoo bird eggs are different between different locations. In a study
-from 1940, it was shown that cuckoos return to the same nesting area
-each year, and that they always pick the same bird species to be a
-“foster parent” for their eggs.</p>
-<p>Over the years, this has lead to the development of geographically
-determined subspecies of cuckoos. These subspecies have evolved in such
-a way that their eggs look as similar as possible as those of their
-foster parents.</p>
-<p>The cuckoo dataset contains information on 120 Cuckoo eggs, obtained
-from randomly selected “foster” nests. For these eggs, researchers have
-measured the <code>length</code> (in mm) and established the
-<code>type</code> (species) of foster parent. The type column is coded
-as follows:</p>
+<p>The common cuckoo does not build its own nest: it prefers to lay its eggs in another birds’ nest. It is known, since 1892, that the type of cuckoo bird eggs are different between different locations. In a study from 1940, it was shown that cuckoos return to the same nesting area each year, and that they always pick the same bird species to be a “foster parent” for their eggs.</p>
+<p>Over the years, this has lead to the development of geographically determined subspecies of cuckoos. These subspecies have evolved in such a way that their eggs look as similar as possible as those of their foster parents.</p>
+<p>The cuckoo dataset contains information on 120 Cuckoo eggs, obtained from randomly selected “foster” nests. For these eggs, researchers have measured the <code>length</code> (in mm) and established the <code>type</code> (species) of foster parent. The type column is coded as follows:</p>
 <ul>
 <li><code>type=1</code>: Meadow pipit</li>
 <li><code>type=2</code>: Tree pipit</li>
@@ -484,18 +469,12 @@ as follows:</p>
 </div>
 <div id="goal" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Goal</h1>
-<p>The researchers want to test if the type of foster parent has an
-effect on the average length of the cuckoo eggs.</p>
-<p>Optimally, they want to study this for all six species. Previously,
-we looked at a single pairwise comparison between the European robin and
-the Eurasian wren with a t-test. Here, we will analyse all types
-simultaneously with ANOVA.</p>
-<p>In this short exercise, we perform a hypothesis test on the “cuckoo”
-dataset.</p>
+<p>The researchers want to test if the type of foster parent has an effect on the average length of the cuckoo eggs.</p>
+<p>Optimally, they want to study this for all six species. Previously, we looked at a single pairwise comparison between the European robin and the Eurasian wren with a t-test. Here, we will analyse all types simultaneously with ANOVA.</p>
+<p>In this short exercise, we perform a hypothesis test on the “cuckoo” dataset.</p>
 </div>
 <div id="load-the-required-libraries" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Load the required
-libraries</h1>
+<h1><span class="header-section-number">3</span> Load the required libraries</h1>
 </div>
 <div id="import-the-data" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Import the data</h1>
@@ -513,19 +492,14 @@ libraries</h1>
 <p>Visualize the data</p>
 </div>
 <div id="exercises-and-questions" class="section level1" number="8">
-<h1><span class="header-section-number">8</span> Exercises and
-questions</h1>
+<h1><span class="header-section-number">8</span> Exercises and questions</h1>
 <ol style="list-style-type: decimal">
 <li><p>What do you observe?</p></li>
 <li><p>How will you model the data?</p></li>
-<li><p>Translate the research question in a null and alternative
-hypothesis</p></li>
-<li><p>Which test will you use to assess the research
-hypothesis?</p></li>
-<li><p>Formulate the assumptions of the test and assess the assumptions
-using diagnostic plots.</p></li>
-<li><p>If all assumptions to perform the test, complete the entire
-analysis and formulate a proper conclusion.</p></li>
+<li><p>Translate the research question in a null and alternative hypothesis</p></li>
+<li><p>Which test will you use to assess the research hypothesis?</p></li>
+<li><p>Formulate the assumptions of the test and assess the assumptions using diagnostic plots.</p></li>
+<li><p>If all assumptions to perform the test, complete the entire analysis and formulate a proper conclusion.</p></li>
 </ol>
 </div>
 
