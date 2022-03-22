@@ -27,8 +27,8 @@ jobs:
       - name: Set up pandoc
         uses: r-lib/actions/setup-pandoc@v2
 
-      - name: Set up TinyTex
-        uses: r-lib/actions/setup-tinytex@v2
+      # - name: Set up TinyTex
+      #   uses: r-lib/actions/setup-tinytex@v2
 
       - name: Install X11 dependencies on MacOS
         if: runner.os == 'macOS'
@@ -71,11 +71,11 @@ jobs:
           BRANCH: gh-pages
           FOLDER: _site
 
-      - name: Upload LaTeX logs
-        if: failure()
-        uses: actions/upload-artifact@main
-        with:
-          name: latex-logs
-          path: |
-            *.log
-            *.tex
+      # - name: Upload LaTeX logs
+      #   if: failure()
+      #   uses: actions/upload-artifact@main
+      #   with:
+      #     name: latex-logs
+      #     path: |
+      #       *.log
+      #       *.tex
