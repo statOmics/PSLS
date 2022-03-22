@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement and Jeroen Gilis" />
+
+
+<title>Exercises on chapter 8: Multiple linear regression</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Exercises on chapter 8: Multiple linear
+regression</h1>
+<h4 class="author">Lieven Clement and Jeroen Gilis</h4>
+<h4 class="date">statOmics, Ghent University (<a
+href="https://statomics.github.io"
+class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<p>On the fourth day of the “Practical Statistics for the Life Sciences
+(2021)” course, we will have four tutorials on multiple linear
+regression, based on different datasets:</p>
+<div id="the-poison-dataset" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> The poison dataset</h1>
+<p>In this experiment, 96 fish (dojofish, goldfish and zebrafish) were
+placed separately in a tank with two liters of water and a certain dose
+(in mg) of the poison EI-43,064. The resistance of the fish against the
+poison was measured as the amount of minutes the fish survived after
+being exposed to the poison (<code>Surv_time</code>, in minutes).
+Additionally, the weight of each fish was measured.</p>
+<p>In this tutorial session we will focus on Dojofish, and we will model
+the survival time in function of the poison dose while correcting for
+the weight of the fish.</p>
+<ol style="list-style-type: decimal">
+<li><p>We will first analyse the survival data by only considering the
+dose as an explanatory variable for survival time</p></li>
+<li><p>Next we will model the survival data with and <strong>additive
+model</strong> for dose and weight</p></li>
+</ol>
+<ul>
+<li>Exercise: <a href="./08_1_poison1.html">Exercise1</a></li>
+<li>Data path: “<a
+href="https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv"
+class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv</a>”
+<!-- - Solution1: [Solution1](./08_1_poison1_sol.html) --></li>
+</ul>
+<hr />
+</div>
+<div id="the-poison-dataset-2" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> The poison dataset
+(2)</h1>
+<p>Again, we will work with the poison dataset. In contrast to the
+exercise above, we here we will model the survival time in function of
+the dose and the weight of the fish, <strong>and including an
+interaction between dose and weight.</strong></p>
+<ul>
+<li>Exercise: <a href="./08_2_poison2.html">Exercise2</a></li>
+<li>Data path: “<a
+href="https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv"
+class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv</a>”
+<!-- - Solution2: [Solution2](./08_2_poison1_sol.html) --></li>
+</ul>
+<hr />
+</div>
+<div id="the-puromycin-dataset" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> The puromycin
+dataset</h1>
+<p>Data on the velocity of an enzymatic reaction were obtained by
+Treloar (1974). The number of counts per minute of radioactive product
+from the reaction was measured as a function of substrate concentration
+in parts per million (ppm) and from these counts the initial rate (or
+velocity) of the reaction was calculated (counts/min/min). The
+experiment was conducted once with the enzyme treated with Puromycin,
+and once with the enzyme untreated.</p>
+<p>Assess if there is an association between the substrate concentration
+and rate <strong>for both the treated and untreated enzymes.</strong> To
+do this, fit a model that includes a main effect for concentration, a
+main effect for enzyme state, and an interaction term between these two
+variables.</p>
+<ul>
+<li>Exercise: <a href="./08_3_puromycin.html">Exercise3</a></li>
+<li>Data path: Not required
+<!-- - Solution: [Solution3](./08_3_puromycin_sol.html) --></li>
+</ul>
+<hr />
+</div>
+<div id="the-kpna2-dataset" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> The KPNA2 dataset</h1>
+<p>Histologic grade in breast cancer provides clinically important
+prognostic information. Researchers examined whether histologic grade
+was associated with gene expression profiles of breast cancers and
+whether such profiles could be used to improve histologic grading.</p>
+<p>In this tutorial we will assess the association between histologic
+grade and the expression of the KPNA2 gene that is known to be
+associated with poor breast cancer prognosis. The patients, however, do
+not only differ in the histologic grade, but also on their lymph node
+status. The lymph nodes were not affected (0) or surgically removed
+(1).</p>
+<ul>
+<li>Exercise: <a href="./08_4_kpna2.html">Exercise4</a></li>
+<li>Data path: “<a
+href="https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt"
+class="uri">https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt</a>”
+<!-- - Solution: [Solution4](./08_4_kpna2_sol.html) --></li>
+</ul>
+<hr />
+</div>
+<div id="blocking-the-rats-dataset-1" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Blocking: the rats
+dataset (1)</h1>
+<p>Researchers are studying the impact of protein sources and protein
+levels in the diet on the weight of rats. They feed the rats with diets
+of beef, cereal and pork and use a low and high protein level for each
+diet type. The researchers can include 60 rats in the experiment. Prior
+to the experiment, the rats were divided in 10 homogeneous groups of 6
+rats based on characteristics such as initial weight, appetite, etc.</p>
+<p>Within each group a rat is randomly assigned to a diet. The rats are
+fed during a month and the weight gain in grams is recorded for each
+rat.</p>
+<p>The researchers want to assess the effect of the type of diet and the
+protein level on the weight of the rats.</p>
+<p>In this exercise we will perform the data exploration using all
+diets, but, to keep the data analysis simple we will only assess the
+beef and cereal diets.</p>
+<ul>
+<li>Exercise: <a href="./08_5_rats.html">Exercise5</a></li>
+<li>Data path: “<a
+href="https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt"
+class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt</a>”
+<!-- - Exercise: [Solution5](./08_5_rats_sol.html) --></li>
+</ul>
+<hr />
+</div>
+<div id="blocking-the-rats-dataset-2" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Blocking: the rats
+dataset (2)</h1>
+<p>Again, we make use of the <em>rats</em> dataset defined above. In
+contrast to the previous exercise, we perform the analysis for all three
+diets in the dataset.</p>
+<ul>
+<li>Exercise: <a href="./08_6_rats.html">Exercise6</a></li>
+<li>Data path: “<a
+href="https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt"
+class="uri">https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt</a>”
+<!-- - Exercise: [Solution6](./08_6_rats_sol.html) --></li>
+</ul>
+<hr />
+</div>
+<div id="power-analysis-the-rodents-dataset" class="section level1"
+number="7">
+<h1><span class="header-section-number">7</span> Power analysis: the
+rodents dataset</h1>
+<p>A biologist examined the effect of a fungal infection on the eating
+behavior of rodents. Infected apples were offered to a group of eight
+rodents, and sterile apples were offered to a group of 4 rodents. The
+amount of grams of apples consumed per kg body weight are given in the
+dataset.</p>
+<p>We will answer four research questions:</p>
+<ul>
+<li><p>What is the power of the experiment if the effect size and
+standard deviation in the population would be equal to the ones you
+observed in the experiment?</p></li>
+<li><p>What would the power by if number of rodents would balanced in
+both groups?</p></li>
+<li><p>How many observations would you need to pick up the treatment
+effect with a power of 90%?</p></li>
+<li><p>Suppose that we would like to pick up an effect size of <span
+class="math inline">\(\beta_1 = 60 g/kg\)</span>. How many samples would
+be required in each group to obtain a power of 90%?</p></li>
+<li><p>Exercise: <a
+href="./08_ExperimentalDesignII_1_rodents.html">Exercise7</a></p></li>
+<li><p>Data path: Not required
+<!-- - Solution: [Solution7](./08_ExperimentalDesignII_1_rodents_sol.html) --></p></li>
+</ul>
+<hr />
+</div>
+<div id="power-analysis-the-puromycin-dataset" class="section level1"
+number="8">
+<h1><span class="header-section-number">8</span> Power analysis: the
+Puromycin dataset</h1>
+<p>Data on the velocity of an enzymatic reaction were obtained by
+Treloar (1974). The number of counts per minute of radioactive product
+from the reaction was measured as a function of substrate concentration
+in parts per million (ppm) and from these counts the initial rate (or
+velocity) of the reaction was c alculated (counts/min/min). The
+experiment was conducted once with the enzyme treated with Puromycin,
+and once with the enzyme untreated.</p>
+<p>We will answer four research questions:</p>
+<ul>
+<li><p>Use the data to calculate the power to pick up an association
+that is as least as strong as the association you observed in the
+dataset when using an experiment with the same design.</p></li>
+<li><p>Use the data to calculate the power to pick up an association
+where the reaction rate increases on average with 10 counts/min when the
+substrate concentration is 10 times higher (<span
+class="math inline">\(\beta_1=10\)</span>).</p></li>
+<li><p>Use the data to calculate the number of repeats you need for each
+concentration to pick up an association where the reaction rate
+increases on average with 10 counts/min when the substrate concentration
+is 10 times higher with a power of at least 90%. (<span
+class="math inline">\(\beta_1=10\)</span>)</p></li>
+<li><p>Suppose that you would setup an experiment with a design similar
+with the same concentrations as in the puromycin dataset and you have
+the following restriction: you need to use each concentration at least
+once and can setup at most 12 reactions, how would you choose your
+design points? Calculate the power for this design when the effect size
+is 10 counts/min per 10 times increase in the substrate concentration
+(<span class="math inline">\(\beta_1=10\)</span>).</p></li>
+<li><p>Exercise: <a
+href="./08_ExperimentalDesignII_1_puromycin.html">Exercise8</a></p></li>
+<li><p>Data path: Not required
+<!-- - Solution: [Solution8](./08_ExperimentalDesignII_1_puromycin_sol.html) --></p></li>
+</ul>
+<hr />
+</div>
+<div id="power-analysis-he-kpna2-dataset" class="section level1"
+number="9">
+<h1><span class="header-section-number">9</span> Power analysis: he
+KPNA2 dataset</h1>
+<p>Histologic grade in breast cancer provides clinically important
+prognostic information. Researchers examined whether histologic grade
+was associated with gene expression profiles of breast cancers and
+whether such profiles could be used to improve histologic grading.</p>
+<p>In this tutorial we will assess the association between histologic
+grade and the expression of the KPNA2 gene that is known to be
+associated with poor breast cancer prognosis. The patients, however, do
+not only differ in the histologic grade, but also on their lymph node
+status. The lymph nodes were not affected (0) or surgically removed
+(1).</p>
+<p>We will answer three research questions:</p>
+<ul>
+<li><p>What is the power to pick up each of the contrasts when their
+real effect sizes would be equal to the effect sizes we observed in the
+study?</p></li>
+<li><p>How does the power evolves if we have 2 upto 10 repeats for each
+factor combination of grade and node when their real effect sizes would
+be equal to the ones we observed in the study?</p></li>
+<li><p>What is the power to pick up each of the contrasts when the FC
+for grade for patients with unaffected lymph nodes equals 1.5 (<span
+class="math inline">\(\beta_g = log2(1.5)\)</span>)?</p></li>
+<li><p>Data path: “<a
+href="https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt"
+class="uri">https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt</a>”
+<!-- - Solution: [Solution9](./08_ExperimentalDesignII_3_kpna2_sol.Rmd.html) --></p></li>
+</ul>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2VzIG9uIGNoYXB0ZXIgODogTXVsdGlwbGUgbGluZWFyIHJlZ3Jlc3Npb24iCmF1dGhvcjogIkxpZXZlbiBDbGVtZW50IGFuZCBKZXJvZW4gR2lsaXMiCmRhdGU6ICJzdGF0T21pY3MsIEdoZW50IFVuaXZlcnNpdHkgKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pbykiCi0tLQoKT24gdGhlIGZvdXJ0aCBkYXkgb2YgdGhlICJQcmFjdGljYWwgU3RhdGlzdGljcyBmb3IgdGhlIExpZmUgU2NpZW5jZXMgKDIwMjEpIgpjb3Vyc2UsIHdlIHdpbGwgaGF2ZSBmb3VyIHR1dG9yaWFscyBvbiBtdWx0aXBsZSBsaW5lYXIgcmVncmVzc2lvbiwgYmFzZWQgb24KZGlmZmVyZW50IGRhdGFzZXRzOgoKCiMgVGhlIHBvaXNvbiBkYXRhc2V0CgpJbiB0aGlzIGV4cGVyaW1lbnQsIDk2IGZpc2ggKGRvam9maXNoLCBnb2xkZmlzaCBhbmQgemVicmFmaXNoKQp3ZXJlIHBsYWNlZCBzZXBhcmF0ZWx5IGluIGEgdGFuayB3aXRoIHR3byBsaXRlcnMgb2Ygd2F0ZXIgYW5kCmEgY2VydGFpbiBkb3NlIChpbiBtZykgb2YgdGhlIHBvaXNvbiBFSS00MywwNjQuIFRoZSByZXNpc3RhbmNlCm9mIHRoZSBmaXNoIGFnYWluc3QgdGhlIHBvaXNvbiB3YXMgbWVhc3VyZWQgYXMgdGhlIGFtb3VudCBvZgptaW51dGVzIHRoZSBmaXNoIHN1cnZpdmVkIGFmdGVyIGJlaW5nIGV4cG9zZWQgdG8gdGhlIHBvaXNvbiAoYFN1cnZfdGltZWAsIGluCm1pbnV0ZXMpLiBBZGRpdGlvbmFsbHksIHRoZSB3ZWlnaHQgb2YgZWFjaCBmaXNoIHdhcyBtZWFzdXJlZC4KCkluIHRoaXMgdHV0b3JpYWwgc2Vzc2lvbiB3ZSB3aWxsIGZvY3VzIG9uIERvam9maXNoLCBhbmQgd2Ugd2lsbCBtb2RlbCB0aGUKc3Vydml2YWwgdGltZSBpbiBmdW5jdGlvbiBvZiB0aGUgcG9pc29uIGRvc2Ugd2hpbGUgY29ycmVjdGluZyBmb3IgdGhlIHdlaWdodCBvZgp0aGUgZmlzaC4KCjEuIFdlIHdpbGwgZmlyc3QgYW5hbHlzZSB0aGUgc3Vydml2YWwgZGF0YSBieSBvbmx5IGNvbnNpZGVyaW5nIHRoZSBkb3NlIGFzIGFuCmV4cGxhbmF0b3J5IHZhcmlhYmxlIGZvciBzdXJ2aXZhbCB0aW1lCgoyLiBOZXh0IHdlIHdpbGwgbW9kZWwgdGhlIHN1cnZpdmFsIGRhdGEgd2l0aCBhbmQgKiphZGRpdGl2ZSBtb2RlbCoqIGZvciBkb3NlIGFuZAp3ZWlnaHQKCi0gRXhlcmNpc2U6IFtFeGVyY2lzZTFdKC4vMDhfMV9wb2lzb24xLmh0bWwpCi0gRGF0YSBwYXRoOiAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9wb2lzb24uY3N2Igo8IS0tIC0gU29sdXRpb24xOiBbU29sdXRpb24xXSguLzA4XzFfcG9pc29uMV9zb2wuaHRtbCkgLS0+CgotLS0KCiMgVGhlIHBvaXNvbiBkYXRhc2V0ICgyKQoKQWdhaW4sIHdlIHdpbGwgd29yayB3aXRoIHRoZSBwb2lzb24gZGF0YXNldC4gSW4gY29udHJhc3QgdG8gdGhlIGV4ZXJjaXNlCmFib3ZlLCB3ZSBoZXJlIHdlIHdpbGwgbW9kZWwgdGhlIHN1cnZpdmFsIHRpbWUgaW4gZnVuY3Rpb24gb2YgdGhlIGRvc2UgYW5kIHRoZQp3ZWlnaHQgb2YgdGhlIGZpc2gsICoqYW5kIGluY2x1ZGluZyBhbiBpbnRlcmFjdGlvbiBiZXR3ZWVuIGRvc2UgYW5kIHdlaWdodC4qKgoKLSBFeGVyY2lzZTogW0V4ZXJjaXNlMl0oLi8wOF8yX3BvaXNvbjIuaHRtbCkKLSBEYXRhIHBhdGg6ICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL3BvaXNvbi5jc3YiCjwhLS0gLSBTb2x1dGlvbjI6IFtTb2x1dGlvbjJdKC4vMDhfMl9wb2lzb24xX3NvbC5odG1sKSAtLT4KCi0tLQoKIyBUaGUgcHVyb215Y2luIGRhdGFzZXQKCkRhdGEgb24gdGhlIHZlbG9jaXR5IG9mIGFuIGVuenltYXRpYyByZWFjdGlvbiB3ZXJlIG9idGFpbmVkIGJ5IFRyZWxvYXIgKDE5NzQpLgpUaGUgbnVtYmVyIG9mIGNvdW50cyBwZXIgbWludXRlIG9mIHJhZGlvYWN0aXZlIHByb2R1Y3QgZnJvbSB0aGUgcmVhY3Rpb24gd2FzCm1lYXN1cmVkIGFzIGEgZnVuY3Rpb24gb2Ygc3Vic3RyYXRlIGNvbmNlbnRyYXRpb24gaW4gcGFydHMgcGVyIG1pbGxpb24gKHBwbSkgYW5kCmZyb20gdGhlc2UgY291bnRzIHRoZSBpbml0aWFsIHJhdGUgKG9yIHZlbG9jaXR5KSBvZiB0aGUgcmVhY3Rpb24gd2FzIGNhbGN1bGF0ZWQgKGNvdW50cy9taW4vbWluKS4gVGhlIGV4cGVyaW1lbnQgd2FzIGNvbmR1Y3RlZCBvbmNlIHdpdGggdGhlIGVuenltZSB0cmVhdGVkCndpdGggUHVyb215Y2luLCBhbmQgb25jZSB3aXRoIHRoZSBlbnp5bWUgdW50cmVhdGVkLgoKQXNzZXNzIGlmIHRoZXJlIGlzIGFuIGFzc29jaWF0aW9uIGJldHdlZW4gdGhlIHN1YnN0cmF0ZSBjb25jZW50cmF0aW9uIGFuZCByYXRlCioqZm9yIGJvdGggdGhlIHRyZWF0ZWQgYW5kIHVudHJlYXRlZCBlbnp5bWVzLioqIFRvIGRvIHRoaXMsIGZpdCBhIG1vZGVsIHRoYXQKaW5jbHVkZXMgYSBtYWluIGVmZmVjdCBmb3IgY29uY2VudHJhdGlvbiwgYSBtYWluIGVmZmVjdCBmb3IgZW56eW1lIHN0YXRlLCBhbmQKYW4gaW50ZXJhY3Rpb24gdGVybSBiZXR3ZWVuIHRoZXNlIHR3byB2YXJpYWJsZXMuCgotIEV4ZXJjaXNlOiBbRXhlcmNpc2UzXSguLzA4XzNfcHVyb215Y2luLmh0bWwpCi0gRGF0YSBwYXRoOiBOb3QgcmVxdWlyZWQKPCEtLSAtIFNvbHV0aW9uOiBbU29sdXRpb24zXSguLzA4XzNfcHVyb215Y2luX3NvbC5odG1sKSAtLT4KCi0tLQoKIyBUaGUgS1BOQTIgZGF0YXNldAoKSGlzdG9sb2dpYyBncmFkZSBpbiBicmVhc3QgY2FuY2VyIHByb3ZpZGVzIGNsaW5pY2FsbHkgaW1wb3J0YW50IHByb2dub3N0aWMKaW5mb3JtYXRpb24uIFJlc2VhcmNoZXJzIGV4YW1pbmVkIHdoZXRoZXIgaGlzdG9sb2dpYyBncmFkZSB3YXMgYXNzb2NpYXRlZCB3aXRoCmdlbmUgZXhwcmVzc2lvbiBwcm9maWxlcyBvZiBicmVhc3QgY2FuY2VycyBhbmQgd2hldGhlciBzdWNoIHByb2ZpbGVzIGNvdWxkIGJlCnVzZWQgdG8gaW1wcm92ZSBoaXN0b2xvZ2ljIGdyYWRpbmcuCgpJbiB0aGlzIHR1dG9yaWFsIHdlIHdpbGwgYXNzZXNzIHRoZSBhc3NvY2lhdGlvbiBiZXR3ZWVuIGhpc3RvbG9naWMgZ3JhZGUgYW5kCnRoZSBleHByZXNzaW9uIG9mIHRoZSBLUE5BMiBnZW5lIHRoYXQgaXMga25vd24gdG8gYmUgYXNzb2NpYXRlZCB3aXRoIHBvb3IgYnJlYXN0CmNhbmNlciBwcm9nbm9zaXMuIFRoZSBwYXRpZW50cywgaG93ZXZlciwgZG8gbm90IG9ubHkgZGlmZmVyIGluIHRoZSBoaXN0b2xvZ2ljCmdyYWRlLCBidXQgYWxzbyBvbiB0aGVpciBseW1waCBub2RlIHN0YXR1cy4gVGhlIGx5bXBoIG5vZGVzIHdlcmUKbm90IGFmZmVjdGVkICgwKSBvciBzdXJnaWNhbGx5IHJlbW92ZWQgKDEpLgoKLSBFeGVyY2lzZTogW0V4ZXJjaXNlNF0oLi8wOF80X2twbmEyLmh0bWwpCi0gRGF0YSBwYXRoOiAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9TR0EyMS9tYXN0ZXIvZGF0YS9rcG5hMi50eHQiCjwhLS0gLSBTb2x1dGlvbjogW1NvbHV0aW9uNF0oLi8wOF80X2twbmEyX3NvbC5odG1sKSAtLT4KCi0tLQoKIyBCbG9ja2luZzogdGhlIHJhdHMgZGF0YXNldCAoMSkKClJlc2VhcmNoZXJzIGFyZSBzdHVkeWluZyB0aGUgaW1wYWN0IG9mIHByb3RlaW4gc291cmNlcyBhbmQgcHJvdGVpbiBsZXZlbHMgaW4KdGhlIGRpZXQgb24gdGhlIHdlaWdodCBvZiByYXRzLiBUaGV5IGZlZWQgdGhlIHJhdHMgd2l0aCBkaWV0cyBvZiBiZWVmLCBjZXJlYWwKYW5kIHBvcmsgYW5kIHVzZSBhIGxvdyBhbmQgaGlnaCBwcm90ZWluIGxldmVsIGZvciBlYWNoIGRpZXQgdHlwZS4KVGhlIHJlc2VhcmNoZXJzIGNhbiBpbmNsdWRlIDYwIHJhdHMgaW4gdGhlIGV4cGVyaW1lbnQuIFByaW9yIHRvIHRoZSBleHBlcmltZW50LAp0aGUgcmF0cyB3ZXJlIGRpdmlkZWQgaW4gMTAgaG9tb2dlbmVvdXMgZ3JvdXBzIG9mIDYgcmF0cyBiYXNlZCBvbgpjaGFyYWN0ZXJpc3RpY3Mgc3VjaCBhcyBpbml0aWFsIHdlaWdodCwgYXBwZXRpdGUsIGV0Yy4KCldpdGhpbiBlYWNoIGdyb3VwIGEgcmF0IGlzIHJhbmRvbWx5IGFzc2lnbmVkIHRvIGEgZGlldC4gVGhlIHJhdHMgYXJlIGZlZCBkdXJpbmcKYSBtb250aCBhbmQgdGhlIHdlaWdodCBnYWluIGluIGdyYW1zIGlzIHJlY29yZGVkIGZvciBlYWNoIHJhdC4KClRoZSByZXNlYXJjaGVycyB3YW50IHRvIGFzc2VzcyB0aGUgZWZmZWN0IG9mIHRoZSB0eXBlIG9mIGRpZXQgYW5kIHRoZSBwcm90ZWluCmxldmVsIG9uIHRoZSB3ZWlnaHQgb2YgdGhlIHJhdHMuCgpJbiB0aGlzIGV4ZXJjaXNlIHdlIHdpbGwgcGVyZm9ybSB0aGUgZGF0YSBleHBsb3JhdGlvbiB1c2luZyBhbGwgZGlldHMsIGJ1dCwKdG8ga2VlcCB0aGUgZGF0YSBhbmFseXNpcyBzaW1wbGUgd2Ugd2lsbCBvbmx5IGFzc2VzcyB0aGUgYmVlZiBhbmQgY2VyZWFsIGRpZXRzLgoKLSBFeGVyY2lzZTogW0V4ZXJjaXNlNV0oLi8wOF81X3JhdHMuaHRtbCkKLSBEYXRhIHBhdGg6ICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL2RpZXRSYXRzLnR4dCIKPCEtLSAtIEV4ZXJjaXNlOiBbU29sdXRpb241XSguLzA4XzVfcmF0c19zb2wuaHRtbCkgLS0+CgotLS0KCiMgQmxvY2tpbmc6IHRoZSByYXRzIGRhdGFzZXQgKDIpCgpBZ2Fpbiwgd2UgbWFrZSB1c2Ugb2YgdGhlICpyYXRzKiBkYXRhc2V0IGRlZmluZWQgYWJvdmUuIEluIGNvbnRyYXN0IHRvIHRoZQpwcmV2aW91cyBleGVyY2lzZSwgd2UgcGVyZm9ybSB0aGUgYW5hbHlzaXMgZm9yIGFsbCB0aHJlZSBkaWV0cyBpbiB0aGUgZGF0YXNldC4KCi0gRXhlcmNpc2U6IFtFeGVyY2lzZTZdKC4vMDhfNl9yYXRzLmh0bWwpCi0gRGF0YSBwYXRoOiAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9kaWV0UmF0cy50eHQiCjwhLS0gLSBFeGVyY2lzZTogW1NvbHV0aW9uNl0oLi8wOF82X3JhdHNfc29sLmh0bWwpIC0tPgoKCi0tLQoKIyBQb3dlciBhbmFseXNpczogdGhlIHJvZGVudHMgZGF0YXNldAoKQSBiaW9sb2dpc3QgZXhhbWluZWQgdGhlIGVmZmVjdCBvZiBhIGZ1bmdhbCBpbmZlY3Rpb24gb24gdGhlIGVhdGluZyBiZWhhdmlvcgpvZiByb2RlbnRzLiBJbmZlY3RlZCBhcHBsZXMgd2VyZSBvZmZlcmVkIHRvIGEgZ3JvdXAgb2YgZWlnaHQgcm9kZW50cywKYW5kIHN0ZXJpbGUgYXBwbGVzIHdlcmUgb2ZmZXJlZCB0byBhIGdyb3VwIG9mIDQgcm9kZW50cy4gVGhlIGFtb3VudCBvZiBncmFtcwpvZiBhcHBsZXMgY29uc3VtZWQgcGVyIGtnIGJvZHkgd2VpZ2h0IGFyZSBnaXZlbiBpbiB0aGUgZGF0YXNldC4KCldlIHdpbGwgYW5zd2VyIGZvdXIgcmVzZWFyY2ggcXVlc3Rpb25zOgoKLSBXaGF0IGlzIHRoZSBwb3dlciBvZiB0aGUgZXhwZXJpbWVudCBpZiB0aGUgZWZmZWN0IHNpemUgYW5kIHN0YW5kYXJkIGRldmlhdGlvbgppbiB0aGUgcG9wdWxhdGlvbiB3b3VsZCBiZSBlcXVhbCB0byB0aGUgb25lcyB5b3Ugb2JzZXJ2ZWQgaW4gdGhlIGV4cGVyaW1lbnQ/CgotIFdoYXQgd291bGQgdGhlIHBvd2VyIGJ5IGlmIG51bWJlciBvZiByb2RlbnRzIHdvdWxkICBiYWxhbmNlZCBpbiBib3RoIGdyb3Vwcz8KCi0gSG93IG1hbnkgb2JzZXJ2YXRpb25zIHdvdWxkIHlvdSBuZWVkIHRvIHBpY2sgdXAgdGhlIHRyZWF0bWVudCBlZmZlY3Qgd2l0aAphIHBvd2VyIG9mIDkwJT8KCi0gU3VwcG9zZSB0aGF0IHdlIHdvdWxkIGxpa2UgdG8gcGljayB1cCBhbiBlZmZlY3Qgc2l6ZSBvZiAkXGJldGFfMSA9IDYwIGcva2ckLgpIb3cgbWFueSBzYW1wbGVzIHdvdWxkIGJlIHJlcXVpcmVkIGluIGVhY2ggZ3JvdXAgdG8gb2J0YWluIGEgcG93ZXIgb2YgOTAlPwoKLSBFeGVyY2lzZTogW0V4ZXJjaXNlN10oLi8wOF9FeHBlcmltZW50YWxEZXNpZ25JSV8xX3JvZGVudHMuaHRtbCkKLSBEYXRhIHBhdGg6IE5vdCByZXF1aXJlZAo8IS0tIC0gU29sdXRpb246IFtTb2x1dGlvbjddKC4vMDhfRXhwZXJpbWVudGFsRGVzaWduSUlfMV9yb2RlbnRzX3NvbC5odG1sKSAtLT4KCi0tLQoKIyBQb3dlciBhbmFseXNpczogdGhlIFB1cm9teWNpbiBkYXRhc2V0CgpEYXRhIG9uIHRoZSB2ZWxvY2l0eSBvZiBhbiBlbnp5bWF0aWMgcmVhY3Rpb24gd2VyZSBvYnRhaW5lZCBieSBUcmVsb2FyICgxOTc0KS4KVGhlIG51bWJlciBvZiBjb3VudHMgcGVyIG1pbnV0ZSBvZiByYWRpb2FjdGl2ZSBwcm9kdWN0IGZyb20gdGhlIHJlYWN0aW9uIHdhcwptZWFzdXJlZCBhcyBhIGZ1bmN0aW9uIG9mIHN1YnN0cmF0ZSBjb25jZW50cmF0aW9uIGluIHBhcnRzIHBlciBtaWxsaW9uIChwcG0pCmFuZCBmcm9tIHRoZXNlIGNvdW50cyB0aGUgaW5pdGlhbCByYXRlIChvciB2ZWxvY2l0eSkgb2YgdGhlIHJlYWN0aW9uIHdhcyBjCmFsY3VsYXRlZCAoY291bnRzL21pbi9taW4pLiBUaGUgZXhwZXJpbWVudCB3YXMgY29uZHVjdGVkIG9uY2Ugd2l0aAp0aGUgZW56eW1lIHRyZWF0ZWQgd2l0aCBQdXJvbXljaW4sIGFuZCBvbmNlIHdpdGggdGhlIGVuenltZSB1bnRyZWF0ZWQuCgpXZSB3aWxsIGFuc3dlciBmb3VyIHJlc2VhcmNoIHF1ZXN0aW9uczoKCi0gVXNlIHRoZSBkYXRhIHRvIGNhbGN1bGF0ZSB0aGUgcG93ZXIgdG8gcGljayB1cCBhbiBhc3NvY2lhdGlvbiB0aGF0IGlzIGFzCmxlYXN0IGFzIHN0cm9uZyBhcyB0aGUgYXNzb2NpYXRpb24geW91IG9ic2VydmVkIGluIHRoZSBkYXRhc2V0IHdoZW4gdXNpbmcKYW4gZXhwZXJpbWVudCB3aXRoIHRoZSBzYW1lIGRlc2lnbi4KCi0gVXNlIHRoZSBkYXRhIHRvIGNhbGN1bGF0ZSB0aGUgcG93ZXIgdG8gcGljayB1cCBhbiBhc3NvY2lhdGlvbiB3aGVyZQp0aGUgcmVhY3Rpb24gcmF0ZSBpbmNyZWFzZXMgb24gYXZlcmFnZSB3aXRoIDEwIGNvdW50cy9taW4gd2hlbiB0aGUgc3Vic3RyYXRlCmNvbmNlbnRyYXRpb24gaXMgMTAgdGltZXMgaGlnaGVyICgkXGJldGFfMT0xMCQpLgoKLSBVc2UgdGhlIGRhdGEgdG8gY2FsY3VsYXRlIHRoZSBudW1iZXIgb2YgcmVwZWF0cyB5b3UgbmVlZCBmb3IgZWFjaApjb25jZW50cmF0aW9uIHRvIHBpY2sgdXAgYW4gYXNzb2NpYXRpb24gd2hlcmUgdGhlIHJlYWN0aW9uIHJhdGUgaW5jcmVhc2VzCm9uIGF2ZXJhZ2Ugd2l0aCAxMCBjb3VudHMvbWluIHdoZW4gdGhlIHN1YnN0cmF0ZSBjb25jZW50cmF0aW9uIGlzIDEwIHRpbWVzCmhpZ2hlciB3aXRoIGEgcG93ZXIgb2YgYXQgbGVhc3QgOTAlLiAoJFxiZXRhXzE9MTAkKQoKLSBTdXBwb3NlIHRoYXQgeW91IHdvdWxkIHNldHVwIGFuIGV4cGVyaW1lbnQgd2l0aCBhIGRlc2lnbiBzaW1pbGFyIHdpdGggdGhlCnNhbWUgY29uY2VudHJhdGlvbnMgYXMgaW4gdGhlIHB1cm9teWNpbiBkYXRhc2V0IGFuZCB5b3UgaGF2ZSB0aGUgZm9sbG93aW5nCnJlc3RyaWN0aW9uOiB5b3UgbmVlZCB0byB1c2UgZWFjaCBjb25jZW50cmF0aW9uIGF0IGxlYXN0IG9uY2UgYW5kIGNhbiBzZXR1cAphdCBtb3N0IDEyIHJlYWN0aW9ucywgaG93IHdvdWxkIHlvdSBjaG9vc2UgeW91ciBkZXNpZ24gcG9pbnRzPyBDYWxjdWxhdGUKdGhlIHBvd2VyIGZvciB0aGlzIGRlc2lnbiB3aGVuIHRoZSBlZmZlY3Qgc2l6ZSBpcyAxMCBjb3VudHMvbWluIHBlciAxMCB0aW1lcwppbmNyZWFzZSBpbiB0aGUgc3Vic3RyYXRlIGNvbmNlbnRyYXRpb24gKCRcYmV0YV8xPTEwJCkuCgotIEV4ZXJjaXNlOiBbRXhlcmNpc2U4XSguLzA4X0V4cGVyaW1lbnRhbERlc2lnbklJXzFfcHVyb215Y2luLmh0bWwpCi0gRGF0YSBwYXRoOiBOb3QgcmVxdWlyZWQKPCEtLSAtIFNvbHV0aW9uOiBbU29sdXRpb244XSguLzA4X0V4cGVyaW1lbnRhbERlc2lnbklJXzFfcHVyb215Y2luX3NvbC5odG1sKSAtLT4KCi0tLQoKCiMgUG93ZXIgYW5hbHlzaXM6IGhlIEtQTkEyIGRhdGFzZXQKCkhpc3RvbG9naWMgZ3JhZGUgaW4gYnJlYXN0IGNhbmNlciBwcm92aWRlcyBjbGluaWNhbGx5IGltcG9ydGFudCBwcm9nbm9zdGljCmluZm9ybWF0aW9uLiBSZXNlYXJjaGVycyBleGFtaW5lZCB3aGV0aGVyIGhpc3RvbG9naWMgZ3JhZGUgd2FzIGFzc29jaWF0ZWQgd2l0aApnZW5lIGV4cHJlc3Npb24gcHJvZmlsZXMgb2YgYnJlYXN0IGNhbmNlcnMgYW5kIHdoZXRoZXIgc3VjaCBwcm9maWxlcyBjb3VsZCBiZQp1c2VkIHRvIGltcHJvdmUgaGlzdG9sb2dpYyBncmFkaW5nLgoKSW4gdGhpcyB0dXRvcmlhbCB3ZSB3aWxsIGFzc2VzcyB0aGUgYXNzb2NpYXRpb24gYmV0d2VlbiBoaXN0b2xvZ2ljIGdyYWRlIGFuZAp0aGUgZXhwcmVzc2lvbiBvZiB0aGUgS1BOQTIgZ2VuZSB0aGF0IGlzIGtub3duIHRvIGJlIGFzc29jaWF0ZWQgd2l0aCBwb29yIGJyZWFzdApjYW5jZXIgcHJvZ25vc2lzLiBUaGUgcGF0aWVudHMsIGhvd2V2ZXIsIGRvIG5vdCBvbmx5IGRpZmZlciBpbiB0aGUgaGlzdG9sb2dpYwpncmFkZSwgYnV0IGFsc28gb24gdGhlaXIgbHltcGggbm9kZSBzdGF0dXMuIFRoZSBseW1waCBub2RlcyB3ZXJlCm5vdCBhZmZlY3RlZCAoMCkgb3Igc3VyZ2ljYWxseSByZW1vdmVkICgxKS4KCldlIHdpbGwgYW5zd2VyIHRocmVlIHJlc2VhcmNoIHF1ZXN0aW9uczoKCi0gV2hhdCBpcyB0aGUgcG93ZXIgdG8gcGljayB1cCBlYWNoIG9mIHRoZSBjb250cmFzdHMgd2hlbiB0aGVpciByZWFsIGVmZmVjdApzaXplcyB3b3VsZCBiZSBlcXVhbCB0byB0aGUgZWZmZWN0IHNpemVzIHdlIG9ic2VydmVkIGluIHRoZSBzdHVkeT8KCi0gSG93IGRvZXMgdGhlIHBvd2VyIGV2b2x2ZXMgaWYgd2UgaGF2ZSAyIHVwdG8gMTAgcmVwZWF0cyBmb3IgZWFjaCBmYWN0b3IKY29tYmluYXRpb24gb2YgZ3JhZGUgYW5kIG5vZGUgd2hlbiB0aGVpciByZWFsIGVmZmVjdCBzaXplcyB3b3VsZCBiZSBlcXVhbCB0bwp0aGUgb25lcyB3ZSBvYnNlcnZlZCBpbiB0aGUgc3R1ZHk/CgotIFdoYXQgaXMgdGhlIHBvd2VyIHRvIHBpY2sgdXAgZWFjaCBvZiB0aGUgY29udHJhc3RzIHdoZW4gdGhlIEZDIGZvciBncmFkZSBmb3IgcGF0aWVudHMgd2l0aCB1bmFmZmVjdGVkIGx5bXBoIG5vZGVzIGVxdWFscyAxLjUgKCRcYmV0YV9nID0gbG9nMigxLjUpJCk/CgotIERhdGEgcGF0aDogImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9zdGF0T21pY3MvU0dBMjEvbWFzdGVyL2RhdGEva3BuYTIudHh0Igo8IS0tIC0gU29sdXRpb246IFtTb2x1dGlvbjldKC4vMDhfRXhwZXJpbWVudGFsRGVzaWduSUlfM19rcG5hMl9zb2wuUm1kLmh0bWwpIC0tPgo=</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("08_exercises.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement" />
+
+
+<title>4. Data Exploration</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">4. Data Exploration</h1>
+<h4 class="author">Lieven Clement</h4>
+<h4 class="date">statOmics, Ghent University (<a
+href="https://statomics.github.io"
+class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
+<p><img src="04-dataExploration_files/figure-html/pop2Samp2Pop-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<hr />
+<div id="why-data-exploration-and-descriptive-statistics"
+class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Why data exploration
+and descriptive statistics?</h1>
+<ol style="list-style-type: decimal">
+<li>Reporting on results: not useful to only report a table with the
+results for each subject.</li>
+<li>Letting the data speak by summarizing and visualizing it.</li>
+<li>Getting insight in the data.</li>
+<li>Discover errors, anomalies or even fraud.</li>
+<li>Check assumptions that are required for the downstream statistical
+inference, e.g. are the data Normally distributed.</li>
+</ol>
+<hr />
+</div>
+<div id="univariate-exploration-of-quantitative-variables"
+class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Univariate exploration
+of quantitative variables</h1>
+<div id="histogram" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Histogram</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DirectChol)) <span class="sc">+</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density.., <span class="at">fill =</span> ..count..), <span class="at">bins =</span> <span class="dv">30</span>) <span class="sc">+</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..))</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<ol style="list-style-type: decimal">
+<li>Select females and pipe results to ggplot.</li>
+</ol>
+<pre><code>NHANES %&gt;% filter(Gender==&quot;female&quot;)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Select data to plot.</li>
+</ol>
+<pre><code>ggplot(aes(x=DirectChol)) +</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li><p>Equal bins for interpretation, the number of bins can be selected
+with the bins argument to the geom_hist.</p></li>
+<li><p><em>Relative</em> frequenties to enable visual comparison between
+histograms.</p></li>
+</ol>
+<pre><code>geom_histogram(aes(y=..density.., fill=..count..)) +</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>If we have enough observations we can use a kernel density estimator
+of f(x).</li>
+</ol>
+<pre><code>geom_density(aes(y=..density..))</code></pre>
+<hr />
+</div>
+<div id="boxplot" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Boxplot</h2>
+<ul>
+<li>A quantile, <span class="math inline">\(x_{a\%}\)</span>, is the
+value of the random variable that correspond to a certain probability
+<span class="math inline">\(F(x_{a\%})=P[X\leq
+x_{a\%}=a\%]\)</span>.</li>
+</ul>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>With ggplot we always have to define an x variable if we make a
+boxplot. If we use a string then all data is considered to originate
+from one category and one boxplot is constructed.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> DirectChol)) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>So we can add a boxplot to a ggplot figure by using the
+<code>geom_boxplot()</code> function.</p>
+<p>If the dataset is small to moderate in size we can also add the raw
+data to the plot with the <code>geom_point()</code> function and the
+<code>position="jitter"</code> argument. Note, that we then also set the
+<code>outlier.shape</code> argument in the <code>geom_boxplot</code>
+function on NA so that the outliers are not plotted twice.</p>
+<p>Here, we will plot again the relative abundances of
+<strong>Staphylococcus</strong> from the armpit transplant
+experiment.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ap <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/GTPB/PSLS20/master/data/armpit.csv&quot;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ap</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["trt"],"name":[1],"type":["chr"],"align":["left"]},{"label":["rel"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"placebo","2":"54.99208"},{"1":"placebo","2":"31.84466"},{"1":"placebo","2":"41.09948"},{"1":"placebo","2":"59.52064"},{"1":"placebo","2":"63.57341"},{"1":"placebo","2":"41.48649"},{"1":"placebo","2":"30.44041"},{"1":"placebo","2":"42.95676"},{"1":"placebo","2":"41.73913"},{"1":"placebo","2":"33.89652"},{"1":"transplant","2":"57.21812"},{"1":"transplant","2":"72.50900"},{"1":"transplant","2":"61.89258"},{"1":"transplant","2":"56.69014"},{"1":"transplant","2":"76.00000"},{"1":"transplant","2":"71.73579"},{"1":"transplant","2":"57.75730"},{"1":"transplant","2":"65.12195"},{"1":"transplant","2":"67.53425"},{"1":"transplant","2":"77.55359"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ap <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> trt, <span class="at">y =</span> rel)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>)</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>When we specify a factor variable for x, we get a boxplot for each
+treatment group.</p>
+<hr />
+</div>
+<div id="descriptive-statistics" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Descriptive
+statistics</h2>
+<div id="central-location-mean-or-median" class="section level3"
+number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Central location:
+Mean or Median?</h3>
+<div id="mean" class="section level4" number="2.3.1.1">
+<h4><span class="header-section-number">2.3.1.1</span> Mean</h4>
+<ul>
+<li>In a period of 30 years, males hope to have on average 64.3 partners
+and females 2.8 {(Miller and Fishkin, 1997)}.</li>
+</ul>
+<hr />
+</div>
+<div id="median" class="section level4" number="2.3.1.2">
+<h4><span class="header-section-number">2.3.1.2</span> Median</h4>
+<ul>
+<li>The median of the number of partners males and females want to have
+is both 1 {(Miller and Fishkin, 1997)}</li>
+</ul>
+<hr />
+</div>
+<div id="what-happens" class="section level4" number="2.3.1.3">
+<h4><span class="header-section-number">2.3.1.3</span> What
+happens?</h4>
+<p><img
+src="https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/partners.png"
+style="width:75.0%" /></p>
+<ul>
+<li>Mean is very sensitive towards outliers!</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="geometric-mean" class="section level3" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Geometric mean</h3>
+<p><span class="math display">\[\sqrt[n]{\prod\limits_{i=1}^n x_i} =
+\exp\left\{\frac{1}{n} \sum_{i=1}^n \log(x_i)\right\}\]</span></p>
+<ul>
+<li><p>Geometric mean is closer to the median then the mean</p></li>
+<li><p>log-transformation removes skewness</p></li>
+<li><p>Often a more useful measure for the central location than
+median:</p></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>Uses all observations: is more precise</li>
+<li>It is the ordinary mean on log-transformed data <span
+class="math inline">\(\rightarrow\)</span> classical statistical methods
+can be directly applied, e.g. hypothesis tests and confidence intervals
+(see chapter 5)</li>
+<li>Useful for many biological characteristics e.g. concentrations that
+cannot be negative.</li>
+<li>Differences on a log scale have the interpretation of a log fold
+change:</li>
+</ol>
+<p><span class="math display">\[\log (B) - \log(A)=
+\log(\frac{B}{A})=\log(FC_\text{B vs A})\]</span></p>
+<p>In Genomics often the <span class="math inline">\(log_2\)</span>
+transformation is used. A difference of 1 corresponds to a <span
+class="math inline">\(FC=2\)</span>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>logSummary <span class="ot">&lt;-</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">logMean =</span> <span class="fu">mean</span>(DirectChol <span class="sc">%&gt;%</span> <span class="fu">log2</span>(), <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">sd =</span> <span class="fu">sd</span>(DirectChol <span class="sc">%&gt;%</span> <span class="fu">log2</span>(), <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">mean =</span> <span class="fu">mean</span>(DirectChol, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">median =</span> <span class="fu">median</span>(DirectChol, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">geoMean =</span> <span class="dv">2</span><span class="sc">^</span>logMean)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DirectChol <span class="sc">%&gt;%</span> <span class="fu">log2</span>())) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density.., <span class="at">fill =</span> ..count..), <span class="at">bins =</span> <span class="dv">30</span>) <span class="sc">+</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..)) <span class="sc">+</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> logSummary<span class="sc">$</span>logMean, <span class="at">sd =</span> logSummary<span class="sc">$</span>sd))</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>logSummary</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["logMean"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["median"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["geoMean"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.5142563","2":"0.394117","3":"1.482467","4":"1.42","5":"1.428258"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<ul>
+<li>Indeed the mean is pulled to larger values by the skewed data.</li>
+<li>The geometric mean is closer to the median.</li>
+<li>The cholesterol data are much more symmetric upon log transformation
+and the approximation by a Normal distribution is good.</li>
+</ul>
+</div>
+</div>
+<div id="descriptive-statistics-for-variability" class="section level2"
+number="2.4">
+<h2><span class="header-section-number">2.4</span> Descriptive
+Statistics for Variability</h2>
+<p>The variability around the central value is crucial:</p>
+<ol style="list-style-type: decimal">
+<li>Biologists are often interested in how animals or plants are spread
+in the study region.</li>
+<li>Compare groups: the group effect is more clear when the response has
+less variability. Quantifying variability is crucial to distinguish
+between systematic and random patterns.</li>
+</ol>
+<ul>
+<li><p>The response varies between and within individuals and is the
+reason why we need statistics.</p></li>
+<li><p>Crucial to describe both the central location and the
+variability.</p></li>
+<li><p>Which part of the variability can we explain (e.g. with
+characteristics treatment, age, etc,) and which part is
+unexplained?</p></li>
+</ul>
+<div id="sample-variance-and-sample-standard-deviation"
+class="section level3" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Sample variance and
+sample standard deviation</h3>
+<ul>
+<li><p>Sample variance: <span class="math display">\[
+s_X^2= \sum\limits_{i=1}^n \frac{(X-\bar X)^2}{n-1}
+\]</span></p></li>
+<li><p>Interpretation is often difficult because it is in another unit
+than the measurements.</p></li>
+<li><p><em>Standard deviation</em>: <span class="math display">\[
+s_X= \sqrt{s_x^2}
+\]</span></p></li>
+<li><p>Very useful for Normal distributed observations:</p>
+<ul>
+<li>68% of the observations falls in the interval <span
+class="math inline">\(\bar{x} - s_x\)</span> en <span
+class="math inline">\(\bar{x} + s_x\)</span></li>
+<li>95% of the observations falls in the interval <span
+class="math inline">\(\bar{x} - 2 s_x\)</span> en <span
+class="math inline">\(\bar{x} + 2 s_x\)</span>.</li>
+</ul></li>
+<li><p>These intervals are referred to as 68% en 95%
+<em>reference-intervals</em>.</p></li>
+<li><p>If the data are not Normally distributed, reference intervals are
+not valid.</p></li>
+</ul>
+<hr />
+</div>
+<div id="interquartile-range" class="section level3" number="2.4.2">
+<h3><span class="header-section-number">2.4.2</span> Interquartile
+range</h3>
+<p>For skewed data the standard deviation is not useful</p>
+<ul>
+<li>It is very sensitive to outliers</li>
+<li><em>Inter Quartile Range</em>: Distance between first and third
+quartile</li>
+<li>Width of the boxplot!</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">IQR =</span> <span class="fu">IQR</span>(DirectChol, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["IQR"],"name":[1],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.52"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> DirectChol)) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<hr />
+</div>
+</div>
+</div>
+<div id="normal-approximation" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Normal
+approximation</h1>
+<ul>
+<li><p>Biological and chemical data are often Normally distributed upon
+transformation.</p></li>
+<li><p>If this is the case we can get a lot of insight in the data using
+just two descriptive statistics: mean <span
+class="math inline">\(\mu\)</span> and standard deviation <span
+class="math inline">\(\sigma\)</span>.</p></li>
+</ul>
+<hr />
+<div id="evaluation-with-qq-plots" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Evaluation with
+QQ-plots</h2>
+<p>If your analysis builds upon the assumption that the data are
+Normally distributed, it has to be verified.</p>
+<p>We use <em>QQ-plots</em> or <em>quantile-quantile plots</em>.</p>
+<ul>
+<li><p>Observed quantiles from the observations in the sample are
+plotted against quantiles from the Normal distribution.</p></li>
+<li><p>If the data are Normally distributed both quantiles have to be in
+line.</p></li>
+<li><p>Dots in the plot are expected on a straight line.</p></li>
+<li><p>Systematic deviations of the straight line indicate that the data
+are not Normally distributed.</p></li>
+<li><p>Note, that we will always observe some random deviations from the
+straight line in the plot because of random biological variability,
+which is not indicative for deviations from Normality.</p></li>
+<li><p>So it is important to train yourself to learn to distinguish
+systematic from random deviations.</p></li>
+</ul>
+<hr />
+<div id="normal-data" class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Normal data</h3>
+<ul>
+<li><p>We will first simulate data from the Normal distribution to show
+how the plots look like for data that is meeting the
+assumptions.</p></li>
+<li><p>We will simulate data from 9 samples with a mean of 18 and
+standard deviation of 9.</p></li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">18</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="dv">9</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>nSamp <span class="ot">&lt;-</span> <span class="dv">9</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>normSim <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n <span class="sc">*</span> nSamp, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma), <span class="at">nrow =</span> n) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>normSim <span class="sc">%&gt;%</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(samp, data) <span class="sc">%&gt;%</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> data)) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density.., <span class="at">fill =</span> ..count..), <span class="at">bins =</span> <span class="dv">30</span>) <span class="sc">+</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..)) <span class="sc">+</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>samp)</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>normSim <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(samp, data) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> data)) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>samp)</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<p>So even for Normal data we observe some deviations due to sampling
+variability!</p>
+<hr />
+</div>
+<div id="real-data" class="section level3" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Real data</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(BMI)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> BMI)) <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density.., <span class="at">fill =</span> ..count..)) <span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;BMI&quot;</span>) <span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;All females in study&quot;</span>) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..))</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(BMI)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> BMI)) <span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>()</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<p>The QQ-plot shows that the quantiles of the data</p>
+<ul>
+<li>are larger (above the line) than these from the Normal in the left
+tail: compression of the lower tail,</li>
+<li>are larger (above the line) than these from the Normal in the right
+tail: long tail to the right.</li>
+</ul>
+<p>We can clearly see that the data are right-skewed.</p>
+<hr />
+</div>
+</div>
+</div>
+<div id="two-continuous-variables-correlation" class="section level1"
+number="4">
+<h1><span class="header-section-number">4</span> Two continuous
+variables: Correlation</h1>
+<ul>
+<li>NHANES study</li>
+<li>Height and Weight Example for females</li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Height, <span class="at">y =</span> Weight)) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>We observe an association between Weight and Height, but we also
+observe that the Weights tend to be right-skewed.</p>
+<p>Lets look at the univariate distributions first.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Height)) <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density.., <span class="at">fill =</span> ..count..)) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Height&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;All females in study&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..))</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> Height)) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>()</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Weight)) <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density.., <span class="at">fill =</span> ..count..)) <span class="sc">+</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Weight&quot;</span>) <span class="sc">+</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;All females in study&quot;</span>) <span class="sc">+</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..))</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> Weight)) <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>()</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+<p>The weights are indeed skewed!</p>
+<p>Upon log transformaton the Weights are less skewed, but still not
+Normally distributed.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Weight <span class="sc">%&gt;%</span> <span class="fu">log2</span>())) <span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density.., <span class="at">fill =</span> ..count..)) <span class="sc">+</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Weight (log2)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;All females in study&quot;</span>) <span class="sc">+</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..))</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> Weight <span class="sc">%&gt;%</span> <span class="fu">log2</span>())) <span class="sc">+</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>()</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+<p>Skewness is still there but is reduced already.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Height, <span class="at">y =</span> Weight <span class="sc">%&gt;%</span> <span class="fu">log2</span>())) <span class="sc">+</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Weight (log2)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<hr />
+<div id="covariance-and-correlation" class="section level2"
+number="4.1">
+<h2><span class="header-section-number">4.1</span> Covariance and
+Correlation</h2>
+<ul>
+<li>Let X and Y be to continuous random variables, and for each subject
+i we observe <span class="math inline">\((X_i,Y_i)\)</span>.</li>
+<li>Covariance: how deviate X_i and Y_i around their means?</li>
+</ul>
+<p><span
+class="math display">\[\mbox{Covar}(X,Y)=E[(X-E[X])(Y-E[Y])]\]</span></p>
+<ul>
+<li>Correlation: standardise the covariance according to the variability
+in each variable:</li>
+</ul>
+<p><span
+class="math display">\[\mbox{Cor}(X,Y)=\frac{E[(X-E[X])(Y-E[Y])]}{\sqrt{E[(X-E[X])^2}\sqrt{E[(Y-E[Y])^2}}\]</span></p>
+</div>
+<div id="pearson-correlation" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Pearson
+Correlation</h2>
+<ul>
+<li>Association between two continuous covariate:</li>
+</ul>
+<p><span
+class="math display">\[\mbox{Cor}(X,Y)=\frac{\sum_{i=1}^{n}(X_{i}-\bar{X})(Y_{i}-\bar{Y})}{(n-1)s_{X}s_{Y}}
+\]</span></p>
+<ul>
+<li><p>Positive correlation: <span class="math inline">\(x \ \nearrow \
+\Rightarrow \ y \ \nearrow\)</span></p></li>
+<li><p>Negative correlation: <span class="math inline">\(x \ \nearrow \
+\Rightarrow \ y \ \searrow\)</span></p></li>
+<li><p>Correlation always between -1 en 1</p></li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>means <span class="ot">&lt;-</span> NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Weight, Height) <span class="sc">%&gt;%</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log2Weight =</span> Weight <span class="sc">%&gt;%</span> <span class="fu">log2</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply</span>(., <span class="dv">2</span>, mean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>ranges <span class="ot">&lt;-</span> NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Weight, Height) <span class="sc">%&gt;%</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log2Weight =</span> Weight <span class="sc">%&gt;%</span> <span class="fu">log2</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply</span>(., <span class="dv">2</span>, range, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Height, <span class="at">y =</span> Weight <span class="sc">%&gt;%</span> <span class="fu">log2</span>())) <span class="sc">+</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Weight (log2)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> means[<span class="st">&quot;log2Weight&quot;</span>], <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> means[<span class="st">&quot;Height&quot;</span>], <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">&quot;text&quot;</span>,</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">c</span>(ranges[<span class="dv">1</span>, <span class="st">&quot;Height&quot;</span>], ranges[<span class="dv">1</span>, <span class="st">&quot;Height&quot;</span>], ranges[<span class="dv">2</span>, <span class="st">&quot;Height&quot;</span>], ranges[<span class="dv">2</span>, <span class="st">&quot;Height&quot;</span>]),</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(ranges[<span class="dv">1</span>, <span class="st">&quot;log2Weight&quot;</span>], ranges[<span class="dv">2</span>, <span class="st">&quot;log2Weight&quot;</span>], ranges[<span class="dv">1</span>, <span class="st">&quot;log2Weight&quot;</span>], ranges[<span class="dv">2</span>, <span class="st">&quot;log2Weight&quot;</span>]),</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">c</span>(<span class="st">&quot;+&quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="st">&quot;+&quot;</span>), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">size =</span> <span class="dv">10</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Height, <span class="at">y =</span> Weight)) <span class="sc">+</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Weight (log2)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> means[<span class="st">&quot;Weight&quot;</span>], <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> means[<span class="st">&quot;Height&quot;</span>], <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">&quot;text&quot;</span>,</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">c</span>(ranges[<span class="dv">1</span>, <span class="st">&quot;Height&quot;</span>], ranges[<span class="dv">1</span>, <span class="st">&quot;Height&quot;</span>], ranges[<span class="dv">2</span>, <span class="st">&quot;Height&quot;</span>], ranges[<span class="dv">2</span>, <span class="st">&quot;Height&quot;</span>]),</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">c</span>(ranges[<span class="dv">1</span>, <span class="st">&quot;Weight&quot;</span>], ranges[<span class="dv">2</span>, <span class="st">&quot;Weight&quot;</span>], ranges[<span class="dv">1</span>, <span class="st">&quot;Weight&quot;</span>], ranges[<span class="dv">2</span>, <span class="st">&quot;Weight&quot;</span>]),</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">c</span>(<span class="st">&quot;+&quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="st">&quot;-&quot;</span>, <span class="st">&quot;+&quot;</span>), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">size =</span> <span class="dv">10</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Weight, Height) <span class="sc">%&gt;%</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log2Weight =</span> Weight <span class="sc">%&gt;%</span> <span class="fu">log2</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.exclude</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>()</span></code></pre></div>
+<pre><code>              Weight    Height log2Weight
+Weight     1.0000000 0.3029834  0.9812646
+Height     0.3029834 1.0000000  0.3240824
+log2Weight 0.9812646 0.3240824  1.0000000</code></pre>
+<ul>
+<li>Note, that the correlation is lower when the data are not
+transformed.</li>
+<li>The Pearson correlation is sensitive to outliers!</li>
+<li>Do not use Pearson correlation for skewed distributions or for data
+with outliers.</li>
+</ul>
+<div id="impact-of-outliers" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Impact of
+outliers</h3>
+<p>Illustration with simulated data that has one outlier.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">20</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>simData <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> x <span class="sc">*</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(x)))</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>simData <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">paste</span>(<span class="st">&quot;cor =&quot;</span>, <span class="fu">cor</span>(simData[, <span class="dv">1</span>], simData[, <span class="dv">2</span>]) <span class="sc">%&gt;%</span> <span class="fu">round</span>(., <span class="dv">2</span>)))</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>outlier <span class="ot">&lt;-</span> <span class="fu">rbind</span>(simData, <span class="fu">c</span>(<span class="dv">2</span>, <span class="sc">-</span><span class="dv">4</span>))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>outlier <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">paste</span>(<span class="st">&quot;cor =&quot;</span>, <span class="fu">cor</span>(outlier[, <span class="dv">1</span>], outlier[, <span class="dv">2</span>]) <span class="sc">%&gt;%</span> <span class="fu">round</span>(., <span class="dv">2</span>)))</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
+</div>
+<div id="only-linear-association" class="section level3" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Only linear
+association</h3>
+<p>Note, that the Pearson correlation only captures linear
+association!</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>quadratic <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(x)))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>quadratic <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">paste</span>(<span class="st">&quot;cor =&quot;</span>, <span class="fu">cor</span>(quadratic[, <span class="dv">1</span>], quadratic[, <span class="dv">2</span>]) <span class="sc">%&gt;%</span> <span class="fu">round</span>(., <span class="dv">2</span>))) <span class="sc">+</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">mean</span>(quadratic[, <span class="dv">2</span>]), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(quadratic[, <span class="dv">1</span>]), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+</div>
+</div>
+<div id="different-magnitudes-of-correlation" class="section level2"
+number="4.3">
+<h2><span class="header-section-number">4.3</span> Different magnitudes
+of correlation</h2>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>simData2 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(x, <span class="fl">1.5</span> <span class="sc">*</span> x, <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>, <span class="cf">function</span>(sd, x) <span class="fl">1.5</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(x), <span class="at">sd =</span> sd), <span class="at">x =</span> x), <span class="fu">rnorm</span>(<span class="fu">length</span>(x), <span class="at">sd =</span> <span class="dv">7</span>))</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(simData2)[<span class="sc">-</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;cor&quot;</span>, <span class="fu">round</span>(<span class="fu">cor</span>(simData2)[<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>], <span class="dv">2</span>), <span class="at">sep =</span> <span class="st">&quot;=&quot;</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>simData2 <span class="sc">%&gt;%</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(cor, y, <span class="sc">-</span>x) <span class="sc">%&gt;%</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>cor)</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>simData3 <span class="ot">&lt;-</span> simData2</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>simData3[, <span class="sc">-</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="sc">-</span>simData2[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(simData3)[<span class="sc">-</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;cor&quot;</span>, <span class="fu">round</span>(<span class="fu">cor</span>(simData3)[<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>], <span class="dv">2</span>), <span class="at">sep =</span> <span class="st">&quot;=&quot;</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>simData3 <span class="sc">%&gt;%</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(cor, y, <span class="sc">-</span>x) <span class="sc">%&gt;%</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>cor)</span></code></pre></div>
+<p><img src="04-dataExploration_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
+<hr />
+</div>
+<div id="spearman-correlation" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Spearman
+correlation</h2>
+<p>The Spearman correlation is the Pearson correlation after
+transforming the data to ranks.</p>
+<ul>
+<li>Pearson correlation</li>
+</ul>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(outlier)</span></code></pre></div>
+<pre><code>          x         y
+x 1.0000000 0.4682823
+y 0.4682823 1.0000000</code></pre>
+<ul>
+<li>Spearman correlation</li>
+</ul>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(outlier, <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>)</span></code></pre></div>
+<pre><code>          x         y
+x 1.0000000 0.6571429
+y 0.6571429 1.0000000</code></pre>
+<ul>
+<li><p>Spearman correlation is less sensitive to outliers.</p></li>
+<li><p>Pearson correlation on ranks</p></li>
+</ul>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>rankData <span class="ot">&lt;-</span> <span class="fu">apply</span>(outlier, <span class="dv">2</span>, rank)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(rankData)</span></code></pre></div>
+<pre><code>          x         y
+x 1.0000000 0.6571429
+y 0.6571429 1.0000000</code></pre>
+<ul>
+<li>NHANES example</li>
+</ul>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Age <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Weight, Height) <span class="sc">%&gt;%</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">log2Weight =</span> Weight <span class="sc">%&gt;%</span> <span class="fu">log2</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.exclude</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>(<span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>)</span></code></pre></div>
+<pre><code>              Weight    Height log2Weight
+Weight     1.0000000 0.3039481  1.0000000
+Height     0.3039481 1.0000000  0.3039481
+log2Weight 1.0000000 0.3039481  1.0000000</code></pre>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiNC4gRGF0YSBFeHBsb3JhdGlvbiIKYXV0aG9yOiAiTGlldmVuIENsZW1lbnQiCmRhdGU6ICJzdGF0T21pY3MsIEdoZW50IFVuaXZlcnNpdHkgKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pbykiCi0tLQoKPGEgcmVsPSJsaWNlbnNlIiBocmVmPSJodHRwczovL2NyZWF0aXZlY29tbW9ucy5vcmcvbGljZW5zZXMvYnktbmMtc2EvNC4wIj48aW1nIGFsdD0iQ3JlYXRpdmUgQ29tbW9ucyBMaWNlbnNlIiBzdHlsZT0iYm9yZGVyLXdpZHRoOjAiIHNyYz0iaHR0cHM6Ly9pLmNyZWF0aXZlY29tbW9ucy5vcmcvbC9ieS1uYy1zYS80LjAvODh4MzEucG5nIiAvPjwvYT4KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFLCBjYWNoZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KAogIGluY2x1ZGUgPSBUUlVFLCBjb21tZW50ID0gTkEsIGVjaG8gPSBUUlVFLAogIG1lc3NhZ2UgPSBGQUxTRSwgd2FybmluZyA9IEZBTFNFLCBjYWNoZSA9IFRSVUUKKQpsaWJyYXJ5KHRpZHl2ZXJzZSkKbGlicmFyeShOSEFORVMpCmBgYAoKYGBge3IgcG9wMlNhbXAyUG9wLCBvdXQud2lkdGg9JzgwJScsZmlnLmFzcD0uOCwgZmlnLmFsaWduPSdjZW50ZXInLGVjaG89RkFMU0V9CmlmICgicGkiICVpbiUgbHMoKSkgcm0oInBpIikKa29wdm9ldGVyIDwtIGZ1bmN0aW9uKHgsIHksIGFuZ2xlID0gMCwgbCA9IC4yLCBjZXguZG90ID0gLjUsIHBjaCA9IDE5LCBjb2wgPSAiYmxhY2siKSB7CiAgYW5nbGUgPC0gYW5nbGUgLyAxODAgKiBwaQogIHBvaW50cyh4LCB5LCBjZXggPSBjZXguZG90LCBwY2ggPSBwY2gsIGNvbCA9IGNvbCkKICBsaW5lcyhjKHgsIHggKyBsICogY29zKC1waSAvIDIgKyBhbmdsZSkpLCBjKHksIHkgKyBsICogc2luKC1waSAvIDIgKyBhbmdsZSkpLCBjb2wgPSBjb2wpCiAgbGluZXMoYyh4ICsgbCAvIDIgKiBjb3MoLXBpIC8gMiArIGFuZ2xlKSwgeCArIGwgLyAyICogY29zKC1waSAvIDIgKyBhbmdsZSkgKyBsIC8gNCAqIGNvcyhhbmdsZSkpLCBjKHkgKyBsIC8gMiAqIHNpbigtcGkgLyAyICsgYW5nbGUpLCB5ICsgbCAvIDIgKiBzaW4oLXBpIC8gMiArIGFuZ2xlKSArIGwgLyA0ICogc2luKGFuZ2xlKSksIGNvbCA9IGNvbCkKICBsaW5lcyhjKHggKyBsIC8gMiAqIGNvcygtcGkgLyAyICsgYW5nbGUpLCB4ICsgbCAvIDIgKiBjb3MoLXBpIC8gMiArIGFuZ2xlKSArIGwgLyA0ICogY29zKHBpICsgYW5nbGUpKSwgYyh5ICsgbCAvIDIgKiBzaW4oLXBpIC8gMiArIGFuZ2xlKSwgeSArIGwgLyAyICogc2luKC1waSAvIDIgKyBhbmdsZSkgKyBsIC8gNCAqIHNpbihwaSArIGFuZ2xlKSksIGNvbCA9IGNvbCkKICBsaW5lcyhjKHggKyBsICogY29zKC1waSAvIDIgKyBhbmdsZSksIHggKyBsICogY29zKC1waSAvIDIgKyBhbmdsZSkgKyBsIC8gMiAqIGNvcygtcGkgLyAyICsgcGkgLyA0ICsgYW5nbGUpKSwgYyh5ICsgbCAqIHNpbigtcGkgLyAyICsgYW5nbGUpLCB5ICsgbCAqIHNpbigtcGkgLyAyICsgYW5nbGUpICsgbCAvIDIgKiBzaW4oLXBpIC8gMiArIHBpIC8gNCArIGFuZ2xlKSksIGNvbCA9IGNvbCkKICBsaW5lcyhjKHggKyBsICogY29zKC1waSAvIDIgKyBhbmdsZSksIHggKyBsICogY29zKC1waSAvIDIgKyBhbmdsZSkgKyBsIC8gMiAqIGNvcygtcGkgLyAyIC0gcGkgLyA0ICsgYW5nbGUpKSwgYyh5ICsgbCAqIHNpbigtcGkgLyAyICsgYW5nbGUpLCB5ICsgbCAqIHNpbigtcGkgLyAyICsgYW5nbGUpICsgbCAvIDIgKiBzaW4oLXBpIC8gMiAtIHBpIC8gNCArIGFuZ2xlKSksIGNvbCA9IGNvbCkKfQoKcGFyKG1hciA9IGMoMCwgMCwgMCwgMCksIG1haSA9IGMoMCwgMCwgMCwgMCkpCnBsb3QoMCwgMCwgeGxhYiA9ICIiLCB5bGFiID0gIiIsIHhsaW0gPSBjKDAsIDEwKSwgeWxpbSA9IGMoMCwgMTApLCBjb2wgPSAwLCB4YXh0ID0gIm5vbmUiLCB5YXh0ID0gIm5vbmUiLCBheGVzID0gRkFMU0UpCnJlY3QoMCwgNiwgMTAsIDEwLCBib3JkZXIgPSAicmVkIiwgbHdkID0gMikKdGV4dCguNSwgOCwgInBvcHVsYXRpb24iLCBzcnQgPSA5MCwgY29sID0gInJlZCIsIGNleCA9IDIpCnN5bWJvbHMoMywgOCwgY2lyY2xlcyA9IDEuNSwgY29sID0gInJlZCIsIGFkZCA9IFRSVUUsIGZnID0gInJlZCIsIGluY2hlcyA9IEZBTFNFLCBsd2QgPSAyKQpzZXQuc2VlZCgzMzApCmdyaWQgPC0gc2VxKDAsIDEuMywgLjAxKQoKZm9yIChpIGluIDE6NTApCnsKICBhbmdsZTEgPC0gcnVuaWYobiA9IDEsIG1pbiA9IDAsIG1heCA9IDM2MCkKICBhbmdsZTIgPC0gcnVuaWYobiA9IDEsIG1pbiA9IDAsIG1heCA9IDM2MCkKICByYWRpdXMgPC0gc2FtcGxlKGdyaWQsIHByb2IgPSBncmlkXjIgKiBwaSAvIHN1bShncmlkXjIgKiBwaSksIHNpemUgPSAxKQogIGtvcHZvZXRlcigzICsgcmFkaXVzICogY29zKGFuZ2xlMSAvIDE4MCAqIHBpKSwgOCArIHJhZGl1cyAqIHNpbihhbmdsZTEgLyAxODAgKiBwaSksIGFuZ2xlID0gYW5nbGUyKQp9CnRleHQoNy41LCA4LCAiQ2hvbGVzdGVyb2wgaW4gcG9wdWxhdGlvbiIsIGNvbCA9ICJyZWQiLCBjZXggPSAxLjIpCgpyZWN0KDAsIDAsIDEwLCA0LCBib3JkZXIgPSAiYmx1ZSIsIGx3ZCA9IDIpCnRleHQoLjUsIDIsICJzYW1wbGUiLCBzcnQgPSA5MCwgY29sID0gImJsdWUiLCBjZXggPSAyKQpzeW1ib2xzKDMsIDIsIGNpcmNsZXMgPSAxLjUsIGNvbCA9ICJyZWQiLCBhZGQgPSBUUlVFLCBmZyA9ICJibHVlIiwgaW5jaGVzID0gRkFMU0UsIGx3ZCA9IDIpCmZvciAoaSBpbiAwOjIpIHsKICBmb3IgKGogaW4gMDo0KQogIHsKICAgIGtvcHZvZXRlcigyLjEgKyBqICogKDMuOSAtIDIuMSkgLyA0LCAxLjEgKyBpKQogIH0KfQp0ZXh0KDcuNSwgMiwgIkNob2xlc3Rlcm9sIGluIHNhbXBsZSIsIGNvbCA9ICJibHVlIiwgY2V4ID0gMS4yKQoKYXJyb3dzKDMsIDUuOSwgMywgNC4xLCBjb2wgPSAiYmxhY2siLCBsd2QgPSAzKQphcnJvd3MoNywgNC4xLCA3LCA1LjksIGNvbCA9ICJibGFjayIsIGx3ZCA9IDMpCnRleHQoMS41LCA1LCAiRVhQLiBERVNJR04gKDEpIiwgY29sID0gImJsYWNrIiwgY2V4ID0gMS4yKQp0ZXh0KDguNSwgNSwgIkVTVElNQVRJT04gJlxuSU5GRVJFTkNFICgzKSIsIGNvbCA9ICJibGFjayIsIGNleCA9IDEuMikKdGV4dCg3LjUsIC41LCAiREFUQSBFWFBMT1JBVElPTiAmXG5ERVNDUklQVElWRSBTVEFUSVNUSUNTICgyKSIsIGNvbCA9ICJibGFjayIsIGNleCA9IDEuMikKYGBgCgotLS0KCiMgV2h5IGRhdGEgZXhwbG9yYXRpb24gYW5kIGRlc2NyaXB0aXZlIHN0YXRpc3RpY3M/CgoxLiBSZXBvcnRpbmcgb24gcmVzdWx0czogbm90IHVzZWZ1bCB0byBvbmx5IHJlcG9ydCBhIHRhYmxlIHdpdGggdGhlIHJlc3VsdHMgZm9yIGVhY2ggc3ViamVjdC4KMi4gTGV0dGluZyB0aGUgZGF0YSBzcGVhayBieSBzdW1tYXJpemluZyBhbmQgdmlzdWFsaXppbmcgaXQuCjMuIEdldHRpbmcgaW5zaWdodCBpbiB0aGUgZGF0YS4KNC4gRGlzY292ZXIgZXJyb3JzLCBhbm9tYWxpZXMgb3IgZXZlbiBmcmF1ZC4KNS4gQ2hlY2sgYXNzdW1wdGlvbnMgdGhhdCBhcmUgcmVxdWlyZWQgZm9yIHRoZSBkb3duc3RyZWFtIHN0YXRpc3RpY2FsIGluZmVyZW5jZSwgZS5nLiBhcmUgdGhlIGRhdGEgTm9ybWFsbHkgZGlzdHJpYnV0ZWQuCgotLS0KCiMgVW5pdmFyaWF0ZSBleHBsb3JhdGlvbiBvZiBxdWFudGl0YXRpdmUgdmFyaWFibGVzCgoKIyMgSGlzdG9ncmFtCgpgYGB7cixlY2hvPUZBTFNFfQpsaWJyYXJ5KE5IQU5FUykKYGBgCgpgYGB7cn0KTkhBTkVTICU+JQogIGZpbHRlcihHZW5kZXIgPT0gImZlbWFsZSIpICU+JQogIGdncGxvdChhZXMoeCA9IERpcmVjdENob2wpKSArCiAgZ2VvbV9oaXN0b2dyYW0oYWVzKHkgPSAuLmRlbnNpdHkuLiwgZmlsbCA9IC4uY291bnQuLiksIGJpbnMgPSAzMCkgKwogIGdlb21fZGVuc2l0eShhZXMoeSA9IC4uZGVuc2l0eS4uKSkKYGBgCgoKMS4gU2VsZWN0IGZlbWFsZXMgYW5kIHBpcGUgcmVzdWx0cyB0byBnZ3Bsb3QuCmBgYApOSEFORVMgJT4lIGZpbHRlcihHZW5kZXI9PSJmZW1hbGUiKQpgYGAKCjIuIFNlbGVjdCBkYXRhIHRvIHBsb3QuCgpgYGAKZ2dwbG90KGFlcyh4PURpcmVjdENob2wpKSArCmBgYAoKMy4gRXF1YWwgYmlucyBmb3IgaW50ZXJwcmV0YXRpb24sIHRoZSBudW1iZXIgb2YgYmlucyBjYW4gYmUgc2VsZWN0ZWQgd2l0aCB0aGUgYmlucyBhcmd1bWVudCB0byB0aGUgZ2VvbV9oaXN0LgoKNC4gKlJlbGF0aXZlKiBmcmVxdWVudGllcyB0byBlbmFibGUgdmlzdWFsIGNvbXBhcmlzb24gYmV0d2VlbiBoaXN0b2dyYW1zLgoKYGBgCmdlb21faGlzdG9ncmFtKGFlcyh5PS4uZGVuc2l0eS4uLCBmaWxsPS4uY291bnQuLikpICsKYGBgCgo1LiBJZiB3ZSBoYXZlIGVub3VnaCBvYnNlcnZhdGlvbnMgd2UgY2FuIHVzZSBhIGtlcm5lbCBkZW5zaXR5IGVzdGltYXRvciBvZiBmKHgpLgoKYGBgCmdlb21fZGVuc2l0eShhZXMoeT0uLmRlbnNpdHkuLikpCmBgYAoKLS0tCgojIyBCb3hwbG90CgotIEEgcXVhbnRpbGUsICR4X3thXCV9JCwgaXMgdGhlIHZhbHVlIG9mIHRoZSByYW5kb20gdmFyaWFibGUgdGhhdCBjb3JyZXNwb25kIHRvIGEgY2VydGFpbiBwcm9iYWJpbGl0eSAkRih4X3thXCV9KT1QW1hcbGVxIHhfe2FcJX09YVwlXSQuCgpgYGB7ciBmaWcuYWxpZ249J2NlbnRlcicsZWNobz1GQUxTRX0KZmVtIDwtIE5IQU5FUyAlPiUKICBmaWx0ZXIoR2VuZGVyID09ICJmZW1hbGUiICYgIWlzLm5hKERpcmVjdENob2wpKSAlPiUKICBzZWxlY3QoRGlyZWN0Q2hvbCkKYm94cGxvdChmZW0kRGlyZWN0Q2hvbCwgeWxhYiA9ICJEaXJlY3QgQ2hvbGVzdGVyb2wiLCBjZXgubGFiID0gMS41LCBjZXguYXhpcyA9IDEuNSwgY2V4Lm1haW4gPSAxLjUpCnJhbmdlQ2wgPC0gcXVhbnRpbGUoZmVtJERpcmVjdENob2wsIGMoLjI1LCAuNzUpKSArIGMoLTEsIDEpICogZGlmZihxdWFudGlsZShmZW0kRGlyZWN0Q2hvbCwgYyguMjUsIC43NSkpKSAqIDEuNQpib3hZcyA8LSBjKHJhbmdlKGZlbSREaXJlY3RDaG9sW2ZlbSREaXJlY3RDaG9sIDw9IHJhbmdlQ2xbMl0gJiBmZW0kRGlyZWN0Q2hvbCA+PSByYW5nZUNsWzFdXSksIHF1YW50aWxlKGZlbSREaXJlY3RDaG9sLCBjKC4yNSwgLjUsIC43NSkpLCByYW5nZUNsWzJdICsgKG1heChmZW0kRGlyZWN0Q2hvbCkgLSByYW5nZUNsWzJdKSAvIDIpCnRleHQoMS4zLCBib3hZcywgbGFiZWxzID0gYygid2lza2VyIiwgIndpc2tlciIsICJ4MjUiLCAibWVkaWFhbiIsICJ4NzUiLCAib3V0bGllcnMiKSwgcG9zID0gNCwgY2V4ID0gMS4zKQpsaW5lcyhjKDEuMSwgMS4zLCAxLjMsIDEuMSksIGMocmFuZ2VDbFsyXSwgcmFuZ2VDbFsyXSArIChtYXgoZmVtJERpcmVjdENob2wpIC0gcmFuZ2VDbFsyXSkgLyAyLCByYW5nZUNsWzJdICsgKG1heChmZW0kRGlyZWN0Q2hvbCkgLSByYW5nZUNsWzJdKSAvIDIsIG1heChmZW0kRGlyZWN0Q2hvbCkpLCBsdHkgPSAyKQpgYGAKCldpdGggZ2dwbG90IHdlIGFsd2F5cyBoYXZlIHRvIGRlZmluZSBhbiB4IHZhcmlhYmxlIGlmIHdlIG1ha2UgYSBib3hwbG90LiBJZiB3ZSB1c2UgYSBzdHJpbmcgdGhlbiBhbGwgZGF0YSBpcyBjb25zaWRlcmVkIHRvIG9yaWdpbmF0ZSBmcm9tIG9uZSBjYXRlZ29yeSBhbmQgb25lIGJveHBsb3QgaXMgY29uc3RydWN0ZWQuCgpgYGB7cn0KTkhBTkVTICU+JQogIGZpbHRlcihHZW5kZXIgPT0gImZlbWFsZSIpICU+JQogIGdncGxvdChhZXMoeCA9ICIiLCB5ID0gRGlyZWN0Q2hvbCkpICsKICBnZW9tX2JveHBsb3QoKQpgYGAKClNvIHdlIGNhbiBhZGQgYSBib3hwbG90IHRvIGEgZ2dwbG90IGZpZ3VyZSBieSB1c2luZyB0aGUgYGdlb21fYm94cGxvdCgpYCBmdW5jdGlvbi4KCklmIHRoZSBkYXRhc2V0IGlzIHNtYWxsIHRvIG1vZGVyYXRlIGluIHNpemUgd2UgY2FuIGFsc28gYWRkIHRoZSByYXcgZGF0YSB0byB0aGUgcGxvdCB3aXRoIHRoZSBgZ2VvbV9wb2ludCgpYCBmdW5jdGlvbiBhbmQgdGhlIGBwb3NpdGlvbj0iaml0dGVyImAgYXJndW1lbnQuIE5vdGUsIHRoYXQgd2UgdGhlbiBhbHNvIHNldCB0aGUgYG91dGxpZXIuc2hhcGVgIGFyZ3VtZW50IGluIHRoZSBgZ2VvbV9ib3hwbG90YCBmdW5jdGlvbiBvbiBOQSBzbyB0aGF0IHRoZSBvdXRsaWVycyBhcmUgbm90IHBsb3R0ZWQgdHdpY2UuCgpIZXJlLCB3ZSB3aWxsIHBsb3QgYWdhaW4gdGhlIHJlbGF0aXZlIGFidW5kYW5jZXMgb2YgKipTdGFwaHlsb2NvY2N1cyoqIGZyb20gdGhlIGFybXBpdCB0cmFuc3BsYW50IGV4cGVyaW1lbnQuCgpgYGB7cn0KYXAgPC0gcmVhZF9jc3YoImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9HVFBCL1BTTFMyMC9tYXN0ZXIvZGF0YS9hcm1waXQuY3N2IikKYXAKCmFwICU+JQogIGdncGxvdChhZXMoeCA9IHRydCwgeSA9IHJlbCkpICsKICBnZW9tX2JveHBsb3Qob3V0bGllci5zaGFwZSA9IE5BKSArCiAgZ2VvbV9wb2ludChwb3NpdGlvbiA9ICJqaXR0ZXIiKQpgYGAKCldoZW4gd2Ugc3BlY2lmeSBhIGZhY3RvciB2YXJpYWJsZSBmb3IgeCwgd2UgZ2V0IGEgYm94cGxvdCBmb3IgZWFjaCB0cmVhdG1lbnQgZ3JvdXAuCgotLS0KCiMjIERlc2NyaXB0aXZlIHN0YXRpc3RpY3MKCiMjIyBDZW50cmFsIGxvY2F0aW9uOiBNZWFuIG9yIE1lZGlhbj8KCiMjIyMgTWVhbgotIEluIGEgcGVyaW9kIG9mIDMwIHllYXJzLCBtYWxlcyBob3BlIHRvIGhhdmUgb24gYXZlcmFnZSA2NC4zIHBhcnRuZXJzIGFuZCBmZW1hbGVzIDIuOCAgXHRpbnl7KE1pbGxlciBhbmQgRmlzaGtpbiwgMTk5Nyl9LlxOb3JtYWxzaXplCgotLS0KCiMjIyMgTWVkaWFuCgotIFRoZSBtZWRpYW4gb2YgdGhlIG51bWJlciBvZiBwYXJ0bmVycyBtYWxlcyBhbmQgZmVtYWxlcyB3YW50IHRvIGhhdmUgaXMgYm90aCAxIFx0aW55eyhNaWxsZXIgYW5kIEZpc2hraW4sIDE5OTcpfVxOb3JtYWxzaXplCgotLS0KCiMjIyMgV2hhdCBoYXBwZW5zPwoKIVtdKGh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9HVFBCL1BTTFMyMC9naC1wYWdlcy9hc3NldHMvZmlncy9wYXJ0bmVycy5wbmcpe3dpZHRoPTc1JX0KCi0gTWVhbiBpcyB2ZXJ5IHNlbnNpdGl2ZSB0b3dhcmRzIG91dGxpZXJzIQoKLS0tCgojIyMgR2VvbWV0cmljIG1lYW4KCiQkXHNxcnRbbl17XHByb2RcbGltaXRzX3tpPTF9Xm4geF9pfSA9IFxleHBcbGVmdFx7XGZyYWN7MX17bn0gXHN1bV97aT0xfV5uIFxsb2coeF9pKVxyaWdodFx9JCQKCi0gR2VvbWV0cmljIG1lYW4gaXMgY2xvc2VyIHRvIHRoZSBtZWRpYW4gdGhlbiB0aGUgbWVhbgoKLSBsb2ctdHJhbnNmb3JtYXRpb24gcmVtb3ZlcyBza2V3bmVzcwoKLSBPZnRlbiBhIG1vcmUgdXNlZnVsIG1lYXN1cmUgZm9yIHRoZSBjZW50cmFsIGxvY2F0aW9uIHRoYW4gbWVkaWFuOgoKMS4gVXNlcyBhbGwgb2JzZXJ2YXRpb25zOiBpcyBtb3JlIHByZWNpc2UKMi4gSXQgaXMgdGhlIG9yZGluYXJ5IG1lYW4gb24gbG9nLXRyYW5zZm9ybWVkIGRhdGEgJFxyaWdodGFycm93JCBjbGFzc2ljYWwgc3RhdGlzdGljYWwgbWV0aG9kcyBjYW4gYmUgZGlyZWN0bHkgYXBwbGllZCwgZS5nLiBoeXBvdGhlc2lzIHRlc3RzIGFuZCBjb25maWRlbmNlIGludGVydmFscyAoc2VlIGNoYXB0ZXIgNSkKMy4gVXNlZnVsIGZvciBtYW55IGJpb2xvZ2ljYWwgY2hhcmFjdGVyaXN0aWNzIGUuZy4gY29uY2VudHJhdGlvbnMgdGhhdCBjYW5ub3QgYmUgbmVnYXRpdmUuCjQuIERpZmZlcmVuY2VzIG9uIGEgbG9nIHNjYWxlIGhhdmUgdGhlIGludGVycHJldGF0aW9uIG9mIGEgbG9nIGZvbGQgY2hhbmdlOgoKJCRcbG9nIChCKSAtIFxsb2coQSk9IFxsb2coXGZyYWN7Qn17QX0pPVxsb2coRkNfXHRleHR7QiB2cyBBfSkkJAoKSW4gR2Vub21pY3Mgb2Z0ZW4gdGhlICRsb2dfMiQgdHJhbnNmb3JtYXRpb24gaXMgdXNlZC4gQSBkaWZmZXJlbmNlIG9mIDEgY29ycmVzcG9uZHMgdG8gYSAkRkM9MiQuCgpgYGB7cn0KbG9nU3VtbWFyeSA8LQogIE5IQU5FUyAlPiUKICBmaWx0ZXIoR2VuZGVyID09ICJmZW1hbGUiKSAlPiUKICBzdW1tYXJpemUobG9nTWVhbiA9IG1lYW4oRGlyZWN0Q2hvbCAlPiUgbG9nMigpLCBuYS5ybSA9IFRSVUUpLCBzZCA9IHNkKERpcmVjdENob2wgJT4lIGxvZzIoKSwgbmEucm0gPSBUUlVFKSwgbWVhbiA9IG1lYW4oRGlyZWN0Q2hvbCwgbmEucm0gPSBUUlVFKSwgbWVkaWFuID0gbWVkaWFuKERpcmVjdENob2wsIG5hLnJtID0gVFJVRSkpICU+JQogIG11dGF0ZShnZW9NZWFuID0gMl5sb2dNZWFuKQoKTkhBTkVTICU+JQogIGZpbHRlcihHZW5kZXIgPT0gImZlbWFsZSIpICU+JQogIGdncGxvdChhZXMoeCA9IERpcmVjdENob2wgJT4lIGxvZzIoKSkpICsKICBnZW9tX2hpc3RvZ3JhbShhZXMoeSA9IC4uZGVuc2l0eS4uLCBmaWxsID0gLi5jb3VudC4uKSwgYmlucyA9IDMwKSArCiAgZ2VvbV9kZW5zaXR5KGFlcyh5ID0gLi5kZW5zaXR5Li4pKSArCiAgc3RhdF9mdW5jdGlvbihmdW4gPSBkbm9ybSwgY29sb3IgPSAicmVkIiwgYXJncyA9IGxpc3QobWVhbiA9IGxvZ1N1bW1hcnkkbG9nTWVhbiwgc2QgPSBsb2dTdW1tYXJ5JHNkKSkKCmxvZ1N1bW1hcnkKYGBgCgotIEluZGVlZCB0aGUgbWVhbiBpcyBwdWxsZWQgdG8gbGFyZ2VyIHZhbHVlcyBieSB0aGUgc2tld2VkIGRhdGEuCi0gVGhlIGdlb21ldHJpYyBtZWFuIGlzIGNsb3NlciB0byB0aGUgbWVkaWFuLgotIFRoZSBjaG9sZXN0ZXJvbCBkYXRhIGFyZSBtdWNoIG1vcmUgc3ltbWV0cmljIHVwb24gbG9nIHRyYW5zZm9ybWF0aW9uIGFuZCB0aGUgYXBwcm94aW1hdGlvbiBieSBhIE5vcm1hbCBkaXN0cmlidXRpb24gaXMgZ29vZC4KCgoKIyMgRGVzY3JpcHRpdmUgU3RhdGlzdGljcyBmb3IgVmFyaWFiaWxpdHkKClRoZSB2YXJpYWJpbGl0eSBhcm91bmQgdGhlIGNlbnRyYWwgdmFsdWUgaXMgY3J1Y2lhbDoKCjEuIEJpb2xvZ2lzdHMgYXJlIG9mdGVuIGludGVyZXN0ZWQgaW4gaG93IGFuaW1hbHMgb3IgcGxhbnRzIGFyZSBzcHJlYWQgaW4gdGhlIHN0dWR5IHJlZ2lvbi4KMi4gQ29tcGFyZSBncm91cHM6IHRoZSBncm91cCBlZmZlY3QgaXMgbW9yZSBjbGVhciB3aGVuIHRoZSByZXNwb25zZSBoYXMgbGVzcyB2YXJpYWJpbGl0eS4gUXVhbnRpZnlpbmcgdmFyaWFiaWxpdHkgaXMgY3J1Y2lhbCB0byBkaXN0aW5ndWlzaCBiZXR3ZWVuIHN5c3RlbWF0aWMgYW5kIHJhbmRvbSBwYXR0ZXJucy4KCi0gVGhlIHJlc3BvbnNlIHZhcmllcyBiZXR3ZWVuIGFuZCB3aXRoaW4gaW5kaXZpZHVhbHMgYW5kIGlzIHRoZSByZWFzb24gd2h5IHdlIG5lZWQgc3RhdGlzdGljcy4KCi0gQ3J1Y2lhbCB0byBkZXNjcmliZSBib3RoIHRoZSBjZW50cmFsIGxvY2F0aW9uIGFuZCB0aGUgdmFyaWFiaWxpdHkuCi0gV2hpY2ggcGFydCBvZiB0aGUgdmFyaWFiaWxpdHkgY2FuIHdlIGV4cGxhaW4gKGUuZy4gd2l0aCBjaGFyYWN0ZXJpc3RpY3MgdHJlYXRtZW50LCBhZ2UsIGV0YywpIGFuZCB3aGljaCBwYXJ0IGlzIHVuZXhwbGFpbmVkPwoKIyMjIFNhbXBsZSB2YXJpYW5jZSBhbmQgc2FtcGxlIHN0YW5kYXJkIGRldmlhdGlvbgoKLSBTYW1wbGUgdmFyaWFuY2U6ICQkCnNfWF4yPSBcc3VtXGxpbWl0c197aT0xfV5uIFxmcmFjeyhYLVxiYXIgWCleMn17bi0xfQokJAotIEludGVycHJldGF0aW9uIGlzIG9mdGVuIGRpZmZpY3VsdCBiZWNhdXNlIGl0IGlzIGluIGFub3RoZXIgdW5pdCB0aGFuIHRoZSBtZWFzdXJlbWVudHMuCgotICpTdGFuZGFyZCBkZXZpYXRpb24qOiAkJApzX1g9IFxzcXJ0e3NfeF4yfQokJAoKLSBWZXJ5IHVzZWZ1bCBmb3IgTm9ybWFsIGRpc3RyaWJ1dGVkIG9ic2VydmF0aW9uczoKCiAgICAtIDY4JSBvZiB0aGUgb2JzZXJ2YXRpb25zIGZhbGxzIGluIHRoZSBpbnRlcnZhbCAgJFxiYXJ7eH0gLSBzX3gkIGVuICRcYmFye3h9ICsgc194JAogICAgLSA5NSUgb2YgdGhlIG9ic2VydmF0aW9ucyBmYWxscyBpbiB0aGUgaW50ZXJ2YWwgJFxiYXJ7eH0gLSAyIHNfeCQgZW4gJFxiYXJ7eH0gKyAyIHNfeCQuCgotIFRoZXNlIGludGVydmFscyBhcmUgcmVmZXJyZWQgdG8gYXMgNjglIGVuIDk1JSAqcmVmZXJlbmNlLWludGVydmFscyouCgotIElmIHRoZSBkYXRhIGFyZSBub3QgTm9ybWFsbHkgZGlzdHJpYnV0ZWQsIHJlZmVyZW5jZSBpbnRlcnZhbHMgYXJlIG5vdCB2YWxpZC4KCi0tLQoKIyMjIEludGVycXVhcnRpbGUgcmFuZ2UKCkZvciBza2V3ZWQgZGF0YSB0aGUgc3RhbmRhcmQgZGV2aWF0aW9uIGlzIG5vdCB1c2VmdWwKCi0gSXQgaXMgdmVyeSBzZW5zaXRpdmUgdG8gb3V0bGllcnMKLSAqSW50ZXIgUXVhcnRpbGUgUmFuZ2UqOiBEaXN0YW5jZSBiZXR3ZWVuIGZpcnN0IGFuZCB0aGlyZCBxdWFydGlsZQotIFdpZHRoIG9mIHRoZSBib3hwbG90IQoKYGBge3J9Ck5IQU5FUyAlPiUKICBmaWx0ZXIoR2VuZGVyID09ICJmZW1hbGUiKSAlPiUKICBzdW1tYXJpemUoSVFSID0gSVFSKERpcmVjdENob2wsIG5hLnJtID0gVFJVRSkpCmBgYAoKCmBgYHtyfQpOSEFORVMgJT4lCiAgZmlsdGVyKEdlbmRlciA9PSAiZmVtYWxlIikgJT4lCiAgZ2dwbG90KGFlcyh4ID0gIiIsIHkgPSBEaXJlY3RDaG9sKSkgKwogIGdlb21fYm94cGxvdCgpCmBgYAoKLS0tCgojIE5vcm1hbCBhcHByb3hpbWF0aW9uCgoKLSBCaW9sb2dpY2FsIGFuZCBjaGVtaWNhbCBkYXRhIGFyZSBvZnRlbiBOb3JtYWxseSBkaXN0cmlidXRlZCB1cG9uIHRyYW5zZm9ybWF0aW9uLgoKLSBJZiB0aGlzIGlzIHRoZSBjYXNlIHdlIGNhbiBnZXQgYSBsb3Qgb2YgaW5zaWdodCBpbiB0aGUgZGF0YSB1c2luZyBqdXN0IHR3byBkZXNjcmlwdGl2ZSBzdGF0aXN0aWNzOiBtZWFuICRcbXUkIGFuZCBzdGFuZGFyZCBkZXZpYXRpb24gJFxzaWdtYSQuCgotLS0KCiMjIEV2YWx1YXRpb24gd2l0aCBRUS1wbG90cwoKSWYgeW91ciBhbmFseXNpcyBidWlsZHMgdXBvbiB0aGUgYXNzdW1wdGlvbiB0aGF0IHRoZSBkYXRhIGFyZSBOb3JtYWxseSBkaXN0cmlidXRlZCwgaXQgaGFzIHRvIGJlIHZlcmlmaWVkLgoKV2UgdXNlICpRUS1wbG90cyogb3IgKnF1YW50aWxlLXF1YW50aWxlIHBsb3RzKi4KCi0gT2JzZXJ2ZWQgcXVhbnRpbGVzIGZyb20gdGhlIG9ic2VydmF0aW9ucyBpbiB0aGUgc2FtcGxlIGFyZSBwbG90dGVkIGFnYWluc3QgcXVhbnRpbGVzIGZyb20gdGhlIE5vcm1hbCBkaXN0cmlidXRpb24uCgotIElmIHRoZSBkYXRhIGFyZSBOb3JtYWxseSBkaXN0cmlidXRlZCBib3RoIHF1YW50aWxlcyBoYXZlIHRvIGJlIGluIGxpbmUuCgotIERvdHMgaW4gdGhlIHBsb3QgYXJlIGV4cGVjdGVkIG9uIGEgc3RyYWlnaHQgbGluZS4KCi0gU3lzdGVtYXRpYyBkZXZpYXRpb25zIG9mIHRoZSBzdHJhaWdodCBsaW5lIGluZGljYXRlIHRoYXQgdGhlIGRhdGEgYXJlIG5vdCBOb3JtYWxseSBkaXN0cmlidXRlZC4KCi0gTm90ZSwgdGhhdCB3ZSB3aWxsIGFsd2F5cyBvYnNlcnZlIHNvbWUgcmFuZG9tIGRldmlhdGlvbnMgZnJvbSB0aGUgc3RyYWlnaHQgbGluZSBpbiB0aGUgcGxvdCBiZWNhdXNlIG9mIHJhbmRvbSBiaW9sb2dpY2FsIHZhcmlhYmlsaXR5LCB3aGljaCBpcyBub3QgaW5kaWNhdGl2ZSBmb3IgZGV2aWF0aW9ucyBmcm9tIE5vcm1hbGl0eS4KCi0gU28gaXQgaXMgaW1wb3J0YW50IHRvIHRyYWluIHlvdXJzZWxmIHRvIGxlYXJuIHRvIGRpc3Rpbmd1aXNoIHN5c3RlbWF0aWMgZnJvbSByYW5kb20gZGV2aWF0aW9ucy4KCi0tLQoKIyMjIE5vcm1hbCBkYXRhCi0gV2Ugd2lsbCBmaXJzdCBzaW11bGF0ZSBkYXRhIGZyb20gdGhlIE5vcm1hbCBkaXN0cmlidXRpb24gdG8gc2hvdyBob3cgdGhlIHBsb3RzIGxvb2sgbGlrZSBmb3IgZGF0YSB0aGF0IGlzIG1lZXRpbmcgdGhlIGFzc3VtcHRpb25zLgoKLSBXZSB3aWxsIHNpbXVsYXRlIGRhdGEgZnJvbSA5IHNhbXBsZXMgd2l0aCBhIG1lYW4gb2YgMTggYW5kIHN0YW5kYXJkIGRldmlhdGlvbiBvZiA5LgoKYGBge3J9Cm4gPC0gMjAKbXUgPC0gMTgKc2lnbWEgPC0gOQpuU2FtcCA8LSA5Cgpub3JtU2ltIDwtIG1hdHJpeChybm9ybShuICogblNhbXAsIG1lYW4gPSBtdSwgc2QgPSBzaWdtYSksIG5yb3cgPSBuKSAlPiUgYXMuZGF0YS5mcmFtZSgpCgpub3JtU2ltICU+JQogIGdhdGhlcihzYW1wLCBkYXRhKSAlPiUKICBnZ3Bsb3QoYWVzKHggPSBkYXRhKSkgKwogIGdlb21faGlzdG9ncmFtKGFlcyh5ID0gLi5kZW5zaXR5Li4sIGZpbGwgPSAuLmNvdW50Li4pLCBiaW5zID0gMzApICsKICBnZW9tX2RlbnNpdHkoYWVzKHkgPSAuLmRlbnNpdHkuLikpICsKICBmYWNldF93cmFwKH5zYW1wKQoKbm9ybVNpbSAlPiUKICBnYXRoZXIoc2FtcCwgZGF0YSkgJT4lCiAgZ2dwbG90KGFlcyhzYW1wbGUgPSBkYXRhKSkgKwogIGdlb21fcXEoKSArCiAgZ2VvbV9xcV9saW5lKCkgKwogIGZhY2V0X3dyYXAofnNhbXApCmBgYAoKU28gZXZlbiBmb3IgTm9ybWFsIGRhdGEgd2Ugb2JzZXJ2ZSBzb21lIGRldmlhdGlvbnMgZHVlIHRvIHNhbXBsaW5nIHZhcmlhYmlsaXR5IQoKLS0tCgojIyMgUmVhbCBkYXRhCgpgYGB7cn0KTkhBTkVTICU+JQogIGZpbHRlcihHZW5kZXIgPT0gImZlbWFsZSIgJiAhaXMubmEoQk1JKSkgJT4lCiAgZ2dwbG90KGFlcyh4ID0gQk1JKSkgKwogIGdlb21faGlzdG9ncmFtKGFlcyh5ID0gLi5kZW5zaXR5Li4sIGZpbGwgPSAuLmNvdW50Li4pKSArCiAgeGxhYigiQk1JIikgKwogIGdndGl0bGUoIkFsbCBmZW1hbGVzIGluIHN0dWR5IikgKwogIGdlb21fZGVuc2l0eShhZXMoeSA9IC4uZGVuc2l0eS4uKSkKCk5IQU5FUyAlPiUKICBmaWx0ZXIoR2VuZGVyID09ICJmZW1hbGUiICYgIWlzLm5hKEJNSSkpICU+JQogIGdncGxvdChhZXMoc2FtcGxlID0gQk1JKSkgKwogIGdlb21fcXEoKSArCiAgZ2VvbV9xcV9saW5lKCkKYGBgCgpUaGUgUVEtcGxvdCBzaG93cyB0aGF0IHRoZSBxdWFudGlsZXMgb2YgdGhlIGRhdGEKCi0gYXJlIGxhcmdlciAoYWJvdmUgdGhlIGxpbmUpIHRoYW4gdGhlc2UgZnJvbSB0aGUgTm9ybWFsIGluIHRoZSBsZWZ0IHRhaWw6IGNvbXByZXNzaW9uIG9mIHRoZSBsb3dlciB0YWlsLAotIGFyZSBsYXJnZXIgKGFib3ZlIHRoZSBsaW5lKSB0aGFuIHRoZXNlIGZyb20gdGhlIE5vcm1hbCBpbiB0aGUgcmlnaHQgdGFpbDogbG9uZyB0YWlsIHRvIHRoZSByaWdodC4KCldlIGNhbiBjbGVhcmx5IHNlZSB0aGF0IHRoZSBkYXRhIGFyZSByaWdodC1za2V3ZWQuCgotLS0KCiMgVHdvIGNvbnRpbnVvdXMgdmFyaWFibGVzOiBDb3JyZWxhdGlvbgoKLSBOSEFORVMgc3R1ZHkKLSBIZWlnaHQgYW5kIFdlaWdodCBFeGFtcGxlIGZvciBmZW1hbGVzCgpgYGB7cn0KTkhBTkVTICU+JQogIGZpbHRlcihBZ2UgPiAyNSAmIEdlbmRlciA9PSAiZmVtYWxlIikgJT4lCiAgZ2dwbG90KGFlcyh4ID0gSGVpZ2h0LCB5ID0gV2VpZ2h0KSkgKwogIGdlb21fcG9pbnQoKQpgYGAKCldlIG9ic2VydmUgYW4gYXNzb2NpYXRpb24gYmV0d2VlbiBXZWlnaHQgYW5kIEhlaWdodCwgYnV0IHdlIGFsc28gb2JzZXJ2ZSB0aGF0IHRoZSBXZWlnaHRzIHRlbmQgdG8gYmUgcmlnaHQtc2tld2VkLgoKTGV0cyBsb29rIGF0IHRoZSB1bml2YXJpYXRlIGRpc3RyaWJ1dGlvbnMgZmlyc3QuCgpgYGB7cn0KTkhBTkVTICU+JQogIGZpbHRlcihBZ2UgPiAyNSAmIEdlbmRlciA9PSAiZmVtYWxlIikgJT4lCiAgZ2dwbG90KGFlcyh4ID0gSGVpZ2h0KSkgKwogIGdlb21faGlzdG9ncmFtKGFlcyh5ID0gLi5kZW5zaXR5Li4sIGZpbGwgPSAuLmNvdW50Li4pKSArCiAgeGxhYigiSGVpZ2h0IikgKwogIGdndGl0bGUoIkFsbCBmZW1hbGVzIGluIHN0dWR5IikgKwogIGdlb21fZGVuc2l0eShhZXMoeSA9IC4uZGVuc2l0eS4uKSkKCk5IQU5FUyAlPiUKICBmaWx0ZXIoQWdlID4gMjUgJiBHZW5kZXIgPT0gImZlbWFsZSIpICU+JQogIGdncGxvdChhZXMoc2FtcGxlID0gSGVpZ2h0KSkgKwogIGdlb21fcXEoKSArCiAgZ2VvbV9xcV9saW5lKCkKYGBgCgoKYGBge3J9Ck5IQU5FUyAlPiUKICBmaWx0ZXIoQWdlID4gMjUgJiBHZW5kZXIgPT0gImZlbWFsZSIpICU+JQogIGdncGxvdChhZXMoeCA9IFdlaWdodCkpICsKICBnZW9tX2hpc3RvZ3JhbShhZXMoeSA9IC4uZGVuc2l0eS4uLCBmaWxsID0gLi5jb3VudC4uKSkgKwogIHhsYWIoIldlaWdodCIpICsKICBnZ3RpdGxlKCJBbGwgZmVtYWxlcyBpbiBzdHVkeSIpICsKICBnZW9tX2RlbnNpdHkoYWVzKHkgPSAuLmRlbnNpdHkuLikpCgpOSEFORVMgJT4lCiAgZmlsdGVyKEFnZSA+IDI1ICYgR2VuZGVyID09ICJmZW1hbGUiKSAlPiUKICBnZ3Bsb3QoYWVzKHNhbXBsZSA9IFdlaWdodCkpICsKICBnZW9tX3FxKCkgKwogIGdlb21fcXFfbGluZSgpCmBgYAoKVGhlIHdlaWdodHMgYXJlIGluZGVlZCBza2V3ZWQhCgpVcG9uIGxvZyB0cmFuc2Zvcm1hdG9uIHRoZSBXZWlnaHRzIGFyZSBsZXNzIHNrZXdlZCwgYnV0IHN0aWxsIG5vdCBOb3JtYWxseSBkaXN0cmlidXRlZC4KCmBgYHtyfQpOSEFORVMgJT4lCiAgZmlsdGVyKEFnZSA+IDI1ICYgR2VuZGVyID09ICJmZW1hbGUiKSAlPiUKICBnZ3Bsb3QoYWVzKHggPSBXZWlnaHQgJT4lIGxvZzIoKSkpICsKICBnZW9tX2hpc3RvZ3JhbShhZXMoeSA9IC4uZGVuc2l0eS4uLCBmaWxsID0gLi5jb3VudC4uKSkgKwogIHhsYWIoIldlaWdodCAobG9nMikiKSArCiAgZ2d0aXRsZSgiQWxsIGZlbWFsZXMgaW4gc3R1ZHkiKSArCiAgZ2VvbV9kZW5zaXR5KGFlcyh5ID0gLi5kZW5zaXR5Li4pKQoKTkhBTkVTICU+JQogIGZpbHRlcihBZ2UgPiAyNSAmIEdlbmRlciA9PSAiZmVtYWxlIikgJT4lCiAgZ2dwbG90KGFlcyhzYW1wbGUgPSBXZWlnaHQgJT4lIGxvZzIoKSkpICsKICBnZW9tX3FxKCkgKwogIGdlb21fcXFfbGluZSgpCmBgYAoKU2tld25lc3MgaXMgc3RpbGwgdGhlcmUgYnV0IGlzIHJlZHVjZWQgYWxyZWFkeS4KCmBgYHtyfQpOSEFORVMgJT4lCiAgZmlsdGVyKEFnZSA+IDI1ICYgR2VuZGVyID09ICJmZW1hbGUiKSAlPiUKICBnZ3Bsb3QoYWVzKHggPSBIZWlnaHQsIHkgPSBXZWlnaHQgJT4lIGxvZzIoKSkpICsKICB5bGFiKCJXZWlnaHQgKGxvZzIpIikgKwogIGdlb21fcG9pbnQoKQpgYGAKCi0tLQoKIyMgQ292YXJpYW5jZSBhbmQgQ29ycmVsYXRpb24KCi0gTGV0IFggYW5kIFkgYmUgdG8gY29udGludW91cyByYW5kb20gdmFyaWFibGVzLCBhbmQgZm9yIGVhY2ggc3ViamVjdCBpIHdlIG9ic2VydmUgJChYX2ksWV9pKSQuCi0gQ292YXJpYW5jZTogaG93IGRldmlhdGUgWF9pIGFuZCBZX2kgYXJvdW5kIHRoZWlyIG1lYW5zPwoKJCRcbWJveHtDb3Zhcn0oWCxZKT1FWyhYLUVbWF0pKFktRVtZXSldJCQKCi0gQ29ycmVsYXRpb246IHN0YW5kYXJkaXNlIHRoZSBjb3ZhcmlhbmNlIGFjY29yZGluZyB0byB0aGUgdmFyaWFiaWxpdHkgaW4gZWFjaCB2YXJpYWJsZToKCiQkXG1ib3h7Q29yfShYLFkpPVxmcmFje0VbKFgtRVtYXSkoWS1FW1ldKV19e1xzcXJ0e0VbKFgtRVtYXSleMn1cc3FydHtFWyhZLUVbWV0pXjJ9fSQkCgoKIyMgUGVhcnNvbiBDb3JyZWxhdGlvbgoKLSBBc3NvY2lhdGlvbiBiZXR3ZWVuIHR3byBjb250aW51b3VzIGNvdmFyaWF0ZToKClxbXG1ib3h7Q29yfShYLFkpPVxmcmFje1xzdW1fe2k9MX1ee259KFhfe2l9LVxiYXJ7WH0pKFlfe2l9LVxiYXJ7WX0pfXsobi0xKXNfe1h9c197WX19ClxdCgotIFBvc2l0aXZlIGNvcnJlbGF0aW9uOiAkeCBcIFxuZWFycm93IFwgXFJpZ2h0YXJyb3cgXCB5IFwgXG5lYXJyb3ckCgotIE5lZ2F0aXZlIGNvcnJlbGF0aW9uOiAkeCBcIFxuZWFycm93IFwgXFJpZ2h0YXJyb3cgXCB5IFwgXHNlYXJyb3ckCgotIENvcnJlbGF0aW9uIGFsd2F5cyBiZXR3ZWVuIC0xIGVuIDEKCmBgYHtyfQptZWFucyA8LSBOSEFORVMgJT4lCiAgZmlsdGVyKEFnZSA+IDI1ICYgR2VuZGVyID09ICJmZW1hbGUiKSAlPiUKICBzZWxlY3QoV2VpZ2h0LCBIZWlnaHQpICU+JQogIG11dGF0ZShsb2cyV2VpZ2h0ID0gV2VpZ2h0ICU+JSBsb2cyKCkpICU+JQogIGFwcGx5KC4sIDIsIG1lYW4sIG5hLnJtID0gVFJVRSkKcmFuZ2VzIDwtIE5IQU5FUyAlPiUKICBmaWx0ZXIoQWdlID4gMjUgJiBHZW5kZXIgPT0gImZlbWFsZSIpICU+JQogIHNlbGVjdChXZWlnaHQsIEhlaWdodCkgJT4lCiAgbXV0YXRlKGxvZzJXZWlnaHQgPSBXZWlnaHQgJT4lIGxvZzIoKSkgJT4lCiAgYXBwbHkoLiwgMiwgcmFuZ2UsIG5hLnJtID0gVFJVRSkKCk5IQU5FUyAlPiUKICBmaWx0ZXIoQWdlID4gMjUgJiBHZW5kZXIgPT0gImZlbWFsZSIpICU+JQogIGdncGxvdChhZXMoeCA9IEhlaWdodCwgeSA9IFdlaWdodCAlPiUgbG9nMigpKSkgKwogIHlsYWIoIldlaWdodCAobG9nMikiKSArCiAgZ2VvbV9wb2ludCgpICsKICBnZW9tX2hsaW5lKHlpbnRlcmNlcHQgPSBtZWFuc1sibG9nMldlaWdodCJdLCBjb2xvciA9ICJyZWQiKSArCiAgZ2VvbV92bGluZSh4aW50ZXJjZXB0ID0gbWVhbnNbIkhlaWdodCJdLCBjb2xvciA9ICJyZWQiKSArCiAgYW5ub3RhdGUoCiAgICBnZW9tID0gInRleHQiLAogICAgeCA9IGMocmFuZ2VzWzEsICJIZWlnaHQiXSwgcmFuZ2VzWzEsICJIZWlnaHQiXSwgcmFuZ2VzWzIsICJIZWlnaHQiXSwgcmFuZ2VzWzIsICJIZWlnaHQiXSksCiAgICB5ID0gYyhyYW5nZXNbMSwgImxvZzJXZWlnaHQiXSwgcmFuZ2VzWzIsICJsb2cyV2VpZ2h0Il0sIHJhbmdlc1sxLCAibG9nMldlaWdodCJdLCByYW5nZXNbMiwgImxvZzJXZWlnaHQiXSksCiAgICBsYWJlbCA9IGMoIisiLCAiLSIsICItIiwgIisiKSwgY29sb3IgPSAicmVkIiwgc2l6ZSA9IDEwCiAgKQpgYGAKCmBgYHtyfQpOSEFORVMgJT4lCiAgZmlsdGVyKEFnZSA+IDI1ICYgR2VuZGVyID09ICJmZW1hbGUiKSAlPiUKICBnZ3Bsb3QoYWVzKHggPSBIZWlnaHQsIHkgPSBXZWlnaHQpKSArCiAgeWxhYigiV2VpZ2h0IChsb2cyKSIpICsKICBnZW9tX3BvaW50KCkgKwogIGdlb21faGxpbmUoeWludGVyY2VwdCA9IG1lYW5zWyJXZWlnaHQiXSwgY29sb3IgPSAicmVkIikgKwogIGdlb21fdmxpbmUoeGludGVyY2VwdCA9IG1lYW5zWyJIZWlnaHQiXSwgY29sb3IgPSAicmVkIikgKwogIGFubm90YXRlKAogICAgZ2VvbSA9ICJ0ZXh0IiwKICAgIHggPSBjKHJhbmdlc1sxLCAiSGVpZ2h0Il0sIHJhbmdlc1sxLCAiSGVpZ2h0Il0sIHJhbmdlc1syLCAiSGVpZ2h0Il0sIHJhbmdlc1syLCAiSGVpZ2h0Il0pLAogICAgeSA9IGMocmFuZ2VzWzEsICJXZWlnaHQiXSwgcmFuZ2VzWzIsICJXZWlnaHQiXSwgcmFuZ2VzWzEsICJXZWlnaHQiXSwgcmFuZ2VzWzIsICJXZWlnaHQiXSksCiAgICBsYWJlbCA9IGMoIisiLCAiLSIsICItIiwgIisiKSwgY29sb3IgPSAicmVkIiwgc2l6ZSA9IDEwCiAgKQpgYGAKCgoKYGBge3J9Ck5IQU5FUyAlPiUKICBmaWx0ZXIoQWdlID4gMjUgJiBHZW5kZXIgPT0gImZlbWFsZSIpICU+JQogIHNlbGVjdChXZWlnaHQsIEhlaWdodCkgJT4lCiAgbXV0YXRlKGxvZzJXZWlnaHQgPSBXZWlnaHQgJT4lIGxvZzIoKSkgJT4lCiAgbmEuZXhjbHVkZSgpICU+JQogIGNvcigpCmBgYAoKLSBOb3RlLCB0aGF0IHRoZSBjb3JyZWxhdGlvbiBpcyBsb3dlciB3aGVuIHRoZSBkYXRhIGFyZSBub3QgdHJhbnNmb3JtZWQuCi0gVGhlIFBlYXJzb24gY29ycmVsYXRpb24gaXMgc2Vuc2l0aXZlIHRvIG91dGxpZXJzIQotIERvIG5vdCB1c2UgUGVhcnNvbiBjb3JyZWxhdGlvbiBmb3Igc2tld2VkIGRpc3RyaWJ1dGlvbnMgb3IgZm9yIGRhdGEgd2l0aCBvdXRsaWVycy4KCiMjIyBJbXBhY3Qgb2Ygb3V0bGllcnMKCklsbHVzdHJhdGlvbiB3aXRoIHNpbXVsYXRlZCBkYXRhIHRoYXQgaGFzIG9uZSBvdXRsaWVyLgoKYGBge3J9CnNldC5zZWVkKDEwMCkKeCA8LSBybm9ybSgyMCkKc2ltRGF0YSA8LSBkYXRhLmZyYW1lKHggPSB4LCB5ID0geCAqIDIgKyBybm9ybShsZW5ndGgoeCkpKQpzaW1EYXRhICU+JSBnZ3Bsb3QoYWVzKHggPSB4LCB5ID0geSkpICsKICBnZW9tX3BvaW50KCkgKwogIGdndGl0bGUocGFzdGUoImNvciA9IiwgY29yKHNpbURhdGFbLCAxXSwgc2ltRGF0YVssIDJdKSAlPiUgcm91bmQoLiwgMikpKQoKb3V0bGllciA8LSByYmluZChzaW1EYXRhLCBjKDIsIC00KSkKb3V0bGllciAlPiUgZ2dwbG90KGFlcyh4ID0geCwgeSA9IHkpKSArCiAgZ2VvbV9wb2ludCgpICsKICBnZ3RpdGxlKHBhc3RlKCJjb3IgPSIsIGNvcihvdXRsaWVyWywgMV0sIG91dGxpZXJbLCAyXSkgJT4lIHJvdW5kKC4sIDIpKSkKYGBgCgojIyMgT25seSBsaW5lYXIgYXNzb2NpYXRpb24KCk5vdGUsIHRoYXQgdGhlIFBlYXJzb24gY29ycmVsYXRpb24gb25seSBjYXB0dXJlcyBsaW5lYXIgYXNzb2NpYXRpb24hCgpgYGB7cn0KeCA8LSBybm9ybSgxMDApCnF1YWRyYXRpYyA8LSBkYXRhLmZyYW1lKHggPSB4LCB5ID0geF4yICsgcm5vcm0obGVuZ3RoKHgpKSkKcXVhZHJhdGljICU+JSBnZ3Bsb3QoYWVzKHggPSB4LCB5ID0geSkpICsKICBnZW9tX3BvaW50KCkgKwogIGdndGl0bGUocGFzdGUoImNvciA9IiwgY29yKHF1YWRyYXRpY1ssIDFdLCBxdWFkcmF0aWNbLCAyXSkgJT4lIHJvdW5kKC4sIDIpKSkgKwogIGdlb21faGxpbmUoeWludGVyY2VwdCA9IG1lYW4ocXVhZHJhdGljWywgMl0pLCBjb2wgPSAicmVkIikgKwogIGdlb21fdmxpbmUoeGludGVyY2VwdCA9IG1lYW4ocXVhZHJhdGljWywgMV0pLCBjb2wgPSAicmVkIikKYGBgCgoKIyMgRGlmZmVyZW50IG1hZ25pdHVkZXMgb2YgY29ycmVsYXRpb24KCmBgYHtyfQpzZXQuc2VlZCgxMDApCnggPC0gcm5vcm0oMTAwKQpzaW1EYXRhMiA8LSBjYmluZCh4LCAxLjUgKiB4LCBzYXBwbHkoMTo3LCBmdW5jdGlvbihzZCwgeCkgMS41ICogeCArIHJub3JtKGxlbmd0aCh4KSwgc2QgPSBzZCksIHggPSB4KSwgcm5vcm0obGVuZ3RoKHgpLCBzZCA9IDcpKQoKY29sbmFtZXMoc2ltRGF0YTIpWy0xXSA8LSBwYXN0ZSgiY29yIiwgcm91bmQoY29yKHNpbURhdGEyKVsxLCAtMV0sIDIpLCBzZXAgPSAiPSIpCgpzaW1EYXRhMiAlPiUKICBhcy5kYXRhLmZyYW1lKCkgJT4lCiAgZ2F0aGVyKGNvciwgeSwgLXgpICU+JQogIGdncGxvdChhZXMoeCA9IHgsIHkgPSB5KSkgKwogIGdlb21fcG9pbnQoKSArCiAgZmFjZXRfd3JhcCh+Y29yKQoKc2ltRGF0YTMgPC0gc2ltRGF0YTIKc2ltRGF0YTNbLCAtMV0gPC0gLXNpbURhdGEyWywgLTFdCmNvbG5hbWVzKHNpbURhdGEzKVstMV0gPC0gcGFzdGUoImNvciIsIHJvdW5kKGNvcihzaW1EYXRhMylbMSwgLTFdLCAyKSwgc2VwID0gIj0iKQoKc2ltRGF0YTMgJT4lCiAgYXMuZGF0YS5mcmFtZSgpICU+JQogIGdhdGhlcihjb3IsIHksIC14KSAlPiUKICBnZ3Bsb3QoYWVzKHggPSB4LCB5ID0geSkpICsKICBnZW9tX3BvaW50KCkgKwogIGZhY2V0X3dyYXAofmNvcikKYGBgCgotLS0KCiMjIFNwZWFybWFuIGNvcnJlbGF0aW9uCgpUaGUgU3BlYXJtYW4gY29ycmVsYXRpb24gaXMgdGhlIFBlYXJzb24gY29ycmVsYXRpb24gYWZ0ZXIgdHJhbnNmb3JtaW5nIHRoZSBkYXRhIHRvIHJhbmtzLgoKLSBQZWFyc29uIGNvcnJlbGF0aW9uCmBgYHtyfQpjb3Iob3V0bGllcikKYGBgCgotIFNwZWFybWFuIGNvcnJlbGF0aW9uCmBgYHtyfQpjb3Iob3V0bGllciwgbWV0aG9kID0gInNwZWFybWFuIikKYGBgCgotIFNwZWFybWFuIGNvcnJlbGF0aW9uIGlzIGxlc3Mgc2Vuc2l0aXZlIHRvIG91dGxpZXJzLgoKLSBQZWFyc29uIGNvcnJlbGF0aW9uIG9uIHJhbmtzCmBgYHtyfQpyYW5rRGF0YSA8LSBhcHBseShvdXRsaWVyLCAyLCByYW5rKQpjb3IocmFua0RhdGEpCmBgYAoKLSBOSEFORVMgZXhhbXBsZQoKYGBge3J9Ck5IQU5FUyAlPiUKICBmaWx0ZXIoQWdlID4gMjUgJiBHZW5kZXIgPT0gImZlbWFsZSIpICU+JQogIHNlbGVjdChXZWlnaHQsIEhlaWdodCkgJT4lCiAgbXV0YXRlKGxvZzJXZWlnaHQgPSBXZWlnaHQgJT4lIGxvZzIoKSkgJT4lCiAgbmEuZXhjbHVkZSgpICU+JQogIGNvcihtZXRob2QgPSAic3BlYXJtYW4iKQpgYGAK</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("04-dataExploration.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

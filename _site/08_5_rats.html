@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement and Jeroen Gilis" />
+
+
+<title>Exercise 8.5: Blocking on the rat diet dataset</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Exercise 8.5: Blocking on the rat diet
+dataset</h1>
+<h4 class="author">Lieven Clement and Jeroen Gilis</h4>
+<h4 class="date">statOmics, Ghent University (<a
+href="https://statomics.github.io"
+class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<div id="background" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Background</h1>
+<p>Researchers are studying the impact of protein sources and protein
+levels in the diet on the weight of rats. They feed the rats with diets
+of beef, cereal and pork and use a low and high protein level for each
+diet type. The researchers can include 60 rats in the experiment. Prior
+to the experiment, the rats were divided in 10 homogeneous groups of 6
+rats based on characteristics such as initial weight, appetite, etc.</p>
+<p>Within each group a rat is randomly assigned to a diet. The rats are
+fed during a month and the weight gain in grams is recorded for each
+rat.</p>
+<p>The researchers want to assess the effect of the type of diet and the
+protein level on the weight of the rats.</p>
+<p>In this exercise we will perform the data exploration using all
+diets, but, to keep the data analysis simple we will only assess the
+beef and cereal diets.</p>
+</div>
+<div id="experimental-design" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Experimental
+design</h1>
+<ul>
+<li><p>There are three explanatory variables in the experiment: the
+factor diet type with two levels (beef and cereal), factor protein level
+with levels (low and high) and a group blocking factor with 10
+levels.</p></li>
+<li><p>There are 6 treatments: beef-high, cereal-high, pork-high,
+beef-low, cereal-low, pork-low protein.</p></li>
+<li><p>The rats are the experimental and observational units.</p></li>
+<li><p>The weight gain is the response variable.</p></li>
+<li><p>The experiment is a randomized complete block (RCB)
+design</p></li>
+</ul>
+<p>Load libraries</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+</div>
+<div id="data-import" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Data import</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>diet <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt&quot;</span>,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">header =</span> <span class="cn">TRUE</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(diet)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["weightGain"],"name":[1],"type":["int"],"align":["right"]},{"label":["protSource"],"name":[2],"type":["chr"],"align":["left"]},{"label":["protLevel"],"name":[3],"type":["chr"],"align":["left"]},{"label":["block"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"107","2":"b","3":"h","4":"1","_rn_":"1"},{"1":"96","2":"c","3":"h","4":"1","_rn_":"2"},{"1":"112","2":"p","3":"h","4":"1","_rn_":"3"},{"1":"83","2":"b","3":"l","4":"1","_rn_":"4"},{"1":"87","2":"c","3":"l","4":"1","_rn_":"5"},{"1":"90","2":"p","3":"l","4":"1","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="tidy-data" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Tidy data</h1>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>diet <span class="ot">&lt;-</span> diet <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">block =</span> <span class="fu">as.factor</span>(block),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">protSource =</span> <span class="fu">as.factor</span>(protSource),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">protLevel =</span> <span class="fu">as.factor</span>(protLevel)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">protLevel =</span> <span class="fu">fct_relevel</span>(protLevel, <span class="st">&quot;l&quot;</span>))</span></code></pre></div>
+</div>
+<div id="data-exploration" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Data exploration</h1>
+<ul>
+<li><p>Boxplot of the weight gain against protein source, protein level
+with coloring according to block</p></li>
+<li><p>Lineplot of the weight gain against protein source, protein level
+with coloring and grouping according to block</p></li>
+<li><p>Interpret the plots</p></li>
+</ul>
+</div>
+<div id="data-filtering" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Data filtering</h1>
+<p>Filter the data to only use the beef and cereal diet.</p>
+</div>
+<div id="multivariate-linear-regression-analysis" class="section level1"
+number="7">
+<h1><span class="header-section-number">7</span> Multivariate linear
+regression analysis</h1>
+<div id="model-specification" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Model
+specification</h2>
+<p>Based on the data exploration, propose a sensible regression model to
+analyse the data.</p>
+</div>
+<div id="assumptions" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Assumptions</h2>
+<p>Check the assumptions of the linear regression model</p>
+</div>
+<div id="hypothesis-testing" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Hypothesis
+testing</h2>
+<p>Use the <code>summary</code> function to get an initial test for the
+parameters in the model.</p>
+</div>
+<div id="interpretation-of-the-regression-parameters"
+class="section level2" number="7.4">
+<h2><span class="header-section-number">7.4</span> Interpretation of the
+regression parameters</h2>
+<p>To facilitate the interpretation of the different parameters in our
+regression model, we can make use of the <code>VisualizeDesign</code>
+function of the <code>ExploreModelMatrix</code> R package. The first
+argument of this function is the name of our target dataset, the second
+argument is a model formula, which in this case is specified as a
+<code>~</code> followed by the explanatory variables in our model.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ExploreModelMatrix)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ExploreModelMatrix<span class="sc">::</span><span class="fu">VisualizeDesign</span>(..., <span class="sc">~</span>...)<span class="sc">$</span>plotlist</span></code></pre></div>
+<p>After seeing this, again think about the meaning of the parameters in
+our model.</p>
+</div>
+<div id="testing-the-overall-omnibus-effect-of-diet"
+class="section level2" number="7.5">
+<h2><span class="header-section-number">7.5</span> Testing the overall
+(omnibus) effect of diet</h2>
+<p>By comparing a model containing diet effects to a model that does not
+have diet effects, using anova.</p>
+</div>
+<div
+id="assessing-the-interaction-effect-between-protein-source-and-protein-level"
+class="section level2" number="7.6">
+<h2><span class="header-section-number">7.6</span> Assessing the
+interaction effect between protein source and protein level</h2>
+</div>
+<div id="assessing-specific-contrasts" class="section level2"
+number="7.7">
+<h2><span class="header-section-number">7.7</span> Assessing specific
+contrasts</h2>
+<p>Imagine that we are interested in assessing if there is an effect
+of</p>
+<ol style="list-style-type: decimal">
+<li><p>protein source in the low protein diets</p></li>
+<li><p>protein source in high protein diets</p></li>
+<li><p>protein level for beef diets,</p></li>
+<li><p>protein level for cereal diets,</p></li>
+<li><p>if the effect of the protein level differs between beef and
+cereal</p></li>
+</ol>
+<p>Step 1: translate these research questions into parameters of the
+model (or combinations of multiple parameters).</p>
+<p>Step 2: Assess the significance of the contrasts using the
+<code>multcomp</code> package. The contrasts are given as input in the
+form of symbolic descriptions to the <code>linfct</code> argument of the
+<code>glht</code> function.</p>
+</div>
+</div>
+<div id="conclusion" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Conclusion</h1>
+<p>Formulate a conclusion for the different research hypotheses.</p>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgOC41OiBCbG9ja2luZyBvbiB0aGUgcmF0IGRpZXQgZGF0YXNldCIKYXV0aG9yOiAiTGlldmVuIENsZW1lbnQgYW5kIEplcm9lbiBHaWxpcyIKZGF0ZTogInN0YXRPbWljcywgR2hlbnQgVW5pdmVyc2l0eSAoaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSIKLS0tCgojIEJhY2tncm91bmQKClJlc2VhcmNoZXJzIGFyZSBzdHVkeWluZyB0aGUgaW1wYWN0IG9mIHByb3RlaW4gc291cmNlcyBhbmQgcHJvdGVpbiBsZXZlbHMgaW4KdGhlIGRpZXQgb24gdGhlIHdlaWdodCBvZiByYXRzLiBUaGV5IGZlZWQgdGhlIHJhdHMgd2l0aCBkaWV0cyBvZiBiZWVmLCBjZXJlYWwKYW5kIHBvcmsgYW5kIHVzZSBhIGxvdyBhbmQgaGlnaCBwcm90ZWluIGxldmVsIGZvciBlYWNoIGRpZXQgdHlwZS4KVGhlIHJlc2VhcmNoZXJzIGNhbiBpbmNsdWRlIDYwIHJhdHMgaW4gdGhlIGV4cGVyaW1lbnQuIFByaW9yIHRvIHRoZSBleHBlcmltZW50LAp0aGUgcmF0cyB3ZXJlIGRpdmlkZWQgaW4gMTAgaG9tb2dlbmVvdXMgZ3JvdXBzIG9mIDYgcmF0cyBiYXNlZCBvbgpjaGFyYWN0ZXJpc3RpY3Mgc3VjaCBhcyBpbml0aWFsIHdlaWdodCwgYXBwZXRpdGUsIGV0Yy4KCldpdGhpbiBlYWNoIGdyb3VwIGEgcmF0IGlzIHJhbmRvbWx5IGFzc2lnbmVkIHRvIGEgZGlldC4gVGhlIHJhdHMgYXJlIGZlZCBkdXJpbmcKYSBtb250aCBhbmQgdGhlIHdlaWdodCBnYWluIGluIGdyYW1zIGlzIHJlY29yZGVkIGZvciBlYWNoIHJhdC4KClRoZSByZXNlYXJjaGVycyB3YW50IHRvIGFzc2VzcyB0aGUgZWZmZWN0IG9mIHRoZSB0eXBlIG9mIGRpZXQgYW5kIHRoZSBwcm90ZWluCmxldmVsIG9uIHRoZSB3ZWlnaHQgb2YgdGhlIHJhdHMuCgpJbiB0aGlzIGV4ZXJjaXNlIHdlIHdpbGwgcGVyZm9ybSB0aGUgZGF0YSBleHBsb3JhdGlvbiB1c2luZyBhbGwgZGlldHMsIGJ1dCwKdG8ga2VlcCB0aGUgZGF0YSBhbmFseXNpcyBzaW1wbGUgd2Ugd2lsbCBvbmx5IGFzc2VzcyB0aGUgYmVlZiBhbmQgY2VyZWFsIGRpZXRzLgoKIyBFeHBlcmltZW50YWwgZGVzaWduCgotIFRoZXJlIGFyZSB0aHJlZSBleHBsYW5hdG9yeSB2YXJpYWJsZXMgaW4gdGhlIGV4cGVyaW1lbnQ6IHRoZSBmYWN0b3IgZGlldCB0eXBlCndpdGggdHdvIGxldmVscyAoYmVlZiBhbmQgY2VyZWFsKSwgZmFjdG9yIHByb3RlaW4gbGV2ZWwgd2l0aCBsZXZlbHMKKGxvdyBhbmQgaGlnaCkgYW5kIGEgZ3JvdXAgYmxvY2tpbmcgZmFjdG9yIHdpdGggMTAgbGV2ZWxzLgoKLSBUaGVyZSBhcmUgNiB0cmVhdG1lbnRzOiBiZWVmLWhpZ2gsIGNlcmVhbC1oaWdoLCBwb3JrLWhpZ2gsIGJlZWYtbG93LApjZXJlYWwtbG93LCBwb3JrLWxvdyBwcm90ZWluLgoKLSBUaGUgcmF0cyBhcmUgdGhlIGV4cGVyaW1lbnRhbCBhbmQgb2JzZXJ2YXRpb25hbCB1bml0cy4KCi0gVGhlIHdlaWdodCBnYWluIGlzIHRoZSByZXNwb25zZSB2YXJpYWJsZS4KCi0gVGhlIGV4cGVyaW1lbnQgaXMgYSByYW5kb21pemVkIGNvbXBsZXRlIGJsb2NrIChSQ0IpIGRlc2lnbgoKTG9hZCBsaWJyYXJpZXMKCmBgYHtyLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKYGBgCgojIERhdGEgaW1wb3J0CgpgYGB7cn0KZGlldCA8LSByZWFkLnRhYmxlKCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL2RpZXRSYXRzLnR4dCIsCiAgaGVhZGVyID0gVFJVRQopCmhlYWQoZGlldCkKYGBgCgojIFRpZHkgZGF0YQoKYGBge3J9CmRpZXQgPC0gZGlldCAlPiUKICBtdXRhdGUoCiAgICBibG9jayA9IGFzLmZhY3RvcihibG9jayksCiAgICBwcm90U291cmNlID0gYXMuZmFjdG9yKHByb3RTb3VyY2UpLAogICAgcHJvdExldmVsID0gYXMuZmFjdG9yKHByb3RMZXZlbCkKICApICU+JQogIG11dGF0ZShwcm90TGV2ZWwgPSBmY3RfcmVsZXZlbChwcm90TGV2ZWwsICJsIikpCmBgYAoKIyBEYXRhIGV4cGxvcmF0aW9uCgotIEJveHBsb3Qgb2YgdGhlIHdlaWdodCBnYWluIGFnYWluc3QgcHJvdGVpbiBzb3VyY2UsIHByb3RlaW4gbGV2ZWwgd2l0aCBjb2xvcmluZyBhY2NvcmRpbmcgdG8gYmxvY2sKCmBgYHtyfQoKYGBgCgotIExpbmVwbG90IG9mIHRoZSB3ZWlnaHQgZ2FpbiBhZ2FpbnN0IHByb3RlaW4gc291cmNlLCBwcm90ZWluIGxldmVsIHdpdGggY29sb3JpbmcgYW5kIGdyb3VwaW5nIGFjY29yZGluZyB0byBibG9jawoKYGBge3J9CgpgYGAKCi0gSW50ZXJwcmV0IHRoZSBwbG90cwoKIyBEYXRhIGZpbHRlcmluZwoKRmlsdGVyIHRoZSBkYXRhIHRvIG9ubHkgdXNlIHRoZSBiZWVmIGFuZCBjZXJlYWwgZGlldC4KCmBgYHtyfQoKYGBgCgojIE11bHRpdmFyaWF0ZSBsaW5lYXIgcmVncmVzc2lvbiBhbmFseXNpcwoKIyMgTW9kZWwgc3BlY2lmaWNhdGlvbgoKQmFzZWQgIG9uIHRoZSBkYXRhIGV4cGxvcmF0aW9uLCBwcm9wb3NlIGEgc2Vuc2libGUgcmVncmVzc2lvbiBtb2RlbCB0byBhbmFseXNlCnRoZSBkYXRhLgoKIyMgQXNzdW1wdGlvbnMKCkNoZWNrIHRoZSBhc3N1bXB0aW9ucyBvZiB0aGUgbGluZWFyIHJlZ3Jlc3Npb24gbW9kZWwKCiMjIEh5cG90aGVzaXMgdGVzdGluZwoKVXNlIHRoZSBgc3VtbWFyeWAgZnVuY3Rpb24gdG8gZ2V0IGFuIGluaXRpYWwgdGVzdCBmb3IgdGhlIHBhcmFtZXRlcnMgaW4gdGhlCm1vZGVsLgoKIyMgSW50ZXJwcmV0YXRpb24gb2YgdGhlIHJlZ3Jlc3Npb24gcGFyYW1ldGVycwoKVG8gZmFjaWxpdGF0ZSB0aGUgaW50ZXJwcmV0YXRpb24gb2YgdGhlIGRpZmZlcmVudCBwYXJhbWV0ZXJzIGluIG91ciByZWdyZXNzaW9uCm1vZGVsLCB3ZSBjYW4gbWFrZSB1c2Ugb2YgdGhlIGBWaXN1YWxpemVEZXNpZ25gIGZ1bmN0aW9uIG9mIHRoZQpgRXhwbG9yZU1vZGVsTWF0cml4YCBSIHBhY2thZ2UuIFRoZSBmaXJzdCBhcmd1bWVudCBvZiB0aGlzIGZ1bmN0aW9uIGlzIHRoZSBuYW1lCm9mIG91ciB0YXJnZXQgZGF0YXNldCwgdGhlIHNlY29uZCBhcmd1bWVudCBpcyBhIG1vZGVsIGZvcm11bGEsIHdoaWNoIGluIHRoaXMKY2FzZSBpcyBzcGVjaWZpZWQgYXMgYSBgfmAgZm9sbG93ZWQgYnkgdGhlIGV4cGxhbmF0b3J5IHZhcmlhYmxlcyBpbiBvdXIgbW9kZWwuCgpgYGB7ciwgZXZhbCA9IEZBTFNFfQpsaWJyYXJ5KEV4cGxvcmVNb2RlbE1hdHJpeCkKRXhwbG9yZU1vZGVsTWF0cml4OjpWaXN1YWxpemVEZXNpZ24oLi4uLCB+Li4uKSRwbG90bGlzdApgYGAKCkFmdGVyIHNlZWluZyB0aGlzLCBhZ2FpbiB0aGluayBhYm91dCB0aGUgbWVhbmluZyBvZiB0aGUgcGFyYW1ldGVycyBpbiBvdXIgbW9kZWwuCgojIyBUZXN0aW5nIHRoZSBvdmVyYWxsIChvbW5pYnVzKSBlZmZlY3Qgb2YgZGlldAoKQnkgY29tcGFyaW5nIGEgbW9kZWwgY29udGFpbmluZyBkaWV0IGVmZmVjdHMgdG8gYSBtb2RlbCB0aGF0IGRvZXMgbm90IGhhdmUKZGlldCBlZmZlY3RzLCB1c2luZyBhbm92YS4KCmBgYHtyfQoKYGBgCgojIyBBc3Nlc3NpbmcgdGhlIGludGVyYWN0aW9uIGVmZmVjdCBiZXR3ZWVuIHByb3RlaW4gc291cmNlIGFuZCBwcm90ZWluIGxldmVsCgoKYGBge3J9CgpgYGAKCgojIyBBc3Nlc3Npbmcgc3BlY2lmaWMgY29udHJhc3RzCgpJbWFnaW5lIHRoYXQgd2UgYXJlIGludGVyZXN0ZWQgaW4gYXNzZXNzaW5nIGlmIHRoZXJlIGlzIGFuIGVmZmVjdCBvZgoKMS4gcHJvdGVpbiBzb3VyY2UgaW4gdGhlIGxvdyBwcm90ZWluIGRpZXRzCgoyLiBwcm90ZWluIHNvdXJjZSBpbiBoaWdoIHByb3RlaW4gZGlldHMKCjMuIHByb3RlaW4gbGV2ZWwgZm9yIGJlZWYgZGlldHMsCgo0LiAgcHJvdGVpbiBsZXZlbCBmb3IgY2VyZWFsIGRpZXRzLAoKNS4gaWYgdGhlIGVmZmVjdCBvZiB0aGUgcHJvdGVpbiBsZXZlbCBkaWZmZXJzIGJldHdlZW4gYmVlZiBhbmQgY2VyZWFsCgpTdGVwIDE6IHRyYW5zbGF0ZSB0aGVzZSByZXNlYXJjaCBxdWVzdGlvbnMgaW50byBwYXJhbWV0ZXJzIG9mIHRoZSBtb2RlbCAob3IKY29tYmluYXRpb25zIG9mIG11bHRpcGxlIHBhcmFtZXRlcnMpLgoKU3RlcCAyOiBBc3Nlc3MgdGhlIHNpZ25pZmljYW5jZSBvZiB0aGUgY29udHJhc3RzIHVzaW5nIHRoZSBgbXVsdGNvbXBgIHBhY2thZ2UuClRoZSBjb250cmFzdHMgYXJlIGdpdmVuIGFzIGlucHV0IGluIHRoZSBmb3JtIG9mIHN5bWJvbGljCmRlc2NyaXB0aW9ucyB0byB0aGUgYGxpbmZjdGAgYXJndW1lbnQgb2YgdGhlIGBnbGh0YCBmdW5jdGlvbi4KCiMgQ29uY2x1c2lvbgoKRm9ybXVsYXRlIGEgY29uY2x1c2lvbiBmb3IgdGhlIGRpZmZlcmVudCByZXNlYXJjaCBoeXBvdGhlc2VzLgo=</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("08_5_rats.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

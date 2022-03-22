@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement and Jeroen Gilis" />
+
+
+<title>Exercise 7.2: ANOVA on the cuckoo dataset - solution</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Exercise 7.2: ANOVA on the cuckoo dataset -
+solution</h1>
+<h4 class="author">Lieven Clement and Jeroen Gilis</h4>
+<h4 class="date">statOmics, Ghent University (<a
+href="https://statomics.github.io"
+class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<div id="cuckoo-dataset" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Cuckoo dataset</h1>
+<p>The common cuckoo does not build its own nest: it prefers to lay its
+eggs in another birds’ nest. It is known, since 1892, that the type of
+cuckoo bird eggs are different between different locations. In a study
+from 1940, it was shown that cuckoos return to the same nesting area
+each year, and that they always pick the same bird species to be a
+“foster parent” for their eggs.</p>
+<p>Over the years, this has lead to the development of geographically
+determined subspecies of cuckoos. These subspecies have evolved in such
+a way that their eggs look as similar as possible as those of their
+foster parents.</p>
+<p>The cuckoo dataset contains information on 120 Cuckoo eggs, obtained
+from randomly selected “foster” nests. For these eggs, researchers have
+measured the <code>length</code> (in mm) and established the
+<code>type</code> (species) of foster parent. The type column is coded
+as follows:</p>
+<ul>
+<li><code>type=1</code>: Meadow pipit</li>
+<li><code>type=2</code>: Tree pipit</li>
+<li><code>type=3</code>: Dunnock</li>
+<li><code>type=4</code>: European robin</li>
+<li><code>type=5</code>: White wagtail</li>
+<li><code>type=6</code>: Eurasian wren</li>
+</ul>
+</div>
+<div id="goal" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Goal</h1>
+<p>The researchers want totest if the type of foster parent has an
+effect on the average length of the cuckoo eggs.</p>
+<p>In theory, they want to study this for all six species. Previously,
+we looked at a single pairwise comparison between the European robin and
+the Eurasian wren with a t-test. Here, we will analyse all types
+simultaneously with ANOVA.</p>
+<p>Load the required libraries</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<div id="import-the-data" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Import the data</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Cuckoo <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/Cuckoo.txt&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Cuckoo)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["type"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"21.78","2":"1"},{"1":"21.73","2":"1"},{"1":"21.73","2":"1"},{"1":"23.99","2":"1"},{"1":"22.44","2":"1"},{"1":"22.97","2":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<div id="data-tidying" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Data tidying</h1>
+<p>It seems that the <code>tpye</code> column is a <code>double</code>
+rather than a <code>factor</code>. Let’s fix this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Cuckoo <span class="ot">&lt;-</span> Cuckoo <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">as.factor</span>(type)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">recode</span>(type,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;1&quot;</span> <span class="ot">=</span> <span class="st">&quot;meadow&quot;</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;2&quot;</span> <span class="ot">=</span> <span class="st">&quot;tree&quot;</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;3&quot;</span> <span class="ot">=</span> <span class="st">&quot;dunnock&quot;</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;4&quot;</span> <span class="ot">=</span> <span class="st">&quot;robin&quot;</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;5&quot;</span> <span class="ot">=</span> <span class="st">&quot;wagtail&quot;</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;6&quot;</span> <span class="ot">=</span> <span class="st">&quot;wren&quot;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  ))</span></code></pre></div>
+</div>
+<div id="data-exploration" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Data exploration</h1>
+<p>How many birds do we have for each type?</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Cuckoo <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(type)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["type"],"name":[1],"type":["fct"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"meadow","2":"45"},{"1":"tree","2":"15"},{"1":"dunnock","2":"14"},{"1":"robin","2":"16"},{"1":"wagtail","2":"15"},{"1":"wren","2":"15"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Visualize the data</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Cuckoo <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> type, <span class="at">y =</span> length, <span class="at">fill =</span> type)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;RdGy&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Boxplot of the length of eggs per type&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;length (mm)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">5</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;black&quot;</span>)</span></code></pre></div>
+<p><img src="07_2_cuckoo_sol_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="anova" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> ANOVA</h1>
+<p>To study if the observed differences in average egg length between
+the different foster bird types are significant, we may perform an
+ANOVA.</p>
+<div id="formulate-null-and-alternative-hypothesis"
+class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Formulate null and
+alternative hypothesis</h2>
+<p>The null hypothesis of ANOVA states that: <span
+class="math inline">\(H0\)</span>: The mean egg length is equal between
+the different bird types.</p>
+<p>The alternative hypothesis of ANOVA states that: <span
+class="math inline">\(HA\)</span>: The mean egg length for at least one
+bird type is different from the mean egg length in at least one other
+bird type.</p>
+</div>
+<div id="parameter-estimation" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Parameter
+estimation</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(length <span class="sc">~</span> type, Cuckoo)</span></code></pre></div>
+</div>
+<div id="check-assumptions" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Check
+assumptions</h2>
+<p>Before we may proceed with the analysis, we must make sure that all
+assumptions for ANOVA are met. ANOVA has three assumptions:</p>
+<ol style="list-style-type: decimal">
+<li>The observations are independent of each other (in all groups)</li>
+<li>The data (length) must be normally distributed (in all groups)</li>
+<li>The variability within all groups is similar</li>
+</ol>
+<p>The first assumption is met, as we may assume that there are no
+specific patterns of correlation between the randomly selected
+nests.</p>
+<p>To check the normality assumption, we will use QQ plots.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod1, <span class="at">which =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="07_2_cuckoo_sol_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Cuckoo <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> length)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>type)</span></code></pre></div>
+<p><img src="07_2_cuckoo_sol_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>There seem to be no clear deviations from normality.</p>
+<p>The third assumption of equal variances seems to be met based on the
+visualization with the boxplots (see above).</p>
+<p>As such, we may proceed with the ANOVA analysis.</p>
+<div id="simulate-to-train-your-skills-in-assessing-assumptions"
+class="section level3" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Simulate to train
+your skills in assessing assumptions</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1031</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> mod1 <span class="sc">%&gt;%</span> <span class="fu">sigma</span>()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>dataHlp <span class="ot">&lt;-</span> Cuckoo</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>simModels <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>plotList <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>plotListQQ1 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>))</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  nobs <span class="ot">&lt;-</span> Cuckoo <span class="sc">%&gt;%</span> <span class="fu">nrow</span>()</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  dataHlp<span class="sc">$</span>ySim <span class="ot">&lt;-</span> mod1<span class="sc">$</span>fit <span class="sc">+</span> <span class="fu">rnorm</span>(nobs, <span class="at">sd =</span> sigma)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  simModels[[i]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(ySim <span class="sc">~</span> type, dataHlp)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(simModels[[i]], <span class="at">which =</span> <span class="dv">2</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  plotList[[i]] <span class="ot">&lt;-</span> dataHlp <span class="sc">%&gt;%</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(type, ySim)) <span class="sc">+</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_jitter</span>()</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  plotListQQ1[[i]] <span class="ot">&lt;-</span> dataHlp <span class="sc">%&gt;%</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">&quot;meadow&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> ySim)) <span class="sc">+</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_qq</span>() <span class="sc">+</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot;QQ for meadow&quot;</span>)</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><img src="07_2_cuckoo_sol_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">do.call</span>(gridExtra<span class="sc">::</span>grid.arrange, plotList)</span></code></pre></div>
+<p><img src="07_2_cuckoo_sol_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">do.call</span>(gridExtra<span class="sc">::</span>grid.arrange, plotListQQ1)</span></code></pre></div>
+<p><img src="07_2_cuckoo_sol_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
+<p>The most deviating QQ-plot of the residuals in the nine simulation
+runs:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(simModels[[<span class="dv">8</span>]], <span class="at">which =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="07_2_cuckoo_sol_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+</div>
+<div id="anova-model" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> ANOVA model</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>mod1_anova <span class="ot">&lt;-</span> <span class="fu">anova</span>(mod1)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>mod1_anova</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["int"],"align":["right"]},{"label":["Sum Sq"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Mean Sq"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"5","2":"41.16107","3":"8.232215","4":"4.746715","5":"0.0005621103","_rn_":"type"},{"1":"114","2":"197.70990","3":"1.734297","4":"NA","5":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>The p-value of the ANOVA analysis is extremely significant (p-value
+&lt; 0.001), so we reject the null hypothesis that the mean egg length
+is equal between the different bird types. We can say that the mean egg
+length is significantly different between at least two bird types on the
+5% significance level.</p>
+<p>Based on this analysis, we do not yet know between which particular
+bird types there is a significant difference. To study this, we will
+perform the Tuckey post-hoc analysis.</p>
+</div>
+<div id="post-hoc-analysis" class="section level2" number="5.5">
+<h2><span class="header-section-number">5.5</span> Post-hoc
+analysis</h2>
+<p>We will perform a post-hoc analysis, to look at the difference in egg
+length between each pairwise comparison of bird types. Importantly, with
+this strategy, the p-values will be correctly adjusted for multiple
+testing.</p>
+<p>The null hypothesis for each pairwise test is that there is no
+difference in the mean egg length between both bird types.</p>
+<p>The alternative hypothesis for each pairwise test states that there
+is indeed a difference in the mean egg length between both bird
+types.</p>
+<p>We will also calculate the confidence interval on the mean
+differences.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>mcp <span class="ot">&lt;-</span> <span class="fu">glht</span>(mod1, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">type =</span> <span class="st">&quot;Tukey&quot;</span>))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mcp)</span></code></pre></div>
+<pre><code>## 
+##   Simultaneous Tests for General Linear Hypotheses
+## 
+## Multiple Comparisons of Means: Tukey Contrasts
+## 
+## 
+## Fit: lm(formula = length ~ type, data = Cuckoo)
+## 
+## Linear Hypotheses:
+##                        Estimate Std. Error t value Pr(&gt;|t|)   
+## tree - meadow == 0      0.59000    0.39263   1.503  0.65686   
+## dunnock - meadow == 0   0.62143    0.40301   1.542  0.63147   
+## robin - meadow == 0     0.07500    0.38332   0.196  0.99996   
+## wagtail - meadow == 0   0.40333    0.39263   1.027  0.90518   
+## wren - meadow == 0     -1.37000    0.39263  -3.489  0.00847 **
+## dunnock - tree == 0     0.03143    0.48939   0.064  1.00000   
+## robin - tree == 0      -0.51500    0.47330  -1.088  0.88202   
+## wagtail - tree == 0    -0.18667    0.48087  -0.388  0.99878   
+## wren - tree == 0       -1.96000    0.48087  -4.076  0.00114 **
+## robin - dunnock == 0   -0.54643    0.48195  -1.134  0.86268   
+## wagtail - dunnock == 0 -0.21810    0.48939  -0.446  0.99764   
+## wren - dunnock == 0    -1.99143    0.48939  -4.069  0.00115 **
+## wagtail - robin == 0    0.32833    0.47330   0.694  0.98170   
+## wren - robin == 0      -1.44500    0.47330  -3.053  0.03198 * 
+## wren - wagtail == 0    -1.77333    0.48087  -3.688  0.00433 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## (Adjusted p values reported -- single-step method)</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(mcp)</span></code></pre></div>
+<pre><code>## 
+##   Simultaneous Confidence Intervals
+## 
+## Multiple Comparisons of Means: Tukey Contrasts
+## 
+## 
+## Fit: lm(formula = length ~ type, data = Cuckoo)
+## 
+## Quantile = 2.8889
+## 95% family-wise confidence level
+##  
+## 
+## Linear Hypotheses:
+##                        Estimate lwr      upr     
+## tree - meadow == 0      0.59000 -0.54429  1.72429
+## dunnock - meadow == 0   0.62143 -0.54285  1.78571
+## robin - meadow == 0     0.07500 -1.03239  1.18239
+## wagtail - meadow == 0   0.40333 -0.73096  1.53763
+## wren - meadow == 0     -1.37000 -2.50429 -0.23571
+## dunnock - tree == 0     0.03143 -1.38238  1.44524
+## robin - tree == 0      -0.51500 -1.88234  0.85234
+## wagtail - tree == 0    -0.18667 -1.57589  1.20255
+## wren - tree == 0       -1.96000 -3.34922 -0.57078
+## robin - dunnock == 0   -0.54643 -1.93875  0.84589
+## wagtail - dunnock == 0 -0.21810 -1.63190  1.19571
+## wren - dunnock == 0    -1.99143 -3.40524 -0.57762
+## wagtail - robin == 0    0.32833 -1.03901  1.69567
+## wren - robin == 0      -1.44500 -2.81234 -0.07766
+## wren - wagtail == 0    -1.77333 -3.16255 -0.38411</code></pre>
+</div>
+<div id="conclusion" class="section level2" number="5.6">
+<h2><span class="header-section-number">5.6</span> Conclusion</h2>
+<p>There association between the mean length of a cuckoo’s egg and the
+foster bird species is an extremely significant (p &lt;&lt; 0.001).</p>
+<p>The mean length of cuckoo’s eggs in nests of the Eurasian wern are
+smaller as compared to those from all other bird species in the
+study:</p>
+<ul>
+<li>the meadow pipit (adjusted p-value = 0.009, mean difference =
+-1.4mm, 95% CI [-2.5, -0.2])</li>
+<li>the tree pipit (adjusted p-value = 0.001, mean difference = -2mm,
+95% CI [-3.3, -0.6])</li>
+<li>the dunnock (adjusted p-value = 0.001, mean difference = -2mm, 95%
+CI [-3.4, -0.6])</li>
+<li>the European robin (adjusted p-value = 0.03, mean difference =
+-1.4mm, 95% CI [-2.8, -0.1])</li>
+<li>the white wagtail (adjusted p-value = 0.004, mean difference =
+-1.8mm, 95% CI [-3.2, -0.4])</li>
+</ul>
+<p>The mean length of the cuckoo bird’s eggs for all other pairwise
+comparisons between foster bird species are not statistically
+significantly different at the 5% level.</p>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgNy4yOiBBTk9WQSBvbiB0aGUgY3Vja29vIGRhdGFzZXQgLSBzb2x1dGlvbiIKYXV0aG9yOiAiTGlldmVuIENsZW1lbnQgYW5kIEplcm9lbiBHaWxpcyIKZGF0ZTogInN0YXRPbWljcywgR2hlbnQgVW5pdmVyc2l0eSAoaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSIKLS0tCgojIEN1Y2tvbyBkYXRhc2V0CgpUaGUgY29tbW9uIGN1Y2tvbyBkb2VzIG5vdCBidWlsZCBpdHMgb3duIG5lc3Q6IGl0IHByZWZlcnMKdG8gbGF5IGl0cyBlZ2dzIGluIGFub3RoZXIgYmlyZHMnIG5lc3QuIEl0IGlzIGtub3duLCBzaW5jZSAxODkyLAp0aGF0IHRoZSB0eXBlIG9mIGN1Y2tvbyBiaXJkIGVnZ3MgYXJlIGRpZmZlcmVudCBiZXR3ZWVuIGRpZmZlcmVudApsb2NhdGlvbnMuIEluIGEgc3R1ZHkgZnJvbSAxOTQwLCBpdCB3YXMgc2hvd24gdGhhdCBjdWNrb29zIHJldHVybgp0byB0aGUgc2FtZSBuZXN0aW5nIGFyZWEgZWFjaCB5ZWFyLCBhbmQgdGhhdCB0aGV5IGFsd2F5cyBwaWNrCnRoZSBzYW1lIGJpcmQgc3BlY2llcyB0byBiZSBhICJmb3N0ZXIgcGFyZW50IiBmb3IgdGhlaXIgZWdncy4KCk92ZXIgdGhlIHllYXJzLCB0aGlzIGhhcyBsZWFkIHRvIHRoZSBkZXZlbG9wbWVudCBvZiBnZW9ncmFwaGljYWxseQpkZXRlcm1pbmVkIHN1YnNwZWNpZXMgb2YgY3Vja29vcy4gVGhlc2Ugc3Vic3BlY2llcyBoYXZlIGV2b2x2ZWQgaW4Kc3VjaCBhIHdheSB0aGF0IHRoZWlyIGVnZ3MgbG9vayBhcyBzaW1pbGFyIGFzIHBvc3NpYmxlIGFzIHRob3NlCm9mIHRoZWlyIGZvc3RlciBwYXJlbnRzLgoKVGhlIGN1Y2tvbyBkYXRhc2V0IGNvbnRhaW5zIGluZm9ybWF0aW9uIG9uIDEyMCBDdWNrb28gZWdncywKb2J0YWluZWQgZnJvbSByYW5kb21seSBzZWxlY3RlZCAiZm9zdGVyIiBuZXN0cy4KRm9yIHRoZXNlIGVnZ3MsIHJlc2VhcmNoZXJzIGhhdmUgbWVhc3VyZWQgdGhlIGBsZW5ndGhgIChpbiBtbSkKYW5kIGVzdGFibGlzaGVkIHRoZSBgdHlwZWAgKHNwZWNpZXMpIG9mIGZvc3RlciBwYXJlbnQuClRoZSB0eXBlIGNvbHVtbiBpcyBjb2RlZCBhcyBmb2xsb3dzOgoKLSBgdHlwZT0xYDogTWVhZG93IHBpcGl0Ci0gYHR5cGU9MmA6IFRyZWUgcGlwaXQKLSBgdHlwZT0zYDogRHVubm9jawotIGB0eXBlPTRgOiBFdXJvcGVhbiByb2JpbgotIGB0eXBlPTVgOiBXaGl0ZSB3YWd0YWlsCi0gYHR5cGU9NmA6IEV1cmFzaWFuIHdyZW4KCiMgR29hbAoKVGhlIHJlc2VhcmNoZXJzIHdhbnQgdG90ZXN0IGlmIHRoZSB0eXBlIG9mIGZvc3RlciBwYXJlbnQKaGFzIGFuIGVmZmVjdCBvbiB0aGUgYXZlcmFnZSBsZW5ndGggb2YgdGhlIGN1Y2tvbyBlZ2dzLgoKSW4gdGhlb3J5LCB0aGV5IHdhbnQgdG8gc3R1ZHkgdGhpcyBmb3IgYWxsIHNpeCBzcGVjaWVzLgpQcmV2aW91c2x5LCB3ZSBsb29rZWQgYXQgYSBzaW5nbGUgcGFpcndpc2UgY29tcGFyaXNvbgpiZXR3ZWVuIHRoZSBFdXJvcGVhbiByb2JpbiBhbmQgdGhlIEV1cmFzaWFuIHdyZW4gd2l0aCBhCnQtdGVzdC4gSGVyZSwgd2Ugd2lsbCBhbmFseXNlIGFsbCB0eXBlcyBzaW11bHRhbmVvdXNseQp3aXRoIEFOT1ZBLgoKTG9hZCB0aGUgcmVxdWlyZWQgbGlicmFyaWVzCgpgYGB7ciwgbWVzc2FnZT1GQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmBgYAoKIyMgSW1wb3J0IHRoZSBkYXRhCgpgYGB7ciwgbWVzc2FnZT1GQUxTRX0KQ3Vja29vIDwtIHJlYWRfdHN2KCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL0N1Y2tvby50eHQiKQpoZWFkKEN1Y2tvbykKYGBgCgojIERhdGEgdGlkeWluZwoKSXQgc2VlbXMgdGhhdCB0aGUgYHRweWVgIGNvbHVtbiBpcyBhIGBkb3VibGVgIHJhdGhlciB0aGFuIGEgYGZhY3RvcmAuCkxldCdzIGZpeCB0aGlzOgoKYGBge3J9CkN1Y2tvbyA8LSBDdWNrb28gJT4lCiAgbXV0YXRlKHR5cGUgPSBhcy5mYWN0b3IodHlwZSkpICU+JQogIG11dGF0ZSh0eXBlID0gcmVjb2RlKHR5cGUsCiAgICAiMSIgPSAibWVhZG93IiwKICAgICIyIiA9ICJ0cmVlIiwKICAgICIzIiA9ICJkdW5ub2NrIiwKICAgICI0IiA9ICJyb2JpbiIsCiAgICAiNSIgPSAid2FndGFpbCIsCiAgICAiNiIgPSAid3JlbiIKICApKQpgYGAKCgojIERhdGEgZXhwbG9yYXRpb24KCkhvdyBtYW55IGJpcmRzIGRvIHdlIGhhdmUgZm9yIGVhY2ggdHlwZT8KCmBgYHtyfQpDdWNrb28gJT4lCiAgY291bnQodHlwZSkKYGBgCgpWaXN1YWxpemUgdGhlIGRhdGEKCmBgYHtyfQpDdWNrb28gJT4lCiAgZ2dwbG90KGFlcyh4ID0gdHlwZSwgeSA9IGxlbmd0aCwgZmlsbCA9IHR5cGUpKSArCiAgdGhlbWVfYncoKSArCiAgc2NhbGVfZmlsbF9icmV3ZXIocGFsZXR0ZSA9ICJSZEd5IikgKwogIGdlb21fYm94cGxvdCgpICsKICBnZW9tX2ppdHRlcih3aWR0aCA9IDAuMikgKwogIGdndGl0bGUoIkJveHBsb3Qgb2YgdGhlIGxlbmd0aCBvZiBlZ2dzIHBlciB0eXBlIikgKwogIHlsYWIoImxlbmd0aCAobW0pIikgKwogIHN0YXRfc3VtbWFyeShmdW4gPSBtZWFuLCBnZW9tID0gInBvaW50Iiwgc2hhcGUgPSA1LCBzaXplID0gMywgY29sb3IgPSAiYmxhY2siLCBmaWxsID0gImJsYWNrIikKYGBgCgojIEFOT1ZBCgpUbyBzdHVkeSBpZiB0aGUgb2JzZXJ2ZWQgZGlmZmVyZW5jZXMgaW4gYXZlcmFnZSBlZ2cgbGVuZ3RoCmJldHdlZW4gdGhlIGRpZmZlcmVudCBmb3N0ZXIgYmlyZCB0eXBlcyBhcmUgc2lnbmlmaWNhbnQsIHdlIG1heSBwZXJmb3JtCmFuIEFOT1ZBLgoKIyMgRm9ybXVsYXRlIG51bGwgYW5kIGFsdGVybmF0aXZlIGh5cG90aGVzaXMKClRoZSBudWxsIGh5cG90aGVzaXMgb2YgQU5PVkEgc3RhdGVzIHRoYXQ6CiRIMCQ6IFRoZSBtZWFuIGVnZyBsZW5ndGggaXMgZXF1YWwgYmV0d2VlbiB0aGUgZGlmZmVyZW50IGJpcmQgdHlwZXMuCgpUaGUgYWx0ZXJuYXRpdmUgaHlwb3RoZXNpcyBvZiBBTk9WQSBzdGF0ZXMgdGhhdDoKJEhBJDogVGhlIG1lYW4gZWdnIGxlbmd0aCBmb3IgYXQgbGVhc3Qgb25lIGJpcmQgdHlwZSBpcyBkaWZmZXJlbnQKZnJvbSB0aGUgbWVhbiBlZ2cgbGVuZ3RoIGluIGF0IGxlYXN0IG9uZSBvdGhlciBiaXJkIHR5cGUuCgojIyBQYXJhbWV0ZXIgZXN0aW1hdGlvbgoKYGBge3J9Cm1vZDEgPC0gbG0obGVuZ3RoIH4gdHlwZSwgQ3Vja29vKQpgYGAKCiMjIENoZWNrIGFzc3VtcHRpb25zCgpCZWZvcmUgd2UgbWF5IHByb2NlZWQgd2l0aCB0aGUgYW5hbHlzaXMsIHdlIG11c3QgbWFrZSBzdXJlIHRoYXQgYWxsCmFzc3VtcHRpb25zIGZvciBBTk9WQSBhcmUgbWV0LiBBTk9WQSBoYXMgdGhyZWUgYXNzdW1wdGlvbnM6CgoxLiBUaGUgb2JzZXJ2YXRpb25zIGFyZSBpbmRlcGVuZGVudCBvZiBlYWNoIG90aGVyIChpbiBhbGwgZ3JvdXBzKQoyLiBUaGUgZGF0YSAobGVuZ3RoKSBtdXN0IGJlIG5vcm1hbGx5IGRpc3RyaWJ1dGVkIChpbiBhbGwgZ3JvdXBzKQozLiBUaGUgdmFyaWFiaWxpdHkgd2l0aGluIGFsbCBncm91cHMgaXMgc2ltaWxhcgoKVGhlIGZpcnN0IGFzc3VtcHRpb24gaXMgbWV0LCBhcyB3ZSBtYXkgYXNzdW1lIHRoYXQgdGhlcmUgYXJlIG5vCnNwZWNpZmljIHBhdHRlcm5zIG9mIGNvcnJlbGF0aW9uIGJldHdlZW4gdGhlIHJhbmRvbWx5IHNlbGVjdGVkIG5lc3RzLgoKVG8gY2hlY2sgdGhlIG5vcm1hbGl0eSBhc3N1bXB0aW9uLCB3ZSB3aWxsIHVzZSBRUSBwbG90cy4KCmBgYHtyfQpwbG90KG1vZDEsIHdoaWNoID0gMikKYGBgCgpgYGB7cn0KQ3Vja29vICU+JQogIGdncGxvdChhZXMoc2FtcGxlID0gbGVuZ3RoKSkgKwogIGdlb21fcXEoKSArCiAgZ2VvbV9xcV9saW5lKCkgKwogIGZhY2V0X2dyaWQofnR5cGUpCmBgYAoKVGhlcmUgc2VlbSB0byBiZSBubyBjbGVhciBkZXZpYXRpb25zIGZyb20gbm9ybWFsaXR5LgoKVGhlIHRoaXJkIGFzc3VtcHRpb24gb2YgZXF1YWwgdmFyaWFuY2VzIHNlZW1zIHRvIGJlIG1ldCBiYXNlZCBvbiB0aGUKdmlzdWFsaXphdGlvbiB3aXRoIHRoZSBib3hwbG90cyAoc2VlIGFib3ZlKS4KCkFzIHN1Y2gsIHdlIG1heSBwcm9jZWVkIHdpdGggdGhlIEFOT1ZBIGFuYWx5c2lzLgoKCiMjIyBTaW11bGF0ZSB0byB0cmFpbiB5b3VyIHNraWxscyBpbiBhc3Nlc3NpbmcgYXNzdW1wdGlvbnMKCmBgYHtyfQpzZXQuc2VlZCgxMDMxKQpzaWdtYSA8LSBtb2QxICU+JSBzaWdtYSgpCmRhdGFIbHAgPC0gQ3Vja29vCgpzaW1Nb2RlbHMgPC0gbGlzdCgpCnBsb3RMaXN0IDwtIGxpc3QoKQpwbG90TGlzdFFRMSA8LSBsaXN0KCkKCnBhcihtZnJvdyA9IGMoMywgMykpCmZvciAoaSBpbiAxOjkpCnsKICBub2JzIDwtIEN1Y2tvbyAlPiUgbnJvdygpCiAgZGF0YUhscCR5U2ltIDwtIG1vZDEkZml0ICsgcm5vcm0obm9icywgc2QgPSBzaWdtYSkKICBzaW1Nb2RlbHNbW2ldXSA8LSBsbSh5U2ltIH4gdHlwZSwgZGF0YUhscCkKICBwbG90KHNpbU1vZGVsc1tbaV1dLCB3aGljaCA9IDIpCiAgcGxvdExpc3RbW2ldXSA8LSBkYXRhSGxwICU+JQogICAgZ2dwbG90KGFlcyh0eXBlLCB5U2ltKSkgKwogICAgZ2VvbV9ib3hwbG90KG91dGxpZXIuc2hhcGUgPSBOQSkgKwogICAgZ2VvbV9qaXR0ZXIoKQogIHBsb3RMaXN0UVExW1tpXV0gPC0gZGF0YUhscCAlPiUKICAgIGZpbHRlcih0eXBlID09ICJtZWFkb3ciKSAlPiUKICAgIGdncGxvdChhZXMoc2FtcGxlID0geVNpbSkpICsKICAgIGdlb21fcXEoKSArCiAgICBnZW9tX3FxX2xpbmUoKSArCiAgICB4bGFiKCJRUSBmb3IgbWVhZG93IikKfQoKZG8uY2FsbChncmlkRXh0cmE6OmdyaWQuYXJyYW5nZSwgcGxvdExpc3QpCmRvLmNhbGwoZ3JpZEV4dHJhOjpncmlkLmFycmFuZ2UsIHBsb3RMaXN0UVExKQpgYGAKClRoZSBtb3N0IGRldmlhdGluZyBRUS1wbG90IG9mIHRoZSByZXNpZHVhbHMgaW4gdGhlIG5pbmUgc2ltdWxhdGlvbiBydW5zOgpgYGB7cn0KcGFyKG1mcm93ID0gYygxLCAxKSkKcGxvdChzaW1Nb2RlbHNbWzhdXSwgd2hpY2ggPSAyKQpgYGAKCgojIyBBTk9WQSBtb2RlbAoKYGBge3J9Cm1vZDFfYW5vdmEgPC0gYW5vdmEobW9kMSkKbW9kMV9hbm92YQpgYGAKClRoZSBwLXZhbHVlIG9mIHRoZSBBTk9WQSBhbmFseXNpcyBpcyBleHRyZW1lbHkgc2lnbmlmaWNhbnQKKHAtdmFsdWUgPCAwLjAwMSksCnNvIHdlIHJlamVjdCB0aGUgbnVsbCBoeXBvdGhlc2lzIHRoYXQgdGhlIG1lYW4KZWdnIGxlbmd0aCBpcyBlcXVhbCBiZXR3ZWVuIHRoZSBkaWZmZXJlbnQgYmlyZCB0eXBlcy4KV2UgY2FuIHNheSB0aGF0IHRoZSBtZWFuIGVnZyBsZW5ndGggaXMgc2lnbmlmaWNhbnRseSBkaWZmZXJlbnQKYmV0d2VlbiBhdCBsZWFzdCB0d28gYmlyZCB0eXBlcyBvbiB0aGUgNSUgc2lnbmlmaWNhbmNlIGxldmVsLgoKQmFzZWQgb24gdGhpcyBhbmFseXNpcywgd2UgZG8gbm90IHlldCBrbm93IGJldHdlZW4gd2hpY2ggcGFydGljdWxhcgpiaXJkIHR5cGVzIHRoZXJlIGlzIGEgc2lnbmlmaWNhbnQgZGlmZmVyZW5jZS4gVG8gc3R1ZHkgdGhpcywgd2Ugd2lsbApwZXJmb3JtIHRoZSBUdWNrZXkgcG9zdC1ob2MgYW5hbHlzaXMuCgojIyBQb3N0LWhvYyBhbmFseXNpcwoKV2Ugd2lsbCBwZXJmb3JtIGEgcG9zdC1ob2MgYW5hbHlzaXMsIHRvIGxvb2sgYXQgdGhlIGRpZmZlcmVuY2UKaW4gZWdnIGxlbmd0aCBiZXR3ZWVuIGVhY2ggcGFpcndpc2UgY29tcGFyaXNvbiBvZiBiaXJkIHR5cGVzLgpJbXBvcnRhbnRseSwgd2l0aCB0aGlzIHN0cmF0ZWd5LCB0aGUgcC12YWx1ZXMgd2lsbCBiZSBjb3JyZWN0bHkKYWRqdXN0ZWQgZm9yIG11bHRpcGxlIHRlc3RpbmcuCgpUaGUgbnVsbCBoeXBvdGhlc2lzIGZvciBlYWNoIHBhaXJ3aXNlIHRlc3QgaXMgdGhhdCB0aGVyZSBpcyBubwpkaWZmZXJlbmNlIGluIHRoZSBtZWFuIGVnZyBsZW5ndGggYmV0d2VlbiBib3RoIGJpcmQgdHlwZXMuCgpUaGUgYWx0ZXJuYXRpdmUgaHlwb3RoZXNpcyBmb3IgZWFjaCBwYWlyd2lzZSB0ZXN0IHN0YXRlcyB0aGF0IHRoZXJlCmlzIGluZGVlZCBhIGRpZmZlcmVuY2UgaW4gdGhlIG1lYW4gZWdnIGxlbmd0aCBiZXR3ZWVuIGJvdGggYmlyZCB0eXBlcy4KCldlIHdpbGwgYWxzbyBjYWxjdWxhdGUgdGhlIGNvbmZpZGVuY2UgaW50ZXJ2YWwgb24gdGhlIG1lYW4gZGlmZmVyZW5jZXMuCgpgYGB7cixtZXNzYWdlPUZBTFNFfQpsaWJyYXJ5KG11bHRjb21wLCBxdWlldGx5ID0gVFJVRSkKbWNwIDwtIGdsaHQobW9kMSwgbGluZmN0ID0gbWNwKHR5cGUgPSAiVHVrZXkiKSkKc3VtbWFyeShtY3ApCmNvbmZpbnQobWNwKQpgYGAKCiMjIENvbmNsdXNpb24KClRoZXJlIGFzc29jaWF0aW9uIGJldHdlZW4gdGhlIG1lYW4gbGVuZ3RoIG9mIGEgY3Vja29vJ3MgZWdnIGFuZCB0aGUgZm9zdGVyIGJpcmQgc3BlY2llcyBpcyBhbiBleHRyZW1lbHkgc2lnbmlmaWNhbnQgKHAgPDwgMC4wMDEpLgoKVGhlIG1lYW4gbGVuZ3RoIG9mIGN1Y2tvbydzIGVnZ3MgaW4gbmVzdHMgb2YgdGhlIEV1cmFzaWFuCndlcm4gYXJlIHNtYWxsZXIgYXMgY29tcGFyZWQgdG8gdGhvc2UgZnJvbSBhbGwgb3RoZXIgYmlyZApzcGVjaWVzIGluIHRoZSBzdHVkeToKCi0gdGhlIG1lYWRvdyBwaXBpdCAoYWRqdXN0ZWQgcC12YWx1ZSA9IGByIHN1bW1hcnkobWNwKSR0ZXN0JHB2YWx1ZXNbbmFtZXMoc3VtbWFyeShtY3ApJHRlc3QkdHN0YXQpID09ICJ3cmVuIC0gbWVhZG93Il0gJT4lIGZvcm1hdChkaWdpdHM9MSlgLCBtZWFuIGRpZmZlcmVuY2UgPSBgciByb3VuZChjb25maW50KG1jcCkkY29uZmludFsid3JlbiAtIG1lYWRvdyIsMV0sMSlgbW0sIDk1JSBDSSBbYHIgcm91bmQoY29uZmludChtY3ApJGNvbmZpbnRbIndyZW4gLSBtZWFkb3ciLC0xXSwxKWBdKQotIHRoZSB0cmVlIHBpcGl0IChhZGp1c3RlZCBwLXZhbHVlID0gYHIgc3VtbWFyeShtY3ApJHRlc3QkcHZhbHVlc1tuYW1lcyhzdW1tYXJ5KG1jcCkkdGVzdCR0c3RhdCkgPT0gIndyZW4gLSB0cmVlIl0gJT4lIGZvcm1hdChkaWdpdHM9MSlgLCBtZWFuIGRpZmZlcmVuY2UgPSBgciByb3VuZChjb25maW50KG1jcCkkY29uZmludFsid3JlbiAtIHRyZWUiLDFdLDEpYG1tLCA5NSUgQ0kgW2ByIHJvdW5kKGNvbmZpbnQobWNwKSRjb25maW50WyJ3cmVuIC0gdHJlZSIsLTFdLDEpYF0pCi0gdGhlIGR1bm5vY2sgKGFkanVzdGVkIHAtdmFsdWUgPSBgciBzdW1tYXJ5KG1jcCkkdGVzdCRwdmFsdWVzW25hbWVzKHN1bW1hcnkobWNwKSR0ZXN0JHRzdGF0KSA9PSAid3JlbiAtIGR1bm5vY2siXSAlPiUgZm9ybWF0KGRpZ2l0cz0xKWAsIG1lYW4gZGlmZmVyZW5jZSA9IGByIHJvdW5kKGNvbmZpbnQobWNwKSRjb25maW50WyJ3cmVuIC0gZHVubm9jayIsMV0sMSlgbW0sIDk1JSBDSSBbYHIgcm91bmQoY29uZmludChtY3ApJGNvbmZpbnRbIndyZW4gLSBkdW5ub2NrIiwtMV0sMSlgXSkKLSB0aGUgRXVyb3BlYW4gcm9iaW4gKGFkanVzdGVkIHAtdmFsdWUgPSBgciBzdW1tYXJ5KG1jcCkkdGVzdCRwdmFsdWVzW25hbWVzKHN1bW1hcnkobWNwKSR0ZXN0JHRzdGF0KSA9PSAid3JlbiAtIHJvYmluIl0gJT4lIGZvcm1hdChkaWdpdHM9MSlgLCBtZWFuIGRpZmZlcmVuY2UgPSBgciByb3VuZChjb25maW50KG1jcCkkY29uZmludFsid3JlbiAtIHJvYmluIiwxXSwxKWBtbSwgOTUlIENJIFtgciByb3VuZChjb25maW50KG1jcCkkY29uZmludFsid3JlbiAtIHJvYmluIiwtMV0sMSlgXSkKLSB0aGUgd2hpdGUgd2FndGFpbCAoYWRqdXN0ZWQgcC12YWx1ZSA9IGByIHN1bW1hcnkobWNwKSR0ZXN0JHB2YWx1ZXNbbmFtZXMoc3VtbWFyeShtY3ApJHRlc3QkdHN0YXQpID09ICJ3cmVuIC0gd2FndGFpbCJdICU+JSBmb3JtYXQoZGlnaXRzPTEpYCwgbWVhbiBkaWZmZXJlbmNlID0gYHIgcm91bmQoY29uZmludChtY3ApJGNvbmZpbnRbIndyZW4gLSB3YWd0YWlsIiwxXSwxKWBtbSwgOTUlIENJIFtgciByb3VuZChjb25maW50KG1jcCkkY29uZmludFsid3JlbiAtIHdhZ3RhaWwiLC0xXSwxKWBdKQoKVGhlIG1lYW4gbGVuZ3RoIG9mIHRoZSBjdWNrb28gYmlyZCdzIGVnZ3MgZm9yIGFsbCBvdGhlciBwYWlyd2lzZSBjb21wYXJpc29ucyBiZXR3ZWVuIGZvc3RlciBiaXJkIHNwZWNpZXMgYXJlIG5vdCBzdGF0aXN0aWNhbGx5IHNpZ25pZmljYW50bHkgZGlmZmVyZW50IGF0IHRoZSA1JSBsZXZlbC4K</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("07_2_cuckoo_sol.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement" />
+
+
+<title>7. Analysis of Variance</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">7. Analysis of Variance</h1>
+<h4 class="author">Lieven Clement</h4>
+<h4 class="date">statOmics, Ghent University (<a
+href="https://statomics.github.io"
+class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
+<div id="prostacyclin-example" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Prostacyclin
+Example</h1>
+<p>Researchers study the effect of arachidonic acid on prostacyclin
+level in blood plasma. They use 3 different concentrations of
+arachidonic acid:</p>
+<ul>
+<li>low,</li>
+<li>medium and</li>
+<li>high dose</li>
+</ul>
+<p>Each treatment is adopted to 12 rats. They measure the prostacyclin
+levels in blood plasma using an elisa fluorescence measurement.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>prostacyclin <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;https://raw.githubusercontent.com/GTPB/PSLS20/master/data/prostacyclin.txt&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>prostacyclin<span class="sc">$</span>dose <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(prostacyclin<span class="sc">$</span>dose)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(prostacyclin)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["prostac"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["dose"],"name":[2],"type":["fct"],"align":["left"]}],"data":[{"1":"19.2","2":"10"},{"1":"10.8","2":"10"},{"1":"33.6","2":"10"},{"1":"11.9","2":"10"},{"1":"15.9","2":"10"},{"1":"33.3","2":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<hr />
+<p>##Data exploration</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>prostacyclin <span class="sc">%&gt;%</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> dose, <span class="at">y =</span> prostac, <span class="at">fill =</span> dose)) <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="st">&quot;jitter&quot;</span>) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;prostacyclin (ng/ml)&quot;</span>)</span></code></pre></div>
+<p><img src="07-Anova_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>prostacyclin <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> prostac)) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>dose)</span></code></pre></div>
+<p><img src="07-Anova_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<p>The data in the three groups is approximately Normally distributed
+with equal variance: <span class="math display">\[Y_i \vert \text{group
+j} \sim N(\mu_j,\sigma^2),\]</span> with <span class="math inline">\(j=
+\text{1, 2, 3}\)</span></p>
+<div id="research-question" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Research
+Question</h2>
+<p>Research question can translated in the following hypotheses</p>
+<ul>
+<li><p><span class="math inline">\(H_0\)</span>: the arachidonic acid
+concentration has no effect on the mean prostacyclin level in blood
+plasma in rats <span class="math display">\[
+H_0:\mu_1=\mu_2 = \mu_3
+\]</span></p></li>
+<li><p><span class="math inline">\(H_1\)</span>: the arachidonic acid
+concentration has an effect on the mean prostacyclin level in blood
+plasma in rats, which implies that the at least two means are
+different.</p></li>
+</ul>
+<p>In terms of the model parameters this becomes</p>
+<p><span class="math display">\[
+  H_0:\mu_1=\mu_2 = \mu_3
+\]</span> and <span class="math display">\[H_1: \exists\ j,k \in
+\{1,\ldots,g\} : \mu_j\neq\mu_k\]</span></p>
+<p>Alternative approach: split null hypothesis in partial hypotheses:
+<span class="math display">\[
+  H_{0jk}: \mu_j=\mu_k \text{ versus } H_{1jk}: \mu_j \neq \mu_k
+\]</span></p>
+<p>Each hypothesis can be tested via two-sample t-tests <span
+class="math inline">\(\rightarrow\)</span> multiple testing problem +
+loss of power.</p>
+<p><span class="math inline">\(\rightarrow\)</span> assess <span
+class="math inline">\(H_0:\mu_1=\mu_2=\mu_3\)</span> with a <em>single
+test</em>.</p>
+</div>
+</div>
+<div id="analyse-of-variance" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Analyse of
+Variance</h1>
+<p>Correct solution for testing problem: ANalysis Of VAriance
+(ANOVA)</p>
+<ul>
+<li>We develop the method for 3 groups (prostacyclin example)</li>
+<li>Model data with linear model by using dummy variables.</li>
+<li>1 dummy variable less than the number of groups. Here we need 2
+dummy variables.</li>
+<li>Generalizing to g groups <span class="math inline">\(g&gt;3\)</span>
+is trivial (extra dummy variables)</li>
+</ul>
+<div id="model" class="section level3" number="2.0.1">
+<h3><span class="header-section-number">2.0.1</span> Model</h3>
+<p><span class="math display">\[\begin{eqnarray}
+  Y_i &amp;=&amp; g(x_{i1},x_{i2}) + \epsilon_i\\
+  Y_i &amp;=&amp; \beta_0+\beta_1 x_{i1} +\beta_2 x_{i2} +\epsilon_i
+\end{eqnarray}\]</span></p>
+<ul>
+<li><span class="math inline">\(Y_i\)</span> de outcome for observation
+<span class="math inline">\(i\)</span> (<span
+class="math inline">\(i=1,\ldots, n\)</span>) </li>
+<li><span class="math inline">\(\epsilon_i\text{i.i.d.}
+N(0,\sigma^2)\)</span> </li>
+<li>and dummy variables <span class="math display">\[x_{i1} = \left\{
+\begin{array}{ll}
+1 &amp; \text{ if observation $i$ belongs to middle dose group (M)} \\
+0 &amp; \text{ if observation $i$ belongs to other dose group}
+\end{array}\right.\]</span> <span class="math display">\[x_{i2} =
+\left\{ \begin{array}{ll}
+1 &amp; \text{ if observation $i$ belongs to high dose group (H)} \\
+0 &amp; \text{if observation $i$ belongs to other dose group}
+\end{array}\right. .\]</span> </li>
+<li>Low dose group (L) with <span
+class="math inline">\(x_{i1}=x_{i2}=0\)</span> is <em>reference
+group</em></li>
+</ul>
+<p>Regression-model can be rewritten as a model for each group : <span
+class="math display">\[\begin{eqnarray*}
+Y_{i\vert \text{dose=L}} &amp;=&amp; \beta_0+\epsilon_i \\
+Y_{i\vert \text{dose=M}} &amp;=&amp; \beta_0+\beta_1+ \epsilon_i  \\
+Y_{i\vert \text{dose=H}} &amp;=&amp; \beta_0+\beta_2 + \epsilon_i
+\end{eqnarray*}\]</span> with <span class="math inline">\(\epsilon_i
+\sim N(0,\sigma^2)\)</span> </p>
+<p>Interpretation of model parameters: <span
+class="math display">\[\begin{eqnarray*}
+   \beta_0 &amp;=&amp;  \text{E}\left[Y_i \mid \text{treatment with low
+dose group L}\right] \\
+   \beta_1 &amp;=&amp;  (\beta_0+\beta_1)-\beta_0 = \text{E}\left[Y_i
+\mid \text{treatment M}\right] - \text{E}\left[Y_i \mid \text{treatment
+L}\right] \\
+   \beta_2 &amp;=&amp;  (\beta_0+\beta_2)-\beta_0 = \text{E}\left[Y_i
+\mid \text{treatment H}\right]-\text{E}\left[Y_i \mid \text{treatment
+L}\right].
+\end{eqnarray*}\]</span></p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(\beta_0\)</span> is the mean outcome for
+group L </li>
+<li><span class="math inline">\(\beta_1\)</span> is effect (difference
+in mean concentration) of group M vs group L </li>
+<li><span class="math inline">\(\beta_2\)</span> is effect of group H vs
+group L</li>
+</ol>
+<p>We reformulate the model by using <span
+class="math inline">\(\mu\)</span>-notations: <span
+class="math display">\[\begin{eqnarray*}
+  Y_{i\vert \text{dose=L}} &amp;=&amp; \beta_0+\epsilon_i =
+\mu_1+\epsilon_i \\
+  Y_{i\vert \text{dose=M}} &amp;=&amp; \beta_0+\beta_1+ \epsilon_i =
+\mu_2+\epsilon_i \\
+  Y_{i\vert \text{dose=H}} &amp;=&amp; \beta_0+\beta_2 + \epsilon_i =
+\mu_3+\epsilon_i .
+\end{eqnarray*}\]</span> with <span class="math inline">\(\epsilon_i
+\sim N(0,\sigma^2)\)</span> and <span class="math display">\[  \mu_j =
+\text{E}\left[Y_i \mid \text{treatment group } j\right].\]</span></p>
+<p>Original null hypothese <span
+class="math display">\[H_0:\mu_1=\mu_2=\mu_3\]</span> can be formulated
+as <span class="math display">\[H_0: \beta_1=\beta_2=0.\]</span></p>
+<p>Model allows us to use all methods from linear regression.</p>
+<ul>
+<li>Parameter estimators for means, variances and standard errors </li>
+<li>Inference: Confidence intervals, hypothesis tests
+<ul>
+<li>Test <span class="math inline">\(H_0: \beta_1=\beta_2=0\)</span>
+with <span class="math inline">\(F\)</span>-test.</li>
+</ul></li>
+</ul>
+</div>
+<div id="prostacyclin-example-1" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Prostacyclin
+example</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(prostac <span class="sc">~</span> dose, <span class="at">data =</span> prostacyclin)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code></pre></div>
+<pre><code>
+Call:
+lm(formula = prostac ~ dose, data = prostacyclin)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-35.167 -17.117  -4.958  17.927  41.133 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   40.108      6.150   6.521 2.10e-07 ***
+dose25         8.258      8.698   0.949    0.349    
+dose50        43.258      8.698   4.974 1.99e-05 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 21.3 on 33 degrees of freedom
+Multiple R-squared:  0.458, Adjusted R-squared:  0.4252 
+F-statistic: 13.94 on 2 and 33 DF,  p-value: 4.081e-05</code></pre>
+</div>
+</div>
+<div id="sum-of-squares-and-anova" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Sum of squares and
+Anova</h1>
+<p>Similar to simple linear regression we will use sum of squares to
+derive the F-test. <span class="math display">\[\begin{eqnarray*}
+\text{SSR}&amp;=&amp;\sum\limits_{i=1}^n (\hat Y_i -\bar Y)^2\\
+&amp;=&amp; \sum\limits_{i=1}^n (\hat{g} (x_{i1},x_{i2}) - \bar Y)^2\\
+&amp;=&amp; \sum\limits_{i=1}^n
+(\hat\beta_0+\hat\beta_1x_{i1}+\hat\beta_2x_{i2}) - \bar Y)^2\\
+&amp;=&amp; \sum\limits_{i=1}^{n_1} (\hat\beta_0 - \bar Y)^2
++\sum\limits_{i=1}^{n_2} (\hat\beta_0 + \hat\beta_1 - \bar
+Y)^2+\sum\limits_{i=1}^{n_3} (\hat\beta_0 + \hat\beta_2 - \bar Y)^2\\
+&amp;=&amp; \sum\limits_{i=1}^{n_1} (\bar Y_1- \bar Y)^2
++\sum\limits_{i=1}^{n_2} (\bar Y_2- \bar Y)^2+\sum\limits_{i=1}^{n_3}
+(\bar Y_3 - \bar Y)^2\\
+\end{eqnarray*}\]</span> with <span class="math inline">\(n_1\)</span>,
+<span class="math inline">\(n_2\)</span> en <span
+class="math inline">\(n_3\)</span> the number of observations in each
+group (here <span class="math inline">\(n-1=n_2=n_3=12\)</span>).</p>
+<p><span class="math display">\[\begin{eqnarray*}
+\text{SSR}&amp;=&amp;\sum\limits_{i=1}^n (\hat Y_i -\bar Y)^2
+\end{eqnarray*}\]</span></p>
+<ul>
+<li><p>Sum of squares is again equivalent with comparison of model (1)
+and reduced model with an intercept, only.</p></li>
+<li><p>For reduced model the intercept is estimated by the sample
+mean.</p></li>
+<li><p>This sum of squares has g-1=2 degrees of freedom:</p>
+<ul>
+<li>g=3 model parameters - 1 parameter to estimate overall sample mean
+or</li>
+<li>g=3 par. in complex model - 1 par. in reduced model.</li>
+</ul></li>
+</ul>
+<div id="decomposition-of-total-sum-of-squares" class="section level2"
+number="3.1">
+<h2><span class="header-section-number">3.1</span> Decomposition of
+Total Sum of Squares</h2>
+<ul>
+<li>The convention in the Anova setting is to denote the sum of squares
+as SST, the <strong>Sum of Squares of the Treatment (treatment)</strong>
+or as SSBetween.</li>
+<li>The sum of squares of the regression indeed reflects the variability
+between the groups.</li>
+<li>The corresponding mean sum of squares becomes <span
+class="math inline">\(\text{MST}=\text{SST}/2\)</span>.</li>
+</ul>
+<p>The decomposition of SSTot can be written as <span
+class="math display">\[
+  \text{SSTot} = \text{SST} + \text{SSE}
+\]</span></p>
+<p>##SSTot</p>
+<p><img src="07-Anova_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>##SST</p>
+<p><img src="07-Anova_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>##SSE</p>
+<p><img src="07-Anova_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="anova-test" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Anova test</h2>
+<p>Test <span class="math inline">\(H_0: \beta_1=\beta_2=0\)</span> with
+<span class="math inline">\(F\)</span>-test. <span
+class="math display">\[
+  F = \frac{\text{MST}}{\text{MSE}}
+\]</span></p>
+<p>with</p>
+<ul>
+<li><span class="math inline">\(\text{MST}=\text{SST}/(g-1)\)</span>
+</li>
+<li><span class="math inline">\(\text{MSE}=\text{SSE}/(n-p)\)</span>
+</li>
+<li>Test statistic compares the variability explained by model (MST)
+with the residual variability (MSE)</li>
+</ul>
+<p>or</p>
+<ul>
+<li>Variability between groups (MST) to variability within groups (MSE)
+</li>
+<li>Under <span class="math inline">\(H_0\)</span>: <span
+class="math inline">\(F \sim F_{g-1,n-g}\)</span>, with g=3.</li>
+</ul>
+</div>
+<div id="anova-table" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Anova Table</h2>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Df</th>
+<th>Sum Sq</th>
+<th>Mean Sq</th>
+<th>F value</th>
+<th>Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Treatment</td>
+<td>d.f. SST</td>
+<td>SST</td>
+<td>MST</td>
+<td>F-statistiek</td>
+<td>p-waarde</td>
+</tr>
+<tr class="even">
+<td>Error</td>
+<td>d.f. SSE</td>
+<td>SSE</td>
+<td>MSE</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(model1)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["int"],"align":["right"]},{"label":["Sum Sq"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Mean Sq"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"12657.93","3":"6328.9669","4":"13.94364","5":"4.081242e-05","_rn_":"dose"},{"1":"33","2":"14978.58","3":"453.8964","4":"NA","5":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div
+id="f-distribution-with-critical-value-alpha5-and-observed-f-statistic-for-prostacyclin-example"
+class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> F-distribution with
+critical value (<span class="math inline">\(\alpha\)</span>=5%) and
+observed F-statistic for prostacyclin example</h3>
+<p><img src="07-Anova_files/figure-html/prostacF-1.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div
+id="f-distributions-with-different-number-of-degrees-of-freedom-in-the-nominator-and-denominator"
+class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> F-distributions
+with different number of degrees of freedom in the nominator and
+denominator</h3>
+<p><img src="07-Anova_files/figure-html/ftheo-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>###Prostacyclin example: which groups are different?</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code></pre></div>
+<pre><code>
+Call:
+lm(formula = prostac ~ dose, data = prostacyclin)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-35.167 -17.117  -4.958  17.927  41.133 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   40.108      6.150   6.521 2.10e-07 ***
+dose25         8.258      8.698   0.949    0.349    
+dose50        43.258      8.698   4.974 1.99e-05 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 21.3 on 33 degrees of freedom
+Multiple R-squared:  0.458, Adjusted R-squared:  0.4252 
+F-statistic: 13.94 on 2 and 33 DF,  p-value: 4.081e-05</code></pre>
+<p>With model output we can assess if the mean prostacyclin
+concentration differs between middle and low dose group (<span
+class="math inline">\(\beta_1\)</span>: dose25), and, between high and
+low dose group (<span class="math inline">\(\beta_2\)</span>:
+dose50).</p>
+<p>The p-values do not account for multiple testing.</p>
+</div>
+</div>
+</div>
+<div id="post-hoc-analysis-multiple-comparisons-of-means"
+class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Post hoc analysis:
+Multiple comparisons of means</h1>
+<div id="naive-method" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Naive method</h2>
+<p>In the first part we developed the <span
+class="math inline">\(F\)</span>-test to assess</p>
+<p><span class="math display">\[  H_0: \mu_1=\cdots = \mu_g \text{
+versus } H_1: H_1: \exists\ j,k \in \{1,\ldots,g\} :
+\mu_j\neq\mu_k\]</span></p>
+<ul>
+<li>If we reject <span class="math inline">\(H_0\)</span> we conclude
+that at least two means are different</li>
+<li>The method does not allow to identify which means are
+different.</li>
+</ul>
+<p>A first naive method is to split <span
+class="math inline">\(H_0\)</span> in partial hypotheses <span
+class="math display">\[H_{0jk}: \mu_j=\mu_k \text{ versus } H_{1jk}:
+\mu_j \neq \mu_k\]</span></p>
+<ul>
+<li><p>Falsify partial null hypotheses with two-sample <span
+class="math inline">\(t\)</span>-testen</p></li>
+<li><p>Comparison of group <span class="math inline">\(j\)</span> with
+group <span class="math inline">\(k\)</span> with two-sample <span
+class="math inline">\(t\)</span>-test under the equality of means: <span
+class="math display">\[T_{jk} =
+\frac{\bar{Y}_j-\bar{Y}_k}{S_p\sqrt{\frac{1}{n_j}+\frac{1}{n_k}}} \sim
+t_{n-2}\]</span></p></li>
+</ul>
+<p>With</p>
+<ul>
+<li><p><span class="math inline">\(S_p^2\)</span> the pooled variance
+estimator, <span class="math display">\[S_p^2 = \frac{(n_j-1)S_j^2 +
+(n_k-1)S_k^2}{n_j+n_k-2}\]</span></p></li>
+<li><p>with <span class="math inline">\(S_j^2\)</span> and <span
+class="math inline">\(S_k^2\)</span> the sample variances of group <span
+class="math inline">\(j\)</span> en <span
+class="math inline">\(k\)</span>, respectively.</p></li>
+</ul>
+<p>In ANOVA context we assume that the variance of <strong>all</strong>
+<span class="math inline">\(g\)</span> groups is equal, i.e. the
+residual variance <span class="math inline">\(\sigma^2\)</span>.</p>
+<ul>
+<li><p>Use of <span class="math inline">\(S_p^2\)</span> is not
+efficient because it does not make use of all data</p></li>
+<li><p>We can gain efficiency by using MSE <span
+class="math display">\[\text{MSE}= \sum_{j=1}^g
+\frac{(n_j-1)S_j^2}{n-g}\]</span></p></li>
+<li><p>The <span class="math inline">\(t\)</span>-tests are thus best
+based on <span class="math display">\[T_{jk} =
+\frac{\bar{Y}_j-\bar{Y}_k}{\text{MSE}\sqrt{\frac{1}{n_j}+\frac{1}{n_k}}}
+\sim t_{n-g}.\]</span></p></li>
+</ul>
+<hr />
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(prostacyclin, <span class="fu">pairwise.t.test</span>(prostac, dose, <span class="st">&quot;none&quot;</span>))</span></code></pre></div>
+<pre><code>
+    Pairwise comparisons using t tests with pooled SD 
+
+data:  prostac and dose 
+
+   10      25     
+25 0.34927 -      
+50 2e-05   0.00031
+
+P value adjustment method: none </code></pre>
+<p>When we perform <span class="math inline">\(m\)</span>-tests on the
+<span class="math inline">\(\alpha\)</span> significance level we cannot
+correctly control the type I error.</p>
+</div>
+<div id="we-show-with-simulation-that-naive-method-does-not-work"
+class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> We show with
+simulation that naive method does not work</h2>
+<ol style="list-style-type: decimal">
+<li>We simulate from an ANOVA model with <span
+class="math inline">\(g=3\)</span> groups.</li>
+<li>The means in the ANOVA model are equal to each other, so that <span
+class="math display">\[H_0: \mu_1=\mu_2=\mu_3\]</span>.</li>
+<li>For each simulated dataset we conduct <span
+class="math inline">\(m=3\)</span> pairwise two-sample <span
+class="math inline">\(t\)</span>-test</li>
+<li>As soon as one of the <span class="math inline">\(p\)</span>-values
+is below significance level <span
+class="math inline">\(\alpha=5\%\)</span>, we reject <span
+class="math inline">\(H_0: \mu_1=\mu_2=\mu_3\)</span> because two means
+are different according to the <span
+class="math inline">\(t\)</span>-tests.</li>
+<li>We rapport the relative frequency of rejection of the global null
+hypothesis, i.e. the probability on a type I error <span
+class="math inline">\(H_0: \mu_1=\mu_2=\mu_3\)</span>.</li>
+</ol>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="co"># number of treatments (g=3)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ni <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># number of observations in each group</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> g <span class="sc">*</span> ni <span class="co"># total number of observation</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span> <span class="co"># significance level of individual test</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co"># number of simulations</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">302</span>) <span class="co"># seed to reproduce results exactly</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>trt <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>g, ni)) <span class="co"># factor</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>cnt <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># counter for erroneous rejections</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N) {</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if (i%%1000==0) cat(i,&quot;/&quot;,N,&quot;\n&quot;)</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  tests <span class="ot">&lt;-</span> <span class="fu">pairwise.t.test</span>(y, trt, <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  reject <span class="ot">&lt;-</span> <span class="fu">min</span>(tests<span class="sc">$</span>p.value, <span class="at">na.rm =</span> T) <span class="sc">&lt;</span> alpha</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (reject) cnt <span class="ot">&lt;-</span> cnt <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>cnt <span class="sc">/</span> N</span></code></pre></div>
+<pre><code>[1] 0.1209</code></pre>
+<hr />
+<ul>
+<li><p>Probability on the type I error equals 12.1%</p></li>
+<li><p>It is more then twice <span
+class="math inline">\(\alpha=5\)</span>%.</p></li>
+<li><p>If we repeat the simulation with g = 5 groups (i.e. 10 pairwise
+t-tests) we find a type I error of 28.0% instead of the desired
+5%.</p></li>
+<li><p>The simulation study illustrates the
+<strong>multiplicity</strong> problem</p>
+<ul>
+<li>Classical p-values can only be compared with the significance level
+<span class="math inline">\(\alpha\)</span>, if the conclusion is based
+on a single p-value.</li>
+<li>Here the final decision is based on <span
+class="math inline">\(m=g\times(g-1)/2\)</span> <span
+class="math inline">\(p\)</span>-values.</li>
+</ul></li>
+<li><p>We first discuss on the extension of the concept of type I errors
+and then introduce some solutions</p></li>
+</ul>
+</div>
+<div id="family-wise-error-rate" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Family-wise error
+rate</h2>
+<ul>
+<li><p>When <span class="math inline">\(m&gt;1\)</span> tests are used
+to make one decision it is necessary to correct for the risk on false
+positive results (type I errors).</p></li>
+<li><p>Most procedures for multiple testing assume that <em>all <span
+class="math inline">\(m\)</span> null hypotheses are true</em>.</p></li>
+<li><p>So one tries to control the <em>risk on at least 1 false
+positive</em> on the <strong>family wise error rate (FWER) <span
+class="math inline">\(\alpha_F\)</span></strong>, typical <span
+class="math inline">\(\alpha_F=0.05\)</span>.</p></li>
+</ul>
+</div>
+<div id="bonferroni-correction" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Bonferroni
+correction</h2>
+<p>When we conduct <span class="math inline">\(m\)</span> independent
+test each on the significance level <span
+class="math inline">\(\alpha\)</span>, then <span
+class="math display">\[\begin{eqnarray*}
+\alpha_F&amp;=&amp;\text{P}[\text{at least 1 Type I fout}]\\
+&amp;=&amp;1-(1-\alpha)^m \leq m\alpha
+\end{eqnarray*}\]</span></p>
+<ul>
+<li><p>If we assess 5 tests on the 5% significance level then the FWER
+<span class="math inline">\(\approx 25\%\)</span>. {10pt}</p></li>
+<li><p>By conducting them at the 1% significance level the FWER <span
+class="math inline">\(\approx 5\%\)</span>.</p></li>
+<li><p>The Bonferroni correction controls the FWER on <span
+class="math inline">\(\alpha_F\)</span> by setting <span
+class="math display">\[\alpha=\alpha_F/m\]</span> for each of the <span
+class="math inline">\(m\)</span> pairwise comparisons</p></li>
+</ul>
+<p>An alternative approach is to report</p>
+<ol style="list-style-type: decimal">
+<li><em>adjusted p-values</em> that can be compared to the FWER <span
+class="math inline">\(\alpha_F\)</span> level: <span
+class="math display">\[\tilde{p}=min(m\times p,1)\]</span></li>
+<li>and <span class="math inline">\((1-\alpha_F/m)100\%\)</span>
+confidence intervals.</li>
+</ol>
+<div id="prostacyclin-example-2" class="section level3" number="4.4.1">
+<h3><span class="header-section-number">4.4.1</span> prostacyclin
+example</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(prostacyclin, <span class="fu">pairwise.t.test</span>(prostac, dose, <span class="at">data =</span> prostacyclin, <span class="at">p.adjust.method =</span> <span class="st">&quot;bonferroni&quot;</span>))</span></code></pre></div>
+<pre><code>
+    Pairwise comparisons using t tests with pooled SD 
+
+data:  prostac and dose 
+
+   10      25     
+25 1.00000 -      
+50 6e-05   0.00094
+
+P value adjustment method: bonferroni </code></pre>
+<ul>
+<li>The conclusions remain similar, except that the FWER is now
+controlled at <span class="math inline">\(\alpha_F=5\%\)</span> and that
+the <span class="math inline">\(\tilde{p}\)</span>-values are larger
+with a factor 3.</li>
+</ul>
+<p>The same analysis can be conducted in the <code>multcomp</code> R
+package that is developed for multiple testing in linear models.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>model1.mcp <span class="ot">&lt;-</span> <span class="fu">glht</span>(model1, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">dose =</span> <span class="st">&quot;Tukey&quot;</span>))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1.mcp, <span class="at">test =</span> <span class="fu">adjusted</span>(<span class="st">&quot;bonferroni&quot;</span>))</span></code></pre></div>
+<pre><code>
+     Simultaneous Tests for General Linear Hypotheses
+
+Multiple Comparisons of Means: Tukey Contrasts
+
+
+Fit: lm(formula = prostac ~ dose, data = prostacyclin)
+
+Linear Hypotheses:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+25 - 10 == 0    8.258      8.698   0.949 1.000000    
+50 - 10 == 0   43.258      8.698   4.974 5.98e-05 ***
+50 - 25 == 0   35.000      8.698   4.024 0.000943 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+(Adjusted p values reported -- bonferroni method)</code></pre>
+<p>Note, that the user has to define custum functions to obtain
+Bonferonni adjusted confidence intervals.</p>
+<ul>
+<li><p>Bonferonni confidence intervals are not implemented because
+better methods exist for multiple testing.</p></li>
+<li><p>The function below is added here merely for completeness, but we
+will generally use the default method for multiple testing in
+multcomp.</p></li>
+</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>calpha_bon_t <span class="ot">&lt;-</span> <span class="cf">function</span>(object, level) {</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abs</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">qt</span>(</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">-</span> level) <span class="sc">/</span> <span class="dv">2</span> <span class="sc">/</span> <span class="fu">nrow</span>(object<span class="sc">$</span>linfct),</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>      object<span class="sc">$</span>df</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(model1.mcp, <span class="at">calpha =</span> calpha_bon_t)</span></code></pre></div>
+<pre><code>
+     Simultaneous Confidence Intervals
+
+Multiple Comparisons of Means: Tukey Contrasts
+
+
+Fit: lm(formula = prostac ~ dose, data = prostacyclin)
+
+Quantile = 2.5222
+95% confidence level
+ 
+
+Linear Hypotheses:
+             Estimate lwr      upr     
+25 - 10 == 0   8.2583 -13.6790  30.1957
+50 - 10 == 0  43.2583  21.3210  65.1957
+50 - 25 == 0  35.0000  13.0626  56.9374</code></pre>
+</div>
+<div id="evaluate-bonferroni-method-via-simulation"
+class="section level3" number="4.4.2">
+<h3><span class="header-section-number">4.4.2</span> Evaluate Bonferroni
+method via simulation</h3>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="co"># number of treatments (g=3)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ni <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># number of observations in each group</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> g <span class="sc">*</span> ni <span class="co"># totaal number observation</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span> <span class="co"># significance level of individual test</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co"># number of simulaties</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">302</span>) <span class="co"># seed to reproduce results exactly</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>trt <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>g, ni)) <span class="co"># factor</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>cnt <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># counter for erroneous rejections</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N) {</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if (i%%1000==0) cat(i,&quot;/&quot;,N,&quot;\n&quot;)</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  tests <span class="ot">&lt;-</span> <span class="fu">pairwise.t.test</span>(y, trt, <span class="st">&quot;bonferroni&quot;</span>)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  reject <span class="ot">&lt;-</span> <span class="fu">min</span>(tests<span class="sc">$</span>p.value, <span class="at">na.rm =</span> T) <span class="sc">&lt;</span> alpha</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (reject) cnt <span class="ot">&lt;-</span> cnt <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>cnt <span class="sc">/</span> N</span></code></pre></div>
+<pre><code>[1] 0.0457</code></pre>
+<ul>
+<li><p>We find an FWER of 4.6%, which is slightly conservative.</p></li>
+<li><p>For simulations of <span class="math inline">\(g=5\)</span> group
+the FWER is <span class="math inline">\(4.1\%\)</span> (more
+conservative).</p></li>
+<li><p>By using Bonferroni the probability on at least one false
+positive result is lower than <span class="math inline">\(&lt;
+\alpha_F\)</span>.</p></li>
+<li><p>Power loss because the real FWER is smaller than 5%</p></li>
+</ul>
+</div>
+</div>
+<div id="tukey-method" class="section level2" number="4.5">
+<h2><span class="header-section-number">4.5</span> Tukey Method</h2>
+<ul>
+<li><p>Less conservatieve</p></li>
+<li><p>Implementation approximates the null distribution of posthoc
+tests via simulations</p></li>
+<li><p>Results can change slightly if the posthoc analysis is
+repeated</p></li>
+<li><p>Details on the method falls outside the scope of the short
+course</p></li>
+<li><p>Is the default method in the multcomp package:</p>
+<ul>
+<li>adjusted p-values</li>
+<li>adjusted confidence intervals</li>
+</ul></li>
+</ul>
+<div id="captopril-example" class="section level3" number="4.5.1">
+<h3><span class="header-section-number">4.5.1</span> Captopril
+example</h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>model1.mcp <span class="ot">&lt;-</span> <span class="fu">glht</span>(model1, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">dose =</span> <span class="st">&quot;Tukey&quot;</span>))</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1.mcp)</span></code></pre></div>
+<pre><code>
+     Simultaneous Tests for General Linear Hypotheses
+
+Multiple Comparisons of Means: Tukey Contrasts
+
+
+Fit: lm(formula = prostac ~ dose, data = prostacyclin)
+
+Linear Hypotheses:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+25 - 10 == 0    8.258      8.698   0.949 0.613390    
+50 - 10 == 0   43.258      8.698   4.974  &lt; 1e-04 ***
+50 - 25 == 0   35.000      8.698   4.024 0.000835 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+(Adjusted p values reported -- single-step method)</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(model1.mcp)</span></code></pre></div>
+<pre><code>
+     Simultaneous Confidence Intervals
+
+Multiple Comparisons of Means: Tukey Contrasts
+
+
+Fit: lm(formula = prostac ~ dose, data = prostacyclin)
+
+Quantile = 2.4539
+95% family-wise confidence level
+ 
+
+Linear Hypotheses:
+             Estimate lwr      upr     
+25 - 10 == 0   8.2583 -13.0849  29.6016
+50 - 10 == 0  43.2583  21.9151  64.6016
+50 - 25 == 0  35.0000  13.6567  56.3433</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">confint</span>(model1.mcp))</span></code></pre></div>
+<p><img src="07-Anova_files/figure-html/unnamed-chunk-19-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>###Evaluate Tukey method</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="co"># number of treatments (g=3)</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>ni <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># number of observations in each group</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> g <span class="sc">*</span> ni <span class="co"># totaal number observation</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span> <span class="co"># significance level of individual test</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10000</span> <span class="co"># number of simulations</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">302</span>) <span class="co"># seed to reproduce results exactly</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>trt <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>g, ni)) <span class="co"># factor</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>cnt <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># counter for erroneous rejections</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N) {</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if (i%%1000==0) cat(i,&quot;/&quot;,N,&quot;\n&quot;)</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> trt)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  m.mcp <span class="ot">&lt;-</span> <span class="fu">glht</span>(m, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">trt =</span> <span class="st">&quot;Tukey&quot;</span>))</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  tests <span class="ot">&lt;-</span> <span class="fu">summary</span>(m.mcp)<span class="sc">$</span>test</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  reject <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">as.numeric</span>(tests<span class="sc">$</span>pvalues), <span class="at">na.rm =</span> T) <span class="sc">&lt;</span> alpha</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (reject) cnt <span class="ot">&lt;-</span> cnt <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>cnt <span class="sc">/</span> N</span></code></pre></div>
+<pre><code>[1] 0.0503</code></pre>
+</div>
+</div>
+</div>
+<div id="conclusions-prostacyclin-example" class="section level1"
+number="5">
+<h1><span class="header-section-number">5</span> Conclusions:
+Prostacyclin example</h1>
+<p>Entire analysis for prostacyclin example</p>
+<ol style="list-style-type: decimal">
+<li><p>Anova before posthoc tests: F-test has a higher power than
+pairwise t-test</p>
+<ul>
+<li>F-test uses all data</li>
+<li>For F-test we do not need to correct for multiple testing: one test
+is conducted for the general omnibus hypothesis</li>
+</ul></li>
+</ol>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(prostac <span class="sc">~</span> dose, <span class="at">data =</span> prostacyclin)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(model1)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["int"],"align":["right"]},{"label":["Sum Sq"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Mean Sq"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"12657.93","3":"6328.9669","4":"13.94364","5":"4.081242e-05","_rn_":"dose"},{"1":"33","2":"14978.58","3":"453.8964","4":"NA","5":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model1.mcp <span class="ot">&lt;-</span> <span class="fu">glht</span>(model1, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">dose =</span> <span class="st">&quot;Tukey&quot;</span>))</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1.mcp)</span></code></pre></div>
+<pre><code>
+     Simultaneous Tests for General Linear Hypotheses
+
+Multiple Comparisons of Means: Tukey Contrasts
+
+
+Fit: lm(formula = prostac ~ dose, data = prostacyclin)
+
+Linear Hypotheses:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+25 - 10 == 0    8.258      8.698   0.949 0.613433    
+50 - 10 == 0   43.258      8.698   4.974  &lt; 1e-04 ***
+50 - 25 == 0   35.000      8.698   4.024 0.000922 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+(Adjusted p values reported -- single-step method)</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(model1.mcp)</span></code></pre></div>
+<pre><code>
+     Simultaneous Confidence Intervals
+
+Multiple Comparisons of Means: Tukey Contrasts
+
+
+Fit: lm(formula = prostac ~ dose, data = prostacyclin)
+
+Quantile = 2.4526
+95% family-wise confidence level
+ 
+
+Linear Hypotheses:
+             Estimate lwr      upr     
+25 - 10 == 0   8.2583 -13.0736  29.5902
+50 - 10 == 0  43.2583  21.9264  64.5902
+50 - 25 == 0  35.0000  13.6681  56.3319</code></pre>
+<ul>
+<li>There is an extreme significant effect of arachidonic acid on the
+average prostacyclin blood concentration in rats (<span
+class="math inline">\(p&lt;0.001\)</span>). The average prostacyclin
+concentration is higher in the high dose group than in the low and
+moderate dose group (both p-values are smaller than <span
+class="math inline">\(p&lt;0.001\)</span>).</li>
+<li>The average concentration in the high dose group is 43.3ng/ml (95%
+CI [21.9,64.6]ng/ml) and 35ng/ml (95% BI [13.6,56.4]ng/ml) higher than
+in the low and middle dose group, respectively.</li>
+<li>The difference in average prostacyclin concentration between the
+moderate and low dose group is not significant (p=0.61). (All p-values
+and confidence intervals for post-hoc tests are corrected for multiple
+testing using the Tukey method).</li>
+</ul>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiNy4gQW5hbHlzaXMgb2YgVmFyaWFuY2UiCmF1dGhvcjogIkxpZXZlbiBDbGVtZW50IgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgotLS0KCjxhIHJlbD0ibGljZW5zZSIgaHJlZj0iaHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMCI+PGltZyBhbHQ9IkNyZWF0aXZlIENvbW1vbnMgTGljZW5zZSIgc3R5bGU9ImJvcmRlci13aWR0aDowIiBzcmM9Imh0dHBzOi8vaS5jcmVhdGl2ZWNvbW1vbnMub3JnL2wvYnktbmMtc2EvNC4wLzg4eDMxLnBuZyIgLz48L2E+CgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRSwgY2FjaGU9RkFMU0V9CmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBpbmNsdWRlID0gVFJVRSwgY29tbWVudCA9IE5BLCBlY2hvID0gVFJVRSwKICBtZXNzYWdlID0gRkFMU0UsIHdhcm5pbmcgPSBGQUxTRSwgY2FjaGUgPSBUUlVFCikKbGlicmFyeShSbWlzYykKbGlicmFyeSh0aWR5dmVyc2UpCmBgYAoKCiMgUHJvc3RhY3ljbGluIEV4YW1wbGUKClJlc2VhcmNoZXJzIHN0dWR5IHRoZSBlZmZlY3Qgb2YgYXJhY2hpZG9uaWMgYWNpZCBvbiBwcm9zdGFjeWNsaW4gbGV2ZWwgaW4gYmxvb2QgcGxhc21hLiBUaGV5IHVzZSAzIGRpZmZlcmVudCBjb25jZW50cmF0aW9ucyBvZiBhcmFjaGlkb25pYyBhY2lkOgoKLSBsb3csCi0gbWVkaXVtIGFuZAotIGhpZ2ggZG9zZQoKRWFjaCB0cmVhdG1lbnQgaXMgYWRvcHRlZCB0byAxMiByYXRzLiBUaGV5IG1lYXN1cmUgdGhlIHByb3N0YWN5Y2xpbiBsZXZlbHMgaW4gYmxvb2QgcGxhc21hIHVzaW5nIGFuIGVsaXNhIGZsdW9yZXNjZW5jZSBtZWFzdXJlbWVudC4KCgpgYGB7cn0KcHJvc3RhY3ljbGluIDwtIHJlYWRfdHN2KCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vR1RQQi9QU0xTMjAvbWFzdGVyL2RhdGEvcHJvc3RhY3ljbGluLnR4dCIpCnByb3N0YWN5Y2xpbiRkb3NlIDwtIGFzLmZhY3Rvcihwcm9zdGFjeWNsaW4kZG9zZSkKaGVhZChwcm9zdGFjeWNsaW4pCmBgYAoKLS0tCgojI0RhdGEgZXhwbG9yYXRpb24KCmBgYHtyfQpwcm9zdGFjeWNsaW4gJT4lCiAgZ2dwbG90KGFlcyh4ID0gZG9zZSwgeSA9IHByb3N0YWMsIGZpbGwgPSBkb3NlKSkgKwogIGdlb21fYm94cGxvdCgpICsKICBnZW9tX3BvaW50KHBvc2l0aW9uID0gImppdHRlciIpICsKICB5bGFiKCJwcm9zdGFjeWNsaW4gKG5nL21sKSIpCgpwcm9zdGFjeWNsaW4gJT4lCiAgZ2dwbG90KGFlcyhzYW1wbGUgPSBwcm9zdGFjKSkgKwogIGdlb21fcXEoKSArCiAgZ2VvbV9xcV9saW5lKCkgKwogIGZhY2V0X2dyaWQofmRvc2UpCmBgYAoKClRoZSBkYXRhIGluIHRoZSB0aHJlZSBncm91cHMgaXMgYXBwcm94aW1hdGVseSBOb3JtYWxseSBkaXN0cmlidXRlZCB3aXRoIGVxdWFsIHZhcmlhbmNlOgpcW1lfaSBcdmVydCBcdGV4dHtncm91cCBqfSBcc2ltIE4oXG11X2osXHNpZ21hXjIpLFxdCndpdGggJGo9IFx0ZXh0ezEsIDIsIDN9JAoKIyMgUmVzZWFyY2ggUXVlc3Rpb24KClJlc2VhcmNoIHF1ZXN0aW9uIGNhbiB0cmFuc2xhdGVkIGluIHRoZSBmb2xsb3dpbmcgaHlwb3RoZXNlcwoKLSAkSF8wJDogdGhlIGFyYWNoaWRvbmljIGFjaWQgY29uY2VudHJhdGlvbiBoYXMgbm8gZWZmZWN0IG9uIHRoZSBtZWFuIHByb3N0YWN5Y2xpbiBsZXZlbCBpbiBibG9vZCBwbGFzbWEgaW4gcmF0cwpcWwogIEhfMDpcbXVfMT1cbXVfMiA9IFxtdV8zClxdCgotICRIXzEkOiB0aGUgYXJhY2hpZG9uaWMgYWNpZCBjb25jZW50cmF0aW9uIGhhcyBhbiBlZmZlY3Qgb24gdGhlIG1lYW4gcHJvc3RhY3ljbGluIGxldmVsIGluIGJsb29kIHBsYXNtYSBpbiByYXRzLCB3aGljaCBpbXBsaWVzIHRoYXQgdGhlIGF0IGxlYXN0IHR3byBtZWFucyBhcmUgZGlmZmVyZW50LgoKSW4gdGVybXMgb2YgdGhlIG1vZGVsIHBhcmFtZXRlcnMgdGhpcyBiZWNvbWVzCgpcWwogIEhfMDpcbXVfMT1cbXVfMiA9IFxtdV8zClxdCmFuZApcW0hfMTogXGV4aXN0c1wgaixrIFxpbiBcezEsXGxkb3RzLGdcfSA6IFxtdV9qXG5lcVxtdV9rXF0KCgpBbHRlcm5hdGl2ZSBhcHByb2FjaDogc3BsaXQgbnVsbCBoeXBvdGhlc2lzIGluIHBhcnRpYWwgaHlwb3RoZXNlczoKXFsKICBIX3swamt9OiBcbXVfaj1cbXVfayBcdGV4dHsgdmVyc3VzIH0gSF97MWprfTogXG11X2ogXG5lcSBcbXVfawpcXQoKRWFjaCBoeXBvdGhlc2lzIGNhbiBiZSB0ZXN0ZWQgdmlhIHR3by1zYW1wbGUgdC10ZXN0cyAkXHJpZ2h0YXJyb3ckIG11bHRpcGxlIHRlc3RpbmcgcHJvYmxlbSArIGxvc3Mgb2YgcG93ZXIuCgokXHJpZ2h0YXJyb3ckIGFzc2VzcyAkSF8wOlxtdV8xPVxtdV8yPVxtdV8zJCB3aXRoIGEgKnNpbmdsZSB0ZXN0Ki4KCgoKIyBBbmFseXNlIG9mIFZhcmlhbmNlCgpDb3JyZWN0IHNvbHV0aW9uIGZvciB0ZXN0aW5nIHByb2JsZW06IEFOYWx5c2lzIE9mIFZBcmlhbmNlIChBTk9WQSkKCi0gV2UgZGV2ZWxvcCB0aGUgbWV0aG9kIGZvciAzIGdyb3VwcyAocHJvc3RhY3ljbGluIGV4YW1wbGUpCi0gTW9kZWwgZGF0YSB3aXRoIGxpbmVhciBtb2RlbCBieSB1c2luZyBkdW1teSB2YXJpYWJsZXMuCi0gMSBkdW1teSB2YXJpYWJsZSBsZXNzIHRoYW4gdGhlIG51bWJlciBvZiBncm91cHMuIEhlcmUgd2UgbmVlZCAyIGR1bW15IHZhcmlhYmxlcy4KLSBHZW5lcmFsaXppbmcgdG8gZyBncm91cHMgJGc+MyQgaXMgdHJpdmlhbCAoZXh0cmEgZHVtbXkgdmFyaWFibGVzKQoKIyMjIE1vZGVsCgpcYmVnaW57ZXFuYXJyYXl9CiAgWV9pICY9JiBnKHhfe2kxfSx4X3tpMn0pICsgXGVwc2lsb25faVxcCiAgWV9pICY9JiBcYmV0YV8wK1xiZXRhXzEgeF97aTF9ICtcYmV0YV8yIHhfe2kyfSArXGVwc2lsb25faQpcZW5ke2VxbmFycmF5fQoKLSAkWV9pJCBkZSBvdXRjb21lIGZvciBvYnNlcnZhdGlvbiAkaSQgKCRpPTEsXGxkb3RzLCBuJCkKXHZzcGFjZXs3cHR9Ci0gJFxlcHNpbG9uX2lcdGV4dHtpLmkuZC59IE4oMCxcc2lnbWFeMikkClx2c3BhY2V7N3B0fQotIGFuZCBkdW1teSB2YXJpYWJsZXMKJCR4X3tpMX0gPSBcbGVmdFx7IFxiZWdpbnthcnJheX17bGx9CjEgJiBcdGV4dHsgaWYgb2JzZXJ2YXRpb24gJGkkIGJlbG9uZ3MgdG8gbWlkZGxlIGRvc2UgZ3JvdXAgKE0pfSBcXAowICYgXHRleHR7IGlmIG9ic2VydmF0aW9uICRpJCBiZWxvbmdzIHRvIG90aGVyIGRvc2UgZ3JvdXB9IFxlbmR7YXJyYXl9XHJpZ2h0LiQkCiQkeF97aTJ9ID0gXGxlZnRceyBcYmVnaW57YXJyYXl9e2xsfQoxICYgXHRleHR7IGlmIG9ic2VydmF0aW9uICRpJCBiZWxvbmdzIHRvIGhpZ2ggZG9zZSBncm91cCAoSCl9IFxcCjAgJiBcdGV4dHtpZiBvYnNlcnZhdGlvbiAkaSQgYmVsb25ncyB0byBvdGhlciBkb3NlIGdyb3VwfSBcZW5ke2FycmF5fVxyaWdodC4gLiQkClx2c3BhY2V7N3B0fQogLSBMb3cgZG9zZSBncm91cCAoTCkgd2l0aCAkeF97aTF9PXhfe2kyfT0wJCBpcyAgKnJlZmVyZW5jZSBncm91cCoKClJlZ3Jlc3Npb24tbW9kZWwgY2FuIGJlIHJld3JpdHRlbiBhcyBhIG1vZGVsIGZvciBlYWNoIGdyb3VwIDoKXHZzcGFjZXstMjBwdH0KXGJlZ2lue2VxbmFycmF5Kn0KIFlfe2lcdmVydCBcdGV4dHtkb3NlPUx9fSAmPSYgXGJldGFfMCtcZXBzaWxvbl9pIFxcCiBZX3tpXHZlcnQgXHRleHR7ZG9zZT1NfX0gJj0mIFxiZXRhXzArXGJldGFfMSsgXGVwc2lsb25faSAgXFwKIFlfe2lcdmVydCBcdGV4dHtkb3NlPUh9fSAmPSYgXGJldGFfMCtcYmV0YV8yICsgXGVwc2lsb25faQpcZW5ke2VxbmFycmF5Kn0Kd2l0aCAkXGVwc2lsb25faSBcc2ltIE4oMCxcc2lnbWFeMikkClx2c3BhY2V7MTBwdH0KCkludGVycHJldGF0aW9uIG9mIG1vZGVsIHBhcmFtZXRlcnM6Clx2c3BhY2V7LTIwcHR9CiBcYmVnaW57ZXFuYXJyYXkqfQogICBcYmV0YV8wICY9JiAgXHRleHR7RX1cbGVmdFtZX2kgXG1pZCBcdGV4dHt0cmVhdG1lbnQgd2l0aCBsb3cgZG9zZSBncm91cCBMfVxyaWdodF0gXFwKICAgXGJldGFfMSAmPSYgIChcYmV0YV8wK1xiZXRhXzEpLVxiZXRhXzAgPSBcdGV4dHtFfVxsZWZ0W1lfaSBcbWlkIFx0ZXh0e3RyZWF0bWVudCBNfVxyaWdodF0gLSBcdGV4dHtFfVxsZWZ0W1lfaSBcbWlkIFx0ZXh0e3RyZWF0bWVudCBMfVxyaWdodF0gXFwKICAgXGJldGFfMiAmPSYgIChcYmV0YV8wK1xiZXRhXzIpLVxiZXRhXzAgPSBcdGV4dHtFfVxsZWZ0W1lfaSBcbWlkIFx0ZXh0e3RyZWF0bWVudCBIfVxyaWdodF0tXHRleHR7RX1cbGVmdFtZX2kgXG1pZCBcdGV4dHt0cmVhdG1lbnQgTH1ccmlnaHRdLgogXGVuZHtlcW5hcnJheSp9CgogMS4gICRcYmV0YV8wJCBpcyB0aGUgbWVhbiBvdXRjb21lIGZvciBncm91cCBMCiBcdnNwYWNlezdwdH0KIDIuICAkXGJldGFfMSQgaXMgZWZmZWN0IChkaWZmZXJlbmNlIGluIG1lYW4gIGNvbmNlbnRyYXRpb24pIG9mIGdyb3VwIE0gdnMgZ3JvdXAgTAogXHZzcGFjZXs3cHR9CiAzLiAgJFxiZXRhXzIkIGlzIGVmZmVjdCBvZiBncm91cCBIIHZzIGdyb3VwIEwKCgpXZSByZWZvcm11bGF0ZSB0aGUgbW9kZWwgYnkgdXNpbmcgJFxtdSQtbm90YXRpb25zOgogXHZzcGFjZXstN3B0fQogXGJlZ2lue2VxbmFycmF5Kn0KICBZX3tpXHZlcnQgXHRleHR7ZG9zZT1MfX0gJj0mIFxiZXRhXzArXGVwc2lsb25faSA9IFxtdV8xK1xlcHNpbG9uX2kgXFwKICBZX3tpXHZlcnQgXHRleHR7ZG9zZT1NfX0gJj0mIFxiZXRhXzArXGJldGFfMSsgXGVwc2lsb25faSA9IFxtdV8yK1xlcHNpbG9uX2kgXFwKICBZX3tpXHZlcnQgXHRleHR7ZG9zZT1IfX0gJj0mIFxiZXRhXzArXGJldGFfMiArIFxlcHNpbG9uX2kgPSBcbXVfMytcZXBzaWxvbl9pIC4KIFxlbmR7ZXFuYXJyYXkqfQogd2l0aCAkXGVwc2lsb25faSBcc2ltIE4oMCxcc2lnbWFeMikkIGFuZAogJCQgIFxtdV9qID0gXHRleHR7RX1cbGVmdFtZX2kgXG1pZCBcdGV4dHt0cmVhdG1lbnQgZ3JvdXAgfSBqXHJpZ2h0XS4kJAoKIE9yaWdpbmFsIG51bGwgaHlwb3RoZXNlCiAkJEhfMDpcbXVfMT1cbXVfMj1cbXVfMyQkCiBjYW4gYmUgZm9ybXVsYXRlZCBhcwogJCRIXzA6IFxiZXRhXzE9XGJldGFfMj0wLiQkCgpNb2RlbCBhbGxvd3MgdXMgdG8gdXNlIGFsbCBtZXRob2RzIGZyb20gbGluZWFyIHJlZ3Jlc3Npb24uCgotIFBhcmFtZXRlciBlc3RpbWF0b3JzIGZvciBtZWFucywgdmFyaWFuY2VzIGFuZCAgc3RhbmRhcmQgZXJyb3JzClx2c3BhY2V7MTBwdH0KLSBJbmZlcmVuY2U6IENvbmZpZGVuY2UgaW50ZXJ2YWxzLCBoeXBvdGhlc2lzIHRlc3RzClx2c3BhY2V7MTBwdH0KICAtIFRlc3QgJEhfMDogXGJldGFfMT1cYmV0YV8yPTAkIHdpdGggJEYkLXRlc3QuCgojIyBQcm9zdGFjeWNsaW4gZXhhbXBsZQoKYGBge3J9Cm1vZGVsMSA8LSBsbShwcm9zdGFjIH4gZG9zZSwgZGF0YSA9IHByb3N0YWN5Y2xpbikKc3VtbWFyeShtb2RlbDEpCmBgYAoKCiMgU3VtIG9mIHNxdWFyZXMgYW5kIEFub3ZhCgpTaW1pbGFyIHRvIHNpbXBsZSBsaW5lYXIgcmVncmVzc2lvbiB3ZSB3aWxsIHVzZSBzdW0gb2Ygc3F1YXJlcyB0byBkZXJpdmUgdGhlIEYtdGVzdC4KXHZzcGFjZXstMTBwdH0KXGJlZ2lue2VxbmFycmF5Kn0KXHRleHR7U1NSfSY9JlxzdW1cbGltaXRzX3tpPTF9Xm4gKFxoYXQgWV9pIC1cYmFyIFkpXjJcXAomPSYgXHN1bVxsaW1pdHNfe2k9MX1ebiAoXGhhdHtnfSAoeF97aTF9LHhfe2kyfSkgLSBcYmFyIFkpXjJcXAomPSYgXHN1bVxsaW1pdHNfe2k9MX1ebiAoXGhhdFxiZXRhXzArXGhhdFxiZXRhXzF4X3tpMX0rXGhhdFxiZXRhXzJ4X3tpMn0pIC0gXGJhciBZKV4yXFwKJj0mIFxzdW1cbGltaXRzX3tpPTF9XntuXzF9IChcaGF0XGJldGFfMCAtIFxiYXIgWSleMiArXHN1bVxsaW1pdHNfe2k9MX1ee25fMn0gKFxoYXRcYmV0YV8wICsgXGhhdFxiZXRhXzEgLSBcYmFyIFkpXjIrXHN1bVxsaW1pdHNfe2k9MX1ee25fM30gKFxoYXRcYmV0YV8wICsgXGhhdFxiZXRhXzIgLSBcYmFyIFkpXjJcXAomPSYgXHN1bVxsaW1pdHNfe2k9MX1ee25fMX0gKFxiYXIgWV8xLSBcYmFyIFkpXjIgK1xzdW1cbGltaXRzX3tpPTF9XntuXzJ9IChcYmFyIFlfMi0gXGJhciBZKV4yK1xzdW1cbGltaXRzX3tpPTF9XntuXzN9IChcYmFyIFlfMyAtIFxiYXIgWSleMlxcClxlbmR7ZXFuYXJyYXkqfQp3aXRoICRuXzEkLCAkbl8yJCBlbiAkbl8zJCB0aGUgbnVtYmVyIG9mIG9ic2VydmF0aW9ucyBpbiBlYWNoIGdyb3VwIChoZXJlICRuLTE9bl8yPW5fMz0xMiQpLgoKClxiZWdpbntlcW5hcnJheSp9Clx0ZXh0e1NTUn0mPSZcc3VtXGxpbWl0c197aT0xfV5uIChcaGF0IFlfaSAtXGJhciBZKV4yClxlbmR7ZXFuYXJyYXkqfQoKLSBTdW0gb2Ygc3F1YXJlcyBpcyBhZ2FpbiBlcXVpdmFsZW50IHdpdGggY29tcGFyaXNvbiBvZiBtb2RlbCAoMSkgYW5kIHJlZHVjZWQgbW9kZWwgd2l0aCBhbiBpbnRlcmNlcHQsIG9ubHkuCi0gRm9yIHJlZHVjZWQgbW9kZWwgdGhlIGludGVyY2VwdCBpcyBlc3RpbWF0ZWQgYnkgdGhlIHNhbXBsZSBtZWFuLgotIFRoaXMgc3VtIG9mIHNxdWFyZXMgaGFzIGctMT0yIGRlZ3JlZXMgb2YgZnJlZWRvbToKCiAgLSBnPTMgbW9kZWwgcGFyYW1ldGVycyAtIDEgcGFyYW1ldGVyIHRvIGVzdGltYXRlIG92ZXJhbGwgc2FtcGxlIG1lYW4gb3IKICAtIGc9MyBwYXIuIGluIGNvbXBsZXggbW9kZWwgLSAxIHBhci4gaW4gcmVkdWNlZCBtb2RlbC4KCgojIyBEZWNvbXBvc2l0aW9uIG9mIFRvdGFsIFN1bSBvZiBTcXVhcmVzCgogLSBUaGUgY29udmVudGlvbiBpbiB0aGUgQW5vdmEgc2V0dGluZyBpcyB0byBkZW5vdGUgdGhlIHN1bSBvZiBzcXVhcmVzIGFzIFNTVCwgdGhlICoqU3VtIG9mIFNxdWFyZXMgb2YgdGhlIFRyZWF0bWVudCAodHJlYXRtZW50KSoqIG9yIGFzIFNTQmV0d2Vlbi4KLSBUaGUgc3VtIG9mIHNxdWFyZXMgb2YgdGhlIHJlZ3Jlc3Npb24gaW5kZWVkIHJlZmxlY3RzIHRoZSB2YXJpYWJpbGl0eSBiZXR3ZWVuIHRoZSBncm91cHMuCi0gVGhlIGNvcnJlc3BvbmRpbmcgbWVhbiBzdW0gb2Ygc3F1YXJlcyBiZWNvbWVzICAkXHRleHR7TVNUfT1cdGV4dHtTU1R9LzIkLgoKVGhlIGRlY29tcG9zaXRpb24gb2YgU1NUb3QgY2FuIGJlIHdyaXR0ZW4gYXMKXFsKICBcdGV4dHtTU1RvdH0gPSBcdGV4dHtTU1R9ICsgXHRleHR7U1NFfQpcXQoKIyNTU1RvdAoKXHZzcGFjZXsxMHB0fQoKYGBge3IgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRX0KcGFyKG1mcm93ID0gYygxLCAyKSkKaml0SWsgPC0gcnVuaWYoMzYsIC0uMiwgLjIpICsgcmVwKDE6MywgZWFjaCA9IDEyKQpwbG90KHByb3N0YWMgfiBkb3NlLCBkYXRhID0gcHJvc3RhY3ljbGluLCB4bGFiID0gIkFyYWNoaWRvbmljIGFjaWQgZG9zZSAiLCB5bGFiID0gIlByb3N0YWN5Y2xpbiAobmcvbWwpIiwgY2V4LmF4aXMgPSAxLjUsIGNleC5sYWIgPSAxLjUsIGNleC5tYWluID0gMS41KQpwb2ludHMoaml0SWssIHByb3N0YWN5Y2xpbiRwcm9zdGFjLCBjb2wgPSBjb2wsIHBjaCA9IDE5KQpwb2ludHMoaml0SWssIHByb3N0YWN5Y2xpbiRwcm9zdGFjLCBjb2wgPSA0KQpwb2ludHMoMTozLCBwcmVkaWN0KG1vZGVsMSwgZGF0YS5mcmFtZShkb3NlID0gZmFjdG9yKGMoMTAsIDI1LCA1MCkpKSksIHBjaCA9IDE3LCBjb2wgPSBjKCJiaXNxdWUiLCAiY29yYWwiLCAiZGFya2N5YW4iKSwgY2V4ID0gMS41KQpwb2ludHMoMTozLCBwcmVkaWN0KG1vZGVsMSwgZGF0YS5mcmFtZShkb3NlID0gZmFjdG9yKGMoMTAsIDI1LCA1MCkpKSksIHBjaCA9IDIsIGNvbCA9IDEsIGNleCA9IDEuNSkKYWJsaW5lKGggPSBtZWFuKHByb3N0YWN5Y2xpbiRwcm9zdGFjKSwgbHR5ID0gMSkKZm9yIChpIGluIDE6MzYpIGxpbmVzKHJlcChqaXRJa1tpXSwgMiksIGMobWVhbihwcm9zdGFjeWNsaW4kcHJvc3RhYyksIHByb3N0YWN5Y2xpbiRwcm9zdGFjW2ldKSwgY29sID0gNCwgbHR5ID0gMikKaml0SWsgPC0gcnVuaWYoMzYsIC0uMiwgLjIpICsgcmVwKDE6MywgZWFjaCA9IDEyKQoKcGxvdChyZXAoMSwgMzYpLCBwcm9zdGFjeWNsaW4kcHJvc3RhYyAtIG1lYW4ocHJvc3RhY3ljbGluJHByb3N0YWMpLCB4YXh0ID0gIm5vbmUiLCB5bGFiID0gIkRldmlhdGlvbnMiLCBjZXgubGFiID0gMS41LCBjZXgubWFpbiA9IDEuNSwgY2V4LmF4aXMgPSAxLjUsIGNvbCA9IGFzLmNoYXJhY3Rlcihwcm9zdGFjeWNsaW4kY29sKSwgeGxpbSA9IGMoMSwgMyksIHBjaCA9IDE5LCB4bGFiID0gIiIpCnBvaW50cyhyZXAoMSwgMzYpLCBwcm9zdGFjeWNsaW4kcHJvc3RhYyAtIG1lYW4ocHJvc3RhY3ljbGluJHByb3N0YWMpLCBwY2ggPSAxLCBjb2wgPSA0KQpheGlzKGF0ID0gMTozLCBsYWJlbHMgPSBjKGV4cHJlc3Npb24ocGFzdGUoeVtpXSwgIiAtICIsIGJhcih5KSkpLCBleHByZXNzaW9uKHBhc3RlKGJhcih5KVtqXSwgIiAtICIsIGJhcih5KSkpLCBleHByZXNzaW9uKHBhc3RlKHlbaV0sICIgLSAiLCBiYXIoeSlbal0pKSksIHNpZGUgPSAxLCBjZXguYXhpcyA9IDEuNSkKYGBgCgoKIyNTU1QKClx2c3BhY2V7MTBwdH0KCmBgYHtyIGVjaG89RkFMU0UsIHdhcm5pbmc9RkFMU0V9CnBhcihtZnJvdyA9IGMoMSwgMikpCnBsb3QocHJvc3RhYyB+IGRvc2UsIGRhdGEgPSBwcm9zdGFjeWNsaW4sIHhsYWIgPSAiQXJhY2hpZG9uaWMgYWNpZCBkb3NlICIsIHlsYWIgPSAiUHJvc3RhY3ljbGluIChuZy9tbCkiLCBjZXguYXhpcyA9IDEuNSwgY2V4LmxhYiA9IDEuNSwgY2V4Lm1haW4gPSAxLjUpCnBvaW50cyhqaXRJaywgcHJvc3RhY3ljbGluJHByb3N0YWMsIGNvbCA9IGNvbCwgcGNoID0gMTkpCnBvaW50cyhqaXRJaywgcHJvc3RhY3ljbGluJHByb3N0YWMsIGNvbCA9IDQpCnBvaW50cygxOjMsIHByZWRpY3QobW9kZWwxLCBkYXRhLmZyYW1lKGRvc2UgPSBmYWN0b3IoYygxMCwgMjUsIDUwKSkpKSwgcGNoID0gMTcsIGNvbCA9IGMoImJpc3F1ZSIsICJjb3JhbCIsICJkYXJrY3lhbiIpLCBjZXggPSAxLjUpCnBvaW50cygxOjMsIHByZWRpY3QobW9kZWwxLCBkYXRhLmZyYW1lKGRvc2UgPSBmYWN0b3IoYygxMCwgMjUsIDUwKSkpKSwgcGNoID0gMiwgY29sID0gMiwgY2V4ID0gMS41KQphYmxpbmUoaCA9IG1lYW4ocHJvc3RhY3ljbGluJHByb3N0YWMpLCBsdHkgPSAxKQpmb3IgKGkgaW4gMTozKSBsaW5lcyhyZXAoaSwgMiksIGMobWVhbihwcm9zdGFjeWNsaW4kcHJvc3RhYyksIHByZWRpY3QobW9kZWwxLCBkYXRhLmZyYW1lKGRvc2UgPSBsZXZlbHMocHJvc3RhY3ljbGluJGRvc2UpW2ldKSkpLCBjb2wgPSAyLCBsdHkgPSAyKQoKcGxvdChyZXAoMSwgMzYpLCBwcm9zdGFjeWNsaW4kcHJvc3RhYyAtIG1lYW4ocHJvc3RhY3ljbGluJHByb3N0YWMpLCB4YXh0ID0gIm5vbmUiLCB5bGFiID0gIkRldmlhdGlvbnMiLCBjZXgubGFiID0gMS41LCBjZXgubWFpbiA9IDEuNSwgY2V4LmF4aXMgPSAxLjUsIGNvbCA9IGFzLmNoYXJhY3Rlcihwcm9zdGFjeWNsaW4kY29sKSwgeGxpbSA9IGMoMSwgMyksIHBjaCA9IDE5LCB4bGFiID0gIiIpCnBvaW50cyhyZXAoMSwgMzYpLCBwcm9zdGFjeWNsaW4kcHJvc3RhYyAtIG1lYW4ocHJvc3RhY3ljbGluJHByb3N0YWMpLCBwY2ggPSAxLCBjb2wgPSA0KQpwb2ludHMocmVwKDIsIDMpLCBwcmVkaWN0KG1vZGVsMSwgZGF0YS5mcmFtZShkb3NlID0gZmFjdG9yKGMoMTAsIDI1LCA1MCkpKSkgLSBtZWFuKHByb3N0YWN5Y2xpbiRwcm9zdGFjKSwgcGNoID0gMTcsIGNvbCA9IHVuaXF1ZShwcm9zdGFjeWNsaW4kY29sKSwgY2V4ID0gMS41KQpwb2ludHMocmVwKDIsIDMpLCBwcmVkaWN0KG1vZGVsMSwgZGF0YS5mcmFtZShkb3NlID0gZmFjdG9yKGMoMTAsIDI1LCA1MCkpKSkgLSBtZWFuKHByb3N0YWN5Y2xpbiRwcm9zdGFjKSwgcGNoID0gMiwgY2V4ID0gMS41LCBjb2wgPSAyKQpheGlzKGF0ID0gMTozLCBsYWJlbHMgPSBjKGV4cHJlc3Npb24ocGFzdGUoeVtpXSwgIiAtICIsIGJhcih5KSkpLCBleHByZXNzaW9uKHBhc3RlKGJhcih5KVtqXSwgIiAtICIsIGJhcih5KSkpLCBleHByZXNzaW9uKHBhc3RlKHlbaV0sICIgLSAiLCBiYXIoeSlbal0pKSksIHNpZGUgPSAxLCBjZXguYXhpcyA9IDEuNSkKYGBgCgojI1NTRQoKXHZzcGFjZXsxMHB0fQoKYGBge3IgZWNobz1GQUxTRSwgd2FybmluZz1GQUxTRX0KcGFyKG1mcm93ID0gYygxLCAyKSkKcGxvdChwcm9zdGFjIH4gZG9zZSwgZGF0YSA9IHByb3N0YWN5Y2xpbiwgeGxhYiA9ICJBcmFjaGlkb25pYyBhY2lkIGRvc2UgIiwgeWxhYiA9ICJQcm9zdGFjeWNsaW4gKG5nL21sKSIsIGNleC5heGlzID0gMS41LCBjZXgubGFiID0gMS41LCBjZXgubWFpbiA9IDEuNSkKcG9pbnRzKGppdElrLCBwcm9zdGFjeWNsaW4kcHJvc3RhYywgY29sID0gY29sLCBwY2ggPSAxOSkKcG9pbnRzKGppdElrLCBwcm9zdGFjeWNsaW4kcHJvc3RhYywgY29sID0gMSkKcG9pbnRzKDE6MywgcHJlZGljdChtb2RlbDEsIGRhdGEuZnJhbWUoZG9zZSA9IGZhY3RvcihjKDEwLCAyNSwgNTApKSkpLCBwY2ggPSAxNywgY29sID0gYygiYmlzcXVlIiwgImNvcmFsIiwgImRhcmtjeWFuIiksIGNleCA9IDEuNSkKcG9pbnRzKDE6MywgcHJlZGljdChtb2RlbDEsIGRhdGEuZnJhbWUoZG9zZSA9IGZhY3RvcihjKDEwLCAyNSwgNTApKSkpLCBwY2ggPSAyLCBjb2wgPSAyLCBjZXggPSAxLjUpCmZvciAoaSBpbiAxOjMpIGxpbmVzKGMoaSAtIC4yLCBpICsgLjIpLCByZXAocHJlZGljdChtb2RlbDEsIGRhdGEuZnJhbWUoZG9zZSA9IGxldmVscyhwcm9zdGFjeWNsaW4kZG9zZSlbaV0pKSwgMiksIGNvbCA9IGMoImJpc3F1ZSIsICJjb3JhbCIsICJkYXJrY3lhbiIpW2ldKQphYmxpbmUoaCA9IG1lYW4ocHJvc3RhY3ljbGluJHByb3N0YWMpLCBsdHkgPSAxKQpmb3IgKGkgaW4gMTozNikgbGluZXMocmVwKGppdElrW2ldLCAyKSwgYyhwcm9zdGFjeWNsaW4kcHJvc3RhY1tpXSwgbW9kZWwxJGZpdHRlZFtpXSksIGNvbCA9IDEsIGx0eSA9IDIpCgpwbG90KHJlcCgxLCAzNiksIHByb3N0YWN5Y2xpbiRwcm9zdGFjIC0gbWVhbihwcm9zdGFjeWNsaW4kcHJvc3RhYyksIHhheHQgPSAibm9uZSIsIHlsYWIgPSAiRGV2aWF0aW9ucyIsIGNleC5sYWIgPSAxLjUsIGNleC5tYWluID0gMS41LCBjZXguYXhpcyA9IDEuNSwgY29sID0gYXMuY2hhcmFjdGVyKHByb3N0YWN5Y2xpbiRjb2wpLCB4bGltID0gYygxLCAzKSwgcGNoID0gMTksIHhsYWIgPSAiIikKcG9pbnRzKHJlcCgxLCAzNiksIHByb3N0YWN5Y2xpbiRwcm9zdGFjIC0gbWVhbihwcm9zdGFjeWNsaW4kcHJvc3RhYyksIHBjaCA9IDEsIGNvbCA9IDQpCnBvaW50cyhyZXAoMiwgMyksIHByZWRpY3QobW9kZWwxLCBkYXRhLmZyYW1lKGRvc2UgPSBmYWN0b3IoYygxMCwgMjUsIDUwKSkpKSAtIG1lYW4ocHJvc3RhY3ljbGluJHByb3N0YWMpLCBwY2ggPSAxNywgY29sID0gdW5pcXVlKHByb3N0YWN5Y2xpbiRjb2wpLCBjZXggPSAxLjUpCnBvaW50cyhyZXAoMiwgMyksIHByZWRpY3QobW9kZWwxLCBkYXRhLmZyYW1lKGRvc2UgPSBmYWN0b3IoYygxMCwgMjUsIDUwKSkpKSAtIG1lYW4ocHJvc3RhY3ljbGluJHByb3N0YWMpLCBwY2ggPSAyLCBjb2wgPSAyLCBjZXggPSAxLjUpCnBvaW50cyhyZXAoMywgMzYpLCBtb2RlbDEkcmVzLCBwY2ggPSAxOSwgY29sID0gYXMuY2hhcmFjdGVyKHByb3N0YWN5Y2xpbiRjb2wpKQpwb2ludHMocmVwKDMsIDM2KSwgbW9kZWwxJHJlcywgcGNoID0gMSkKYXhpcyhhdCA9IDE6MywgbGFiZWxzID0gYyhleHByZXNzaW9uKHBhc3RlKHlbaV0sICIgLSAiLCBiYXIoeSkpKSwgZXhwcmVzc2lvbihwYXN0ZShiYXIoeSlbal0sICIgLSAiLCBiYXIoeSkpKSwgZXhwcmVzc2lvbihwYXN0ZSh5W2ldLCAiIC0gIiwgYmFyKHkpW2pdKSkpLCBzaWRlID0gMSwgY2V4LmF4aXMgPSAxLjUpCmBgYAoKCiMjIEFub3ZhIHRlc3QKClRlc3QgJEhfMDogXGJldGFfMT1cYmV0YV8yPTAkIHdpdGggJEYkLXRlc3QuClxbCiAgRiA9IFxmcmFje1x0ZXh0e01TVH19e1x0ZXh0e01TRX19ClxdCgp3aXRoCgotICRcdGV4dHtNU1R9PVx0ZXh0e1NTVH0vKGctMSkkClx2c3BhY2V7MTBwdH0KLSAkXHRleHR7TVNFfT1cdGV4dHtTU0V9LyhuLXApJApcdnNwYWNlezEwcHR9Ci0gVGVzdCBzdGF0aXN0aWMgY29tcGFyZXMgdGhlIHZhcmlhYmlsaXR5IGV4cGxhaW5lZCBieSAgbW9kZWwgKE1TVCkgd2l0aCB0aGUgcmVzaWR1YWwgdmFyaWFiaWxpdHkgKE1TRSkKCm9yCgotIFZhcmlhYmlsaXR5IGJldHdlZW4gZ3JvdXBzIChNU1QpIHRvIHZhcmlhYmlsaXR5IHdpdGhpbiBncm91cHMgKE1TRSkKXHZzcGFjZXsxMHB0fQotIFVuZGVyICRIXzAkOiAkRiBcc2ltIEZfe2ctMSxuLWd9JCwgd2l0aCBnPTMuCgoKIyMgQW5vdmEgVGFibGUKCnwgfERmfFN1bSBTcXxNZWFuIFNxfEYgdmFsdWV8UHIoPkYpfAp8LS0tfC0tLXwtLS18LS0tfC0tLXwtLS18CnxUcmVhdG1lbnR8ZC5mLiBTU1R8U1NUfE1TVHxGLXN0YXRpc3RpZWt8cC13YWFyZGV8CnxFcnJvcnxkLmYuIFNTRXxTU0V8TVNFfCB8IHwKCmBgYHtyfQphbm92YShtb2RlbDEpCmBgYAoKCiMjIyBGLWRpc3RyaWJ1dGlvbiB3aXRoIGNyaXRpY2FsIHZhbHVlICAoJFxhbHBoYSQ9NSUpIGFuZCBvYnNlcnZlZCBGLXN0YXRpc3RpYyBmb3IgcHJvc3RhY3ljbGluIGV4YW1wbGUKYGBge3IgcHJvc3RhY0YsIG91dC53aWR0aD0nMTAwJScsIGZpZy5hc3A9LjgsIGZpZy5hbGlnbj0nY2VudGVyJyxlY2hvPUZBTFNFfQpncmlkIDwtIHNlcSgwLCAxNywgLjAxKQpkZjEgPC0gYW5vdmEobW9kZWwxKVsxLCAxXQpkZjIgPC0gYW5vdmEobW9kZWwxKVsyLCAxXQpmdmFsIDwtIGFub3ZhKG1vZGVsMSlbMSwgNF0KY3JpdCA8LSBxZigwLjk1LCBkZjEsIGRmMikKcmVqZWN0IDwtIGMoY3JpdCwgZ3JpZFt3aGljaChncmlkID4gY3JpdCldKQphY2NlcHQgPC0gYyhncmlkW3doaWNoKGdyaWQgPCBjcml0KV0sIGNyaXQpCnBsb3QoZ3JpZCwgZGYoZ3JpZCwgZGYxLCBkZjIpLCB0eXBlID0gImwiLCB5bGFiID0gIkRlbnNpdHkiLCB4bGFiID0gIkYtc3RhdGlzdGljIiwgY2V4LmF4aXMgPSAxLjUsIGNleC5sYWIgPSAxLjUpCnBvbHlnb24oYygwLCBhY2NlcHQsIGNyaXQsIDApLCBjKDAsIGRmKGFjY2VwdCwgZGYxLCBkZjIpLCAwLCAwKSwgY29sID0gImJsdWUiLCBib3JkZXIgPSAiYmx1ZSIpCnRleHQoY3JpdCAvIDIsIC45NywgbGFiZWxzID0gImFjY2VwdFxuOTUlIiwgY29sID0gImJsdWUiLCBjZXggPSAxLjUpCnBvbHlnb24oYyhjcml0LCByZWplY3QsIDE1LCBjcml0KSwgYygwLCBkZihyZWplY3QsIGRmMSwgZGYyKSwgMCwgMCksIGNvbCA9ICJyZWQiLCBib3JkZXIgPSAicmVkIikKYWJsaW5lKHYgPSBjcml0LCBjb2wgPSAicmVkIiwgbHdkID0gMikKdGV4dChjcml0ICsgKGZ2YWwgLSBjcml0KSAvIDIsIC45NywgbGFiZWxzID0gInJlamVjdFxuNSUiLCBjb2wgPSAicmVkIiwgY2V4ID0gMS41KQp0ZXh0KHBvcyA9IDQsIGNyaXQsIGRmKGNyaXQsIDIsIDMzKSwgbGFiZWxzID0gcGFzdGUwKCJGKDAuMDUsIiwgZGYxLCAiLCIsIGRmMiwgIikiKSwgY29sID0gInJlZCIsIGNleCA9IDEuNSkKdGV4dChwb3MgPSA0LCBmdmFsLCBkZihjcml0LCBkZjEsIGRmMiksIGxhYmVscyA9IHBhc3RlMCgiZj0iLCByb3VuZChmdmFsLCAxKSksIGNvbCA9ICJkYXJrb3JhbmdlIiwgY2V4ID0gMS41KQphYmxpbmUodiA9IGZ2YWwsIGNvbCA9ICJkYXJrb3JhbmdlIiwgbHdkID0gMiwgbHR5ID0gMikKdGV4dCgxNS41LCAuOTcsIGxhYmVscyA9IHBhc3RlMCgicC12YWx1ZVxuIiwgZm9ybWF0KGFub3ZhKG1vZGVsMSlbMSwgNV0sIGRpZ2l0cyA9IDIpKSwgY29sID0gImRhcmtvcmFuZ2UiLCBjZXggPSAxLjUpCmFycm93cyh4MCA9IDE3LjUsIHgxID0gZnZhbCwgeTAgPSAuOSwgeTEgPSAuOSwgY29sID0gImRhcmtvcmFuZ2UiKQpgYGAKCgojIyMgRi1kaXN0cmlidXRpb25zIHdpdGggZGlmZmVyZW50IG51bWJlciBvZiBkZWdyZWVzIG9mIGZyZWVkb20gaW4gdGhlIG5vbWluYXRvciBhbmQgZGVub21pbmF0b3IKYGBge3IgZnRoZW8sIG91dC53aWR0aD0nMTAwJScsIGZpZy5hc3A9LjgsIGZpZy5hbGlnbj0nY2VudGVyJyxlY2hvPUZBTFNFfQpwbG90KGdyaWQsIGRmKGdyaWQsIDEsIDUpLCB0eXBlID0gImwiLCB5bGFiID0gIkRlbnNpdHkiLCB4bGFiID0gIkYtc3RhdGlzdGljIiwgeGxpbSA9IGMoMCwgNSksIHlsaW0gPSBjKDAsIDEuNSksIGx3ZCA9IDIsIGNleC5heGlzID0gMS41LCBjZXgubGFiID0gMS41KQpsaW5lcyhncmlkLCBkZihncmlkLCA1LCA1KSwgdHlwZSA9ICJsIiwgY29sID0gMiwgbHdkID0gMikKbGluZXMoZ3JpZCwgZGYoZ3JpZCwgMTAsIDMwKSwgdHlwZSA9ICJsIiwgY29sID0gMywgbHdkID0gMikKbGluZXMoZ3JpZCwgZGYoZ3JpZCwgMjAsIDMwKSwgdHlwZSA9ICJsIiwgY29sID0gNCwgbHdkID0gMikKbGluZXMoZ3JpZCwgZGYoZ3JpZCwgNTAsIDUwKSwgdHlwZSA9ICJsIiwgY29sID0gNSwgbHdkID0gMikKbGVnZW5kKCJ0b3ByaWdodCIsIGx0eSA9IDEsIGNvbCA9IGMoMSwgMiwgMywgNCwgNSksIGxlZ2VuZCA9IGMoIkYoMSw1KSIsICJGKDUsNSkiLCAiRigxMCwzMCkiLCAiRigyMCwzMCkiLCAiRig1MCw1MCkiKSwgbHdkID0gMiwgY2V4ID0gMS41KQpgYGAKCiMjI1Byb3N0YWN5Y2xpbiBleGFtcGxlOiB3aGljaCBncm91cHMgYXJlIGRpZmZlcmVudD8KCmBgYHtyfQpzdW1tYXJ5KG1vZGVsMSkKYGBgCgpXaXRoIG1vZGVsIG91dHB1dCB3ZSBjYW4gYXNzZXNzIGlmIHRoZSBtZWFuIHByb3N0YWN5Y2xpbiBjb25jZW50cmF0aW9uIGRpZmZlcnMgYmV0d2VlbiBtaWRkbGUgYW5kIGxvdyBkb3NlIGdyb3VwICgkXGJldGFfMSQ6IGRvc2UyNSksIGFuZCwgYmV0d2VlbiBoaWdoIGFuZCBsb3cgZG9zZSBncm91cCAoJFxiZXRhXzIkOiBkb3NlNTApLgoKVGhlIHAtdmFsdWVzIGRvIG5vdCBhY2NvdW50IGZvciBtdWx0aXBsZSB0ZXN0aW5nLgoKIyBQb3N0IGhvYyBhbmFseXNpczogTXVsdGlwbGUgY29tcGFyaXNvbnMgb2YgbWVhbnMKCiMjIE5haXZlIG1ldGhvZAoKSW4gdGhlIGZpcnN0IHBhcnQgd2UgZGV2ZWxvcGVkIHRoZSAkRiQtdGVzdCB0byBhc3Nlc3MKCiQkICBIXzA6IFxtdV8xPVxjZG90cyA9IFxtdV9nIFx0ZXh0eyB2ZXJzdXMgfSBIXzE6IEhfMTogXGV4aXN0c1wgaixrIFxpbiBcezEsXGxkb3RzLGdcfSA6IFxtdV9qXG5lcVxtdV9rJCQKCgotIElmIHdlIHJlamVjdCAkSF8wJCB3ZSBjb25jbHVkZSB0aGF0IGF0IGxlYXN0IHR3byBtZWFucyBhcmUgZGlmZmVyZW50Ci0gVGhlIG1ldGhvZCBkb2VzIG5vdCBhbGxvdyB0byBpZGVudGlmeSB3aGljaCBtZWFucyBhcmUgZGlmZmVyZW50LgoKQSBmaXJzdCBuYWl2ZSBtZXRob2QgaXMgdG8gc3BsaXQgJEhfMCQgIGluIHBhcnRpYWwgaHlwb3RoZXNlcwokJEhfezBqa306IFxtdV9qPVxtdV9rIFx0ZXh0eyB2ZXJzdXMgfSBIX3sxamt9OiBcbXVfaiBcbmVxIFxtdV9rJCQKCi0gRmFsc2lmeSBwYXJ0aWFsIG51bGwgaHlwb3RoZXNlcyB3aXRoIHR3by1zYW1wbGUgJHQkLXRlc3RlbgoKLSBDb21wYXJpc29uIG9mIGdyb3VwICRqJCB3aXRoIGdyb3VwICRrJCB3aXRoIHR3by1zYW1wbGUgJHQkLXRlc3QgdW5kZXIgdGhlIGVxdWFsaXR5IG9mIG1lYW5zOgokJFRfe2prfSA9IFxmcmFje1xiYXJ7WX1fai1cYmFye1l9X2t9e1NfcFxzcXJ0e1xmcmFjezF9e25fan0rXGZyYWN7MX17bl9rfX19IFxzaW0gdF97bi0yfSQkCgpXaXRoCgotICRTX3BeMiQgdGhlIHBvb2xlZCB2YXJpYW5jZSBlc3RpbWF0b3IsCiQkU19wXjIgPSBcZnJhY3sobl9qLTEpU19qXjIgKyAobl9rLTEpU19rXjJ9e25faituX2stMn0kJAoKLSB3aXRoICRTX2peMiQgYW5kICRTX2teMiQgdGhlIHNhbXBsZSB2YXJpYW5jZXMgb2YgZ3JvdXAgJGokIGVuICRrJCwgcmVzcGVjdGl2ZWx5LgoKSW4gQU5PVkEgY29udGV4dCB3ZSBhc3N1bWUgdGhhdCB0aGUgdmFyaWFuY2Ugb2YgKiphbGwqKiAkZyQgZ3JvdXBzIGlzIGVxdWFsLCBpLmUuIHRoZSByZXNpZHVhbCB2YXJpYW5jZSAkXHNpZ21hXjIkLgoKLSBVc2Ugb2YgJFNfcF4yJCBpcyBub3QgZWZmaWNpZW50IGJlY2F1c2UgaXQgZG9lcyBub3QgbWFrZSB1c2Ugb2YgYWxsIGRhdGEKCi0gV2UgY2FuIGdhaW4gZWZmaWNpZW5jeSBieSB1c2luZyBNU0UKJCRcdGV4dHtNU0V9PSBcc3VtX3tqPTF9XmcgXGZyYWN7KG5fai0xKVNfal4yfXtuLWd9JCQKCi0gVGhlICR0JC10ZXN0cyBhcmUgdGh1cyBiZXN0IGJhc2VkIG9uCiQkVF97amt9ID0gXGZyYWN7XGJhcntZfV9qLVxiYXJ7WX1fa317XHRleHR7TVNFfVxzcXJ0e1xmcmFjezF9e25fan0rXGZyYWN7MX17bl9rfX19IFxzaW0gdF97bi1nfS4kJAoKLS0tCgpgYGB7cn0Kd2l0aChwcm9zdGFjeWNsaW4sIHBhaXJ3aXNlLnQudGVzdChwcm9zdGFjLCBkb3NlLCAibm9uZSIpKQpgYGAKCldoZW4gd2UgcGVyZm9ybSAkbSQtdGVzdHMgb24gdGhlICRcYWxwaGEkIHNpZ25pZmljYW5jZSBsZXZlbCB3ZSBjYW5ub3QgY29ycmVjdGx5IGNvbnRyb2wgdGhlIHR5cGUgSSBlcnJvci4KCiMjIFdlIHNob3cgd2l0aCBzaW11bGF0aW9uIHRoYXQgbmFpdmUgbWV0aG9kIGRvZXMgbm90IHdvcmsKCjEuIFdlIHNpbXVsYXRlIGZyb20gYW4gQU5PVkEgbW9kZWwgd2l0aCAkZz0zJCBncm91cHMuCjIuIFRoZSBtZWFucyBpbiB0aGUgQU5PVkEgbW9kZWwgYXJlIGVxdWFsIHRvIGVhY2ggb3RoZXIsIHNvIHRoYXQgJCRIXzA6IFxtdV8xPVxtdV8yPVxtdV8zJCQuCjMuIEZvciBlYWNoIHNpbXVsYXRlZCBkYXRhc2V0IHdlIGNvbmR1Y3QgJG09MyQgcGFpcndpc2UgdHdvLXNhbXBsZSAkdCQtdGVzdAo0LiBBcyBzb29uIGFzIG9uZSBvZiB0aGUgJHAkLXZhbHVlcyBpcyBiZWxvdyBzaWduaWZpY2FuY2UgbGV2ZWwgJFxhbHBoYT01XCUkLCB3ZSByZWplY3QgJEhfMDogXG11XzE9XG11XzI9XG11XzMkIGJlY2F1c2UgdHdvIG1lYW5zIGFyZSBkaWZmZXJlbnQgYWNjb3JkaW5nIHRvIHRoZSAgJHQkLXRlc3RzLgo1LiBXZSByYXBwb3J0IHRoZSByZWxhdGl2ZSBmcmVxdWVuY3kgb2YgcmVqZWN0aW9uIG9mIHRoZSBnbG9iYWwgbnVsbCBoeXBvdGhlc2lzLCBpLmUuIHRoZSBwcm9iYWJpbGl0eSBvbiBhIHR5cGUgSSBlcnJvciAgJEhfMDogXG11XzE9XG11XzI9XG11XzMkLgoKCmBgYHtyfQpnIDwtIDMgIyBudW1iZXIgb2YgdHJlYXRtZW50cyAoZz0zKQpuaSA8LSAxMiAjIG51bWJlciBvZiBvYnNlcnZhdGlvbnMgaW4gZWFjaCBncm91cApuIDwtIGcgKiBuaSAjIHRvdGFsIG51bWJlciBvZiBvYnNlcnZhdGlvbgphbHBoYSA8LSAwLjA1ICMgc2lnbmlmaWNhbmNlIGxldmVsIG9mIGluZGl2aWR1YWwgdGVzdApOIDwtIDEwMDAwICMgbnVtYmVyIG9mIHNpbXVsYXRpb25zCnNldC5zZWVkKDMwMikgIyBzZWVkIHRvIHJlcHJvZHVjZSByZXN1bHRzIGV4YWN0bHkKdHJ0IDwtIGZhY3RvcihyZXAoMTpnLCBuaSkpICMgZmFjdG9yCmNudCA8LSAwICMgY291bnRlciBmb3IgZXJyb25lb3VzIHJlamVjdGlvbnMKZm9yIChpIGluIDE6TikgewogICMgaWYgKGklJTEwMDA9PTApIGNhdChpLCIvIixOLCJcbiIpCiAgeSA8LSBybm9ybShuKQogIHRlc3RzIDwtIHBhaXJ3aXNlLnQudGVzdCh5LCB0cnQsICJub25lIikKICByZWplY3QgPC0gbWluKHRlc3RzJHAudmFsdWUsIG5hLnJtID0gVCkgPCBhbHBoYQogIGlmIChyZWplY3QpIGNudCA8LSBjbnQgKyAxCn0KY250IC8gTgpgYGAKCi0tLQoKLSBQcm9iYWJpbGl0eSBvbiB0aGUgdHlwZSBJIGVycm9yIGVxdWFscyBgciByb3VuZChjbnQvTiwzKSoxMDBgJQotIEl0IGlzIG1vcmUgdGhlbiB0d2ljZSAkXGFscGhhPTUkJS4KLSBJZiB3ZSByZXBlYXQgdGhlIHNpbXVsYXRpb24gd2l0aCBnID0gNSBncm91cHMgKGkuZS4gMTAgcGFpcndpc2UgdC10ZXN0cykgd2UgZmluZCBhIHR5cGUgSSBlcnJvciBvZiAyOC4wJSBpbnN0ZWFkIG9mIHRoZSBkZXNpcmVkIDUlLgoKLSBUaGUgc2ltdWxhdGlvbiBzdHVkeSBpbGx1c3RyYXRlcyB0aGUgICoqbXVsdGlwbGljaXR5KiogcHJvYmxlbQoKICAtIENsYXNzaWNhbCBwLXZhbHVlcyBjYW4gb25seSBiZSBjb21wYXJlZCB3aXRoIHRoZSBzaWduaWZpY2FuY2UgbGV2ZWwgJFxhbHBoYSQsIGlmIHRoZSBjb25jbHVzaW9uIGlzIGJhc2VkIG9uIGEgc2luZ2xlIHAtdmFsdWUuCiAgLSBIZXJlIHRoZSBmaW5hbCBkZWNpc2lvbiBpcyBiYXNlZCBvbiAkbT1nXHRpbWVzKGctMSkvMiQgJHAkLXZhbHVlcy4KCi0gV2UgZmlyc3QgZGlzY3VzcyBvbiB0aGUgZXh0ZW5zaW9uIG9mIHRoZSBjb25jZXB0IG9mIHR5cGUgSSBlcnJvcnMgYW5kIHRoZW4gaW50cm9kdWNlIHNvbWUgc29sdXRpb25zCgojIyBGYW1pbHktd2lzZSBlcnJvciByYXRlCgotIFdoZW4gJG0+MSQgdGVzdHMgYXJlIHVzZWQgdG8gbWFrZSBvbmUgZGVjaXNpb24gaXQgaXMgbmVjZXNzYXJ5IHRvIGNvcnJlY3QgZm9yIHRoZSByaXNrIG9uIGZhbHNlIHBvc2l0aXZlIHJlc3VsdHMgKHR5cGUgSSBlcnJvcnMpLgotIE1vc3QgcHJvY2VkdXJlcyBmb3IgbXVsdGlwbGUgdGVzdGluZyBhc3N1bWUgdGhhdCAqYWxsICRtJCBudWxsIGh5cG90aGVzZXMgYXJlIHRydWUqLgoKLSBTbyBvbmUgdHJpZXMgdG8gY29udHJvbCB0aGUgKnJpc2sgb24gYXQgbGVhc3QgMSBmYWxzZSBwb3NpdGl2ZSogb24gdGhlICoqZmFtaWx5IHdpc2UgZXJyb3IgcmF0ZSAoRldFUikgJFxhbHBoYV9GJCoqLCB0eXBpY2FsICRcYWxwaGFfRj0wLjA1JC4KCiMjIEJvbmZlcnJvbmkgY29ycmVjdGlvbgoKV2hlbiB3ZSBjb25kdWN0ICRtJCBpbmRlcGVuZGVudCB0ZXN0IGVhY2ggb24gdGhlIHNpZ25pZmljYW5jZSBsZXZlbCAkXGFscGhhJCwgdGhlbgpcYmVnaW57ZXFuYXJyYXkqfQpcYWxwaGFfRiY9Jlx0ZXh0e1B9W1x0ZXh0e2F0IGxlYXN0IDEgVHlwZSBJIGZvdXR9XVxcCiY9JjEtKDEtXGFscGhhKV5tIFxsZXEgbVxhbHBoYQpcZW5ke2VxbmFycmF5Kn0KCi0gSWYgd2UgYXNzZXNzIDUgdGVzdHMgb24gdGhlIDUlIHNpZ25pZmljYW5jZSBsZXZlbCB0aGVuICB0aGUgRldFUiAkXGFwcHJveCAyNVwlJC4gezEwcHR9Ci0gQnkgY29uZHVjdGluZyB0aGVtIGF0IHRoZSAxJSBzaWduaWZpY2FuY2UgbGV2ZWwgdGhlIEZXRVIgJFxhcHByb3ggNVwlJC4KCi0gVGhlIEJvbmZlcnJvbmkgY29ycmVjdGlvbiBjb250cm9scyB0aGUgRldFUiBvbiAkXGFscGhhX0YkIGJ5IHNldHRpbmcgJCRcYWxwaGE9XGFscGhhX0YvbSQkIGZvciBlYWNoIG9mIHRoZSAkbSQgcGFpcndpc2UgY29tcGFyaXNvbnMKCkFuIGFsdGVybmF0aXZlIGFwcHJvYWNoIGlzIHRvIHJlcG9ydAoKICAxLiAqYWRqdXN0ZWQgcC12YWx1ZXMqIHRoYXQgY2FuIGJlIGNvbXBhcmVkIHRvIHRoZSBGV0VSICRcYWxwaGFfRiQgbGV2ZWw6ICQkXHRpbGRle3B9PW1pbihtXHRpbWVzIHAsMSkkJAogIDIuIGFuZCAkKDEtXGFscGhhX0YvbSkxMDBcJSQgY29uZmlkZW5jZSBpbnRlcnZhbHMuCgojIyMgcHJvc3RhY3ljbGluIGV4YW1wbGUKCmBgYHtyfQp3aXRoKHByb3N0YWN5Y2xpbiwgcGFpcndpc2UudC50ZXN0KHByb3N0YWMsIGRvc2UsIGRhdGEgPSBwcm9zdGFjeWNsaW4sIHAuYWRqdXN0Lm1ldGhvZCA9ICJib25mZXJyb25pIikpCmBgYAoKLSBUaGUgY29uY2x1c2lvbnMgcmVtYWluIHNpbWlsYXIsIGV4Y2VwdCB0aGF0IHRoZSBGV0VSIGlzIG5vdyBjb250cm9sbGVkIGF0ICRcYWxwaGFfRj01XCUkIGFuZCB0aGF0IHRoZSAkXHRpbGRle3B9JC12YWx1ZXMgYXJlIGxhcmdlciB3aXRoIGEgZmFjdG9yIDMuCgpUaGUgc2FtZSBhbmFseXNpcyBjYW4gYmUgY29uZHVjdGVkIGluIHRoZSBgbXVsdGNvbXBgIFIgcGFja2FnZSB0aGF0IGlzIGRldmVsb3BlZCBmb3IgbXVsdGlwbGUgdGVzdGluZyBpbiBsaW5lYXIgbW9kZWxzLgpgYGB7cn0KbGlicmFyeShtdWx0Y29tcCkKYGBgCgpgYGB7cn0KbW9kZWwxLm1jcCA8LSBnbGh0KG1vZGVsMSwgbGluZmN0ID0gbWNwKGRvc2UgPSAiVHVrZXkiKSkKc3VtbWFyeShtb2RlbDEubWNwLCB0ZXN0ID0gYWRqdXN0ZWQoImJvbmZlcnJvbmkiKSkKYGBgCgpOb3RlLCB0aGF0IHRoZSB1c2VyIGhhcyB0byBkZWZpbmUgY3VzdHVtIGZ1bmN0aW9ucyB0byBvYnRhaW4gQm9uZmVyb25uaSBhZGp1c3RlZCBjb25maWRlbmNlIGludGVydmFscy4KCi0gQm9uZmVyb25uaSBjb25maWRlbmNlIGludGVydmFscyBhcmUgbm90IGltcGxlbWVudGVkIGJlY2F1c2UgYmV0dGVyIG1ldGhvZHMgZXhpc3QgZm9yIG11bHRpcGxlIHRlc3RpbmcuCgotIFRoZSBmdW5jdGlvbiBiZWxvdyBpcyBhZGRlZCBoZXJlIG1lcmVseSBmb3IgY29tcGxldGVuZXNzLCBidXQgd2Ugd2lsbCBnZW5lcmFsbHkgdXNlIHRoZSBkZWZhdWx0IG1ldGhvZCBmb3IgbXVsdGlwbGUgdGVzdGluZyBpbiBtdWx0Y29tcC4KCmBgYHtyfQpjYWxwaGFfYm9uX3QgPC0gZnVuY3Rpb24ob2JqZWN0LCBsZXZlbCkgewogIGFicygKICAgIHF0KAogICAgICAoMSAtIGxldmVsKSAvIDIgLyBucm93KG9iamVjdCRsaW5mY3QpLAogICAgICBvYmplY3QkZGYKICAgICkKICApCn0KYGBgCgpgYGB7cn0KY29uZmludChtb2RlbDEubWNwLCBjYWxwaGEgPSBjYWxwaGFfYm9uX3QpCmBgYAoKIyMjIEV2YWx1YXRlIEJvbmZlcnJvbmkgbWV0aG9kIHZpYSBzaW11bGF0aW9uCgpgYGB7cn0KZyA8LSAzICMgbnVtYmVyIG9mIHRyZWF0bWVudHMgKGc9MykKbmkgPC0gMTIgIyBudW1iZXIgb2Ygb2JzZXJ2YXRpb25zIGluIGVhY2ggZ3JvdXAKbiA8LSBnICogbmkgIyB0b3RhYWwgbnVtYmVyIG9ic2VydmF0aW9uCmFscGhhIDwtIDAuMDUgIyBzaWduaWZpY2FuY2UgbGV2ZWwgb2YgaW5kaXZpZHVhbCB0ZXN0Ck4gPC0gMTAwMDAgIyBudW1iZXIgb2Ygc2ltdWxhdGllcwpzZXQuc2VlZCgzMDIpICMgc2VlZCB0byByZXByb2R1Y2UgcmVzdWx0cyBleGFjdGx5CnRydCA8LSBmYWN0b3IocmVwKDE6ZywgbmkpKSAjIGZhY3RvcgpjbnQgPC0gMCAjIGNvdW50ZXIgZm9yIGVycm9uZW91cyByZWplY3Rpb25zCmZvciAoaSBpbiAxOk4pIHsKICAjIGlmIChpJSUxMDAwPT0wKSBjYXQoaSwiLyIsTiwiXG4iKQogIHkgPC0gcm5vcm0obikKICB0ZXN0cyA8LSBwYWlyd2lzZS50LnRlc3QoeSwgdHJ0LCAiYm9uZmVycm9uaSIpCiAgcmVqZWN0IDwtIG1pbih0ZXN0cyRwLnZhbHVlLCBuYS5ybSA9IFQpIDwgYWxwaGEKICBpZiAocmVqZWN0KSBjbnQgPC0gY250ICsgMQp9CmNudCAvIE4KYGBgCgoKLSBXZSBmaW5kIGFuIEZXRVIgb2YgYHIgcm91bmQoY250L04qMTAwLDEpYCUsIHdoaWNoIGlzIHNsaWdodGx5IGNvbnNlcnZhdGl2ZS4KLSBGb3Igc2ltdWxhdGlvbnMgb2YgJGc9NSQgZ3JvdXAgdGhlIEZXRVIgaXMgJDQuMVwlJCAobW9yZSBjb25zZXJ2YXRpdmUpLgoKLSBCeSB1c2luZyBCb25mZXJyb25pIHRoZSBwcm9iYWJpbGl0eSBvbiBhdCBsZWFzdCBvbmUgZmFsc2UgcG9zaXRpdmUgcmVzdWx0IGlzIGxvd2VyIHRoYW4gJDwgXGFscGhhX0YkLgotIFBvd2VyIGxvc3MgYmVjYXVzZSB0aGUgcmVhbCBGV0VSIGlzIHNtYWxsZXIgdGhhbiA1JQoKIyMgVHVrZXkgTWV0aG9kCgotIExlc3MgY29uc2VydmF0aWV2ZQotIEltcGxlbWVudGF0aW9uIGFwcHJveGltYXRlcyB0aGUgbnVsbCBkaXN0cmlidXRpb24gb2YgcG9zdGhvYyB0ZXN0cyB2aWEgc2ltdWxhdGlvbnMKLSBSZXN1bHRzIGNhbiBjaGFuZ2Ugc2xpZ2h0bHkgaWYgdGhlIHBvc3Rob2MgYW5hbHlzaXMgaXMgcmVwZWF0ZWQKLSBEZXRhaWxzIG9uIHRoZSBtZXRob2QgZmFsbHMgb3V0c2lkZSB0aGUgc2NvcGUgb2YgdGhlIHNob3J0IGNvdXJzZQotIElzIHRoZSBkZWZhdWx0IG1ldGhvZCBpbiB0aGUgbXVsdGNvbXAgcGFja2FnZToKCiAgICAtIGFkanVzdGVkIHAtdmFsdWVzCiAgICAtIGFkanVzdGVkIGNvbmZpZGVuY2UgaW50ZXJ2YWxzCgojIyMgQ2FwdG9wcmlsIGV4YW1wbGUKCmBgYHtyfQptb2RlbDEubWNwIDwtIGdsaHQobW9kZWwxLCBsaW5mY3QgPSBtY3AoZG9zZSA9ICJUdWtleSIpKQpzdW1tYXJ5KG1vZGVsMS5tY3ApCmBgYAoKCmBgYHtyfQpjb25maW50KG1vZGVsMS5tY3ApCmBgYAoKCmBgYHtyIG91dC53aWR0aD0nMTAwJScsIGZpZy5hc3A9LjgsIGZpZy5hbGlnbj0nY2VudGVyJ30KcGxvdChjb25maW50KG1vZGVsMS5tY3ApKQpgYGAKCiMjI0V2YWx1YXRlIFR1a2V5IG1ldGhvZAoKYGBge3J9CmcgPC0gMyAjIG51bWJlciBvZiB0cmVhdG1lbnRzIChnPTMpCm5pIDwtIDEyICMgbnVtYmVyIG9mIG9ic2VydmF0aW9ucyBpbiBlYWNoIGdyb3VwCm4gPC0gZyAqIG5pICMgdG90YWFsIG51bWJlciBvYnNlcnZhdGlvbgphbHBoYSA8LSAwLjA1ICMgc2lnbmlmaWNhbmNlIGxldmVsIG9mIGluZGl2aWR1YWwgdGVzdApOIDwtIDEwMDAwICMgbnVtYmVyIG9mIHNpbXVsYXRpb25zCnNldC5zZWVkKDMwMikgIyBzZWVkIHRvIHJlcHJvZHVjZSByZXN1bHRzIGV4YWN0bHkKdHJ0IDwtIGZhY3RvcihyZXAoMTpnLCBuaSkpICMgZmFjdG9yCmNudCA8LSAwICMgY291bnRlciBmb3IgZXJyb25lb3VzIHJlamVjdGlvbnMKZm9yIChpIGluIDE6TikgewogICMgaWYgKGklJTEwMDA9PTApIGNhdChpLCIvIixOLCJcbiIpCiAgeSA8LSBybm9ybShuKQogIG0gPC0gbG0oeSB+IHRydCkKICBtLm1jcCA8LSBnbGh0KG0sIGxpbmZjdCA9IG1jcCh0cnQgPSAiVHVrZXkiKSkKICB0ZXN0cyA8LSBzdW1tYXJ5KG0ubWNwKSR0ZXN0CiAgcmVqZWN0IDwtIG1pbihhcy5udW1lcmljKHRlc3RzJHB2YWx1ZXMpLCBuYS5ybSA9IFQpIDwgYWxwaGEKICBpZiAocmVqZWN0KSBjbnQgPC0gY250ICsgMQp9CmNudCAvIE4KYGBgCgoKIyBDb25jbHVzaW9uczogUHJvc3RhY3ljbGluIGV4YW1wbGUKCkVudGlyZSBhbmFseXNpcyBmb3IgcHJvc3RhY3ljbGluIGV4YW1wbGUKCjEuIEFub3ZhIGJlZm9yZSBwb3N0aG9jIHRlc3RzOiBGLXRlc3QgaGFzIGEgaGlnaGVyIHBvd2VyIHRoYW4gIHBhaXJ3aXNlIHQtdGVzdAoKICAgIC0gRi10ZXN0IHVzZXMgYWxsIGRhdGEKICAgIC0gRm9yIEYtdGVzdCB3ZSBkbyBub3QgbmVlZCB0byBjb3JyZWN0IGZvciBtdWx0aXBsZSB0ZXN0aW5nOiBvbmUgdGVzdCBpcyBjb25kdWN0ZWQgZm9yIHRoZSBnZW5lcmFsIG9tbmlidXMgaHlwb3RoZXNpcwoKYGBge3J9Cm1vZGVsMSA8LSBsbShwcm9zdGFjIH4gZG9zZSwgZGF0YSA9IHByb3N0YWN5Y2xpbikKYW5vdmEobW9kZWwxKQpgYGAKCmBgYHtyfQptb2RlbDEubWNwIDwtIGdsaHQobW9kZWwxLCBsaW5mY3QgPSBtY3AoZG9zZSA9ICJUdWtleSIpKQpzdW1tYXJ5KG1vZGVsMS5tY3ApCmBgYAoKYGBge3J9CmNvbmZpbnQobW9kZWwxLm1jcCkKYGBgCgoKLSBUaGVyZSBpcyBhbiBleHRyZW1lIHNpZ25pZmljYW50IGVmZmVjdCBvZiBhcmFjaGlkb25pYyBhY2lkIG9uIHRoZSBhdmVyYWdlIHByb3N0YWN5Y2xpbiBibG9vZCBjb25jZW50cmF0aW9uIGluIHJhdHMgKCRwPDAuMDAxJCkuClRoZSBhdmVyYWdlIHByb3N0YWN5Y2xpbiBjb25jZW50cmF0aW9uIGlzIGhpZ2hlciBpbiB0aGUgaGlnaCBkb3NlIGdyb3VwIHRoYW4gaW4gdGhlIGxvdyBhbmQgbW9kZXJhdGUgZG9zZSBncm91cCAoYm90aCBwLXZhbHVlcyBhcmUgc21hbGxlciB0aGFuICRwPDAuMDAxJCkuCi0gVGhlIGF2ZXJhZ2UgY29uY2VudHJhdGlvbiBpbiB0aGUgaGlnaCBkb3NlIGdyb3VwIGlzIGByIHJvdW5kKGNvbmZpbnQobW9kZWwxLm1jcCkkY29uZmludFsyLDFdLDEpYG5nL21sICg5NSUgQ0kgW2ByIHBhc3RlKHJvdW5kKGNvbmZpbnQobW9kZWwxLm1jcCkkY29uZmludFsyLDI6M10sMSksY29sbGFwc2U9IiwiKWBdbmcvbWwpIGFuZCBgciByb3VuZChjb25maW50KG1vZGVsMS5tY3ApJGNvbmZpbnRbMywxXSwxKWBuZy9tbCAoOTUlIEJJIFtgciBwYXN0ZShyb3VuZChjb25maW50KG1vZGVsMS5tY3ApJGNvbmZpbnRbMywyOjNdLDEpLGNvbGxhcHNlPSIsIilgXW5nL21sKSBoaWdoZXIgdGhhbiBpbiB0aGUgbG93IGFuZCBtaWRkbGUgZG9zZSBncm91cCwgcmVzcGVjdGl2ZWx5LgotIFRoZSBkaWZmZXJlbmNlIGluIGF2ZXJhZ2UgcHJvc3RhY3ljbGluIGNvbmNlbnRyYXRpb24gYmV0d2VlbiB0aGUgbW9kZXJhdGUgYW5kIGxvdyBkb3NlIGdyb3VwIGlzIG5vdCBzaWduaWZpY2FudCAgKHA9YHIgcm91bmQoc3VtbWFyeShtb2RlbDEubWNwKSR0ZXN0JHB2YWx1ZXNbMV0sMilgKS4KKEFsbCBwLXZhbHVlcyBhbmQgY29uZmlkZW5jZSBpbnRlcnZhbHMgZm9yIHBvc3QtaG9jIHRlc3RzIGFyZSBjb3JyZWN0ZWQgZm9yIG11bHRpcGxlIHRlc3RpbmcgdXNpbmcgdGhlIFR1a2V5IG1ldGhvZCkuCg==</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("07-Anova.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
