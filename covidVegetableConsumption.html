@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lieven Clement" />
+
+
+<title>Covid-19 and vegetable consumption</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PSLS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-chalkboard-teacher"></span>
+     
+    Lectures
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="02-concepts.html">2. Concepts</a>
+    </li>
+    <li>
+      <a href="03-experimentalDesign.html">3. Experimental Design I</a>
+    </li>
+    <li>
+      <a href="04-dataExploration.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference.html">5.1 Statistical Inference 1</a>
+    </li>
+    <li>
+      <a href="05-statisticalInference-twosampleT.html">5.2 Statistical Inference 2</a>
+    </li>
+    <li>
+      <a href="06-linearRegression.html">6. Linear Regression</a>
+    </li>
+    <li>
+      <a href="07-Anova.html">7. Analysis of Variance</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression.html">8. Multiple Regression</a>
+    </li>
+    <li>
+      <a href="08-MultipleRegression-SpecificDesigns.html">8.2 Multiple Regression: Factorial Designs</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignII.html">8.3. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="08-experimentalDesignIII.html">8.4. Experimental Design II</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-WilcoxonMannWithney.html">9.1. Nonparametric Statistics 1</a>
+    </li>
+    <li>
+      <a href="09-NonparametericStatistics-KruskalWallis.html">9.2. Nonparametric Statistics 2</a>
+    </li>
+    <li>
+      <a href="10-categoricalDataAnalysis.html">10. Categorical Data Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-laptop"></span>
+     
+    Labs
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="04_exercises.html">4. Data Exploration</a>
+    </li>
+    <li>
+      <a href="05_exercises.html">5. Statistical inference</a>
+    </li>
+    <li>
+      <a href="06_exercises.html">6. Simple linear regression</a>
+    </li>
+    <li>
+      <a href="07_exercises.html">7. ANOVA</a>
+    </li>
+    <li>
+      <a href="08_exercises.html">8. Multiple linear regression</a>
+    </li>
+    <li>
+      <a href="09_exercises.html">9. Non-parametric statistics</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/statOmics/PSLS">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://statomics.github.io/">statOmics</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Covid-19 and vegetable consumption</h1>
+<h4 class="author">Lieven Clement</h4>
+<h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
+
+</div>
+
+
+<p><a href="https://www.medrxiv.org/content/10.1101/2020.07.17.20155846v1" class="uri">https://www.medrxiv.org/content/10.1101/2020.07.17.20155846v1</a></p>
+<p><img src="https://github.com/statOmics/sbc20/raw/master/figures/Fonseca2020CovidVegetables.png" /></p>
+<hr />
+<p><img src="https://github.com/statOmics/sbc20/raw/master/figures/covidVegetables6.png" style="width:70.0%" /></p>
+<hr />
+<p><img src="https://github.com/statOmics/sbc20/raw/master/figures/covidVegetables.png" style="width:70.0%" /></p>
+<p>“The authors state: The negative ecological association between COVID-19 mortality and the consumption of cabbage and cucumber supports the a priori hypothesis previously reported. In this hypothesis, we proposed that vegetables such as Brassica - with an antioxidant activity reducing insulin resistance - may also be associated with low COVID-19 mortality in countries.”</p>
+<p>” Though our results do not allow to infer causality, they do reinforce our a priory hypothesis that the ingestion of anti-oxidant foods acting on insulin intolerance may have reduced the severity of COVID-19. ”</p>
+<hr />
+<p><img src="https://github.com/statOmics/sbc20/raw/master/figures/covidVegetables4.png" /></p>
+<hr />
+<p><img src="https://github.com/statOmics/sbc20/raw/master/figures/covidVegetables3.png" /></p>
+<ul>
+<li>Many hypotheses are assessed ?!</li>
+<li>Causality ?!</li>
+<li>Experimental design: Observational study</li>
+<li>Based on the data we cannot provide recommendations at the subject level</li>
+</ul>
+<hr />
+<p><img src="https://github.com/statOmics/sbc20/raw/master/figures/covidVegetables2.png" style="width:70.0%" /></p>
+<ul>
+<li>Importance of Data Exploration!</li>
+<li>Data does not exhibit the trend</li>
+<li>Data shows evidence for two clusters: above and below 200 deaths/million</li>
+<li>Model for cucumber does not model the data correctly: Overestimation of death rate for many countries e.g. Portugal, Hungary, …</li>
+</ul>
+<hr />
+<p><img src="figures/fear.png" width="10%" style="float:right; padding:10px" /></p>
+<p>Papers are merged, published, and 39 times cited</p>
+<p>Bousquet et al. (2021). Cabbage and fermented vegetables: From death rate heterogeneity in countries to candidates for mitigation strategies of severe COVID-19. Allergy 76:735–750.</p>
+<hr />
+<p>In the example we covered issues with three important branches in statistics</p>
+<ol style="list-style-type: decimal">
+<li>Statistical inference</li>
+</ol>
+<ul>
+<li>Is there an association between COVID-19 mortality and food consumption?</li>
+<li>Issue in study:
+<ul>
+<li>data dredging, p-hacking, …: when you assess many hypotheses you will allways find strong patterns by random change <span class="math inline">\(\rightarrow\)</span> correct for multiple testing!</li>
+<li>Assumptions of the models do not hold</li>
+<li>Confounding</li>
+</ul></li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Experimental design</p>
+<ul>
+<li><p>Confounding: countries do not only differ in consumption of a vegetable but also in may other variables (demographical, COVID measures, healty care, …) that are associated with COVID mortality.</p></li>
+<li><p>Difficult to draw causal conclusions from observational studies.</p></li>
+<li><p>In experimental studies: randomisation! <span class="math inline">\(\rightarrow\)</span> so that the groups only differ in the treatment.</p></li>
+<li><p>Experimental studies are therefore the golden standard</p></li>
+</ul></li>
+<li><p>Data exploration and visualisation</p>
+<ul>
+<li>Crucial to get insight in the data!</li>
+<li>Assess model assumptions</li>
+</ul></li>
+</ol>
+<hr />
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ292aWQtMTkgYW5kIHZlZ2V0YWJsZSBjb25zdW1wdGlvbiIKYXV0aG9yOiAiTGlldmVuIENsZW1lbnQiCmRhdGU6ICJzdGF0T21pY3MsIEdoZW50IFVuaXZlcnNpdHkgKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pbykiCi0tLQoKCmh0dHBzOi8vd3d3Lm1lZHJ4aXYub3JnL2NvbnRlbnQvMTAuMTEwMS8yMDIwLjA3LjE3LjIwMTU1ODQ2djEKCiFbXShodHRwczovL2dpdGh1Yi5jb20vc3RhdE9taWNzL3NiYzIwL3Jhdy9tYXN0ZXIvZmlndXJlcy9Gb25zZWNhMjAyMENvdmlkVmVnZXRhYmxlcy5wbmcpCgotLS0KCiFbXShodHRwczovL2dpdGh1Yi5jb20vc3RhdE9taWNzL3NiYzIwL3Jhdy9tYXN0ZXIvZmlndXJlcy9jb3ZpZFZlZ2V0YWJsZXM2LnBuZyl7d2lkdGg9NzAlfQoKCi0tLQoKIVtdKGh0dHBzOi8vZ2l0aHViLmNvbS9zdGF0T21pY3Mvc2JjMjAvcmF3L21hc3Rlci9maWd1cmVzL2NvdmlkVmVnZXRhYmxlcy5wbmcpe3dpZHRoPTcwJX0KCiJUaGUgYXV0aG9ycyBzdGF0ZTogVGhlIG5lZ2F0aXZlIGVjb2xvZ2ljYWwgYXNzb2NpYXRpb24gYmV0d2VlbiBDT1ZJRC0xOSBtb3J0YWxpdHkgYW5kIHRoZSBjb25zdW1wdGlvbiBvZiBjYWJiYWdlIGFuZCBjdWN1bWJlciBzdXBwb3J0cyB0aGUgYSBwcmlvcmkgaHlwb3RoZXNpcyBwcmV2aW91c2x5IHJlcG9ydGVkLgpJbiB0aGlzIGh5cG90aGVzaXMsIHdlIHByb3Bvc2VkIHRoYXQgdmVnZXRhYmxlcyBzdWNoIGFzIEJyYXNzaWNhIC0gd2l0aCBhbiBhbnRpb3hpZGFudCBhY3Rpdml0eSByZWR1Y2luZyBpbnN1bGluIHJlc2lzdGFuY2UgLSBtYXkgYWxzbyBiZSBhc3NvY2lhdGVkIHdpdGggbG93IENPVklELTE5IG1vcnRhbGl0eSBpbiBjb3VudHJpZXMuCiIKCiIKVGhvdWdoIG91ciByZXN1bHRzIGRvIG5vdCBhbGxvdyB0byBpbmZlciBjYXVzYWxpdHksIHRoZXkgZG8gcmVpbmZvcmNlIG91ciBhIHByaW9yeSBoeXBvdGhlc2lzIHRoYXQgdGhlIGluZ2VzdGlvbiBvZiBhbnRpLW94aWRhbnQgZm9vZHMgYWN0aW5nIG9uIGluc3VsaW4gaW50b2xlcmFuY2UgbWF5IGhhdmUgcmVkdWNlZCB0aGUgc2V2ZXJpdHkgb2YgQ09WSUQtMTkuCiIKCi0tLQoKIVtdKGh0dHBzOi8vZ2l0aHViLmNvbS9zdGF0T21pY3Mvc2JjMjAvcmF3L21hc3Rlci9maWd1cmVzL2NvdmlkVmVnZXRhYmxlczQucG5nKQoKLS0tCgohW10oaHR0cHM6Ly9naXRodWIuY29tL3N0YXRPbWljcy9zYmMyMC9yYXcvbWFzdGVyL2ZpZ3VyZXMvY292aWRWZWdldGFibGVzMy5wbmcpCgotIE1hbnkgaHlwb3RoZXNlcyBhcmUgYXNzZXNzZWQgPyEKLSBDYXVzYWxpdHkgPyEKLSBFeHBlcmltZW50YWwgZGVzaWduOiBPYnNlcnZhdGlvbmFsIHN0dWR5Ci0gQmFzZWQgb24gdGhlIGRhdGEgd2UgY2Fubm90IHByb3ZpZGUgcmVjb21tZW5kYXRpb25zIGF0IHRoZSBzdWJqZWN0IGxldmVsCgotLS0KCiFbXShodHRwczovL2dpdGh1Yi5jb20vc3RhdE9taWNzL3NiYzIwL3Jhdy9tYXN0ZXIvZmlndXJlcy9jb3ZpZFZlZ2V0YWJsZXMyLnBuZyl7d2lkdGg9NzAlfQoKLSBJbXBvcnRhbmNlIG9mIERhdGEgRXhwbG9yYXRpb24hCi0gRGF0YSBkb2VzIG5vdCBleGhpYml0IHRoZSB0cmVuZAotIERhdGEgc2hvd3MgZXZpZGVuY2UgZm9yIHR3byBjbHVzdGVyczogYWJvdmUgYW5kIGJlbG93IDIwMCBkZWF0aHMvbWlsbGlvbgotIE1vZGVsIGZvciBjdWN1bWJlciBkb2VzIG5vdCBtb2RlbCB0aGUgZGF0YSBjb3JyZWN0bHk6IE92ZXJlc3RpbWF0aW9uIG9mIGRlYXRoIHJhdGUgZm9yIG1hbnkgY291bnRyaWVzIGUuZy4gUG9ydHVnYWwsIEh1bmdhcnksIC4uLgoKLS0tCgpgYGB7ciBlY2hvPUZBTFNFLG91dC53aWR0aD0iMTAlIixvdXQuZXh0cmE9J3N0eWxlPSJmbG9hdDpyaWdodDsgcGFkZGluZzoxMHB4Iid9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKCIuL2ZpZ3VyZXMvZmVhci5wbmciKQpgYGAKClBhcGVycyBhcmUgbWVyZ2VkLCBwdWJsaXNoZWQsIGFuZCAzOSB0aW1lcyBjaXRlZAoKQm91c3F1ZXQgZXQgYWwuICgyMDIxKS4gQ2FiYmFnZSBhbmQgZmVybWVudGVkIHZlZ2V0YWJsZXM6IEZyb20gZGVhdGggcmF0ZSBoZXRlcm9nZW5laXR5IGluIGNvdW50cmllcyB0byBjYW5kaWRhdGVzIGZvciBtaXRpZ2F0aW9uIHN0cmF0ZWdpZXMgb2Ygc2V2ZXJlIENPVklELTE5LiBBbGxlcmd5IDc2OjczNeKAkzc1MC4KCi0tLQoKSW4gdGhlIGV4YW1wbGUgd2UgY292ZXJlZCBpc3N1ZXMgd2l0aCB0aHJlZSBpbXBvcnRhbnQgYnJhbmNoZXMgaW4gc3RhdGlzdGljcwoKMS4gU3RhdGlzdGljYWwgaW5mZXJlbmNlCgogIC0gSXMgdGhlcmUgYW4gYXNzb2NpYXRpb24gYmV0d2VlbiAgQ09WSUQtMTkgbW9ydGFsaXR5IGFuZCBmb29kIGNvbnN1bXB0aW9uPwogIC0gSXNzdWUgaW4gc3R1ZHk6CiAgICAgIC0gZGF0YSBkcmVkZ2luZywgcC1oYWNraW5nLCAuLi46IHdoZW4geW91IGFzc2VzcyBtYW55IGh5cG90aGVzZXMgeW91IHdpbGwgYWxsd2F5cyBmaW5kIHN0cm9uZyBwYXR0ZXJucyBieSByYW5kb20gY2hhbmdlICRccmlnaHRhcnJvdyQgY29ycmVjdCBmb3IgbXVsdGlwbGUgdGVzdGluZyEKICAgICAgLSBBc3N1bXB0aW9ucyBvZiB0aGUgbW9kZWxzIGRvIG5vdCBob2xkCiAgICAgIC0gQ29uZm91bmRpbmcKCjIuIEV4cGVyaW1lbnRhbCBkZXNpZ24KCiAgICAtIENvbmZvdW5kaW5nOiBjb3VudHJpZXMgZG8gbm90IG9ubHkgZGlmZmVyIGluIGNvbnN1bXB0aW9uIG9mIGEgdmVnZXRhYmxlIGJ1dCBhbHNvIGluIG1heSBvdGhlciB2YXJpYWJsZXMgKGRlbW9ncmFwaGljYWwsIENPVklEIG1lYXN1cmVzLCBoZWFsdHkgY2FyZSwgLi4uKSB0aGF0IGFyZSBhc3NvY2lhdGVkIHdpdGggQ09WSUQgbW9ydGFsaXR5LgoKICAgIC0gRGlmZmljdWx0IHRvIGRyYXcgY2F1c2FsIGNvbmNsdXNpb25zIGZyb20gb2JzZXJ2YXRpb25hbCBzdHVkaWVzLgoKICAgIC0gSW4gZXhwZXJpbWVudGFsIHN0dWRpZXM6IHJhbmRvbWlzYXRpb24hICRccmlnaHRhcnJvdyQgc28gdGhhdCAgdGhlIGdyb3VwcyBvbmx5IGRpZmZlciBpbiB0aGUgdHJlYXRtZW50LgoKICAgIC0gRXhwZXJpbWVudGFsIHN0dWRpZXMgYXJlIHRoZXJlZm9yZSB0aGUgZ29sZGVuIHN0YW5kYXJkCgozLiBEYXRhIGV4cGxvcmF0aW9uIGFuZCB2aXN1YWxpc2F0aW9uCgogICAgLSBDcnVjaWFsIHRvIGdldCBpbnNpZ2h0IGluIHRoZSBkYXRhIQogICAgLSBBc3Nlc3MgbW9kZWwgYXNzdW1wdGlvbnMKCi0tLQo=</div>
+<div class="footer">
+    <hr>
+    This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
+    CC BY-NC-SA 4.0</a> licence.
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("covidVegetableConsumption.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
