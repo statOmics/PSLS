@@ -4,7 +4,7 @@ author: "Lieven Clement and Jeroen Gilis"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
-On the fourth day of the "Practical Statistics for the Life Sciences (2021)"
+On the fourth day of the "Practical Statistics for the Life Sciences"
 course, we will have four tutorials on multiple linear regression, based on
 different datasets:
 

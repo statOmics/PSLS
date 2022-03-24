@@ -135,7 +135,7 @@ source("https://raw.githubusercontent.com/statOmics/PSLS/master/install.R")
 
     - [9.1 Nonparametric Statistics: Wilcoxon-Mann-Whitney test](./09-NonparametericStatistics-WilcoxonMannWithney.html)
     - [9.2 Nonparametric Statistics: Kruskal Wallis test](./09-NonparametericStatistics-KruskalWallis.html)
-    - [Exercises](./049_exercises.html)
+    - [Exercises](./09_exercises.html)
 
 10. [Categorical Data Analysis](./10-categoricalDataAnalysis.html)
 

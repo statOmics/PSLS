@@ -4,7 +4,7 @@ author: "Lieven Clement and Jeroen Gilis"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
-On the second day of the "Practical Statistics for the Life Sciences (2021)"
+On the second day of the "Practical Statistics for the Life Sciences"
 course, we will have four exercises on statistical, based on different
 datasets:
 

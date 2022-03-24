@@ -4,8 +4,7 @@ author: "Lieven Clement and Jeroen Gilis"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
-On the fifth and final day of the "Practical Statistics for the Life Sciences
-(2021)" course, we will have two exercises on non-parametric analysis.
+On the second/third day of the "Practical Statistics for the Life Sciences" course, we will have one exercise on non-parametric analysis for two groups and one exercise for non-parametric analysis for multiple groups.
 
 # The shrimps dataset
 
