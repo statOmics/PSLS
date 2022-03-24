@@ -14,8 +14,8 @@
 
 <title>1. Introduction: Why do we need statistics</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -49,6 +49,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -187,6 +188,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -415,7 +419,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -431,7 +435,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-chalkboard-teacher"></span>
      
     Lectures
@@ -487,7 +491,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-laptop"></span>
      
     Labs
@@ -534,7 +538,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -553,7 +557,7 @@ div.tocify {
 
 
 <div id="motivation" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Motivation</h1>
+<h1><span class="header-section-number">1</span> Motivation</h1>
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
 <p><img src="https://images.martechadvisor.com/images/uploads/content_images/ways_to_capture_b2b_customer_data_5bacd2dbe1a09.png" /></p>
 <p><img src="figures/wpGraph.jpeg" /></p>
@@ -568,7 +572,7 @@ div.tocify {
 <p>Statistical literacy is key to interpret results from scientific publications.</p>
 </div>
 <div id="smelly-armpit-example" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Smelly armpit example</h1>
+<h1><span class="header-section-number">2</span> Smelly armpit example</h1>
 <ul>
 <li><p>Smelly armpits are not caused by sweat itself. The smell is caused by specific micro-organisms belonging to the group of <em>Corynebacterium spp.</em> that metabolise sweat. Another group of abundant bacteria are the <em>Staphylococcus spp.</em>, these bacteria do not metabolise sweat in smelly compounds.</p></li>
 <li><p>The CMET-groep at Ghent University does research on transplanting the armpit microbiome to save people with smelly armpits.</p></li>
@@ -591,7 +595,7 @@ div.tocify {
 </ul>
 <hr />
 <div id="import-the-data" class="section level2" number="2.1">
-<h2 number="2.1"><span class="header-section-number">2.1</span> Import the data</h2>
+<h2><span class="header-section-number">2.1</span> Import the data</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_lines</span>(<span class="st">&quot;https://raw.githubusercontent.com/GTPB/PSLS20/master/data/armpit.csv&quot;</span>)</span></code></pre></div>
 <pre><code> [1] &quot;trt,rel&quot;                       &quot;placebo,54.99207606973059&quot;    
  [3] &quot;placebo,31.84466019417476&quot;     &quot;placebo,41.09947643979057&quot;    
@@ -615,13 +619,13 @@ div.tocify {
 <hr />
 </div>
 <div id="data-exploration-and-descriptive-statistics" class="section level2" number="2.2">
-<h2 number="2.2"><span class="header-section-number">2.2</span> Data Exploration and Descriptive Statistics</h2>
+<h2><span class="header-section-number">2.2</span> Data Exploration and Descriptive Statistics</h2>
 <ul>
 <li>Data exploration is extremely important to get insight in the data.</li>
 <li>It is often underrated and overlooked.</li>
 </ul>
 <div id="descriptive-statistics" class="section level3" number="2.2.1">
-<h3 number="2.2.1"><span class="header-section-number">2.2.1</span> Descriptive statistics</h3>
+<h3><span class="header-section-number">2.2.1</span> Descriptive statistics</h3>
 <p>We first summarize the data and calculate the mean, standard deviation, number of observations and standard error and store the result in an object apRelSum via <code>apRelSum&lt;-</code></p>
 <ol style="list-style-type: decimal">
 <li>We pipe the <code>ap</code> dataframe to the group_by function to group the data by treatment trt <code>group_by(trt)</code></li>
@@ -646,10 +650,10 @@ div.tocify {
 <hr />
 </div>
 <div id="plots" class="section level3" number="2.2.2">
-<h3 number="2.2.2"><span class="header-section-number">2.2.2</span> Plots</h3>
+<h3><span class="header-section-number">2.2.2</span> Plots</h3>
 <p>We will use ggplot2 to make our plots. With the ggplot2 library we can easily build plots by adding layers.</p>
 <div id="barplot" class="section level4" number="2.2.2.1">
-<h4 number="2.2.2.1"><span class="header-section-number">2.2.2.1</span> barplot</h4>
+<h4><span class="header-section-number">2.2.2.1</span> barplot</h4>
 <ol style="list-style-type: decimal">
 <li><p>We pipe our summarized data to the <code>ggplot</code> function and we select the treatment variable trt and the variable mean for plotting <code>aes(x=trt,y=mean)</code></p></li>
 <li><p>We make a barplot based on this data using the <code>geom_bar</code> function. The statistic is <code>stat="identity"</code> because the bar height should be equal the value for the mean of the relative abundance.</p></li>
@@ -674,7 +678,7 @@ div.tocify {
 <hr />
 </div>
 <div id="boxplots" class="section level4" number="2.2.2.2">
-<h4 number="2.2.2.2"><span class="header-section-number">2.2.2.2</span> boxplots</h4>
+<h4><span class="header-section-number">2.2.2.2</span> boxplots</h4>
 <p>I consider barplots to be bad plots</p>
 <ul>
 <li>They are not informative</li>
@@ -721,7 +725,7 @@ div.tocify {
 </div>
 </div>
 <div id="estimation-and-statistical-inference" class="section level2" number="2.3">
-<h2 number="2.3"><span class="header-section-number">2.3</span> Estimation and statistical inference</h2>
+<h2><span class="header-section-number">2.3</span> Estimation and statistical inference</h2>
 <ul>
 <li><p>Induction: With statistical inference we can generalize what we observe in the sample towards the population.</p></li>
 <li><p>The price that we have to pay: uncertainty on our conclusions!</p></li>
@@ -757,7 +761,7 @@ sample estimates:
 <hr />
 </div>
 <div id="some-concepts" class="section level2" number="2.4">
-<h2 number="2.4"><span class="header-section-number">2.4</span> Some concepts</h2>
+<h2><span class="header-section-number">2.4</span> Some concepts</h2>
 <p>What are the consequences of using a sample and randomisation?</p>
 <ul>
 <li><p>Random sampling is closely related to the concept of the population or the scope of the study.</p></li>
@@ -780,7 +784,7 @@ sample estimates:
 </div>
 </div>
 <div id="sample-to-sample-variability" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Sample to sample variability</h1>
+<h1><span class="header-section-number">3</span> Sample to sample variability</h1>
 <p>National Health NHanes study</p>
 <ul>
 <li>Since 1960 individuals of all ages are interviewed in their homes every year</li>
@@ -877,7 +881,7 @@ $ SexOrientation   &lt;fct&gt; Heterosexual, Heterosexual, Heterosexual, NA, Het
 $ PregnantNow      &lt;fct&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</code></pre>
 <hr />
 <div id="data-exploration" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> Data exploration</h2>
+<h2><span class="header-section-number">3.1</span> Data exploration</h2>
 <p>Suppose that we are interested in assessing the difference in direct cholesterol levels between males and females older than 25 years.</p>
 <ol style="list-style-type: decimal">
 <li>We pipe the dataset to the function <code>filter</code> to filter the data according to age.</li>
@@ -941,7 +945,7 @@ $ PregnantNow      &lt;fct&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N
 <hr />
 </div>
 <div id="experiment" class="section level2" number="3.2">
-<h2 number="3.2"><span class="header-section-number">3.2</span> Experiment</h2>
+<h2><span class="header-section-number">3.2</span> Experiment</h2>
 <ul>
 <li>Suppose that we have no access to cholesterol levels of the American population,</li>
 <li>we will have to setup an experiment.</li>
@@ -1007,7 +1011,7 @@ mean in group female   mean in group male
 <hr />
 </div>
 <div id="repeat-the-experiment" class="section level2" number="3.3">
-<h2 number="3.3"><span class="header-section-number">3.3</span> Repeat the experiment</h2>
+<h2><span class="header-section-number">3.3</span> Repeat the experiment</h2>
 <p>If we do the experiment again we select other people and we obtain different results.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>fem <span class="ot">&lt;-</span> nhanesSub <span class="sc">%&gt;%</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
@@ -1056,7 +1060,7 @@ mean in group female   mean in group male
 <hr />
 </div>
 <div id="and-again" class="section level2" number="3.4">
-<h2 number="3.4"><span class="header-section-number">3.4</span> And again</h2>
+<h2><span class="header-section-number">3.4</span> And again</h2>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12857</span>)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>fem <span class="ot">&lt;-</span> nhanesSub <span class="sc">%&gt;%</span></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
@@ -1105,7 +1109,7 @@ mean in group female   mean in group male
 <hr />
 </div>
 <div id="summary" class="section level2" number="3.5">
-<h2 number="3.5"><span class="header-section-number">3.5</span> Summary</h2>
+<h2><span class="header-section-number">3.5</span> Summary</h2>
 <ul>
 <li><p>Because we sampled other subjects in each sample, we obtain different cholesterol levels.</p></li>
 <li><p>However, not only the cholesterol levels differ from sample to sample but also the summary statistics: means, standard deviations and standard errors.</p></li>
@@ -1162,7 +1166,7 @@ mean in group female   mean in group male
 <hr />
 </div>
 <div id="assignment" class="section level2" number="3.6">
-<h2 number="3.6"><span class="header-section-number">3.6</span> Assignment</h2>
+<h2><span class="header-section-number">3.6</span> Assignment</h2>
 <ol style="list-style-type: decimal">
 <li>Copy the code chunk with the simulation study</li>
 <li>Add it here below</li>
@@ -1172,7 +1176,7 @@ mean in group female   mean in group male
 <hr />
 </div>
 <div id="control-of-false-positives" class="section level2" number="3.7">
-<h2 number="3.7"><span class="header-section-number">3.7</span> Control of false positives</h2>
+<h2><span class="header-section-number">3.7</span> Control of false positives</h2>
 <p>Wat happens when there is no difference between both groups?</p>
 <ul>
 <li><p>We will have to simulate experiments for which the cholestorol levels are the same for both groups.</p></li>
@@ -1229,7 +1233,7 @@ mean in group female   mean in group male
 </div>
 </div>
 <div id="salk-study" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> Salk Study</h1>
+<h1><span class="header-section-number">4</span> Salk Study</h1>
 <ul>
 <li>In 1916, the US experienced the first large epidemic of polio.</li>
 <li>John Salk developed a vaccine with promising results in the lab in the early fifties.</li>
@@ -1238,9 +1242,9 @@ mean in group female   mean in group male
 </ul>
 <hr />
 <div id="nfip-study" class="section level2" number="4.1">
-<h2 number="4.1"><span class="header-section-number">4.1</span> NFIP Study</h2>
+<h2><span class="header-section-number">4.1</span> NFIP Study</h2>
 <div id="design" class="section level3" number="4.1.1">
-<h3 number="4.1.1"><span class="header-section-number">4.1.1</span> Design</h3>
+<h3><span class="header-section-number">4.1.1</span> Design</h3>
 <ul>
 <li>Large simultaneous study with cases, vaccinated children, and controls, non-vaccinated children.</li>
 <li>All schools in districts with high polio incidence</li>
@@ -1249,7 +1253,7 @@ mean in group female   mean in group male
 </ul>
 </div>
 <div id="data" class="section level3" number="4.1.2">
-<h3 number="4.1.2"><span class="header-section-number">4.1.2</span> Data</h3>
+<h3><span class="header-section-number">4.1.2</span> Data</h3>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>nfip <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">group =</span> <span class="fu">c</span>(<span class="st">&quot;cases&quot;</span>, <span class="st">&quot;control&quot;</span>, <span class="st">&quot;noConcent&quot;</span>), <span class="at">grade =</span> <span class="fu">c</span>(<span class="st">&quot;g2&quot;</span>, <span class="st">&quot;g1g3&quot;</span>, <span class="st">&quot;g2&quot;</span>), <span class="at">vaccin =</span> <span class="fu">c</span>(<span class="st">&quot;yes&quot;</span>, <span class="st">&quot;no&quot;</span>, <span class="st">&quot;no&quot;</span>), <span class="at">total =</span> <span class="fu">c</span>(<span class="dv">221998</span>, <span class="dv">725173</span>, <span class="dv">123605</span>), <span class="at">polio =</span> <span class="fu">c</span>(<span class="dv">54</span>, <span class="dv">391</span>, <span class="dv">56</span>))</span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>nfip<span class="sc">$</span>noPolio <span class="ot">&lt;-</span> nfip<span class="sc">$</span>total <span class="sc">-</span> nfip<span class="sc">$</span>polio</span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(nfip)</span></code></pre></div>
@@ -1297,7 +1301,7 @@ mean in group female   mean in group male
 </div>
 </div>
 <div id="confounding" class="section level2" number="4.2">
-<h2 number="4.2"><span class="header-section-number">4.2</span> Confounding</h2>
+<h2><span class="header-section-number">4.2</span> Confounding</h2>
 <p><img src="01-intro_files/figure-html/unnamed-chunk-26-1.png" width="50%" style="display: block; margin: auto;" /></p>
 <ul>
 <li><p>We observe a lower polio (P) incidence for children for who no consent was given than for the children in the control group.</p></li>
@@ -1313,9 +1317,9 @@ mean in group female   mean in group male
 <hr />
 </div>
 <div id="salk-study-1" class="section level2" number="4.3">
-<h2 number="4.3"><span class="header-section-number">4.3</span> Salk Study</h2>
+<h2><span class="header-section-number">4.3</span> Salk Study</h2>
 <div id="design-1" class="section level3" number="4.3.1">
-<h3 number="4.3.1"><span class="header-section-number">4.3.1</span> Design</h3>
+<h3><span class="header-section-number">4.3.1</span> Design</h3>
 <p>A new study was conducted: Randomized double blind study</p>
 <ul>
 <li>Children are assigned at random to the control or case treatment arm after consent was given by the parents.</li>
@@ -1330,7 +1334,7 @@ mean in group female   mean in group male
 <hr />
 </div>
 <div id="data-1" class="section level3" number="4.3.2">
-<h3 number="4.3.2"><span class="header-section-number">4.3.2</span> Data</h3>
+<h3><span class="header-section-number">4.3.2</span> Data</h3>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>salk <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">group =</span> <span class="fu">c</span>(<span class="st">&quot;cases&quot;</span>, <span class="st">&quot;control&quot;</span>, <span class="st">&quot;noConcent&quot;</span>), <span class="at">treatment =</span> <span class="fu">c</span>(<span class="st">&quot;vaccine&quot;</span>, <span class="st">&quot;placebo&quot;</span>, <span class="st">&quot;none&quot;</span>), <span class="at">total =</span> <span class="fu">c</span>(</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">200745</span>,</span>
 <span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">201229</span>, <span class="dv">338778</span></span>
@@ -1385,7 +1389,7 @@ mean in group female   mean in group male
 </div>
 </div>
 <div id="role-of-statistics-in-the-life-sciences" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> Role of Statistics in the Life Sciences</h1>
+<h1><span class="header-section-number">5</span> Role of Statistics in the Life Sciences</h1>
 <ul>
 <li>We have seen that
 <ul>
