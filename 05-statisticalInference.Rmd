@@ -111,34 +111,18 @@ summary(captopril)
 ```
 
 ```{r}
-captoprilTidy <- captopril %>% gather(type, bp, -id)
-captoprilTidy %>%
+captopril_tidy <- captopril %>% gather(type, bp, -id)
+captopril_summary <- captopril_tidy %>%
   group_by(type) %>%
-  summarize_at("bp", list(
-    mean = ~ mean(., na.rm = TRUE),
-    sd = ~ sd(., na.rm = TRUE),
-    n = function(x) {
-      x %>%
-        is.na() %>%
-        `!`() %>%
-        sum()
-    }
-  )) %>%
+  summarize(
+    mean = mean(bp, na.rm = TRUE),
+    sd = sd(bp, na.rm = TRUE),
+    n = n()
+  ) %>%
   mutate(se = sd / sqrt(n))
+  captopril_summary
 
-captoprilTidy %>%
-  group_by(type) %>%
-  summarize_at("bp", list(
-    mean = ~ mean(., na.rm = TRUE),
-    sd = ~ sd(., na.rm = TRUE),
-    n = function(x) {
-      x %>%
-        is.na() %>%
-        `!`() %>%
-        sum()
-    }
-  )) %>%
-  mutate(se = sd / sqrt(n)) %>%
+captopril_summary %>%
   ggplot(aes(x = type, y = mean)) +
   geom_bar(stat = "identity") +
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = .2) +
@@ -151,7 +135,7 @@ captoprilTidy %>%
 We see that a lot of the space that was taken by the barplot does not contain data!
 
 ```{r}
-captoprilTidy %>%
+captopril_tidy %>%
   ggplot(aes(x = type, y = bp)) +
   geom_boxplot(outlier.shape = NA) +
   geom_point(position = "jitter")
@@ -164,7 +148,7 @@ captoprilTidy %>%
 - We will make a plot by filtering the systolic blood pressures
 
 ```{r}
-captoprilTidy %>%
+captopril_tidy %>%
   filter(type %in% c("SBPa", "SBPb")) %>%
   mutate(type = factor(type, levels = c("SBPb", "SBPa"))) %>%
   ggplot(aes(x = type, y = bp)) +
@@ -186,16 +170,11 @@ captopril %>%
 
 ```{r}
 captopril %>%
-  summarize_at("deltaSBP", list(
-    mean = ~ mean(., na.rm = TRUE),
-    sd = ~ sd(., na.rm = TRUE),
-    n = function(x) {
-      x %>%
-        is.na() %>%
-        `!`() %>%
-        sum()
-    }
-  )) %>%
+  summarize(
+    mean = mean(deltaSBP, na.rm = TRUE),
+    sd = sd(deltaSBP, na.rm = TRUE),
+    n = n()
+  ) %>%
   mutate(se = sd / sqrt(n))
 ```
 
@@ -459,19 +438,11 @@ res <- rbind(
     as.data.frame() %>%
     gather(sample, log2Chol) %>%
     group_by(sample) %>%
-    summarize_at(
-      "log2Chol",
-      list(
-        median = ~ median(., na.rm = TRUE),
-        mean = ~ mean(., na.rm = TRUE),
-        sd = ~ sd(., na.rm = TRUE),
-        n = function(x) {
-          x %>%
-            is.na() %>%
-            `!`() %>%
-            sum()
-        }
-      )
+    summarize(
+        median = median(log2Chol, na.rm = TRUE),
+        mean = mean(log2Chol, na.rm = TRUE),
+        sd = sd(log2Chol, na.rm = TRUE),
+        n = n()
     ) %>%
     mutate(se = sd / sqrt(n)),
   femSamp50 %>%
@@ -479,19 +450,11 @@ res <- rbind(
     as.data.frame() %>%
     gather(sample, log2Chol) %>%
     group_by(sample) %>%
-    summarize_at(
-      "log2Chol",
-      list(
-        median = ~ median(., na.rm = TRUE),
-        mean = ~ mean(., na.rm = TRUE),
-        sd = ~ sd(., na.rm = TRUE),
-        n = function(x) {
-          x %>%
-            is.na() %>%
-            `!`() %>%
-            sum()
-        }
-      )
+    summarize(
+        median = median(log2Chol, na.rm = TRUE),
+        mean = mean(log2Chol, na.rm = TRUE),
+        sd = sd(log2Chol, na.rm = TRUE),
+        n = n()
     ) %>%
     mutate(se = sd / sqrt(n)),
   femSamp100 %>%
@@ -499,19 +462,11 @@ res <- rbind(
     as.data.frame() %>%
     gather(sample, log2Chol) %>%
     group_by(sample) %>%
-    summarize_at(
-      "log2Chol",
-      list(
-        median = ~ median(., na.rm = TRUE),
-        mean = ~ mean(., na.rm = TRUE),
-        sd = ~ sd(., na.rm = TRUE),
-        n = function(x) {
-          x %>%
-            is.na() %>%
-            `!`() %>%
-            sum()
-        }
-      )
+    summarize(
+        median = median(log2Chol, na.rm = TRUE),
+        mean = mean(log2Chol, na.rm = TRUE),
+        sd = sd(log2Chol, na.rm = TRUE),
+        n = n()
     ) %>%
     mutate(se = sd / sqrt(n))
 )
@@ -1153,7 +1108,7 @@ Researchers want to assess if the drug captopril decreases the blood pressure fo
 - Is the apparent beneficial effect systematic or random?
 
 ```{r}
-captoprilTidy %>%
+captopril_tidy %>%
   filter(type %in% c("SBPa", "SBPb")) %>%
   mutate(type = factor(type, levels = c("SBPb", "SBPa"))) %>%
   ggplot(aes(x = type, y = bp)) +

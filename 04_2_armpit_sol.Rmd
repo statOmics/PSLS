@@ -120,7 +120,7 @@ result in an object apRelSum via 'apRelSum<-`
 
 1. We pipe the `ap` dataframe to the group_by function to group
 the data by treatment trt `group_by(trt)`
-2. We pipe the result to the `summarize_at` function to summarize
+2. We pipe the result to the `summarize()` function to summarize
 the "rel" variable and calculate the mean, standard deviation and
 the number of observations
 3. We pipe the result to the `mutate` function to make a new
