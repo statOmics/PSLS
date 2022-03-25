@@ -1,0 +1,15 @@
+sudo apt-get remove r-base-core
+sudo apt-get remove r-base
+sudo apt-get remove r-base-dev
+sudo apt-get autoremove
+
+
+sudo apt update
+sudo apt -y upgrade
+sudo apt install r-base
+
+# download rstudio 
+# https://download1.rstudio.org/desktop/bionic/amd64/rstudio-2022.02.1-461-amd64.deb
+# double click and install
+
+source("https://raw.githubusercontent.com/statOmics/PSLS/master/install.R")
