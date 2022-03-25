@@ -430,15 +430,15 @@ div.tocify {
         <li>
   <a href="index.html">
     <span class="fa fa-home"></span>
-     
+
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-chalkboard-teacher"></span>
-     
+
     Lectures
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -492,9 +492,9 @@ div.tocify {
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-laptop"></span>
-     
+
     Labs
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -523,7 +523,7 @@ div.tocify {
         <li>
   <a href="https://github.com/statOmics/PSLS">
     <span class="fab fa-github"></span>
-     
+
   </a>
 </li>
 <li>
@@ -687,44 +687,44 @@ div.tocify {
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>mcp <span class="ot">&lt;-</span> <span class="fu">glht</span>(fit, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">HealthGen =</span> <span class="st">&quot;Tukey&quot;</span>))</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mcp)</span></code></pre></div>
-<pre><code>## 
+<pre><code>##
 ##   Simultaneous Tests for General Linear Hypotheses
-## 
+##
 ## Multiple Comparisons of Means: Tukey Contrasts
-## 
-## 
+##
+##
 ## Fit: lm(formula = log(BPSys1) ~ HealthGen, data = NHANES)
-## 
+##
 ## Linear Hypotheses:
-##                         Estimate Std. Error t value Pr(&gt;|t|)    
-## Fair - Poor == 0       -0.015828   0.010971  -1.443  0.57575    
-## Good - Poor == 0       -0.036762   0.010351  -3.551  0.00297 ** 
+##                         Estimate Std. Error t value Pr(&gt;|t|)
+## Fair - Poor == 0       -0.015828   0.010971  -1.443  0.57575
+## Good - Poor == 0       -0.036762   0.010351  -3.551  0.00297 **
 ## Vgood - Poor == 0      -0.059415   0.010410  -5.708  &lt; 0.001 ***
 ## Excellent - Poor == 0  -0.055476   0.011062  -5.015  &lt; 0.001 ***
 ## Good - Fair == 0       -0.020934   0.005139  -4.074  &lt; 0.001 ***
 ## Vgood - Fair == 0      -0.043587   0.005256  -8.293  &lt; 0.001 ***
 ## Excellent - Fair == 0  -0.039648   0.006452  -6.145  &lt; 0.001 ***
 ## Vgood - Good == 0      -0.022653   0.003797  -5.966  &lt; 0.001 ***
-## Excellent - Good == 0  -0.018714   0.005331  -3.511  0.00352 ** 
-## Excellent - Vgood == 0  0.003938   0.005444   0.723  0.94608    
+## Excellent - Good == 0  -0.018714   0.005331  -3.511  0.00352 **
+## Excellent - Vgood == 0  0.003938   0.005444   0.723  0.94608
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(mcp)</span></code></pre></div>
-<pre><code>## 
+<pre><code>##
 ##   Simultaneous Confidence Intervals
-## 
+##
 ## Multiple Comparisons of Means: Tukey Contrasts
-## 
-## 
+##
+##
 ## Fit: lm(formula = log(BPSys1) ~ HealthGen, data = NHANES)
-## 
+##
 ## Quantile = 2.6849
 ## 95% family-wise confidence level
-##  
-## 
+##
+##
 ## Linear Hypotheses:
-##                        Estimate  lwr       upr      
+##                        Estimate  lwr       upr
 ## Fair - Poor == 0       -0.015828 -0.045283  0.013627
 ## Good - Poor == 0       -0.036762 -0.064554 -0.008970
 ## Vgood - Poor == 0      -0.059415 -0.087364 -0.031466

@@ -1,6 +1,6 @@
 ---
 title: "Exercise 5.2: Hypothesis testing on the armpit dataset - solution"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -72,7 +72,10 @@ ap %>% ggplot(aes(x = trt, y = rel, fill = trt)) +
   geom_point(position = "jitter") +
   ylab("relative abundance (%)") +
   xlab("treatment group") +
-  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
+  stat_summary(
+    fun = mean, geom = "point",
+    shape = 5, size = 3, color = "black",
+  )
 ```
 
 We clearly see that, on average, the subjects who had a
@@ -124,7 +127,10 @@ ap %>% ggplot(aes(x = trt, y = rel)) +
   geom_point(position = "jitter") +
   ylab("relative abundance (%)") +
   xlab("treatment group") +
-  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
+  stat_summary(
+    fun = mean, geom = "point",
+    shape = 5, size = 3, color = "black",
+  )
 ```
 
 Here we can see that the interquartile range is approximately equal for groups.
@@ -164,24 +170,14 @@ In order for the learners to get more proficient in evaluating the assumptions w
 We simulate 9 datasets with the same sample sizes, means and pooled variance as in the sample.
 
 ```{r}
-ap <- read_csv("https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv")
-
 nSamp <- 9
 ## descriptive statistics
 apRelSum <- ap %>%
   group_by(trt) %>%
-  summarize_at(
-    "rel",
-    list(
-      mean = ~ mean(., na.rm = TRUE),
-      sd = ~ sd(., na.rm = TRUE),
-      n = function(x) {
-        x %>%
-          is.na() %>%
-          `!`() %>%
-          sum()
-      }
-    )
+  summarize(
+      mean = mean(rel, na.rm = TRUE),
+      sd = sd(rel, na.rm = TRUE),
+      n = n()
   ) %>%
   mutate(se = sd / sqrt(n))
 

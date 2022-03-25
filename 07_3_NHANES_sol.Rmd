@@ -48,7 +48,10 @@ NHANES %>%
   # geom_jitter(width = 0.2,size=0.01) + ## omitted as it makes the plot messy
   ggtitle("Boxplot of the systolic bloodpressure for each health category") +
   ylab("Systolic blood pressure (mmHg)") +
-  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
+stat_summary(
+  fun = mean, geom = "point",
+  shape = 5, size = 3, color = "black",
+)
 ```
 
 This plot is not ideal; it would be far more intuitive if
@@ -78,7 +81,10 @@ NHANES %>%
   geom_boxplot(outlier.shape = NA) +
   ggtitle("Boxplot of the systolic bloodpressure for each health category") +
   ylab("Systolic blood pressure (mmHg)") +
-  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
+stat_summary(
+  fun = mean, geom = "point",
+  shape = 5, size = 3, color = "black",
+)
 ```
 
 # ANOVA

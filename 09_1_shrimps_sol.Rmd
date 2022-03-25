@@ -62,7 +62,10 @@ shrimps %>%
   geom_jitter(width = 0.2) +
   ggtitle("Boxplot of the PCB concentrations in two groups of shrimps") +
   ylab("PCB concentration (pg/g)") +
-  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
+stat_summary(
+  fun = mean, geom = "point",
+  shape = 5, size = 3, color = "black",
+)
 ```
 
 We can see that for group 1 we have four very clear outliers

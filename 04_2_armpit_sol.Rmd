@@ -1,6 +1,6 @@
 ---
 title: "Exercise 4.2: Exploring the armpit dataset - solution"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -8,13 +8,13 @@ In this exercise, we will explore the "smelly armpit" dataset.
 
 # Smelly armpit dataset
 
-Smelly armpits are not caused by sweat, itself. The smell is caused
+Smelly armpits are not caused by sweat, itself. Rather, the smell is caused
 by specific micro-organisms belonging to the group of
 *Corynebacterium spp.* that metabolise sweat. Another group of abundant bacteria
 are the *Staphylococcus spp.*, these bacteria do not metabolise sweat in smelly
 compounds.
 
-The CMET-group at Ghent University does research to on transplanting the armpit
+The CMET-group at Ghent University performs research on how to transplant the armpit
 microbiome to save people with smelly armpits.
 
 - Proposed Therapy:
@@ -82,9 +82,9 @@ visualization:
 
 ```{r}
 ap %>%
-  ggplot(aes(x = rel, fill = trt)) + # fill in the correct values for x and fill
-  geom_histogram() +
-  facet_grid(rows = vars(trt)) + # fill in to put the histograms for both treatment conditions in a separate row
+  ggplot(aes(x = rel, fill = trt)) +
+  geom_histogram(binwidth = 5, color = "black") +
+  facet_grid(rows = vars(trt)) +
   theme_bw() +
   xlab("relative abundance (%)")
 ```
@@ -101,7 +101,10 @@ ap %>% ggplot(aes(x = trt, y = rel, fill = trt)) +
   geom_point(position = "jitter") +
   ylab("relative abundance (%)") +
   xlab("treatment group") +
-  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
+  stat_summary(
+    fun = mean, geom = "point",
+    shape = 5, size = 3, color = "black"
+  )
 ```
 
 What do you observe?
@@ -125,24 +128,14 @@ variable in the data frame that is named `se` for which we calculate the
 standard error
 
 ```{r}
-apRelSum <- ap %>%
+ap %>%
   group_by(trt) %>%
-  summarize_at(
-    "rel",
-    list(
-      mean = ~ mean(., na.rm = TRUE),
-      sd = ~ sd(., na.rm = TRUE),
-      n = function(x) {
-        x %>%
-          is.na() %>%
-          `!`() %>%
-          sum()
-      }
-    )
+  summarize(
+      mean = mean(rel, na.rm = TRUE),
+      sd = sd(rel, na.rm = TRUE),
+      n = n()
   ) %>%
   mutate(se = sd / sqrt(n))
-
-apRelSum
 ```
 
 This concludes the data exploration. Tomorrow, we will learn how to formally

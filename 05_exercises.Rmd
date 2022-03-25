@@ -1,15 +1,18 @@
 ---
 title: "Exercises on chapter 5: Statistical inference"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
-On the second day of the "Practical Statistics for the Life Sciences"
-course, we will have four exercises on statistical, based on different
-datasets:
+On the second day of the "Practical Statistics for the Life Sciences" course, we
+will have four exercises on statistical inference, based on different datasets:
 
+* [The captopril dataset]
+* [The armpit dataset]
+* [The Cuckoo dataset]
+* [The shrimps dataset]
 
-# The captopril dataset:
+# The captopril dataset
 
 The captopril dataset holds information on a small experiment with 15 patients
 that have increased blood pressure values. More specifically, for each patient
@@ -21,12 +24,15 @@ In this tutorial on data exploration, you will learn how to perform hypothesis
 testing with data from paired experimental designs.
 
 - Exercise: [Exercise1](./05_1_captopril.html)
-- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt"
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt`
+
 <!-- - Solution: [Solution1](./05_1_captopril_sol.html) -->
 
 ---
 
-# The armpit dataset:
+# The armpit dataset
 
 Smelly armpits are not caused by sweat, itself. The smell is caused by specific
 micro-organisms belonging to the group of Corynebacterium spp. that metabolise
@@ -44,12 +50,15 @@ test if the microbial transplant has helped in decreasing the (average) relative
 bundance Staphylococcus spp. in the microbiome of the armpit.
 
 - Exercise: [Exercise2](./05_2_armpit.html)
-- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv"
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv`
+
 <!-- - Solution: [Solution2](./05_2_armpit_sol.html) -->
 
 ---
 
-# The Cuckoo dataset:
+# The Cuckoo dataset
 
 The common cuckoo does not build its own nest: it prefers to lay its eggs in
 another birds' nest. It is known, since 1892, that the type of cuckoo bird eggs
@@ -66,7 +75,10 @@ randomly selected "foster" nests. The researchers want to test if the type of
 foster parent has an effect on the average length of the cuckoo eggs.
 
 - Exercise: [Exercise3](./05_3_cuckoo.html)
-- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/Cuckoo.txt
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/Cuckoo.txt`
+
 <!-- - Solution: [Solution3](./05_3_cuckoo_sol.html) -->
 
 ---
@@ -84,4 +96,8 @@ The research question is; is there an effect of the growth condition on the PCB
 concentration in the adipose tissue of shrimps?
 
 - Exercise: [Exercise4](./05_4_shrimps.html)
-- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/shrimps.txt
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/shrimps.txt`
+
+<!-- - Solution: [Solution4](./05_4_shrimps_sol.html) -->

@@ -1,6 +1,6 @@
 ---
 title: "Exercise 4.4: Exploring the FEV dataset - solution"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -53,7 +53,7 @@ head(fev)
 # Data wrangling
 
 There are a few things in the formatting of the
-data that can be improved upon:
+data that can be improved:
 
 1. Both `gender` and `smoking` can be transformed to factors.
 
@@ -88,7 +88,7 @@ fev %>%
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2, size = 0.1) +
   ggtitle("Boxplot of FEV versus smoking") +
-  ylab("fev (l)") +
+  ylab("FEV (l)") +
   xlab("smoking status")
 ```
 
@@ -110,9 +110,9 @@ fev %>%
   geom_point(width = 0.2, size = 0.1, position = position_jitterdodge()) +
   theme_bw() +
   scale_fill_manual(values = c("dimgrey", "firebrick")) +
-  ggtitle("Boxplot of FEV versus smoking, stratified on age") +
-  ylab("fev (l)") +
-  xlab("smoking status")
+  ggtitle("Boxplot of FEV by smoking status, stratified on age") +
+  ylab("FEV (l)") +
+  xlab("Age")
 ```
 
 This plot seems to already be much more plausible. First, it seems
@@ -138,9 +138,9 @@ fev %>%
   geom_point(width = 0.2, size = 0.1, position = position_jitterdodge()) +
   theme_bw() +
   scale_fill_manual(values = c("dimgrey", "firebrick")) +
-  ggtitle("Boxplot of FEV versus smoking, stratified on age and gender") +
-  ylab("fev (l)") +
-  xlab("smoking status") +
+  ggtitle("Boxplot of FEV by smoking status, stratified on age and gender") +
+  ylab("FEV (l)") +
+  xlab("Age") +
   facet_grid(rows = vars(gender))
 ```
 
@@ -161,8 +161,8 @@ fev %>%
   scale_color_manual(values = c("darkorchid", "olivedrab4")) +
   theme_bw() +
   ggtitle("Boxplot of FEV versus height") +
-  ylab("fev (l)") +
-  xlab("height (cm)")
+  ylab("FEV (l)") +
+  xlab("Height (cm)")
 ```
 
 There is a clear relationship between height and FEV.

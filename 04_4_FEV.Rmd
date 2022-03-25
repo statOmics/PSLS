@@ -1,6 +1,6 @@
 ---
 title: "Exercise 4.4: Exploring the FEV dataset"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -42,6 +42,10 @@ library(car)
 
 # Import the data
 
+Data path:
+
+`https://raw.githubusercontent.com/statOmics/PSLS21/data/fev.txt`
+
 Note: `fev.txt` is a tab-separated file: make sure to select the correct `readr`
 function!
 
@@ -57,7 +61,7 @@ Have a first look at the data
 
 
 There are a few things in the formatting of the
-data that can be improved upon:
+data that can be improved:
 
 1. Both `gender` and `smoking` can be transformed to factors.
 
@@ -69,8 +73,6 @@ converted to centimeters.
 ```{r, eval=FALSE}
 ...
 ```
-
-That's better!
 
 Now, let's make a first explorative plot, showing
 only the FEV for both smoking categories.

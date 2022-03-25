@@ -1,6 +1,6 @@
 ---
-title: "Exercise 9.1: Non-parametric statistics on the shrimps dataset - solution"
-author: "Lieven Clement and Jeroen Gilis"
+title: "Exercise 5.4: Hypothesis testing on the shrimps dataset - solution"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -22,15 +22,15 @@ tissue of shrimps?
 
 Load libraries:
 
-```{r}
+```{r libraries, message=FALSE, warning=FALSE}
 library(tidyverse)
 ```
 
 # Import the data
 
 ```{r}
-shrimps <- read.table("https://raw.githubusercontent.com/statOmics/PSLS21/data/shrimps.txt",
-  header = TRUE
+shrimps <- read_table(
+  "https://raw.githubusercontent.com/statOmics/PSLS21/data/shrimps.txt"
 )
 glimpse(shrimps)
 ```
@@ -62,7 +62,10 @@ shrimps %>%
   geom_jitter(width = 0.2) +
   ggtitle("Boxplot of the PCB concentrations in two groups of shrimps") +
   ylab("PCB concentration (pg/g)") +
-  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
+  stat_summary(
+    fun = mean, geom = "point",
+    shape = 5, size = 3, color = "black",
+  )
 ```
 
 We can see that for group 1 we have four very clear outliers
@@ -105,5 +108,7 @@ line. As such, we may conclude that our data are not normally distributed.
 In addition, the boxplots suggest that the
 variability differs between the two groups.
 
-Given the location of the outliers transformation will not help here.As such,
-we are not allowed to perform the t-test.
+Given the location of the outliers transformation will not help here. Therefore,
+the t-test is not appropriate here. We will revisit this dataset in [exercise
+9.1](./09_1_shrimps.html) and consider an alternative analysis using a
+**non-parametric** test.

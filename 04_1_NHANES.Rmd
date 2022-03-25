@@ -1,8 +1,12 @@
 ---
 title: "Exercise 4.1: Exploring the NHANES dataset"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
+
+```{r setup, include=FALSE, cache=FALSE}
+options(width = 80)
+```
 
 In this exercise, we will learn how to import, tidy, wrangle and
 visualize data.
@@ -16,7 +20,7 @@ we will make use of the data that were collected between 2009 and
 physical, demographic, nutritional and life-style-related parameters.
 
 Before we can actually start working with data, we will need to learn how to
-import the required datasets into our Rstudio environment.
+import the required datasets into our R session.
 
 # Data Import  with the `readr` R package
 
@@ -27,12 +31,15 @@ library(readr)
 Let's try reading in some data. We will begin by
 reading in the `NHANES.csv` dataset.
 
+Note that we don't need to download the dataset manually; `read_csv()` (or its base equivalent
+`read.csv()`) can take a URL as input and read in the data directly.
+
 ```{r nhanesDatExpl}
 NHANES <- read_csv("https://raw.githubusercontent.com/statOmics/PSLS21/data/NHANES.csv")
 ```
 
 ```{r}
-head(NHANES) ## take a look at the first rows of the dataset
+head(NHANES) ## take a look at the first 6 rows of the dataset
 ```
 
 ```{r}
@@ -40,23 +47,15 @@ tail(NHANES) ## take a look at the last rows of the dataset
 ```
 
 ```{r}
-NHANES[c(1, 4, 5, 6, 7, 8), c(
-  "ID",
-  "Gender",
-  "Age",
-  "Race1",
-  "Weight",
-  "Height",
-  "BMI",
-  "BPSysAve"
-)] # display a select set of variable and subjects
+ # display a select set of variable and subjects
+NHANES[c(1, 4, 5, 6, 7, 8), c("ID", "Gender", "Age", "Race1", "Weight", "Height", "BMI", "BPSysAve")]
 ```
 
-## Take a `glimpse()` at your data
+## Take a `glimpse()` at your data {-}
 
-The glimpse function allows us to (obviously) take
+The `glimpse()` function allows us to (obviously) take
 a first, informative glimpse at our data. The function
-is part of the `dplyr`, which we will explore in much
+is part of the `dplyr` package, which we will explore in much
 more detail below!
 
 ```{r}
@@ -70,9 +69,9 @@ dplyr::glimpse(NHANES[, 1:10])
 library(tidyverse)
 ```
 
-** Important **
+**Important**:
 If you are not familiar yet with the concepts of tidy data,
-have a look at the *extra1_preliminary_tidyverse.Rmd* file!
+have a look at the [*tidyverse preliminary*](./extra1_preliminary_tidyverse.html) first!
 
 If we consider our `NHANES` dataframe, we see it is already in
 a tidy format, as;
@@ -96,27 +95,59 @@ with tidyverse will be described there
 library(dplyr)
 ```
 
-The `dplyr` package provides us with a large set of
-functions for handeling our data. We refer to the
-preliminary_tidyverse.Rmd file for a more detailed
-description of these functions.
+The `dplyr` package provides us with a large set of functions for handeling our data. We refer to
+the [*preliminary*](./extra1_preliminary_tidyverse.html) file for a more detailed description of
+these functions.
 
 The most important `dplyr` functions to remember are:
 
-`dplyr` verbs | Description |
---- | ------------------------------------------------------------------------------------ |
-`select()` | select columns  |
-`filter()` | filter rows |
-`arrange()` | re-order or arrange rows |
-`mutate()` | create new columns |
-`summarize()` | summarize values |
-`group_by()` | allows for group operations in the "split-apply-combine" concept |
+|`dplyr` verbs | Description |
+|:---|:-------------------------------------------------------------------|
+| `select()` | select columns  |
+| `filter()` | filter rows |
+| `arrange()` | re-order or arrange rows |
+| `mutate()` | create new columns |
+| `summarize()` | summarize values |
+| `group_by()` | allows for group operations in the "split-apply-combine" concept |
 
-In addition, `dplyr` uses the pipe operator `%>%` to
-use the output of one function as an input to the next
-function. Instead of nesting functions (reading from the
-inside to the outside), the idea of of piping is to
-read the functions from left to right.
+## The pipe
+
+In addition, the tidyverse allows using the [pipe operator](https://r4ds.had.co.nz/pipes.html#pipes)
+`%>%` from the `magrittr` package to use the output of one function as an input to the next
+function. Instead of nesting functions (reading from the inside to the outside), piping can improve
+readability by allowing to write function calls from left to right or top to bottom.
+
+For example, the following nested expression
+
+```{r, eval=FALSE}
+foo(bar(baz(x)))
+```
+
+Could be rewritten as
+
+```{r, eval=FALSE}
+x %>%
+  baz() %>%
+  bar() %>%
+  foo()
+```
+
+Note that the pipe should only be used when it *improves* readability! It's a purely esthetic tool
+and does not change anyting to how the functions are evaluated.
+
+Note that the above example could also be rewritten using *intermediate steps*:
+
+```{r, eval=FALSE}
+x1 <- baz(x)
+x2 <- bar(x1)
+x3 <- foo(x2)
+```
+
+Which in some cases might actually be more appropriate (for example when you need to debug the code
+or reuse the intermediate results) but has the downside of having to name each intermediate object.
+
+In short, be conscious about when it's appropriate to use the pipe and don't just blindly use it
+everywhere. **Ask yourself whether it really improves the readability of your code.**
 
 ## Select and filter
 
@@ -135,13 +166,15 @@ Let's say we want to investigate how many subjects are
 
 ```{r, message=FALSE, warning=FALSE}
 NHANES %>%
-  select(c("Gender", "Age", "Weight", "Height")) %>% ## select the colums of interest
+  ## (Optional) select the colums of interest
+  select(c("Gender", "Age", "Weight", "Height")) %>%
+  ## filter observations (rows) based on the required values
   filter(
     Gender == "male",
     Age > 18,
     Height > 150,
     Weight < 80
-  ) %>% ## filter observations (rows) based on the required values
+  ) %>%
   nrow()
 ```
 
@@ -153,9 +186,9 @@ the rest of the data (if this is the only question).
 
 ## Arrange
 
-Next question; Within the `Race1` category of `Hispanics`, select
-`men` that are `not married` and `display the first five by`
-`descending height`.
+Next question; within the `Race1` category of `Hispanics`, select
+`men` that are `not married` and display the first five by
+descending height`
 
 **Hint**: use the `desc()` function inside of
 `arrange()` to order rows in a descending order.
@@ -210,23 +243,20 @@ NHANES %>%
   filter(MaritalStatus != "Married", Race1 == "Hispanic", Gender == "male") %>%
   mutate(BMI_self = Weight / (Height / 100)**2) %>%
   summarise(avg_BMI_self = mean(BMI_self, na.rm = TRUE))
-## the addition argument na.rm = TRUE makes sure to remove missing
+## the additional argument na.rm = TRUE makes sure to remove missing
 ## values for the purpose of calculating the mean
 ```
 
 For this particular subset of the data, we find an
-average BMI value of 28.59 kg/m**2.
+average BMI value of $28.59 kg/m^2$
 
-There are many other summary statistics you
-could consider such `sd()`, `min()`, `median()`,
-`max()`, `sum()`, `n()` (returns the length of vector),
-`first()` (returns first value in vector),
-`last()` (returns last value in vector) and
-`n_distinct()` (number of distinct values in vector).
+There are many other summary statistics you could consider such `sd()`, `min()`, `median()`,
+`max()`, `sum()`, `n()` (returns the length of vector), `first()` (returns first value in vector),
+`last()` (returns last value in vector) and `n_distinct()` (number of distinct values in vector).
 We will elaborate on these functions later.
 
-Note that choosing the most informative summary statistic
-is very important! This can be shown with the following example;
+Note that choosing the most informative summary statistic is very important! This can be shown with
+the following example;
 
 ```{r, echo=FALSE}
 knitr::include_graphics("figures/Figure_partners.png")
@@ -319,7 +349,7 @@ a histogram and a boxplot.
 NHANES %>%
   head(NHANES, n = 100) %>% ## to make the visualization more clear, we take only the first 100 subjects
   ggplot(aes(x = BMI)) +
-  geom_dotplot(method = "histodot")
+  geom_dotplot(method = "histodot", na.rm = TRUE)
 ```
 
 In the dotplot, the BMI value for each subject (in this case,
@@ -339,10 +369,10 @@ of high interest.
 NHANES %>%
   head(NHANES, n = 100) %>%
   ggplot(aes(x = BMI)) +
-  geom_histogram()
+  geom_histogram(na.rm = TRUE)
 ```
 
-The information taht can be obtained from this histogram
+The information that can be obtained from this histogram
 is similar to that of the dotplot. Here, we can read immediately
 (i.e. without counting) that the BMI interval [29.5, 30.0[
 contains 4 subjects. Again, the histogram does not provide us with
@@ -357,12 +387,13 @@ set.seed(2) ## to make the horizontal position of the jitter non-random
 NHANES %>%
   head(NHANES, n = 100) %>%
   ggplot(aes(x = "", y = BMI)) +
-  geom_boxplot(outlier.shape = NA) +
-  geom_jitter(width = 0.2) +
+  geom_boxplot(outlier.shape = NA, na.rm = TRUE) +
+  geom_jitter(width = 0.2, na.rm = TRUE) +
   stat_summary(
-    geom = "text", fun.y = quantile,
+    geom = "text", fun = quantile,
     aes(label = sprintf("%1.1f", ..y..)),
-    position = position_nudge(x = 0.5), size = 4.5
+    position = position_nudge(x = 0.5), size = 4.5,
+    na.rm = TRUE
   ) +
   annotate("text", x = c(1.5, 1.5, 1.5, 1.5, 1.5, 1.05, 1.05), y = c(12.5, 19, 24.5, 28.5, 45, 18, 35), label = c("(minimum)", "(25%)", "(median)", "(75%)", "(maximum)", "whisker", "whisker"), size = 3)
 ```
@@ -398,7 +429,7 @@ values.
 ```{r}
 p <- NHANES %>%
   ggplot(aes(x = Height, y = Weight))
-p + geom_point() +
+p + geom_point(na.rm = TRUE) +
   xlab("Height (cm)") +
   ylab("Weight (kg)")
 ```
@@ -417,7 +448,7 @@ scatterplot based on a subject's gender.
 ```{r}
 NHANES %>%
   ggplot(aes(x = Height, y = Weight, color = Gender)) +
-  geom_point() +
+  geom_point(na.rm = TRUE) +
   xlab("Height (cm)") +
   ylab("Weight (kg)")
 ```
@@ -445,7 +476,7 @@ the ggplot functionalities!
 NHANES %>%
   filter(Age >= 18, Race1 == "White", MaritalStatus == "Married") %>% ## select the required data
   ggplot(aes(x = Height, y = Weight, color = Gender)) +
-  geom_point(shape = 17, size = 1) + ## set to a different shape (triangle) and size
+  geom_point(shape = 17, size = 1, na.rm = TRUE) + ## set to a different shape (triangle) and size
   ggtitle("Height versus Weight") + ## for the main title
   xlab("Height (cm)") +
   ylab("Weight (kg)") +
@@ -522,7 +553,7 @@ NHANES %>%
   geom_histogram()
 ```
 
-Now the data seems to be approximately normal by eye (we will later show how to
+Now the data seems to be approximately normal on sight (we will later show how to
 assess data normality more formally). From this subset, we may calculate the
 reference interval.
 

@@ -1,6 +1,6 @@
 ---
 title: "Exercise 4.3: Exploring the captopril dataset"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -39,12 +39,54 @@ function from tidyverse. It will reshape the dataframe,
 such that we have have a single variable `type`, which
 points at one of the four blood pressure types, and `bp`,
 which points at the actual value for each type
-for each patient.
+for each patient. We call this data format also a *long*
+format, while the original dataset is in *wide* format.
+
+**Side note**: `gather()` is a rather outdated function from the tidyverse (though it still works
+perfectly fine!), the current recommended approach is to use
+[`pivot_longer()`](https://tidyr.tidyverse.org/reference/pivot_longer.html)
 
 ```{r}
-captopril %>%
+## Pivot data from wide to long format
+captopril_long <- captopril %>%
   gather(type, bp, -id)
+
+## Print the result
+captopril_long
 ```
+
+We transformed the data and stored it in a new object `captopril_long` for easy reuse later.  To
+improve the visualizations below, we can also recode the `type` variable so it's a bit more
+descriptive; `SBPb` correspond to "Systolic Blood Pressure before treatment", `SBPa` to "SBP after
+treatment" and so on. We can use another package from the tidyverse named
+[*stringr*](https://stringr.tidyverse.org) to transform the character `type` variable.
+
+```{r}
+captopril_long <- captopril_long %>%
+  mutate(
+    type = str_replace(type, "b", "_before"),
+    type = str_replace(type, "a", "_after")
+  )
+
+## Print the result
+captopril_long
+```
+
+Finally, R will by default visualize any character variables in alphabetic order. However, in this case, it makes more sense to put the `before` types first. We can do this by transforming the characgter variable `type` to a factor and use (yet) another tidyverse package (there are about 8 of them!) called [*forcats*](https://forcats.tidyverse.org/) to make the `before` variables the reference level (i.e. the first in order).
+
+```{r}
+captopril_long <- captopril_long %>%
+  mutate(
+    type = fct_relevel(
+      type,
+      c("SBP_before", "SBP_after", "DBP_before", "DBP_after")
+  ))
+captopril_long
+```
+
+*Note that this doesn't change anything to the order in which the values appear in the data
+(compare the output with that from before. The only thing that changed here is that we converted
+`type` to a __factor__, indicated by `<fct>` when printing the `tibble` object.*
 
 ## Barplot
 
@@ -54,15 +96,22 @@ commonly find in scientific publication The code for generating such a barplot
 is provided below:
 
 ```{r}
-captopril %>%
-  gather(type, bp, -id) %>%
-  Rmisc::summarySE(measurevar = "bp", groupvars = "type") %>%
-  ggplot(aes(x = type, y = bp, fill = type)) +
+captopril_long %>%
+  ## Calculate summarry statistics for the "bp" variable for each "type"
+  group_by(type) %>%
+  summarize(
+    mean = mean(bp, na.rm = TRUE),
+    sd = sd(bp, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ## Compute the standard errors for the means
+  mutate(se = sd / sqrt(n)) %>%
+  ggplot(aes(x = type, y = mean, fill = type)) +
   scale_fill_brewer(palette = "RdGy") +
   theme_bw() +
   geom_bar(stat = "identity") +
-  geom_errorbar(aes(ymin = bp - se, ymax = bp + se), width = .2) +
-  ggtitle("Barplot of different blood pressure measures") +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.2) +
+  ggtitle("Barplot of different blood pressure measurements") +
   ylab("blood pressure (mmHg)")
 ```
 
@@ -90,16 +139,19 @@ the barplot, but we still would not see any measures of the
 spread, such as the interquartile range.
 
 ```{r}
-captopril %>%
-  gather(type, bp, -id) %>%
+captopril_long %>%
   ggplot(aes(x = type, y = bp, fill = type)) +
   scale_fill_brewer(palette = "RdGy") +
   theme_bw() +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2) +
-  ggtitle("Boxplot of different blood pressure measures") +
+  ggtitle("Boxplot of different blood pressure measurements") +
   ylab("blood pressure (mmHg)") +
-  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
+  stat_summary(
+    fun = mean, geom = "point",
+    shape = 5, size = 3,
+    color = "black"
+  )
 ```
 
 With the boxplot, we get a lot of useful information.
@@ -124,9 +176,8 @@ captopril.
 We can visualize this as follows;
 
 ```{r}
-captopril %>%
-  gather(type, bp, -id) %>%
-  filter(type %in% c("SBPa", "SBPb")) %>%
+captopril_long %>%
+  filter(type %in% c("SBP_after", "SBP_before")) %>%
   ggplot(aes(x = id, y = bp, color = type)) +
   geom_point(size = 2) +
   scale_color_manual(values = c("blue", "red")) +
@@ -136,9 +187,8 @@ captopril %>%
 Or, alternatively, by creating a `line plot`:
 
 ```{r}
-captopril %>%
-  gather(type, bp, -id) %>%
-  filter(type %in% c("SBPa", "SBPb")) %>%
+captopril_long %>%
+  filter(type %in% c("SBP_after", "SBP_before")) %>%
   ggplot(aes(x = type, y = bp)) +
   geom_line(aes(group = id)) +
   theme_bw()
@@ -147,18 +197,17 @@ captopril %>%
 We see that for all patients, the systolic blood
 pressure is lower after captopril treatment than before.
 
-Note that we could not see this from the boxplot, directly;
+Note that we could not see this from the boxplot directly;
 
 ```{r}
-captopril %>%
-  gather(type, bp, -id) %>%
-  filter(type %in% c("SBPa", "SBPb")) %>%
+captopril_long %>%
+  filter(type %in% c("SBP_after", "SBP_before")) %>%
   ggplot(aes(x = type, y = bp, fill = type)) +
   scale_fill_brewer(palette = "RdGy") +
   theme_bw() +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2) +
-  ggtitle("Boxplot of blood pressure measures before and after treatment") +
+  ggtitle("Boxplot of blood pressure measurements before and after treatment") +
   ylab("blood pressure (mmHg)") +
   stat_summary(fun = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
 ```
@@ -181,7 +230,9 @@ captopril %>%
   geom_jitter(width = 0.2) +
   ggtitle("Boxplot of the difference in blood pressure") +
   ylab("blood pressure difference (mmHg)") +
-  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black") +
+  stat_summary(
+    fun = mean, geom = "point",
+    shape = 5, size = 3, color = "black") +
   theme_bw() +
   ylim(-40, 10) +
   geom_hline(yintercept = 0, color = "red") ## adds horizontal line to plot

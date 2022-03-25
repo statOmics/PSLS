@@ -1,6 +1,6 @@
 ---
 title: "Exercises on chapter 4: Data exploration"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -8,8 +8,14 @@ In the first day of the "Practical Statistics for the Life Sciences"
 course, we will have four exercises on data exploration, based on different
 datasets:
 
+* [The NHANES dataset]
+* [The armpit dataset]
+* [The captopril dataset]
+* [The FEV dataset]
 
-# The NHANES dataset:
+---
+
+# The NHANES dataset
 
 The National Health and Nutrition Examination Survey (NHANES) contains data
 that has been collected since 1960. For this tutorial, we will make use of the
@@ -21,13 +27,15 @@ Getting familiar with the dataset will always be the first step in a data
 analysis pipeline. In this tutorial, you will learn the key principles of data
 exploration in R, including data import, tidying, wrangling and visualisation.
 
-- Preliminary:[Preliminary](./extra1_preliminary_tidyverse.html)
+- Preliminary: [Preliminary](./extra1_preliminary_tidyverse.html)
 - Exercise: [Exercise1](./04_1_NHANES.html)
-- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/NHANES.csv
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/NHANES.csv`
 
 ---
 
-# The armpit dataset:
+# The armpit dataset
 
 Smelly armpits are not caused by sweat, itself. The smell is caused by specific
 micro-organisms belonging to the group of Corynebacterium spp. that metabolise
@@ -44,12 +52,15 @@ In this exercise, you will use your acquired skills from the first exercise to
 explore the armpit dataset all by yourself!
 
 - Exercise: [Exercise2](./04_2_armpit.html)
-- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv`
+
 <!-- - Solution: [Solution2](./04_2_armpit_sol.html) -->
 
 ---
 
-# The captopril dataset:
+# The captopril dataset
 
 The captopril dataset holds information on a small experiment with 15 patients
 that have increased blood pressure values. More specifically, for each patient
@@ -61,12 +72,15 @@ In this tutorial on data exploration, you will learn how to deal with data from
 paired experimental designs.
 
 - Exercise: [Exercise3](./04_3_captopril.html)
-- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt`
+
 <!-- - Solution: [Solution3](./04_3_captopril_sol.html) -->
 
 ---
 
-# The FEV dataset:
+# The FEV dataset
 
 The FEV, which is an acronym for forced expiratory volume, is a measure of how
 much air a person can exhale (in liters)  during  a forced breath. In this
@@ -80,5 +94,10 @@ In this tutorial, you will learn about the importance of confounders in
 real-life datasets.
 
 - Exercise: [Exercise4](./04_4_FEV.html)
-- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/fev.txt
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/fev.txt`
+
 <!-- - Solution: [Solution4](./04_4_FV_sol.html) -->
+
+<br/>

@@ -1,6 +1,6 @@
 ---
 title: "Exercise 4.3: Exploring the captopril dataset"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -13,6 +13,10 @@ one value for systolic blood pressure and one for diastolyic,
 both before and after treating the patient with a drug named captopril.
 
 # Import the data
+
+Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt`
 
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -34,7 +38,7 @@ Have a first look at the data
 
 Let's say we now first want to visualize the data.
 One possibility to easily visualize the four types
-of blood pressure values is by adopting the `gather`
+of blood pressure values is by adopting the `gather()`
 function from tidyverse. It will reshape the dataframe,
 such that we have have a single variable `type`, which
 points at one of the four blood pressure types, and `bp`,
@@ -56,26 +60,20 @@ is provided below:
 ```{r, eval=FALSE}
 captopril %>%
   gather(type, bp, -id) %>%
+  ## Calculate summarry statistics for the "bp" variable for each "type"
   group_by(type) %>%
-  summarize_at(
-    "bp",
-    list(
-      mean = ~ mean(., na.rm = TRUE),
-      sd = ~ sd(., na.rm = TRUE),
-      n = function(x) {
-        x %>%
-          is.na() %>%
-          `!`() %>%
-          sum()
-      }
-    )
+  summarize(
+    mean = mean(bp, na.rm = TRUE),
+    sd = sd(bp, na.rm = TRUE),
+    n = n()
   ) %>%
+  ## Compute the standard errors for the means
   mutate(se = sd / sqrt(n)) %>%
   ggplot(aes(x = type, y = mean, fill = type)) +
   scale_fill_brewer(palette = "RdGy") +
   theme_bw() +
   geom_bar(stat = "identity") +
-  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = .2) +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.2) +
   ggtitle("Barplot of different blood pressure measures") +
   ylab("blood pressure (mmHg)")
 ```

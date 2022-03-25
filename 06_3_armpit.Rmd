@@ -72,7 +72,10 @@ ap %>% ggplot(aes(x = trt, y = rel, fill = trt)) +
   geom_point(position = "jitter") +
   ylab("relative abundance (%)") +
   xlab("treatment group") +
-  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
+stat_summary(
+  fun = mean, geom = "point",
+  shape = 5, size = 3, color = "black",
+)
 ```
 
 We clearly see that, on average, the subjects who had a
@@ -124,7 +127,10 @@ ap %>% ggplot(aes(x = trt, y = rel)) +
   geom_point(position = "jitter") +
   ylab("relative abundance (%)") +
   xlab("treatment group") +
-  stat_summary(fun.y = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
+stat_summary(
+  fun = mean, geom = "point",
+  shape = 5, size = 3, color = "black",
+)
 ```
 
 Here we can see that the interquartile range is approximately equal for groups.
