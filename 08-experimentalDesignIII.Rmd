@@ -107,15 +107,10 @@ mouseWide %>%
 - Summary statistics
 ```{r}
 deltaSum <- mouseWide %>%
-  summarize_at(
-    "delta",
-    list(
-      mean = ~ mean(., na.rm = TRUE),
-      sd = ~ sd(., na.rm = TRUE),
-      n = ~ is.na(.) %>%
-        `!`() %>%
-        sum()
-    )
+  summarize(
+      mean = mean(delta, na.rm = TRUE),
+      sd = sd(delta, na.rm = TRUE),
+      n = n()
   ) %>%
   mutate(se = sd / sqrt(n))
 deltaSum

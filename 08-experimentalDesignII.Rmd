@@ -299,16 +299,11 @@ mice %>%
 mice <- mice %>% mutate(Diet = as.factor(Diet))
 miceSum <- mice %>%
   group_by(Diet) %>%
-  summarize_at("Bodyweight", list(
-    mean = ~ mean(., na.rm = TRUE),
-    sd = ~ sd(., na.rm = TRUE),
-    n = function(x) {
-      x %>%
-        is.na() %>%
-        `!`() %>%
-        sum()
-    }
-  )) %>%
+  summarize(
+    mean = mean(Bodyweight, na.rm = TRUE),
+    sd = sd(Bodyweight, na.rm = TRUE),
+    n = n()
+  ) %>%
   mutate(se = sd / sqrt(n))
 miceSum
 ```

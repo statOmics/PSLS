@@ -170,24 +170,14 @@ In order for the learners to get more proficient in evaluating the assumptions w
 We simulate 9 datasets with the same sample sizes, means and pooled variance as in the sample.
 
 ```{r}
-ap <- read_csv("https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv")
-
 nSamp <- 9
 ## descriptive statistics
 apRelSum <- ap %>%
   group_by(trt) %>%
-  summarize_at(
-    "rel",
-    list(
-      mean = ~ mean(., na.rm = TRUE),
-      sd = ~ sd(., na.rm = TRUE),
-      n = function(x) {
-        x %>%
-          is.na() %>%
-          `!`() %>%
-          sum()
-      }
-    )
+  summarize(
+      mean = mean(rel, na.rm = TRUE),
+      sd = sd(rel, na.rm = TRUE),
+      n = n()
   ) %>%
   mutate(se = sd / sqrt(n))
 
