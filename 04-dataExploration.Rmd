@@ -130,7 +130,7 @@ fem <- NHANES %>%
 boxplot(fem$DirectChol, ylab = "Direct Cholesterol", cex.lab = 1.5, cex.axis = 1.5, cex.main = 1.5)
 rangeCl <- quantile(fem$DirectChol, c(.25, .75)) + c(-1, 1) * diff(quantile(fem$DirectChol, c(.25, .75))) * 1.5
 boxYs <- c(range(fem$DirectChol[fem$DirectChol <= rangeCl[2] & fem$DirectChol >= rangeCl[1]]), quantile(fem$DirectChol, c(.25, .5, .75)), rangeCl[2] + (max(fem$DirectChol) - rangeCl[2]) / 2)
-text(1.3, boxYs, labels = c("wisker", "wisker", "x25", "mediaan", "x75", "outliers"), pos = 4, cex = 1.3)
+text(1.3, boxYs, labels = c("wisker", "wisker", "x25", "median", "x75", "outliers"), pos = 4, cex = 1.3)
 lines(c(1.1, 1.3, 1.3, 1.1), c(rangeCl[2], rangeCl[2] + (max(fem$DirectChol) - rangeCl[2]) / 2, rangeCl[2] + (max(fem$DirectChol) - rangeCl[2]) / 2, max(fem$DirectChol)), lty = 2)
 ```
 
@@ -174,15 +174,20 @@ When we specify a factor variable for x, we get a boxplot for each treatment gro
 
 #### Median
 
+<details><summary> </summary><p>
 - The median of the number of partners males and females want to have is both 1 \tiny{(Miller and Fishkin, 1997)}\Normalsize
-
+</p>
+</details>
 ---
 
 #### What happens?
 
+<details><summary> </summary><p>
 ![](https://raw.githubusercontent.com/GTPB/PSLS20/gh-pages/assets/figs/partners.png){width=75%}
 
 - Mean is very sensitive towards outliers!
+</p>
+</details>
 
 ---
 
