@@ -767,7 +767,7 @@ As long as the sample size n is sufficiently large, the sample mean $\bar X$ is 
 
 ### Overview on the distribution of the mean
 
-![](https://www.nature.com/articles/nmeth.2613.pdf){width=100%}
+https://www.nature.com/articles/nmeth.2613.pdf
 
 ---
 
@@ -1052,7 +1052,7 @@ res %>%
   ylim(range(fem$DirectChol %>% log2()))
 ```
 
-![](https://www.nature.com/articles/nmeth.2659.pdf){width=100%}
+https://www.nature.com/articles/nmeth.2659.pdf
 
 ---
 
@@ -1664,7 +1664,7 @@ pSim %>%
 - Still the power to pick up such a small blood pressure drop remains very low.
 - A drop of 2 mmHg is also not relevant for drug companies.
 
-![](https://www.nature.com/articles/nmeth.2738.pdf){width=100%}
+https://www.nature.com/articles/nmeth.2738.pdf
 
 ---
 
@@ -1891,4 +1891,4 @@ mean(pvalsInCor < 0.05)
 
 # Nature column on testing
 
-![](https://www.nature.com/articles/nmeth.2698.pdf){width=100%}
+https://www.nature.com/articles/nmeth.2698.pdf
