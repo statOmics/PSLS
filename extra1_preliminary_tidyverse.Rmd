@@ -508,7 +508,7 @@ Note that choosing the most informative summary statistic
 is very important! This can be shown with the following example;
 
 ```{r, echo=FALSE}
-knitr::include_graphics("https://raw.githubusercontent.com/statOmics/PSLS21/data/Figure_partners.png")
+knitr::include_graphics("figures/Figure_partners.png")
 ```
 
 In this sudy, men and woman were asked about their
