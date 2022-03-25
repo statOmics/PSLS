@@ -458,7 +458,7 @@ res <- rbind(
 )
 ```
 
-##### Means
+##### Means {-}
 
 We first illustrate the impact of sample size on the distribution of the means of the different samples
 
@@ -474,7 +474,7 @@ res %>%
 
 ---
 
-##### Standard deviation
+##### Standard deviation {-}
 
 We now illustrate the impact of sample size on the distribution of the standard deviation of the different samples
 
@@ -494,7 +494,7 @@ It is centred around the same value: the standard deviation in the population. I
 
 ---
 
-##### Standard error on the mean
+##### Standard error on the mean {-}
 
 Finally, we illustrate the impact of sample size on the distribution of the standard deviation on the mean of the different samples
 
@@ -580,7 +580,7 @@ fem %>%
 
 ---
 
-##### Evaluate distribution for samples with 5 subjects
+##### Evaluate distribution for samples with 5 subjects {-}
 
 ```{r}
 set.seed(1)
@@ -617,7 +617,7 @@ data.frame(means = femSamp5_means) %>%
 
 ---
 
-##### Explore the distribution of the mean for samples of size 10
+##### Explore the distribution of the mean for samples of size 10 {-}
 
 Now we explore the results for the sample size of 10.
 
@@ -681,7 +681,7 @@ when the number observations are large enough.
 
 ---
 
-#### NHANES: cholesterol
+#### NHANES: cholesterol {-}
 
 - When can evaluated this in the NHanes study if we do not log2 transform the data.
 
