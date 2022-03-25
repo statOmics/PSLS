@@ -3,7 +3,7 @@ sudo apt-get remove r-base-core
 sudo apt-get remove r-base
 sudo apt-get remove r-base-dev
 sudo apt-get autoremove
-rm ~/R
+rm -r ~/R
 
 #remove R studio
 sudo apt-get remove rstudio
