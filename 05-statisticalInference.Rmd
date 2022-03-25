@@ -427,15 +427,15 @@ se
 - Instead of using a for loop we will use the sapply function which is more efficient. It takes a vector or a list as input and applies a function on each element of the vector or on each list element.
 
 ```{r}
-set.seed(123)
+set.seed(1)
 femSamp10 <- replicate(1000, sample(fem$DirectChol, size = 10))
 femSamp50 <- replicate(1000, sample(fem$DirectChol, size = 50))
 femSamp100 <- replicate(1000, sample(fem$DirectChol, size = 100))
 
 ## Calculate log2 and convert to data.frame
-femSamp10 <- data.frame(log2(femSamp10))
-femSamp50 <- data.frame(log2(femSamp50))
-femSamp100 <- data.frame(log2(femSamp100))
+femSamp10_log2 <- data.frame(log2(femSamp10))
+femSamp50_log2 <- data.frame(log2(femSamp50))
+femSamp100_log2 <- data.frame(log2(femSamp100))
 
 ## Custom function to calculate summary statistics
 calculate_stats <- function(x) {
@@ -452,9 +452,9 @@ calculate_stats <- function(x) {
 }
 
 res <- rbind(
-  calculate_stats(femSamp10),
-  calculate_stats(femSamp50),
-  calculate_stats(femSamp100)
+  calculate_stats(femSamp10_log2),
+  calculate_stats(femSamp50_log2),
+  calculate_stats(femSamp100_log2)
 )
 ```
 
@@ -565,11 +565,14 @@ fem %>%
   ggplot(aes(x = DirectChol %>% log2())) +
   geom_histogram(aes(y = ..density.., fill = ..count..)) +
   xlab("Direct cholesterol (log2)") +
-  stat_function(fun = dnorm, color = "red", args = list(mean = mean(fem$DirectChol %>% log2()), sd = sd(fem$DirectChol %>% log2()))) +
+  stat_function(
+    fun = dnorm, color = "red",
+    args = list(mean = mean(log2(fem$DirectChol)), sd = sd(log2(fem$DirectChol)))
+  ) +
   ggtitle("All females in Nhanes study")
 
 fem %>%
-  ggplot(aes(sample = DirectChol %>% log2())) +
+  ggplot(aes(sample = log2(DirectChol))) +
   stat_qq() +
   stat_qq_line() +
   ggtitle("All females in Nhanes study")
@@ -582,33 +585,31 @@ fem %>%
 ```{r}
 set.seed(1)
 femSamp5 <- replicate(1000, sample(fem$DirectChol, size = 5))
+femSamp5_log2 <- data.frame(log2(femSamp5))
 
-femSamp5[, 1] %>%
-  log2() %>%
-  as.data.frame() %>%
-  ggplot(aes(x = .)) +
+femSamp5_log2 %>%
+  ggplot(aes(x = X1)) +
   geom_histogram(aes(y = ..density.., fill = ..count..), bins = 10) +
   xlab("Direct cholesterol (log2)") +
-  stat_function(fun = dnorm, color = "red", args = list(mean = femSamp5[, 1] %>% log2() %>% mean(), sd = femSamp5[, 1] %>% log2() %>% sd())) +
+  stat_function(
+    fun = dnorm, color = "red",
+    args = list(mean = mean(femSamp5_log2$X1), sd = sd(femSamp5_log2$X1))
+  ) +
   ggtitle("5 random females") +
-  xlim(fem$DirectChol %>% log2() %>% range())
+  xlim(range(log2(fem$DirectChol)))
 
-
-femSamp5 %>%
-  log2() %>%
-  colMeans() %>%
-  as.data.frame() %>%
-  ggplot(aes(x = .)) +
+femSamp5_means <- colMeans(femSamp5_log2)
+ggplot(data.frame(means = femSamp5_means), aes(x = means)) +
   geom_histogram(aes(y = ..density.., fill = ..count..), bins = 15) +
   xlab("Mean cholesterol (log2)") +
-  stat_function(fun = dnorm, color = "red", args = list(mean = femSamp5 %>% log2() %>% colMeans() %>% mean(), sd = femSamp5 %>% log2() %>% colMeans() %>% sd())) +
+  stat_function(
+    fun = dnorm, color = "red",
+    args = list(mean = mean(femSamp5_means), sd = sd(femSamp5_means))
+  ) +
   ggtitle("Means on 5 females")
 
-femSamp5 %>%
-  log2() %>%
-  colMeans() %>%
-  as.data.frame() %>%
-  ggplot(aes(sample = .)) +
+data.frame(means = femSamp5_means) %>%
+  ggplot(aes(sample = means)) +
   stat_qq() +
   stat_qq_line() +
   ggtitle("Means on 5 females")
@@ -623,35 +624,33 @@ Now we explore the results for the sample size of 10.
 We first illustrate the plot for the first sample.
 
 ```{r}
-femSamp10[, 1] %>%
-  log2() %>%
-  as.data.frame() %>%
-  ggplot(aes(x = .)) +
-  geom_histogram(aes(y = ..density.., fill = ..count..), bins = 10) +
+femSamp10_log2 %>%
+  ggplot(aes(x = X1)) +
+  geom_histogram(aes(y = ..density.., fill = ..count..), binwidth = 0.5) +
   xlab("Direct cholesterol (log2)") +
-  stat_function(fun = dnorm, color = "red", args = list(mean = femSamp10[, 1] %>% log2() %>% mean(), sd = femSamp10[, 1] %>% log2() %>% sd())) +
+  stat_function(
+    fun = dnorm, color = "red",
+    args = list(mean = mean(femSamp10_log2$X1), sd = sd(femSamp10_log2$X1))
+  ) +
   ggtitle("10 random females") +
-  xlim(fem$DirectChol %>% log2() %>% range())
+  xlim(range(log2(fem$DirectChol)))
 ```
 
 Next we look at the distribution of the sample mean over 1000 samples of sample size 10.
 
 ```{r}
-femSamp10 %>%
-  log2() %>%
-  colMeans() %>%
-  as.data.frame() %>%
-  ggplot(aes(x = .)) +
+femSamp10_means <- colMeans(femSamp10_log2)
+ggplot(data.frame(means = femSamp10_means), aes(x = means)) +
   geom_histogram(aes(y = ..density.., fill = ..count..), bins = 15) +
   xlab("Mean cholesterol (log2)") +
-  stat_function(fun = dnorm, color = "red", args = list(mean = femSamp10 %>% log2() %>% colMeans() %>% mean(), sd = femSamp10 %>% log2() %>% colMeans() %>% sd())) +
+  stat_function(
+    fun = dnorm, color = "red",
+    args = list(mean = mean(femSamp10_means), sd = sd(femSamp10_means))
+  ) +
   ggtitle("Means on 10 females")
 
-femSamp10 %>%
-  log2() %>%
-  colMeans() %>%
-  as.data.frame() %>%
-  ggplot(aes(sample = .)) +
+data.frame(means = femSamp10_means) %>%
+  ggplot(aes(sample = means)) +
   stat_qq() +
   stat_qq_line() +
   ggtitle("Means on 10 females")
@@ -687,13 +686,15 @@ when the number observations are large enough.
 - When can evaluated this in the NHanes study if we do not log2 transform the data.
 
 ```{r}
-fem %>% ggplot(aes(x = DirectChol)) +
+ggplot(fem, aes(x = DirectChol)) +
   geom_histogram(aes(y = ..density.., fill = ..count..)) +
   xlab("Direct cholesterol") +
-  stat_function(fun = dnorm, color = "red", args = list(mean = mean(fem$DirectChol), sd = sd(fem$DirectChol))) +
+  stat_function(
+    fun = dnorm, color = "red",
+    args = list(mean = mean(fem$DirectChol), sd = sd(fem$DirectChol))) +
   ggtitle("All females in Nhanes study")
 
-fem %>% ggplot(aes(sample = DirectChol)) +
+ggplot(fem, aes(sample = DirectChol)) +
   stat_qq() +
   stat_qq_line() +
   ggtitle("All females in Nhanes study")
@@ -701,56 +702,53 @@ fem %>% ggplot(aes(sample = DirectChol)) +
 
 The cholesterol data is clearly non-Normally distributed.
 
-##### Distribution of the sample mean for different sample sizes
+##### Distribution of the sample mean for different sample sizes {-}
 
 ```{r}
-femSamp5 %>%
-  colMeans() %>%
-  as.data.frame() %>%
-  ggplot(aes(x = .)) +
+## Calculating the means of the simulated samples WITHOUT first log2-transforming
+femSamp5_means <- colMeans(femSamp5)
+femSamp10_means <- colMeans(femSamp10)
+femSamp50_means <- colMeans(femSamp50)
+femSamp100_means <- colMeans(femSamp100)
+
+ggplot(data.frame(means = femSamp5_means), aes(x = means)) +
   geom_histogram(aes(y = ..density.., fill = ..count..), bins = 15) +
-  xlab("Mean cholesterol") +
-  stat_function(fun = dnorm, color = "red", args = list(mean = femSamp5 %>% colMeans() %>% mean(), sd = femSamp5 %>% colMeans() %>% sd())) +
+  xlab("Mean cholesterol (log2)") +
+  stat_function(
+    fun = dnorm, color = "red",
+    args = list(mean = mean(femSamp5_means), sd = sd(femSamp5_means))
+  ) +
   ggtitle("Means on 5 females")
 
-femSamp5 %>%
-  colMeans() %>%
-  as.data.frame() %>%
-  ggplot(aes(sample = .)) +
+data.frame(means = femSamp5_means) %>%
+  ggplot(aes(sample = means)) +
   stat_qq() +
   stat_qq_line() +
   ggtitle("Means on 5 females")
 
-
-femSamp10 %>%
-  colMeans() %>%
-  as.data.frame() %>%
-  ggplot(aes(x = .)) +
+ggplot(data.frame(means = femSamp10_means), aes(x = means)) +
   geom_histogram(aes(y = ..density.., fill = ..count..), bins = 15) +
-  xlab("Mean cholesterol") +
-  stat_function(fun = dnorm, color = "red", args = list(mean = femSamp10 %>% colMeans() %>% mean(), sd = femSamp10 %>% colMeans() %>% sd())) +
+  xlab("Mean cholesterol (log2)") +
+  stat_function(
+    fun = dnorm, color = "red",
+    args = list(mean = mean(femSamp10_means), sd = sd(femSamp10_means))
+  ) +
   ggtitle("Means on 10 females")
 
-femSamp10 %>%
-  colMeans() %>%
-  as.data.frame() %>%
-  ggplot(aes(sample = .)) +
+data.frame(means = femSamp10_means) %>%
+  ggplot(aes(sample = means)) +
   stat_qq() +
   stat_qq_line() +
   ggtitle("Means on 10 females")
 
-femSamp50 %>%
-  colMeans() %>%
-  as.data.frame() %>%
-  ggplot(aes(sample = .)) +
+data.frame(means = femSamp50_means) %>%
+  ggplot(aes(sample = means)) +
   stat_qq() +
   stat_qq_line() +
   ggtitle("Means on 50 females")
 
-femSamp100 %>%
-  colMeans() %>%
-  as.data.frame() %>%
-  ggplot(aes(sample = .)) +
+data.frame(means = femSamp100_means) %>%
+  ggplot(aes(sample = means)) +
   stat_qq() +
   stat_qq_line() +
   ggtitle("Means on 100 females")
