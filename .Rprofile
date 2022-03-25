@@ -4,3 +4,5 @@ source("renv/activate.R")
 if (file.exists(normalizePath("~/.Rprofile", mustWork = FALSE))) {
     source(normalizePath("~/.Rprofile"))
 }
+
+options(width = 80)
