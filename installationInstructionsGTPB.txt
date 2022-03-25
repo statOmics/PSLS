@@ -1,10 +1,15 @@
+#remove R
 sudo apt-get remove r-base-core
 sudo apt-get remove r-base
 sudo apt-get remove r-base-dev
 sudo apt-get autoremove
-
 rm ~/R
 
+#remove R studio
+sudo apt-get remove rstudio
+
+
+#Install R
 sudo apt update
 sudo apt -y upgrade
 sudo apt install r-base
