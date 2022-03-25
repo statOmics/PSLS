@@ -298,30 +298,31 @@ n <- 15 # number of subjects per sample
 nSim <- 50 # number of simulations
 
 femSamp <- matrix(nrow = n, ncol = nSim)
-for (j in 1:nSim)
-{
+for (j in 1:nSim) {
   femSamp[, j] <- sample(fem$DirectChol, 15)
   if (j < 4) {
-    p <- femSamp %>%
-      log2() %>%
-      data.frame() %>%
-      gather("sample", "log2cholesterol") %>%
+    p <- data.frame(log2(femSamp)) %>%
+      gather(key = "sample", value = "log2cholesterol") %>%
       ggplot(aes(x = sample, y = log2cholesterol)) +
-      geom_boxplot() +
-      stat_summary(fun.y = mean, geom = "point", shape = 19, size = 3, color = "red", fill = "red") +
+      geom_boxplot(na.rm = TRUE) +
+      stat_summary(
+        fun = mean, geom = "point",
+        size = 3, color = "red", na.rm = TRUE
+      ) +
       geom_hline(yintercept = mean(fem$DirectChol %>% log2())) +
       ylab("cholesterol (log2)")
     print(p)
   }
 }
 
-femSamp %>%
-  log2() %>%
-  data.frame() %>%
-  gather("sample", "log2cholesterol") %>%
+data.frame(log2(femSamp)) %>%
+  gather(key = "sample", value = "log2cholesterol") %>%
   ggplot(aes(x = sample, y = log2cholesterol)) +
   geom_boxplot() +
-  stat_summary(fun.y = mean, geom = "point", shape = 19, size = 3, color = "red", fill = "red") +
+  stat_summary(
+    fun = mean, geom = "point",
+    size = 3, color = "red", na.rm = TRUE
+  ) +
   geom_hline(yintercept = mean(fem$DirectChol %>% log2())) +
   ylab("cholesterol (log2)")
 ```
@@ -1192,11 +1193,14 @@ captoprilSamp %>%
 
 
 ```{r}
-data.frame(deltaSBP = c(captopril$deltaSBP, captoprilSamp$deltaSBP), shuffled = rep(c(FALSE, TRUE), each = 15)) %>%
+data.frame(
+  deltaSBP = c(captopril$deltaSBP, captoprilSamp$deltaSBP),
+  shuffled = rep(c(FALSE, TRUE), each = 15)
+  ) %>%
   ggplot(aes(x = shuffled, y = deltaSBP)) +
   geom_boxplot(outlier.shape = NA) +
   geom_point(position = "jitter") +
-  stat_summary(fun.y = mean, geom = "point", shape = 19, size = 3, color = "red", fill = "red") +
+  stat_summary(fun = mean, geom = "point", size = 3, color = "red") +
   ylab("Difference (mm mercury)")
 ```
 
@@ -1218,11 +1222,14 @@ captoprilSamp %>%
   geom_line(aes(group = id)) +
   geom_point()
 
-data.frame(deltaSBP = c(captopril$deltaSBP, captoprilSamp$deltaSBP), shuffled = rep(c(FALSE, TRUE), each = 15)) %>%
+data.frame(
+  deltaSBP = c(captopril$deltaSBP, captoprilSamp$deltaSBP),
+  shuffled = rep(c(FALSE, TRUE), each = 15)
+  ) %>%
   ggplot(aes(x = shuffled, y = deltaSBP)) +
   geom_boxplot(outlier.shape = NA) +
   geom_point(position = "jitter") +
-  stat_summary(fun.y = mean, geom = "point", shape = 19, size = 3, color = "red", fill = "red") +
+  stat_summary(fun = mean, geom = "point", size = 3, color = "red") +
   ylab("Difference (mm mercury)")
 ```
 
