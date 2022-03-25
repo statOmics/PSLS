@@ -73,4 +73,5 @@ output:
         after_body: footer.html
       css: style.css
 new_session: true
-exclude: ["renv.lock", "update_install_R.R", "install.R"]
+exclude:
+  ["renv.lock", "update_install_R.R", "install.R", "installationInstructionsGTPB.txt"]
