@@ -427,40 +427,19 @@ se
 - Instead of using a for loop we will use the sapply function which is more efficient. It takes a vector or a list as input and applies a function on each element of the vector or on each list element.
 
 ```{r}
-femSamp10 <- sapply(1:1000, function(j, x, size) sample(x, size), size = 10, x = fem$DirectChol)
+set.seed(123)
+femSamp10 <- replicate(1000, sample(fem$DirectChol, size = 10))
+femSamp50 <- replicate(1000, sample(fem$DirectChol, size = 50))
+femSamp100 <- replicate(1000, sample(fem$DirectChol, size = 100))
 
-femSamp50 <- sapply(1:1000, function(j, x, size) sample(x, size), size = 50, x = fem$DirectChol)
+## Calculate log2 and convert to data.frame
+femSamp10 <- data.frame(log2(femSamp10))
+femSamp50 <- data.frame(log2(femSamp50))
+femSamp100 <- data.frame(log2(femSamp100))
 
-femSamp100 <- sapply(1:1000, function(j, x, size) sample(x, size), size = 100, x = fem$DirectChol)
-
-res <- rbind(
-  femSamp10 %>%
-    log2() %>%
-    as.data.frame() %>%
-    gather(sample, log2Chol) %>%
-    group_by(sample) %>%
-    summarize(
-        median = median(log2Chol, na.rm = TRUE),
-        mean = mean(log2Chol, na.rm = TRUE),
-        sd = sd(log2Chol, na.rm = TRUE),
-        n = n()
-    ) %>%
-    mutate(se = sd / sqrt(n)),
-  femSamp50 %>%
-    log2() %>%
-    as.data.frame() %>%
-    gather(sample, log2Chol) %>%
-    group_by(sample) %>%
-    summarize(
-        median = median(log2Chol, na.rm = TRUE),
-        mean = mean(log2Chol, na.rm = TRUE),
-        sd = sd(log2Chol, na.rm = TRUE),
-        n = n()
-    ) %>%
-    mutate(se = sd / sqrt(n)),
-  femSamp100 %>%
-    log2() %>%
-    as.data.frame() %>%
+## Custom function to calculate summary statistics
+calculate_stats <- function(x) {
+  x %>%
     gather(sample, log2Chol) %>%
     group_by(sample) %>%
     summarize(
@@ -470,6 +449,12 @@ res <- rbind(
         n = n()
     ) %>%
     mutate(se = sd / sqrt(n))
+}
+
+res <- rbind(
+  calculate_stats(femSamp10),
+  calculate_stats(femSamp50),
+  calculate_stats(femSamp100)
 )
 ```
 
@@ -595,9 +580,8 @@ fem %>%
 ##### Evaluate distribution for samples with 5 subjects
 
 ```{r}
-femSamp5 <- sapply(1:1000, function(j, x, size) {
-  sample(x, size)
-}, size = 5, x = fem$DirectChol)
+set.seed(1)
+femSamp5 <- replicate(1000, sample(fem$DirectChol, size = 5))
 
 femSamp5[, 1] %>%
   log2() %>%
