@@ -148,14 +148,6 @@ captoprilTidy %>%
 
 - This figure is not informative! It does not show the raw data.
 
-```{r}
-captoprilTidy %>%
-  ggplot(aes(x = type, y = bp)) +
-  geom_boxplot(outlier.shape = NA) +
-  geom_point(position = "jitter") +
-  ylim(0, 210)
-```
-
 We see that a lot of the space that was taken by the barplot does not contain data!
 
 ```{r}
