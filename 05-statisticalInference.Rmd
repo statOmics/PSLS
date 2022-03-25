@@ -760,7 +760,7 @@ data.frame(means = femSamp100_means) %>%
 
 ---
 
-### Centrale Limit Theorem
+### Central Limit Theorem
 
 Let $X_1, \ldots, X_n$ are sequence of random variables that are drawn independently from the same distribution (population).
 As long as the sample size n is sufficiently large, the sample mean $\bar X$ is approximately normally distributed, irrespective of the distribution of the observations $X_i$.
