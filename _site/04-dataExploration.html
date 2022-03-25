@@ -14,8 +14,8 @@
 
 <title>4. Data Exploration</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -49,6 +49,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -187,6 +188,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -415,7 +419,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -431,7 +435,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-chalkboard-teacher"></span>
      
     Lectures
@@ -487,7 +491,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-laptop"></span>
      
     Labs
@@ -534,7 +538,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -556,7 +560,7 @@ div.tocify {
 <p><img src="04-dataExploration_files/figure-html/pop2Samp2Pop-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <hr />
 <div id="why-data-exploration-and-descriptive-statistics" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Why data exploration and descriptive statistics?</h1>
+<h1><span class="header-section-number">1</span> Why data exploration and descriptive statistics?</h1>
 <ol style="list-style-type: decimal">
 <li>Reporting on results: not useful to only report a table with the results for each subject.</li>
 <li>Letting the data speak by summarizing and visualizing it.</li>
@@ -567,9 +571,9 @@ div.tocify {
 <hr />
 </div>
 <div id="univariate-exploration-of-quantitative-variables" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Univariate exploration of quantitative variables</h1>
+<h1><span class="header-section-number">2</span> Univariate exploration of quantitative variables</h1>
 <div id="histogram" class="section level2" number="2.1">
-<h2 number="2.1"><span class="header-section-number">2.1</span> Histogram</h2>
+<h2><span class="header-section-number">2.1</span> Histogram</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DirectChol)) <span class="sc">+</span></span>
@@ -596,7 +600,7 @@ div.tocify {
 <hr />
 </div>
 <div id="boxplot" class="section level2" number="2.2">
-<h2 number="2.2"><span class="header-section-number">2.2</span> Boxplot</h2>
+<h2><span class="header-section-number">2.2</span> Boxplot</h2>
 <ul>
 <li>A quantile, <span class="math inline">\(x_{a\%}\)</span>, is the value of the random variable that correspond to a certain probability <span class="math inline">\(F(x_{a\%})=P[X\leq x_{a\%}=a\%]\)</span>.</li>
 </ul>
@@ -626,18 +630,18 @@ div.tocify {
 <hr />
 </div>
 <div id="descriptive-statistics" class="section level2" number="2.3">
-<h2 number="2.3"><span class="header-section-number">2.3</span> Descriptive statistics</h2>
+<h2><span class="header-section-number">2.3</span> Descriptive statistics</h2>
 <div id="central-location-mean-or-median" class="section level3" number="2.3.1">
-<h3 number="2.3.1"><span class="header-section-number">2.3.1</span> Central location: Mean or Median?</h3>
+<h3><span class="header-section-number">2.3.1</span> Central location: Mean or Median?</h3>
 <div id="mean" class="section level4" number="2.3.1.1">
-<h4 number="2.3.1.1"><span class="header-section-number">2.3.1.1</span> Mean</h4>
+<h4><span class="header-section-number">2.3.1.1</span> Mean</h4>
 <ul>
 <li>In a period of 30 years, males hope to have on average 64.3 partners and females 2.8 {(Miller and Fishkin, 1997)}.</li>
 </ul>
 <hr />
 </div>
 <div id="median" class="section level4" number="2.3.1.2">
-<h4 number="2.3.1.2"><span class="header-section-number">2.3.1.2</span> Median</h4>
+<h4><span class="header-section-number">2.3.1.2</span> Median</h4>
 <details>
 <summary>
 </summary>
@@ -650,7 +654,7 @@ div.tocify {
 <hr />
 </div>
 <div id="what-happens" class="section level4" number="2.3.1.3">
-<h4 number="2.3.1.3"><span class="header-section-number">2.3.1.3</span> What happens?</h4>
+<h4><span class="header-section-number">2.3.1.3</span> What happens?</h4>
 <details>
 <summary>
 </summary>
@@ -665,7 +669,7 @@ div.tocify {
 </div>
 </div>
 <div id="geometric-mean" class="section level3" number="2.3.2">
-<h3 number="2.3.2"><span class="header-section-number">2.3.2</span> Geometric mean</h3>
+<h3><span class="header-section-number">2.3.2</span> Geometric mean</h3>
 <p><span class="math display">\[\sqrt[n]{\prod\limits_{i=1}^n x_i} = \exp\left\{\frac{1}{n} \sum_{i=1}^n \log(x_i)\right\}\]</span></p>
 <ul>
 <li><p>Geometric mean is closer to the median then the mean</p></li>
@@ -707,7 +711,7 @@ div.tocify {
 </div>
 </div>
 <div id="descriptive-statistics-for-variability" class="section level2" number="2.4">
-<h2 number="2.4"><span class="header-section-number">2.4</span> Descriptive Statistics for Variability</h2>
+<h2><span class="header-section-number">2.4</span> Descriptive Statistics for Variability</h2>
 <p>The variability around the central value is crucial:</p>
 <ol style="list-style-type: decimal">
 <li>Biologists are often interested in how animals or plants are spread in the study region.</li>
@@ -719,7 +723,7 @@ div.tocify {
 <li><p>Which part of the variability can we explain (e.g. with characteristics treatment, age, etc,) and which part is unexplained?</p></li>
 </ul>
 <div id="sample-variance-and-sample-standard-deviation" class="section level3" number="2.4.1">
-<h3 number="2.4.1"><span class="header-section-number">2.4.1</span> Sample variance and sample standard deviation</h3>
+<h3><span class="header-section-number">2.4.1</span> Sample variance and sample standard deviation</h3>
 <ul>
 <li><p>Sample variance: <span class="math display">\[
 s_X^2= \sum\limits_{i=1}^n \frac{(X-\bar X)^2}{n-1}
@@ -739,7 +743,7 @@ s_X= \sqrt{s_x^2}
 <hr />
 </div>
 <div id="interquartile-range" class="section level3" number="2.4.2">
-<h3 number="2.4.2"><span class="header-section-number">2.4.2</span> Interquartile range</h3>
+<h3><span class="header-section-number">2.4.2</span> Interquartile range</h3>
 <p>For skewed data the standard deviation is not useful</p>
 <ul>
 <li>It is very sensitive to outliers</li>
@@ -764,14 +768,14 @@ s_X= \sqrt{s_x^2}
 </div>
 </div>
 <div id="normal-approximation" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Normal approximation</h1>
+<h1><span class="header-section-number">3</span> Normal approximation</h1>
 <ul>
 <li><p>Biological and chemical data are often Normally distributed upon transformation.</p></li>
 <li><p>If this is the case we can get a lot of insight in the data using just two descriptive statistics: mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span>.</p></li>
 </ul>
 <hr />
 <div id="evaluation-with-qq-plots" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> Evaluation with QQ-plots</h2>
+<h2><span class="header-section-number">3.1</span> Evaluation with QQ-plots</h2>
 <p>If your analysis builds upon the assumption that the data are Normally distributed, it has to be verified.</p>
 <p>We use <em>QQ-plots</em> or <em>quantile-quantile plots</em>.</p>
 <ul>
@@ -784,7 +788,7 @@ s_X= \sqrt{s_x^2}
 </ul>
 <hr />
 <div id="normal-data" class="section level3" number="3.1.1">
-<h3 number="3.1.1"><span class="header-section-number">3.1.1</span> Normal data</h3>
+<h3><span class="header-section-number">3.1.1</span> Normal data</h3>
 <ul>
 <li><p>We will first simulate data from the Normal distribution to show how the plots look like for data that is meeting the assumptions.</p></li>
 <li><p>We will simulate data from 9 samples with a mean of 18 and standard deviation of 9.</p></li>
@@ -814,7 +818,7 @@ s_X= \sqrt{s_x^2}
 <hr />
 </div>
 <div id="real-data" class="section level3" number="3.1.2">
-<h3 number="3.1.2"><span class="header-section-number">3.1.2</span> Real data</h3>
+<h3><span class="header-section-number">3.1.2</span> Real data</h3>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Gender <span class="sc">==</span> <span class="st">&quot;female&quot;</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(BMI)) <span class="sc">%&gt;%</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> BMI)) <span class="sc">+</span></span>
@@ -840,7 +844,7 @@ s_X= \sqrt{s_x^2}
 </div>
 </div>
 <div id="two-continuous-variables-correlation" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> Two continuous variables: Correlation</h1>
+<h1><span class="header-section-number">4</span> Two continuous variables: Correlation</h1>
 <ul>
 <li>NHANES study</li>
 <li>Height and Weight Example for females</li>
@@ -905,7 +909,7 @@ s_X= \sqrt{s_x^2}
 <p><img src="04-dataExploration_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <hr />
 <div id="covariance-and-correlation" class="section level2" number="4.1">
-<h2 number="4.1"><span class="header-section-number">4.1</span> Covariance and Correlation</h2>
+<h2><span class="header-section-number">4.1</span> Covariance and Correlation</h2>
 <ul>
 <li>Let X and Y be to continuous random variables, and for each subject i we observe <span class="math inline">\((X_i,Y_i)\)</span>.</li>
 <li>Covariance: how deviate X_i and Y_i around their means?</li>
@@ -917,7 +921,7 @@ s_X= \sqrt{s_x^2}
 <p><span class="math display">\[\mbox{Cor}(X,Y)=\frac{E[(X-E[X])(Y-E[Y])]}{\sqrt{E[(X-E[X])^2}\sqrt{E[(Y-E[Y])^2}}\]</span></p>
 </div>
 <div id="pearson-correlation" class="section level2" number="4.2">
-<h2 number="4.2"><span class="header-section-number">4.2</span> Pearson Correlation</h2>
+<h2><span class="header-section-number">4.2</span> Pearson Correlation</h2>
 <ul>
 <li>Association between two continuous covariate:</li>
 </ul>
@@ -983,7 +987,7 @@ log2Weight 0.9812646 0.3240824  1.0000000</code></pre>
 <li>Do not use Pearson correlation for skewed distributions or for data with outliers.</li>
 </ul>
 <div id="impact-of-outliers" class="section level3" number="4.2.1">
-<h3 number="4.2.1"><span class="header-section-number">4.2.1</span> Impact of outliers</h3>
+<h3><span class="header-section-number">4.2.1</span> Impact of outliers</h3>
 <p>Illustration with simulated data that has one outlier.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">20</span>)</span>
@@ -999,7 +1003,7 @@ log2Weight 0.9812646 0.3240824  1.0000000</code></pre>
 <p><img src="04-dataExploration_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
 </div>
 <div id="only-linear-association" class="section level3" number="4.2.2">
-<h3 number="4.2.2"><span class="header-section-number">4.2.2</span> Only linear association</h3>
+<h3><span class="header-section-number">4.2.2</span> Only linear association</h3>
 <p>Note, that the Pearson correlation only captures linear association!</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>quadratic <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x, <span class="at">y =</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(x)))</span>
@@ -1012,7 +1016,7 @@ log2Weight 0.9812646 0.3240824  1.0000000</code></pre>
 </div>
 </div>
 <div id="different-magnitudes-of-correlation" class="section level2" number="4.3">
-<h2 number="4.3"><span class="header-section-number">4.3</span> Different magnitudes of correlation</h2>
+<h2><span class="header-section-number">4.3</span> Different magnitudes of correlation</h2>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>simData2 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(x, <span class="fl">1.5</span> <span class="sc">*</span> x, <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>, <span class="cf">function</span>(sd, x) <span class="fl">1.5</span> <span class="sc">*</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(x), <span class="at">sd =</span> sd), <span class="at">x =</span> x), <span class="fu">rnorm</span>(<span class="fu">length</span>(x), <span class="at">sd =</span> <span class="dv">7</span>))</span>
@@ -1040,7 +1044,7 @@ log2Weight 0.9812646 0.3240824  1.0000000</code></pre>
 <hr />
 </div>
 <div id="spearman-correlation" class="section level2" number="4.4">
-<h2 number="4.4"><span class="header-section-number">4.4</span> Spearman correlation</h2>
+<h2><span class="header-section-number">4.4</span> Spearman correlation</h2>
 <p>The Spearman correlation is the Pearson correlation after transforming the data to ranks.</p>
 <ul>
 <li>Pearson correlation</li>

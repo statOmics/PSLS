@@ -14,8 +14,8 @@
 
 <title>2. Basic Concepts</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -49,6 +49,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -187,6 +188,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -415,7 +419,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -431,7 +435,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-chalkboard-teacher"></span>
      
     Lectures
@@ -487,7 +491,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-laptop"></span>
      
     Labs
@@ -534,7 +538,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -554,17 +558,17 @@ div.tocify {
 
 <p><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a></p>
 <div id="introduction" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Introduction</h1>
+<h1><span class="header-section-number">1</span> Introduction</h1>
 <p><img src="02-concepts_files/figure-html/pop2Samp2Pop-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <div id="experimental-design-1" class="section level2" number="1.1">
-<h2 number="1.1"><span class="header-section-number">1.1</span> Experimental Design (1)</h2>
+<h2><span class="header-section-number">1.1</span> Experimental Design (1)</h2>
 <ul>
 <li>Researcher determines the <strong>population</strong> to which they wants to generalize their conclusions.</li>
 <li>Financial and logistic limitations <span class="math inline">\(\rightarrow\)</span> <strong>representative sample</strong> from population</li>
 </ul>
 </div>
 <div id="data-analysis-2-3" class="section level2" number="1.2">
-<h2 number="1.2"><span class="header-section-number">1.2</span> Data analysis (2 &amp; 3)</h2>
+<h2><span class="header-section-number">1.2</span> Data analysis (2 &amp; 3)</h2>
 <ul>
 <li><strong>Data-Exploration en Descriptive Statistics (2)</strong>: explore, visualize, summarize, gain insight, check assumptions</li>
 <li><strong>Statistical Inference (3)</strong>: Generalize what we observe in the sample towards the population so that we can draw general conclusions on the biological process we study. We need statistical models to analyze the data, and, to quantify and report on variability and uncertainty.</li>
@@ -573,7 +577,7 @@ div.tocify {
 </div>
 </div>
 <div id="example" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Example</h1>
+<h1><span class="header-section-number">2</span> Example</h1>
 <ul>
 <li>National Health and Nutrition Examination Survey (NHANES)</li>
 <li>American demografic study</li>
@@ -644,14 +648,14 @@ div.tocify {
 <hr />
 </div>
 <div id="variables" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Variables</h1>
+<h1><span class="header-section-number">3</span> Variables</h1>
 <ul>
 <li>We measure <em>variables</em> on subjects in the sample</li>
 <li>A Variable is a charactistic e.g. Direct cholesterol, Age, Gender,, …</li>
 <li>It varies from subject tot subject in the population and thus also within the sample as well as from sample to sample.</li>
 </ul>
 <div id="types-of-variables" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> <em>Types</em> of variables</h2>
+<h2><span class="header-section-number">3.1</span> <em>Types</em> of variables</h2>
 <ol style="list-style-type: decimal">
 <li><em>Qualitative variables</em>: a limited number of outcome categories, non-numeric.
 <ul>
@@ -669,7 +673,7 @@ div.tocify {
 </div>
 </div>
 <div id="population" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> Population</h1>
+<h1><span class="header-section-number">4</span> Population</h1>
 <ul>
 <li>Aim of scientific study: make general statements on a process at the level of the population.</li>
 <li>E.g. assess if the cholesterol level is on average different between males and females who are elder than 25.</li>
@@ -699,7 +703,7 @@ div.tocify {
 <hr />
 </div>
 <div id="random-variables" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> Random Variables</h1>
+<h1><span class="header-section-number">5</span> Random Variables</h1>
 <ul>
 <li><p>Variables (e.g. direct cholesterol) vary in the population from subject to subject!</p></li>
 <li><p>Variables are thus <em>random</em> because their value changes in the population.</p></li>
@@ -709,7 +713,7 @@ div.tocify {
 </ul>
 <hr />
 <div id="convention" class="section level2" number="5.1">
-<h2 number="5.1"><span class="header-section-number">5.1</span> Convention</h2>
+<h2><span class="header-section-number">5.1</span> Convention</h2>
 <ul>
 <li><p>Use capital letters for a study characteristic (e.g. direct cholesterol) to indicate that it changes in the population without thinking about the observed value of a particular subject.</p></li>
 <li><p>Variable <span class="math inline">\(X\)</span> is a <em>random variable</em> and is the result of <em>random sampling</em> of the characteristic from the population.</p></li>
@@ -722,7 +726,7 @@ div.tocify {
 </div>
 </div>
 <div id="describing-the-population" class="section level1" number="6">
-<h1 number="6"><span class="header-section-number">6</span> Describing the population</h1>
+<h1><span class="header-section-number">6</span> Describing the population</h1>
 <ul>
 <li><p>It is impossible to predict the value of a random variable.</p></li>
 <li><p>The realised value of <span class="math inline">\(X\)</span> is subject to random variability.</p></li>
@@ -730,9 +734,9 @@ div.tocify {
 </ul>
 <hr />
 <div id="intermezzo-probability-theory" class="section level2" number="6.1">
-<h2 number="6.1"><span class="header-section-number">6.1</span> Intermezzo probability theory</h2>
+<h2><span class="header-section-number">6.1</span> Intermezzo probability theory</h2>
 <div id="discrete-random-variables" class="section level3" number="6.1.1">
-<h3 number="6.1.1"><span class="header-section-number">6.1.1</span> Discrete random variables</h3>
+<h3><span class="header-section-number">6.1.1</span> Discrete random variables</h3>
 <ul>
 <li><p>Supose that we measure a discrete random variable <span class="math inline">\(X\)</span></p></li>
 <li><p>All possible values for the random variable <span class="math inline">\(X\)</span> are called the sample space <span class="math inline">\(\Omega\)</span>.</p>
@@ -766,7 +770,7 @@ div.tocify {
 </ul>
 <hr />
 <div id="probability-mass-function" class="section level4" number="6.1.1.1">
-<h4 number="6.1.1.1"><span class="header-section-number">6.1.1.1</span> Probability mass function</h4>
+<h4><span class="header-section-number">6.1.1.1</span> Probability mass function</h4>
 <ul>
 <li><p>The probability mass function for a random variable <span class="math inline">\(X\)</span> describes the probability of each possible value of the sample space.</p></li>
 <li><p>Example: Gender is a binary variable (0:male, 1:female) and binary variables are Bernoulli distributed. 50.8% of the subjects of the American population are female and 49.2% are male. Let <span class="math inline">\(\pi\)</span> be the probability on a female <span class="math inline">\(\pi=0.508\)</span>. so <span class="math display">\[ X\sim \left \{
@@ -784,7 +788,7 @@ div.tocify {
 <hr />
 </div>
 <div id="cumulative-distribution-function" class="section level4" number="6.1.1.2">
-<h4 number="6.1.1.2"><span class="header-section-number">6.1.1.2</span> Cumulative distribution function</h4>
+<h4><span class="header-section-number">6.1.1.2</span> Cumulative distribution function</h4>
 <ul>
 <li><p>The cumulative distribution function is the function F(x) that calculates the probability to observe a random variable X for which <span class="math inline">\(X\leq x\)</span>: <span class="math display">\[ F(x) = \sum\limits_{\forall X\leq x} P(x)\]</span></p></li>
 <li><p>Gender example <span class="math inline">\(F(0)=1-\pi\)</span> and F(1)=P(X=0) + P(X=1)=1</p>
@@ -803,7 +807,7 @@ div.tocify {
 <hr />
 </div>
 <div id="mean" class="section level4" number="6.1.1.3">
-<h4 number="6.1.1.3"><span class="header-section-number">6.1.1.3</span> Mean</h4>
+<h4><span class="header-section-number">6.1.1.3</span> Mean</h4>
 <p>The mean or the expected value <span class="math inline">\(E[X]\)</span> of a discrete random variable is given by</p>
 <p><span class="math display">\[E[X]=\sum\limits_{x\in\Omega} x P(X=x)\]</span></p>
 <ul>
@@ -820,7 +824,7 @@ E[X]= 1 \times 1/6 + 2 \times 1/6 + \ldots + 6 \times 1/6 = 3.5
 <hr />
 </div>
 <div id="variance" class="section level4" number="6.1.1.4">
-<h4 number="6.1.1.4"><span class="header-section-number">6.1.1.4</span> Variance</h4>
+<h4><span class="header-section-number">6.1.1.4</span> Variance</h4>
 <p>The variance is a measure for the variability of a random variable and is given by</p>
 <p><span class="math display">\[E[(X-E[X])^2]=\sum\limits_{x\in\Omega} (x-E[X])^2 P(X=x)\]</span></p>
 <ul>
@@ -835,7 +839,7 @@ E[X]= 1 \times 1/6 + 2 \times 1/6 + \ldots + 6 \times 1/6 = 3.5
 </div>
 </div>
 <div id="continuous-random-variable" class="section level3" number="6.1.2">
-<h3 number="6.1.2"><span class="header-section-number">6.1.2</span> Continuous random variable</h3>
+<h3><span class="header-section-number">6.1.2</span> Continuous random variable</h3>
 <ul>
 <li><p>The density function <span class="math inline">\(f(x)\)</span> describes how likely it is to observe a particular value of random variable X when we sample a random subject from the population.</p></li>
 <li><p>Many biological characteristics are approximatively normally distributed (upon transformation) <span class="math display">\[f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}\]</span></p></li>
@@ -856,7 +860,7 @@ E[X]= 1 \times 1/6 + 2 \times 1/6 + \ldots + 6 \times 1/6 = 3.5
 </ul>
 <hr />
 <div id="cumulative-distribution" class="section level4" number="6.1.2.1">
-<h4 number="6.1.2.1"><span class="header-section-number">6.1.2.1</span> Cumulative distribution</h4>
+<h4><span class="header-section-number">6.1.2.1</span> Cumulative distribution</h4>
 <ul>
 <li><p>Again the cumulative distribution <span class="math inline">\(F(X)=P(X\leq x)\)</span>.</p></li>
 <li><p>Because X is continuous we will calculate this probability using an integral <span class="math display">\[F(x)=\int \limits_{-\infty}^x f(x) dx\]</span></p></li>
@@ -877,7 +881,7 @@ E[X]= 1 \times 1/6 + 2 \times 1/6 + \ldots + 6 \times 1/6 = 3.5
 <hr />
 </div>
 <div id="mean-and-variance." class="section level4" number="6.1.2.2">
-<h4 number="6.1.2.2"><span class="header-section-number">6.1.2.2</span> Mean and Variance.</h4>
+<h4><span class="header-section-number">6.1.2.2</span> Mean and Variance.</h4>
 <ul>
 <li>The mean or the expected value <span class="math inline">\(E[X]\)</span> of a continuous random variable is given by</li>
 </ul>
@@ -922,7 +926,7 @@ E[X]= 1 \times 1/6 + 2 \times 1/6 + \ldots + 6 \times 1/6 = 3.5
 </div>
 </div>
 <div id="standardization" class="section level2" number="6.2">
-<h2 number="6.2"><span class="header-section-number">6.2</span> Standardization</h2>
+<h2><span class="header-section-number">6.2</span> Standardization</h2>
 <ul>
 <li>Normal data are often standardized.</li>
 </ul>
@@ -940,7 +944,7 @@ E[X]= 1 \times 1/6 + 2 \times 1/6 + \ldots + 6 \times 1/6 = 3.5
 </div>
 </div>
 <div id="sample" class="section level1" number="7">
-<h1 number="7"><span class="header-section-number">7</span> Sample</h1>
+<h1><span class="header-section-number">7</span> Sample</h1>
 <ul>
 <li><p>In real studies we typically do not know the distribution in the population.</p></li>
 <li><p>Due to financial and logistic reasons we can almost never study the entire population.</p></li>
@@ -954,7 +958,7 @@ E[X]= 1 \times 1/6 + 2 \times 1/6 + \ldots + 6 \times 1/6 = 3.5
 </ul>
 <hr />
 <div id="nhanes-example" class="section level2" number="7.1">
-<h2 number="7.1"><span class="header-section-number">7.1</span> NHANES example</h2>
+<h2><span class="header-section-number">7.1</span> NHANES example</h2>
 <ul>
 <li><p>Gender in the population</p></li>
 <li><p>Select <span class="math inline">\(n=10000\)</span> subjects at random from the American population.</p></li>
@@ -964,7 +968,7 @@ E[X]= 1 \times 1/6 + 2 \times 1/6 + \ldots + 6 \times 1/6 = 3.5
 </ul>
 </div>
 <div id="in-summary" class="section level2" number="7.2">
-<h2 number="7.2"><span class="header-section-number">7.2</span> In summary</h2>
+<h2><span class="header-section-number">7.2</span> In summary</h2>
 <ul>
 <li>Unknown values of the studied population characteristic for 1 to <span class="math inline">\(n\)</span> subjects in a sample are random variables: <span class="math inline">\(X_1, \ldots, X_n\)</span></li>
 <li>We have to reason on this in order to understand how the observations, estimates and conclusions of a study can change from sample to sample.</li>
@@ -974,7 +978,7 @@ E[X]= 1 \times 1/6 + 2 \times 1/6 + \ldots + 6 \times 1/6 = 3.5
 </div>
 </div>
 <div id="gender-example" class="section level1" number="8">
-<h1 number="8"><span class="header-section-number">8</span> Gender Example</h1>
+<h1><span class="header-section-number">8</span> Gender Example</h1>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(NHANES)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>NHANES <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Gender)) <span class="sc">+</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code></pre></div>
@@ -1005,9 +1009,9 @@ Levels: female male</code></pre>
 <hr />
 </div>
 <div id="direct-cholesterol-example" class="section level1" number="9">
-<h1 number="9"><span class="header-section-number">9</span> Direct cholesterol example</h1>
+<h1><span class="header-section-number">9</span> Direct cholesterol example</h1>
 <div id="empirical-distribution" class="section level2" number="9.1">
-<h2 number="9.1"><span class="header-section-number">9.1</span> Empirical distribution</h2>
+<h2><span class="header-section-number">9.1</span> Empirical distribution</h2>
 <ul>
 <li>We can estimate the direct cholesterol distribution of females using a histogram</li>
 </ul>
@@ -1043,7 +1047,7 @@ Levels: female male</code></pre>
 <hr />
 </div>
 <div id="normal-approximation" class="section level2" number="9.2">
-<h2 number="9.2"><span class="header-section-number">9.2</span> Normal approximation</h2>
+<h2><span class="header-section-number">9.2</span> Normal approximation</h2>
 <ul>
 <li>In the introduction we have seen that the log transformed direct cholesterol levels had a nice bell shape.</li>
 </ul>
@@ -1080,7 +1084,7 @@ Levels: female male</code></pre>
 <hr />
 </div>
 <div id="reference-intervals" class="section level2" number="9.3">
-<h2 number="9.3"><span class="header-section-number">9.3</span> Reference intervals</h2>
+<h2><span class="header-section-number">9.3</span> Reference intervals</h2>
 <ul>
 <li><p>Normal values for the cholesterol levels in the population can be calculated using a reference interval. Typically a 95% reference interval is used, so that 95% of the subjects in the population are expected to have a value for the characteristic that falls into the reference interval.</p></li>
 <li><p>We can do this based on the empirical distribution using the quantile function. We need to calculate the quantiles <span class="math inline">\(\hat{F}(x_{2.5\%})=0.025\)</span> and <span class="math inline">\(\hat{F}(x_{97.5\%})=0.975\)</span> so that 95% of the values are located in the interval [<span class="math inline">\(x_{2.5\%}\)</span>, <span class="math inline">\(x_{97.5\%}\)</span>] .</p></li>
@@ -1100,7 +1104,7 @@ Levels: female male</code></pre>
 <li>Note, that this estimate is very crude. In the small sample, We do not have enough observations to have a good approximation of the extreme quantiles.</li>
 </ul>
 <div id="normal-approximation-1" class="section level3" number="9.3.1">
-<h3 number="9.3.1"><span class="header-section-number">9.3.1</span> Normal approximation</h3>
+<h3><span class="header-section-number">9.3.1</span> Normal approximation</h3>
 <ul>
 <li><p>We can use the function qnorm to calculate quantiles from the normal distribution.</p></li>
 <li><p>We also know that a 95% reference interval is located rougly in two standard deviations around the mean.</p></li>
@@ -1130,7 +1134,7 @@ Levels: female male</code></pre>
 </div>
 </div>
 <div id="conclusions" class="section level2" number="9.4">
-<h2 number="9.4"><span class="header-section-number">9.4</span> Conclusions</h2>
+<h2><span class="header-section-number">9.4</span> Conclusions</h2>
 <ul>
 <li><p>For the large sample, the empirical distribution (quantile function) and the normal approximation gives us approximately the same result.</p></li>
 <li><p>For the small sample, however, the normal approximation works much better than the one based on the empirical distribution.</p>
@@ -1144,7 +1148,7 @@ Levels: female male</code></pre>
 </div>
 </div>
 <div id="statistics" class="section level1" number="10">
-<h1 number="10"><span class="header-section-number">10</span> Statistics</h1>
+<h1><span class="header-section-number">10</span> Statistics</h1>
 <ul>
 <li><p>Formula will be used to estimate the parameters of a distribution in the population based on the sample. We call these statistics or estimators.</p></li>
 <li><p>The numeric result obtained by evaluating these formula are also called statistics or estimates.</p></li>
@@ -1156,7 +1160,7 @@ Levels: female male</code></pre>
 <hr />
 </div>
 <div id="convention-1" class="section level1" number="11">
-<h1 number="11"><span class="header-section-number">11</span> Convention</h1>
+<h1><span class="header-section-number">11</span> Convention</h1>
 <ul>
 <li><p><strong>Population parameters</strong> are fixed but unknown and we will denote them with <span class="math inline">\(\rightarrow\)</span> <strong>Greek symbols</strong>.</p></li>
 <li><p><strong>Statistics</strong> that we use to estimate unknown parameters based on the sample are denoted with <strong>letters</strong> are with a hat.</p></li>
