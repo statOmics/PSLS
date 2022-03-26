@@ -13,7 +13,7 @@ env:
 
 jobs:
   render:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out repo
@@ -36,6 +36,14 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install --cask xquartz
+
+      - name: Install curl Headers
+        if: runner.os == 'linux'
+        run: sudo apt-get install libcurl4-openssl-dev
+
+      - name: Install magick on Linux
+        if: runner.os == 'linux'
+        run: sudo apt-get -y install libmagick++-dev
 
       - name: Set up renv
         uses: r-lib/actions/setup-renv@v2
@@ -73,7 +81,6 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@v4.2.5
         with:
-          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
           FOLDER: _site
 
