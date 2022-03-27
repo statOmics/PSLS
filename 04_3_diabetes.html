@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Lieven Clement, and Milan Malfait" />
+<meta name="author" content="Lieven Clement, Jeroen Gilis and Milan Malfait" />
 
 
-<title>Exercise 4.2: Exploring the pertussis dataset</title>
+<title>Exercise 4.3: Exploring the diabetes dataset</title>
 
 <script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -549,82 +549,75 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 4.2: Exploring the pertussis dataset</h1>
-<h4 class="author">Lieven Clement, and Milan Malfait</h4>
+<h1 class="title toc-ignore">Exercise 4.3: Exploring the diabetes dataset</h1>
+<h4 class="author">Lieven Clement, Jeroen Gilis and Milan Malfait</h4>
 <h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
-<p>In this exercise, we will explore the “smelly armpit” dataset.</p>
-<div id="smelly-armpit-dataset" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Smelly armpit dataset</h1>
-<p>Smelly armpits are not caused by sweat, itself. Rather, the smell is caused by specific micro-organisms belonging to the group of <em>Corynebacterium spp.</em> that metabolise sweat. Another group of abundant bacteria are the <em>Staphylococcus spp.</em>, these bacteria do not metabolise sweat in smelly compounds.</p>
-<p>The CMET-group at Ghent University performs research on how to transplant the armpit microbiome to save people with smelly armpits.</p>
+<div id="the-diabetes-dataset" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> The diabetes dataset</h1>
+<p>The <code>diabetes dataset</code> holds information on a small experiment with 8 patients that are subjected to a glucose tolerance test.</p>
+<p>Patients had to fast for eight hours before the test. When the patients entered the hospital their baseline glucose level was measured (mmol/l).</p>
+<p>Patients then had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar. Two hours later, their blood glucose level was measured again.</p>
+<p>The data consist of three variables:</p>
 <ul>
-<li><p>Proposed Therapy:</p>
-<ol style="list-style-type: decimal">
-<li>Remove armpit-microbiome with antibiotics</li>
-<li>Influence armpit microbiome with microbial transplant, see this 2 minute talk on <a href="https://youtu.be/9RIFyqLXdVw">youtube</a></li>
-</ol></li>
-<li><p>Experiment:</p>
-<ul>
-<li>20 students with smelly armpits are attributed to one of two treatment groups</li>
-<li>placebo (only antibiotics)</li>
-<li>transplant (antibiotica followed by microbial transplant).</li>
-<li>The microbiome is sampled 6 weeks upon the treatment</li>
-<li>The relative abundance of <em>Staphylococcus spp.</em> on <em>Corynebacterium spp.</em> + <em>Staphylococcus spp.</em> in the microbiome is measured via DGGE (<em>Denaturing Gradient Gel Electrophoresis</em>).</li>
-</ul></li>
+<li>before: glucose concentration upon 8 hours of fasting (mmol/l)</li>
+<li>after: glucose concentration 2 hours after drinking glucose solution (mmol/l).</li>
+<li>patient: identifier for the patient</li>
 </ul>
-<p>Load the libraries</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 </div>
-<div id="import-the-dataset" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Import the dataset</h1>
+<div id="import-the-data" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Import the data</h1>
 <p>Data path:</p>
-<p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv</code></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ap <span class="ot">&lt;-</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(ap)</span></code></pre></div>
+<p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/diabetes.txt</code></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>diabetes <span class="ot">&lt;-</span> ...</span></code></pre></div>
+<p>Have a first look at the data</p>
 </div>
-<div id="goal" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Goal</h1>
-<p>The overarching goal of this study was to assess if the relative abundance <em>Staphylococcus spp.</em> in the microbiome of the armpit is affected by transplanting the microbiome. To this end, the researchers randomized patients to two treatments: A treatment with antibiotics only and a treatment with antibiotics and a microbial transplant.</p>
-<p>In the tutorial on hypotheses testing we will use a formal statistical test to generalize the results from the sample to that of the population. For this test to be valid, we have to assess following assumptions:</p>
-<ol style="list-style-type: decimal">
-<li><p>The data in each treatment group is normally distributed.</p></li>
-<li><p>The data from the two treatment groups has the same variance.</p></li>
-</ol>
-<p>A statistical analysis always starts with a exploratory data analysis to get insight in the nature and distribution of the data, and to assess the assumptions of the downstream data analysis. Mastering this data exploration step is the purpose of the current exercise</p>
+<div id="data-visualization" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Data visualization</h1>
+<p>The data are not in tidy format. We can easily visualize the glucose levels by adopting the <code>gather()</code> function from tidyverse. It will reshape the dataframe, such that we have have a single variable <code>time</code>, which points at the timepoint of the measurement, and <code>concentration</code>, which contains the actual glucose concentration at before or after drinking the glucose solution for each patient.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>diabetes <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(time, concentration, <span class="sc">-</span>patient)</span></code></pre></div>
+<div id="barplot" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Barplot</h2>
+<p>Not all visualization types will be equally informative.</p>
+<p>A barplot is a plot that you will commonly find in scientific publications. The code for generating such a barplot is provided below:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a> diabetes <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(time, concentration, <span class="sc">-</span>patient) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Calculate summarry statistics for the &quot;bp&quot; variable for each &quot;type&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(time) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(concentration, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(concentration, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>()</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Compute the standard errors for the means</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">se =</span> sd <span class="sc">/</span> <span class="fu">sqrt</span>(n)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> mean, <span class="at">fill =</span> time)) <span class="sc">+</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean <span class="sc">-</span> se, <span class="at">ymax =</span> mean <span class="sc">+</span> se), <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Barplot of glucose measurements&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;concentration (mmol/l)&quot;</span>)</span></code></pre></div>
+<p>A barplot, however, is not very informative. The height of the bars only provides us with information of the mean blood pressure. However, we don’t see the actual underlying values, so we for instance don’t have any information on the spread of the data. It is usually more informative to represent to underlying values as <em>raw</em> as possible. Note that it is possible to add the raw data on the barplot, but we still would not see any measures of the spread, such as the interquartile range.</p>
+<p>Another crucial aspect of the data are also not displayed: the data are paired!</p>
+<p><strong>Based on these critisisms, can you think of a better</strong> <strong>visualization strategy for the captopril data?</strong></p>
+<p><strong>Add your proposed visualization strategy here</strong></p>
 </div>
-<div id="data-visualization" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Data visualization</h1>
-<p>A crucial first step in a data analysis is to visualize and to explore the raw data.</p>
-<p>First, try to make a histogram of the data. Fill in the missing parts in the chunk of code below to get a good-looking visualization:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ap <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>...,<span class="at">fill=</span>...)) <span class="sc">+</span> <span class="do">## fill in the correct values for x and fill</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(...)) <span class="sc">+</span> <span class="do">## fill in to put the histograms for both treatment conditions in a separate row</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;relative abundance (%)&quot;</span>)</span></code></pre></div>
-<p>Based on this plot, it seems that the relative abundance is higher for subjects who had the transplants. However, given the small sample size the histograms are not optimally informative. A better option for these data would be to show the data in a <code>boxplot</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ap <span class="sc">%&gt;%</span>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>...,<span class="at">y=</span>...,<span class="at">fill=</span>...)) <span class="sc">+</span></span></code></pre></div>
-<p>What do you observe?</p>
 </div>
-<div id="descriptive-statistics" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Descriptive statistics</h1>
-<p>Here, we will generate some informative descriptive statistics for the dataset.</p>
-<p>We first summarize the data and calculate the mean, standard deviation, number of observations and standard error and store the result in an object apRelSum via ’apRelSum&lt;-`</p>
-<ol style="list-style-type: decimal">
-<li>We pipe the <code>ap</code> dataframe to the group_by function to group the data by treatment trt <code>group_by(trt)</code></li>
-<li>We pipe the result to the <code>summarize()</code> function to summarize the “rel” variable and calculate the mean, standard deviation and the number of observations</li>
-<li>We pipe the result to the <code>mutate</code> function to make a new variable in the data frame that is named <code>se</code> for which we calculate the standard error (<span class="math inline">\(\sigma / n\)</span>)</li>
-</ol>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Use the instructions from above to generate the summary statistics</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
-<p>This concludes the data exploration. Tomorrow, we will learn how to formally test if the observed difference is <strong>statistically significant</strong>.</p>
+<div id="descriptive-statistics" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Descriptive statistics</h1>
+<ul>
+<li>Generate a code chunk to calculate useful summary statistics for the diabetes data</li>
+</ul>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgNC4yOiBFeHBsb3JpbmcgdGhlIHBlcnR1c3NpcyBkYXRhc2V0IgphdXRob3I6ICJMaWV2ZW4gQ2xlbWVudCwgYW5kIE1pbGFuIE1hbGZhaXQiCmRhdGU6ICJzdGF0T21pY3MsIEdoZW50IFVuaXZlcnNpdHkgKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pbykiCi0tLQoKSW4gdGhpcyBleGVyY2lzZSwgd2Ugd2lsbCBleHBsb3JlIHRoZSAic21lbGx5IGFybXBpdCIgZGF0YXNldC4KCiMgU21lbGx5IGFybXBpdCBkYXRhc2V0CgpTbWVsbHkgYXJtcGl0cyBhcmUgbm90IGNhdXNlZCBieSBzd2VhdCwgaXRzZWxmLiBSYXRoZXIsIHRoZSBzbWVsbCBpcyBjYXVzZWQKYnkgc3BlY2lmaWMgbWljcm8tb3JnYW5pc21zIGJlbG9uZ2luZyB0byB0aGUgZ3JvdXAgb2YKKkNvcnluZWJhY3Rlcml1bSBzcHAuKiB0aGF0IG1ldGFib2xpc2Ugc3dlYXQuIEFub3RoZXIgZ3JvdXAgb2YgYWJ1bmRhbnQgYmFjdGVyaWEKYXJlIHRoZSAqU3RhcGh5bG9jb2NjdXMgc3BwLiosIHRoZXNlIGJhY3RlcmlhIGRvIG5vdCBtZXRhYm9saXNlIHN3ZWF0IGluIHNtZWxseQpjb21wb3VuZHMuCgpUaGUgQ01FVC1ncm91cCBhdCBHaGVudCBVbml2ZXJzaXR5IHBlcmZvcm1zIHJlc2VhcmNoIG9uIGhvdyB0byB0cmFuc3BsYW50IHRoZSBhcm1waXQKbWljcm9iaW9tZSB0byBzYXZlIHBlb3BsZSB3aXRoIHNtZWxseSBhcm1waXRzLgoKLSBQcm9wb3NlZCBUaGVyYXB5OgogIAkxLiBSZW1vdmUgYXJtcGl0LW1pY3JvYmlvbWUgd2l0aCBhbnRpYmlvdGljcwogICAgMi4gSW5mbHVlbmNlIGFybXBpdCBtaWNyb2Jpb21lIHdpdGggbWljcm9iaWFsIHRyYW5zcGxhbnQsIHNlZSB0aGlzIDIgbWludXRlCiAgICAgICB0YWxrIG9uIFt5b3V0dWJlXShodHRwczovL3lvdXR1LmJlLzlSSUZ5cUxYZFZ3KQoKLSBFeHBlcmltZW50OgoKICAgIC0gMjAgc3R1ZGVudHMgd2l0aCBzbWVsbHkgYXJtcGl0cyBhcmUgYXR0cmlidXRlZCB0byBvbmUgb2YKICAgICAgdHdvIHRyZWF0bWVudCBncm91cHMKICAgIC0gcGxhY2VibyAob25seSBhbnRpYmlvdGljcykKICAgIC0gdHJhbnNwbGFudCAoYW50aWJpb3RpY2EgZm9sbG93ZWQgYnkgbWljcm9iaWFsIHRyYW5zcGxhbnQpLgogICAgLSBUaGUgbWljcm9iaW9tZSBpcyBzYW1wbGVkIDYgd2Vla3MgdXBvbiB0aGUgdHJlYXRtZW50CiAgICAtIFRoZSByZWxhdGl2ZSBhYnVuZGFuY2Ugb2YgKlN0YXBoeWxvY29jY3VzIHNwcC4qIG9uCiAgICAgICpDb3J5bmViYWN0ZXJpdW0gc3BwLiogKyAqU3RhcGh5bG9jb2NjdXMgc3BwLiogaW4gdGhlCiAgICAgIG1pY3JvYmlvbWUgaXMgbWVhc3VyZWQgdmlhIERHR0UgKCpEZW5hdHVyaW5nIEdyYWRpZW50IEdlbAogICAgICBFbGVjdHJvcGhvcmVzaXMqKS4KCkxvYWQgdGhlIGxpYnJhcmllcwoKYGBge3IsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKCiMgSW1wb3J0IHRoZSBkYXRhc2V0CgpEYXRhIHBhdGg6CgogIGBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL2FybXBpdC5jc3ZgCgpgYGB7ciwgZXZhbD1GQUxTRX0KYXAgPC0KYGBgCgpgYGB7ciwgZXZhbD1GQUxTRX0KZ2xpbXBzZShhcCkKYGBgCgojIEdvYWwKClRoZSBvdmVyYXJjaGluZyBnb2FsIG9mIHRoaXMgc3R1ZHkgd2FzIHRvIGFzc2VzcyBpZiB0aGUgcmVsYXRpdmUgYWJ1bmRhbmNlCipTdGFwaHlsb2NvY2N1cyBzcHAuKiBpbiB0aGUgbWljcm9iaW9tZSBvZiB0aGUgYXJtcGl0IGlzIGFmZmVjdGVkIGJ5CnRyYW5zcGxhbnRpbmcgdGhlIG1pY3JvYmlvbWUuIFRvIHRoaXMgZW5kLCB0aGUgcmVzZWFyY2hlcnMgcmFuZG9taXplZCBwYXRpZW50cwp0byB0d28gdHJlYXRtZW50czogQSB0cmVhdG1lbnQgd2l0aCBhbnRpYmlvdGljcyBvbmx5IGFuZCBhIHRyZWF0bWVudCB3aXRoCmFudGliaW90aWNzIGFuZCBhIG1pY3JvYmlhbCB0cmFuc3BsYW50LgoKSW4gdGhlIHR1dG9yaWFsIG9uIGh5cG90aGVzZXMgdGVzdGluZyB3ZSB3aWxsIHVzZSBhIGZvcm1hbCBzdGF0aXN0aWNhbCB0ZXN0IHRvCmdlbmVyYWxpemUgdGhlIHJlc3VsdHMgZnJvbSB0aGUgc2FtcGxlIHRvIHRoYXQgb2YgdGhlIHBvcHVsYXRpb24uCkZvciB0aGlzIHRlc3QgdG8gYmUgdmFsaWQsIHdlIGhhdmUgdG8gYXNzZXNzIGZvbGxvd2luZyBhc3N1bXB0aW9uczoKCjEuIFRoZSBkYXRhIGluIGVhY2ggdHJlYXRtZW50IGdyb3VwIGlzIG5vcm1hbGx5IGRpc3RyaWJ1dGVkLgoKMi4gVGhlIGRhdGEgZnJvbSB0aGUgdHdvIHRyZWF0bWVudCBncm91cHMgaGFzIHRoZSBzYW1lIHZhcmlhbmNlLgoKQSBzdGF0aXN0aWNhbCBhbmFseXNpcyBhbHdheXMgc3RhcnRzIHdpdGggYSBleHBsb3JhdG9yeSBkYXRhIGFuYWx5c2lzIHRvIGdldAppbnNpZ2h0IGluIHRoZSBuYXR1cmUgYW5kIGRpc3RyaWJ1dGlvbiBvZiB0aGUgZGF0YSwgYW5kIHRvIGFzc2VzcyB0aGUKYXNzdW1wdGlvbnMgb2YgdGhlIGRvd25zdHJlYW0gZGF0YSBhbmFseXNpcy4gTWFzdGVyaW5nIHRoaXMgZGF0YSBleHBsb3JhdGlvbgpzdGVwIGlzIHRoZSBwdXJwb3NlIG9mIHRoZSBjdXJyZW50IGV4ZXJjaXNlCgojIERhdGEgdmlzdWFsaXphdGlvbgoKQSBjcnVjaWFsIGZpcnN0IHN0ZXAgaW4gYSBkYXRhIGFuYWx5c2lzIGlzIHRvIHZpc3VhbGl6ZSBhbmQgdG8gZXhwbG9yZSB0aGUgcmF3CmRhdGEuCgpGaXJzdCwgdHJ5IHRvIG1ha2UgYSBoaXN0b2dyYW0gb2YgdGhlIGRhdGEuIEZpbGwgaW4gdGhlCm1pc3NpbmcgcGFydHMgaW4gdGhlIGNodW5rIG9mIGNvZGUgYmVsb3cgdG8gZ2V0IGEgZ29vZC1sb29raW5nCnZpc3VhbGl6YXRpb246CgpgYGB7ciwgZXZhbD1GQUxTRX0KYXAgJT4lCiAgZ2dwbG90KGFlcyh4PS4uLixmaWxsPS4uLikpICsgIyMgZmlsbCBpbiB0aGUgY29ycmVjdCB2YWx1ZXMgZm9yIHggYW5kIGZpbGwKICBnZW9tX2hpc3RvZ3JhbSgpICsKICBmYWNldF9ncmlkKHJvd3MgPSB2YXJzKC4uLikpICsgIyMgZmlsbCBpbiB0byBwdXQgdGhlIGhpc3RvZ3JhbXMgZm9yIGJvdGggdHJlYXRtZW50IGNvbmRpdGlvbnMgaW4gYSBzZXBhcmF0ZSByb3cKICB0aGVtZV9idygpICsKICB4bGFiKCJyZWxhdGl2ZSBhYnVuZGFuY2UgKCUpIikKYGBgCgpCYXNlZCBvbiB0aGlzIHBsb3QsIGl0IHNlZW1zIHRoYXQgdGhlIHJlbGF0aXZlIGFidW5kYW5jZQppcyBoaWdoZXIgZm9yIHN1YmplY3RzIHdobyBoYWQgdGhlIHRyYW5zcGxhbnRzLgpIb3dldmVyLCBnaXZlbiB0aGUgc21hbGwgc2FtcGxlIHNpemUgdGhlIGhpc3RvZ3JhbXMKYXJlIG5vdCBvcHRpbWFsbHkgaW5mb3JtYXRpdmUuIEEgYmV0dGVyIG9wdGlvbiBmb3IgdGhlc2UgZGF0YSB3b3VsZCBiZSB0bwpzaG93IHRoZSBkYXRhIGluIGEgYGJveHBsb3RgOgoKYGBge3IsIGV2YWw9RkFMU0V9CmFwICU+JSAgZ2dwbG90KGFlcyh4PS4uLix5PS4uLixmaWxsPS4uLikpICsKYGBgCgpXaGF0IGRvIHlvdSBvYnNlcnZlPwoKIyBEZXNjcmlwdGl2ZSBzdGF0aXN0aWNzCgpIZXJlLCB3ZSB3aWxsIGdlbmVyYXRlIHNvbWUgaW5mb3JtYXRpdmUgZGVzY3JpcHRpdmUgc3RhdGlzdGljcwpmb3IgdGhlIGRhdGFzZXQuCgpXZSBmaXJzdCBzdW1tYXJpemUgdGhlIGRhdGEgYW5kIGNhbGN1bGF0ZSB0aGUgbWVhbiwgc3RhbmRhcmQKZGV2aWF0aW9uLCBudW1iZXIgb2Ygb2JzZXJ2YXRpb25zIGFuZCBzdGFuZGFyZCBlcnJvciBhbmQgc3RvcmUgdGhlCnJlc3VsdCBpbiBhbiBvYmplY3QgYXBSZWxTdW0gdmlhICdhcFJlbFN1bTwtYAoKMS4gV2UgcGlwZSB0aGUgYGFwYCBkYXRhZnJhbWUgdG8gdGhlIGdyb3VwX2J5IGZ1bmN0aW9uIHRvIGdyb3VwCnRoZSBkYXRhIGJ5IHRyZWF0bWVudCB0cnQgYGdyb3VwX2J5KHRydClgCjIuIFdlIHBpcGUgdGhlIHJlc3VsdCB0byB0aGUgYHN1bW1hcml6ZSgpYCBmdW5jdGlvbiB0byBzdW1tYXJpemUKdGhlICJyZWwiIHZhcmlhYmxlIGFuZCBjYWxjdWxhdGUgdGhlIG1lYW4sIHN0YW5kYXJkIGRldmlhdGlvbiBhbmQKdGhlIG51bWJlciBvZiBvYnNlcnZhdGlvbnMKMy4gV2UgcGlwZSB0aGUgcmVzdWx0IHRvIHRoZSBgbXV0YXRlYCBmdW5jdGlvbiB0byBtYWtlIGEgbmV3CnZhcmlhYmxlIGluIHRoZSBkYXRhIGZyYW1lIHRoYXQgaXMgbmFtZWQgYHNlYCBmb3Igd2hpY2ggd2UgY2FsY3VsYXRlIHRoZQpzdGFuZGFyZCBlcnJvciAoJFxzaWdtYSAvIG4kKQoKYGBge3IsIGV2YWw9RkFMU0V9CiMjIFVzZSB0aGUgaW5zdHJ1Y3Rpb25zIGZyb20gYWJvdmUgdG8gZ2VuZXJhdGUgdGhlIHN1bW1hcnkgc3RhdGlzdGljcwouLi4KYGBgCgpUaGlzIGNvbmNsdWRlcyB0aGUgZGF0YSBleHBsb3JhdGlvbi4gVG9tb3Jyb3csIHdlIHdpbGwgbGVhcm4gaG93IHRvIGZvcm1hbGx5CnRlc3QgaWYgdGhlIG9ic2VydmVkIGRpZmZlcmVuY2UgaXMgKipzdGF0aXN0aWNhbGx5IHNpZ25pZmljYW50KiouCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgNC4zOiBFeHBsb3JpbmcgdGhlIGRpYWJldGVzIGRhdGFzZXQiCmF1dGhvcjogIkxpZXZlbiBDbGVtZW50LCBKZXJvZW4gR2lsaXMgYW5kIE1pbGFuIE1hbGZhaXQiCmRhdGU6ICJzdGF0T21pY3MsIEdoZW50IFVuaXZlcnNpdHkgKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pbykiCi0tLQoKIyBUaGUgZGlhYmV0ZXMgZGF0YXNldAoKVGhlIGBkaWFiZXRlcyBkYXRhc2V0YCBob2xkcyBpbmZvcm1hdGlvbiBvbiBhIHNtYWxsIGV4cGVyaW1lbnQgd2l0aAo4IHBhdGllbnRzIHRoYXQgYXJlIHN1YmplY3RlZCB0byAgYSBnbHVjb3NlIHRvbGVyYW5jZSB0ZXN0LgoKClBhdGllbnRzIGhhZCB0byBmYXN0IGZvciBlaWdodCBob3VycyBiZWZvcmUgdGhlIHRlc3QuIApXaGVuIHRoZSBwYXRpZW50cyBlbnRlcmVkIHRoZSBob3NwaXRhbCB0aGVpciBiYXNlbGluZSBnbHVjb3NlIGxldmVsIHdhcyBtZWFzdXJlZCAobW1vbC9sKS4gCgpQYXRpZW50cyB0aGVuICBoYWQgdG8gZHJpbmsgMjUwIG1sIG9mIGEgc3lydXB5IGdsdWNvc2Ugc29sdXRpb24gY29udGFpbmluZyAxMDAgZ3JhbXMgb2Ygc3VnYXIuIApUd28gaG91cnMgbGF0ZXIsIHRoZWlyIGJsb29kIGdsdWNvc2UgbGV2ZWwgd2FzIG1lYXN1cmVkIGFnYWluLiAKClRoZSBkYXRhIGNvbnNpc3Qgb2YgdGhyZWUgdmFyaWFibGVzOgoKLSBiZWZvcmU6IGdsdWNvc2UgY29uY2VudHJhdGlvbiB1cG9uIDggaG91cnMgb2YgZmFzdGluZyAobW1vbC9sKQotIGFmdGVyOiBnbHVjb3NlIGNvbmNlbnRyYXRpb24gMiBob3VycyBhZnRlciBkcmlua2luZyBnbHVjb3NlIHNvbHV0aW9uIChtbW9sL2wpLgotIHBhdGllbnQ6IGlkZW50aWZpZXIgZm9yIHRoZSBwYXRpZW50CgojIEltcG9ydCB0aGUgZGF0YQoKRGF0YSBwYXRoOgoKICBgaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9kaWFiZXRlcy50eHRgCgpgYGB7ciwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkocmVhZHIpCmxpYnJhcnkoZ2dwbG90MikKYGBgCgpgYGB7ciwgZXZhbCA9IEZBTFNFfQpkaWFiZXRlcyA8LSAuLi4KYGBgCgpIYXZlIGEgZmlyc3QgbG9vayBhdCB0aGUgZGF0YQoKYGBge3J9CgpgYGAKCiMgRGF0YSB2aXN1YWxpemF0aW9uCgpUaGUgZGF0YSBhcmUgbm90IGluIHRpZHkgZm9ybWF0LiAKV2UgY2FuIGVhc2lseSB2aXN1YWxpemUgdGhlIGdsdWNvc2UgbGV2ZWxzIGJ5IGFkb3B0aW5nIHRoZSBgZ2F0aGVyKClgCmZ1bmN0aW9uIGZyb20gdGlkeXZlcnNlLiAKSXQgd2lsbCByZXNoYXBlIHRoZSBkYXRhZnJhbWUsCnN1Y2ggdGhhdCB3ZSBoYXZlIGhhdmUgYSBzaW5nbGUgdmFyaWFibGUgYHRpbWVgLCB3aGljaApwb2ludHMgYXQgdGhlIHRpbWVwb2ludCBvZiB0aGUgbWVhc3VyZW1lbnQsIGFuZCBgY29uY2VudHJhdGlvbmAsCndoaWNoIGNvbnRhaW5zIHRoZSBhY3R1YWwgZ2x1Y29zZSBjb25jZW50cmF0aW9uIGF0IGJlZm9yZSBvciBhZnRlciBkcmlua2luZyB0aGUgZ2x1Y29zZSBzb2x1dGlvbgpmb3IgZWFjaCBwYXRpZW50LgoKYGBge3IsIGV2YWw9RkFMU0V9CmRpYWJldGVzICU+JQogIGdhdGhlcih0aW1lLCBjb25jZW50cmF0aW9uLCAtcGF0aWVudCkKYGBgCgojIyBCYXJwbG90CgpOb3QgYWxsIHZpc3VhbGl6YXRpb24gdHlwZXMgd2lsbCBiZSBlcXVhbGx5IGluZm9ybWF0aXZlLgoKQSBiYXJwbG90IGlzIGEgcGxvdCB0aGF0IHlvdSB3aWxsCmNvbW1vbmx5IGZpbmQgaW4gc2NpZW50aWZpYyBwdWJsaWNhdGlvbnMuIApUaGUgY29kZSBmb3IgZ2VuZXJhdGluZyBzdWNoIGEgYmFycGxvdAppcyBwcm92aWRlZCBiZWxvdzoKCmBgYHtyLCBldmFsPUZBTFNFfQogZGlhYmV0ZXMgJT4lCiAgZ2F0aGVyKHRpbWUsIGNvbmNlbnRyYXRpb24sIC1wYXRpZW50KSAlPiUgCiAgIyMgQ2FsY3VsYXRlIHN1bW1hcnJ5IHN0YXRpc3RpY3MgZm9yIHRoZSAiYnAiIHZhcmlhYmxlIGZvciBlYWNoICJ0eXBlIgogIGdyb3VwX2J5KHRpbWUpICU+JQogIHN1bW1hcml6ZSgKICAgIG1lYW4gPSBtZWFuKGNvbmNlbnRyYXRpb24sIG5hLnJtID0gVFJVRSksCiAgICBzZCA9IHNkKGNvbmNlbnRyYXRpb24sIG5hLnJtID0gVFJVRSksCiAgICBuID0gbigpCiAgKSAlPiUKICAjIyBDb21wdXRlIHRoZSBzdGFuZGFyZCBlcnJvcnMgZm9yIHRoZSBtZWFucwogIG11dGF0ZShzZSA9IHNkIC8gc3FydChuKSkgJT4lCiAgZ2dwbG90KGFlcyh4ID0gdGltZSwgeSA9IG1lYW4sIGZpbGwgPSB0aW1lKSkgKwogIHRoZW1lX2J3KCkgKwogIGdlb21fYmFyKHN0YXQgPSAiaWRlbnRpdHkiKSArCiAgZ2VvbV9lcnJvcmJhcihhZXMoeW1pbiA9IG1lYW4gLSBzZSwgeW1heCA9IG1lYW4gKyBzZSksIHdpZHRoID0gMC4yKSArCiAgZ2d0aXRsZSgiQmFycGxvdCBvZiBnbHVjb3NlIG1lYXN1cmVtZW50cyIpICsKICB5bGFiKCJjb25jZW50cmF0aW9uIChtbW9sL2wpIikKYGBgCgoKQSBiYXJwbG90LCBob3dldmVyLCBpcyBub3QgdmVyeSBpbmZvcm1hdGl2ZS4gClRoZSBoZWlnaHQgb2YgdGhlCmJhcnMgb25seSBwcm92aWRlcyB1cyB3aXRoIGluZm9ybWF0aW9uIG9mIHRoZSBtZWFuIGJsb29kIHByZXNzdXJlLgpIb3dldmVyLCB3ZSBkb24ndCBzZWUgdGhlIGFjdHVhbCB1bmRlcmx5aW5nIHZhbHVlcywgc28gd2UgZm9yCmluc3RhbmNlIGRvbid0IGhhdmUgYW55IGluZm9ybWF0aW9uIG9uIHRoZSBzcHJlYWQgb2YgdGhlIGRhdGEuCkl0IGlzIHVzdWFsbHkgbW9yZSBpbmZvcm1hdGl2ZSB0byByZXByZXNlbnQgdG8gdW5kZXJseWluZwp2YWx1ZXMgYXMgX3Jhd18gYXMgcG9zc2libGUuIApOb3RlIHRoYXQgaXQgaXMgcG9zc2libGUgdG8gYWRkIHRoZQpyYXcgZGF0YSBvbiB0aGUgYmFycGxvdCwgYnV0IHdlIHN0aWxsIHdvdWxkIG5vdCBzZWUgYW55IG1lYXN1cmVzCm9mIHRoZSBzcHJlYWQsIHN1Y2ggYXMgdGhlIGludGVycXVhcnRpbGUgcmFuZ2UuCgpBbm90aGVyIGNydWNpYWwgYXNwZWN0IG9mIHRoZSBkYXRhIGFyZSBhbHNvIG5vdCBkaXNwbGF5ZWQ6IAp0aGUgZGF0YSBhcmUgcGFpcmVkIQoKKipCYXNlZCBvbiB0aGVzZSBjcml0aXNpc21zLCBjYW4geW91IHRoaW5rIG9mIGEgYmV0dGVyKioKKip2aXN1YWxpemF0aW9uIHN0cmF0ZWd5IGZvciB0aGUgY2FwdG9wcmlsIGRhdGE/KioKCioqQWRkIHlvdXIgcHJvcG9zZWQgdmlzdWFsaXphdGlvbiBzdHJhdGVneSBoZXJlKioKCmBgYHtyLCBldmFsPUZBTFNFfQoKYGBgCgojIERlc2NyaXB0aXZlIHN0YXRpc3RpY3MKCi0gR2VuZXJhdGUgYSBjb2RlIGNodW5rIHRvIGNhbGN1bGF0ZSB1c2VmdWwgc3VtbWFyeSBzdGF0aXN0aWNzIGZvcgp0aGUgZGlhYmV0ZXMgZGF0YQo=</div>
 <div class="footer">
     <hr>
     This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
@@ -667,7 +660,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("04_2_armpit.Rmd");
+  window.initializeSourceEmbed("04_3_diabetes.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
