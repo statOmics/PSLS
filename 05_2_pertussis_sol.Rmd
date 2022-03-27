@@ -129,12 +129,12 @@ output
 
 The average white blood cell count is extremely different between rats that are infected with pertussis and rads that received a control treatment  (p << 0.001). 
 
-The white blood cell count is on average `r output$estimate %>% diff %>% abs %>% round(.,0)` blood cells/mm$^3$ higher for rats with pertussis than for rats that received a control treatment (95% CI [`r sort(abs(output$conf.int))`]). 
+The white blood cell count is on average `r output$estimate %>% diff %>% abs %>% format(.,digits = 5)` blood cells/mm$^3$ higher for rats with pertussis than for rats that received a control treatment (95% CI [`r output$conf.int %>% abs %>% sort %>% format(.,digits = 5)`]). 
 
 
 # ADDENDUM: Train yourself in checking the assumptions
 
-In order for the learners to get more proficient in evaluating the assumptions we will simulate 9 dataset with sample sizes similar to our data for which the assumptions of normality and equal variance do hold. For the QQ-plots we will only plot the one from one of the groups.
+In order for the learners to get more proficient in evaluating the assumptions we will simulate 8 dataset with sample sizes similar to our data for which the assumptions of normality and equal variance do hold. For the QQ-plots we will only plot the one from one of the groups.
 
 ## Simulate data
 
