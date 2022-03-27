@@ -5,8 +5,7 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 code_download: false
 ---
 
-In this hands-on tutorial session we will explore the data from
-4 different studies:
+In this hands-on tutorial session you will perform the data exploration for 4 different studies:
 
 * [NHANES example]
 * [Pertussis example]
