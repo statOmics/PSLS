@@ -14,8 +14,8 @@
 
 <title>Exercise 4.4: Exploring the FEV dataset - solution</title>
 
-<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -49,7 +49,6 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
-
 
 
 <style type="text/css">
@@ -188,9 +187,6 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
-}
-details > summary > p:only-child {
-  display: inline;
 }
 pre code {
   padding: 0;
@@ -419,7 +415,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -435,7 +431,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="fa fa-chalkboard-teacher"></span>
      
     Lectures
@@ -491,7 +487,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="fa fa-laptop"></span>
      
     Labs
@@ -538,7 +534,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -557,18 +553,18 @@ div.tocify {
 
 
 <div id="aims" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Aims</h1>
+<h1 number="1"><span class="header-section-number">1</span> Aims</h1>
 <p>In this tutorial, you will learn how data exploration and plots can help you to discover confounding in a real datasets.</p>
 <p>You will also improve your data wrangling skills by importing, tidying, wrangling and visualizing data yourself.</p>
 </div>
 <div id="the-fev-dataset" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> The FEV dataset</h1>
+<h1 number="2"><span class="header-section-number">2</span> The FEV dataset</h1>
 <p>The <code>forced expiratory volume</code> (FEV) is a measure of how much air a person can exhale (in liters) during a forced breath. In this dataset, the FEV of 606 children, between the ages of 6 and 17, were measured. The dataset also provides additional information on these children: their <code>age</code>, their <code>height</code>, their <code>gender</code> and, most importantly, whether the child is a smoker or a non-smoker.</p>
 <p>The goal of this experiment was to find out whether or not smoking has an effect on the FEV of children.</p>
 <p>Note: to analyse this dataset properly, we will need some relatively advanced modeling techniques. At the end of this week, you will have seen all three required steps to analyse such a dataset! For now, we will limit ourselves to exploring the data.</p>
 </div>
 <div id="load-libraries" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Load libraries</h1>
+<h1 number="3"><span class="header-section-number">3</span> Load libraries</h1>
 <p>If you do not have these libraries installed, make sure to install them first by using the <code>install.packages()</code> function with missing the package name inside the parentheses (and using quotation marks, like <code>install.packages("car")</code>)</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -577,17 +573,18 @@ div.tocify {
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code></pre></div>
 </div>
 <div id="import-the-data" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Import the data</h1>
+<h1 number="4"><span class="header-section-number">4</span> Import the data</h1>
 <p>Note: <code>fev.txt</code> is a tab-separated file: make sure to select the correct <code>readr</code> function!</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fev <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/fev.txt&quot;</span>)</span></code></pre></div>
-<pre><code>## Rows: 606 Columns: 5
+<pre><code>## 
 ## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;\t&quot;
-## chr (1): gender
-## dbl (4): age, fev, height, smoking
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+## cols(
+##   age = col_double(),
+##   fev = col_double(),
+##   height = col_double(),
+##   gender = col_character(),
+##   smoking = col_double()
+## )</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fev)</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
@@ -596,7 +593,7 @@ div.tocify {
 </div>
 </div>
 <div id="data-wrangling" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Data wrangling</h1>
+<h1 number="5"><span class="header-section-number">5</span> Data wrangling</h1>
 <p>There are a few things in the formatting of the data that can be improved:</p>
 <ol style="list-style-type: decimal">
 <li><p>Both <code>gender</code> and <code>smoking</code> can be transformed to factors.</p></li>
@@ -616,7 +613,7 @@ div.tocify {
 <p>That’s better!</p>
 </div>
 <div id="data-exploration" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Data exploration</h1>
+<h1 number="6"><span class="header-section-number">6</span> Data exploration</h1>
 <p>Now, let’s make a first explorative plot, showing only the FEV for both smoking categories.</p>
 <p>Which type of plot do you suggest?</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fev <span class="sc">%&gt;%</span></span>
