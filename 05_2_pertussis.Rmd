@@ -1,0 +1,79 @@
+---
+title: "Exercise 5.2: Hypothesis testing on the pertussis example"
+author: "Lieven Clement, and Milan Malfait"
+date: "statOmics, Ghent University (https://statomics.github.io)"
+---
+
+# Aim of this tutorial
+
+Upon this exercise you can 
+
+
+1. conduct a statistical hypothesis test for a two group comparison in R and to interpret the results. 
+2. critically evaluate the assumptions for a two sample t-test
+3. use simulations to assist you when evaluating the assumptions of a two group comparison
+4. select the correct test based on the data exploration.
+
+# Background 
+
+Researchers wanted to study the immune response on pertussis. 
+They have set up an experiments with 40 rats. 
+16 rats were infected with pertussis and 24 rats received a control treatment. 
+Researchers measured the white blood cell concentration (WBC) in each rat (count per mm$^3$. 
+
+De data consists of two variables:
+
+- WBC: white blood cell count (counts/mm$^3$). 
+- trt: treatment
+
+    - control: rat recieved control treatment
+    - pertussis: rat was infected with pertussis
+
+
+# Import the dataset
+
+Load the libraries
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv`
+
+
+```{r, eval = FALSE}
+wbcon <- ...
+```
+
+```{r, eval = FALSE}
+glimpse(...)
+```
+
+## Aim of the study
+
+The overarching goal of this study was to assess if the white blood cell count changes upon pertussis infection. To this end, researchers randomized 40 rats
+to two treatments: A control treatment and a treatment in which the rat was infected with pertussis.
+
+# Data exploration
+
+A crucial first step in a data analysis is to visualize and to explore the raw data.
+
+This will allow us to gain insight in the data. 
+
+A secondary goal of the data exploration is to check the assumptions of the test that we will perform. 
+
+## Which test will you perform to compare the white blood cell count between infected and control rats? 
+
+## What are the assumptions of this test? 
+
+
+## Use the appropriate plots to assess the assumptions
+
+# Assess the research question with the appropriate t-test
+
+## Analysis
+
+## Conclusion
+
