@@ -10,7 +10,7 @@ In this exercise, you will revisit the basics of statistical  hypothesis testing
 
 You will acquire the skills 
 
-1. to assess the assumptions of a one-sample and a paired t-test in the data exploration. 
+1. to assess the assumptions of a one-sample and a paired t-test in  data exploration. 
 2. to conduct a one-sample t-test in R and to interpret the results.
 3. to conduct a paired t-test in R and to interpret the results.
 
@@ -137,35 +137,6 @@ We also do not observe large deviations in the plot.
 So we will assume that our data is normally
 distributed.
 Note, that there are not many observations to assess normality.
-
-If you have doubts about this assumption, you can perform simulations. 
-
-```{r}
-set.seed(1204)
-nobs <- nrow(diabetes)
-
-data.frame(
-  y = c(
-    diabetes$after,
-    rnorm(nobs * 8,
-      sd = sd(diabetes$after)
-    )
-  ),
-  label = rep(
-    c(
-      "orig",
-      paste0("sim", 1:8)
-    ),
-    each = nobs
-  )
-) %>%
-  ggplot(aes(sample = y)) +
-  geom_qq() +
-  geom_qq_line() +
-  facet_wrap(~label)
-```
-
-The simulated data also shows very similar QQ-plots. 
 
 ## Hypothesis test
 

@@ -10,7 +10,7 @@ In this exercise, you will revisit the basics of statistical  hypothesis testing
 
 You will acquire the skills 
 
-1. to assess the assumptions of a one-sample and a paired t-test in the data exploration. 
+1. to assess the assumptions of a one-sample and a paired t-test in a data exploration. 
 2. to conduct a one-sample t-test in R and to interpret the results.
 3. to conduct a paired t-test in R and to interpret the results.
 
