@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Lieven Clement, and Milan Malfait" />
+<meta name="author" content="Lieven Clement, Jeroen Gilis and Milan Malfait" />
 
 
-<title>Exercise 4.2: Exploring the pertussis dataset</title>
+<title>Exercise 4.3: Exploring the diabetes dataset</title>
 
 <script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -549,98 +549,84 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 4.2: Exploring the pertussis dataset</h1>
-<h4 class="author">Lieven Clement, and Milan Malfait</h4>
+<h1 class="title toc-ignore">Exercise 4.3: Exploring the diabetes dataset</h1>
+<h4 class="author">Lieven Clement, Jeroen Gilis and Milan Malfait</h4>
 <h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
-<div id="aim-of-this-tutorial" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Aim of this tutorial</h1>
-<p>An exploratory data analysis is a crucial step in a data analysis to get insight in the nature and distribution of the data, and to assess the assumptions of the downstream data analysis.</p>
-<p>In this exercise you will acquired the skills to conduct a data exploration for a two group comparison in R and to interpret the results.</p>
-</div>
-<div id="background" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Background</h1>
-<p>Researchers wanted to study the immune response on pertussis. They have set up an experiments with 40 rats. 16 rats were infected with pertussis and 24 rats received a control treatment. Researchers measured the white blood cell concentration (WBC) in each rat (count per mm<span class="math inline">\(^3\)</span>.</p>
-<p>De data consists of two variables:</p>
+<div id="aims-of-this-exercise" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Aims of this exercise</h1>
+<p>In this tutorial, you will acquire the skills to</p>
 <ul>
-<li><p>WBC: white blood cell count (counts/mm<span class="math inline">\(^3\)</span>).</p></li>
-<li><p>trt: treatment</p>
-<ul>
-<li>control: rat recieved control treatment</li>
-<li>pertussis: rat was infected with pertussis</li>
-</ul></li>
+<li>recognize paired data</li>
+<li>conduct a data exploration in R for data from paired experimental designs.</li>
+<li>interpret the results of a data exploration for paired experimental designs</li>
 </ul>
-<p>Load the libraries</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
-<div id="import-the-dataset" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> Import the dataset</h2>
+</div>
+<div id="the-diabetes-dataset" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> The diabetes dataset</h1>
+<p>The <code>diabetes dataset</code> holds information on a small experiment with 8 patients that are subjected to a glucose tolerance test.</p>
+<p>Patients had to fast for eight hours before the test. When the patients entered the hospital their baseline glucose level was measured (mmol/l).</p>
+<p>Patients then had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar. Two hours later, their blood glucose level was measured again.</p>
+<p>The data consist of three variables:</p>
+<ul>
+<li>before: glucose concentration upon 8 hours of fasting (mmol/l)</li>
+<li>after: glucose concentration 2 hours after drinking glucose solution (mmol/l).</li>
+<li>patient: identifier for the patient</li>
+</ul>
+</div>
+<div id="import-the-data" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Import the data</h1>
 <p>Data path:</p>
-<p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv</code></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wbcon <span class="ot">&lt;-</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(wbcon)</span></code></pre></div>
+<p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/diabetes.txt</code></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>diabetes <span class="ot">&lt;-</span> ...</span></code></pre></div>
+<p>Have a first look at the data</p>
 </div>
-<div id="aim-of-the-study" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> Aim of the study</h2>
-<p>The overarching goal of this study was to assess if the white blood cell count changes upon pertussis infection. To this end, researchers randomized 40 rats to two treatments: A control treatment and a treatment in which the rat was infected with pertussis.</p>
-<p>We will explore the data to get insight on the impact of the pertussis infection on the white blood cell count.</p>
-<p>A secondary goal of the data exploration is to assess assumptions that will be required to use a formal statistical test to assess if the white blood cell count is on average different between infected and control rats (see later tutorials).</p>
-<p>For this test to be valid, we have to assess following assumptions:</p>
-<ol style="list-style-type: decimal">
-<li><p>The data in each treatment group are normally distributed.</p></li>
-<li><p>The data from the two treatment groups has the same variance.</p></li>
-</ol>
-</div>
-</div>
-<div id="data-visualization" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Data visualization</h1>
-<p>A crucial first step in a data analysis is to visualize and to explore the raw data.</p>
-<div id="histogram" class="section level2" number="3.1">
-<h2><span class="header-section-number">3.1</span> Histogram</h2>
-<p>First, make a histogram of the data. Fill in the missing parts in the chunk of code below:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>wbcon <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>...,<span class="at">fill=</span>...)) <span class="sc">+</span> <span class="do">## fill in the correct values for x and fill</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(...)) <span class="sc">+</span> <span class="do">## fill in to put the histograms for both treatment conditions in a separate row</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;relative abundance (%)&quot;</span>)</span></code></pre></div>
-<p>Based on this plot, it seems that the white blood cell count is … for rats that were randomized to the pertussis infection than rats that received the control treatment.</p>
-</div>
-<div id="boxplot" class="section level2" number="3.2">
-<h2><span class="header-section-number">3.2</span> Boxplot</h2>
-<p>However, given the small sample size a better option to visualize these data are <code>boxplots</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>wbcon <span class="sc">%&gt;%</span>  </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>...,<span class="at">y=</span>...,<span class="at">fill=</span>...)) <span class="sc">+</span></span></code></pre></div>
-<p>What do you observe?</p>
-</div>
-<div id="qq-plots" class="section level2" number="3.3">
-<h2><span class="header-section-number">3.3</span> QQ-plots</h2>
-<p>To assess the assumption that the data are normally distributed in each treatment group, we will use QQ plots.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>wbcon <span class="sc">%&gt;%</span>  </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample=</span>...)) <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  ... <span class="sc">+</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  ... <span class="sc">+</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(...)</span></code></pre></div>
-<p>What do you observe?</p>
+<div id="data-visualization" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Data visualization</h1>
+<p>The data are not in tidy format. We can easily visualize the glucose levels by adopting the <code>gather()</code> function from tidyverse. It will reshape the dataframe, such that we have have a single variable <code>time</code>, which points at the timepoint of the measurement, and <code>concentration</code>, which contains the actual glucose concentration at before or after drinking the glucose solution for each patient.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>diabetes <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(time, concentration, <span class="sc">-</span>patient)</span></code></pre></div>
+<div id="barplot" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Barplot</h2>
+<p>Not all visualization types will be equally informative.</p>
+<p>A barplot is a plot that you will commonly find in scientific publications. The code for generating such a barplot is provided below:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a> diabetes <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(time, concentration, <span class="sc">-</span>patient) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Calculate summarry statistics for the &quot;bp&quot; variable for each &quot;type&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(time) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(concentration, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(concentration, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>()</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Compute the standard errors for the means</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">se =</span> sd <span class="sc">/</span> <span class="fu">sqrt</span>(n)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> mean, <span class="at">fill =</span> time)) <span class="sc">+</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean <span class="sc">-</span> se, <span class="at">ymax =</span> mean <span class="sc">+</span> se), <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Barplot of glucose measurements&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;concentration (mmol/l)&quot;</span>)</span></code></pre></div>
+<p>A barplot, however, is not very informative. The height of the bars only provides us with information of the mean blood pressure. However, we don’t see the actual underlying values, so we for instance don’t have any information on the spread of the data. It is usually more informative to represent to underlying values as <em>raw</em> as possible. Note that it is possible to add the raw data on the barplot, but we still would not see any measures of the spread, such as the interquartile range.</p>
+<p>Another crucial aspect of the data are also not displayed: the data are paired!</p>
+<p><strong>Based on these critisisms, can you think of a better</strong> <strong>visualization strategy for the captopril data?</strong></p>
+<p><strong>Add your proposed visualization strategy here</strong></p>
 </div>
 </div>
-<div id="descriptive-statistics" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Descriptive statistics</h1>
-<p>Here, we will generate some informative descriptive statistics for the dataset.</p>
-<p>We first summarize the data and calculate the mean, standard deviation, number of observations and standard error and store the result in an object wbcSum via ’wbcSum&lt;-`</p>
-<ol style="list-style-type: decimal">
-<li>We pipe the <code>wbcon</code> dataframe to the group_by function to group the data by treatment groep <code>group_by(trt)</code></li>
-<li>We pipe the result to the <code>summarize()</code> function to summarize the “WBC” variable and calculate the mean, standard deviation and the number of observations</li>
-<li>We pipe the result to the <code>mutate</code> function to make a new variable in the data frame that is named <code>se</code> for which we calculate the standard error (<span class="math inline">\(\sigma / n\)</span>)</li>
-</ol>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Use the instructions from above to generate the summary statistics</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
-<p>This concludes the data exploration. In the next tutorial sessions, we will learn how to formally test if the observed difference in WBC between rats that were infected with pertussis and those receiving the control treatment is <strong>statistically significant</strong>.</p>
+<div id="descriptive-statistics" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Descriptive statistics</h1>
+<ul>
+<li>Generate a code chunk to calculate useful summary statistics for the diabetes data</li>
+</ul>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgNC4yOiBFeHBsb3JpbmcgdGhlIHBlcnR1c3NpcyBkYXRhc2V0IgphdXRob3I6ICJMaWV2ZW4gQ2xlbWVudCwgYW5kIE1pbGFuIE1hbGZhaXQiCmRhdGU6ICJzdGF0T21pY3MsIEdoZW50IFVuaXZlcnNpdHkgKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pbykiCi0tLQoKIyBBaW0gb2YgdGhpcyB0dXRvcmlhbAoKQW4gZXhwbG9yYXRvcnkgZGF0YSBhbmFseXNpcyBpcyBhIGNydWNpYWwgc3RlcCBpbiBhIGRhdGEgYW5hbHlzaXMgdG8gZ2V0Cmluc2lnaHQgaW4gdGhlIG5hdHVyZSBhbmQgZGlzdHJpYnV0aW9uIG9mIHRoZSBkYXRhLCBhbmQgdG8gYXNzZXNzIHRoZQphc3N1bXB0aW9ucyBvZiB0aGUgZG93bnN0cmVhbSBkYXRhIGFuYWx5c2lzLiAKCkluIHRoaXMgZXhlcmNpc2UgeW91IHdpbGwgYWNxdWlyZWQgdGhlIHNraWxscyB0byBjb25kdWN0IGEgZGF0YSBleHBsb3JhdGlvbiBmb3IgYSB0d28gZ3JvdXAgY29tcGFyaXNvbiBpbiBSIGFuZCB0byBpbnRlcnByZXQgdGhlIHJlc3VsdHMuIAoKIyBCYWNrZ3JvdW5kIAoKUmVzZWFyY2hlcnMgd2FudGVkIHRvIHN0dWR5IHRoZSBpbW11bmUgcmVzcG9uc2Ugb24gcGVydHVzc2lzLiAKVGhleSBoYXZlIHNldCB1cCBhbiBleHBlcmltZW50cyB3aXRoIDQwIHJhdHMuIAoxNiByYXRzIHdlcmUgaW5mZWN0ZWQgd2l0aCBwZXJ0dXNzaXMgYW5kIDI0IHJhdHMgcmVjZWl2ZWQgYSBjb250cm9sIHRyZWF0bWVudC4gClJlc2VhcmNoZXJzIG1lYXN1cmVkIHRoZSB3aGl0ZSBibG9vZCBjZWxsIGNvbmNlbnRyYXRpb24gKFdCQykgaW4gZWFjaCByYXQgKGNvdW50IHBlciBtbSReMyQuIAoKRGUgZGF0YSBjb25zaXN0cyBvZiB0d28gdmFyaWFibGVzOgoKLSBXQkM6IHdoaXRlIGJsb29kIGNlbGwgY291bnQgKGNvdW50cy9tbSReMyQpLiAKLSB0cnQ6IHRyZWF0bWVudAoKICAgIC0gY29udHJvbDogcmF0IHJlY2lldmVkIGNvbnRyb2wgdHJlYXRtZW50CiAgICAtIHBlcnR1c3NpczogcmF0IHdhcyBpbmZlY3RlZCB3aXRoIHBlcnR1c3NpcwoKTG9hZCB0aGUgbGlicmFyaWVzCgpgYGB7ciwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmBgYAoKIyMgSW1wb3J0IHRoZSBkYXRhc2V0CgpEYXRhIHBhdGg6CgogIGBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL3diY29uLmNzdmAKCmBgYHtyLCBldmFsPUZBTFNFfQp3YmNvbiA8LQpgYGAKCmBgYHtyLCBldmFsPUZBTFNFfQpnbGltcHNlKHdiY29uKQpgYGAKCiMjIEFpbSBvZiB0aGUgc3R1ZHkKClRoZSBvdmVyYXJjaGluZyBnb2FsIG9mIHRoaXMgc3R1ZHkgd2FzIHRvIGFzc2VzcyBpZiB0aGUgd2hpdGUgYmxvb2QgY2VsbCBjb3VudCBjaGFuZ2VzIHVwb24gcGVydHVzc2lzIGluZmVjdGlvbi4gVG8gdGhpcyBlbmQsIHJlc2VhcmNoZXJzIHJhbmRvbWl6ZWQgNDAgcmF0cwp0byB0d28gdHJlYXRtZW50czogQSBjb250cm9sIHRyZWF0bWVudCBhbmQgYSB0cmVhdG1lbnQgaW4gd2hpY2ggdGhlIHJhdCB3YXMgaW5mZWN0ZWQgd2l0aCBwZXJ0dXNzaXMuCgpXZSB3aWxsIGV4cGxvcmUgdGhlIGRhdGEgdG8gZ2V0IGluc2lnaHQgb24gdGhlIGltcGFjdCBvZiB0aGUgcGVydHVzc2lzIGluZmVjdGlvbiBvbiB0aGUgd2hpdGUgYmxvb2QgY2VsbCBjb3VudC4gCgpBIHNlY29uZGFyeSBnb2FsIG9mIHRoZSBkYXRhIGV4cGxvcmF0aW9uIGlzIHRvIGFzc2VzcyBhc3N1bXB0aW9ucyB0aGF0IHdpbGwgYmUgcmVxdWlyZWQgdG8gdXNlIGEgZm9ybWFsIHN0YXRpc3RpY2FsIHRlc3QgdG8gYXNzZXNzIGlmIHRoZSB3aGl0ZSBibG9vZCBjZWxsIGNvdW50IGlzIG9uIGF2ZXJhZ2UgZGlmZmVyZW50IGJldHdlZW4gaW5mZWN0ZWQgYW5kIGNvbnRyb2wgcmF0cyAoc2VlIGxhdGVyIHR1dG9yaWFscykuIAoKRm9yIHRoaXMgdGVzdCB0byBiZSB2YWxpZCwgd2UgaGF2ZSB0byBhc3Nlc3MgZm9sbG93aW5nIGFzc3VtcHRpb25zOgoKMS4gVGhlIGRhdGEgaW4gZWFjaCB0cmVhdG1lbnQgZ3JvdXAgYXJlIG5vcm1hbGx5IGRpc3RyaWJ1dGVkLgoKMi4gVGhlIGRhdGEgZnJvbSB0aGUgdHdvIHRyZWF0bWVudCBncm91cHMgaGFzIHRoZSBzYW1lIHZhcmlhbmNlLgoKCiMgRGF0YSB2aXN1YWxpemF0aW9uCgpBIGNydWNpYWwgZmlyc3Qgc3RlcCBpbiBhIGRhdGEgYW5hbHlzaXMgaXMgdG8gdmlzdWFsaXplIGFuZCB0byBleHBsb3JlIHRoZSByYXcgZGF0YS4KCiMjIEhpc3RvZ3JhbSAKCkZpcnN0LCBtYWtlIGEgaGlzdG9ncmFtIG9mIHRoZSBkYXRhLiBGaWxsIGluIHRoZQptaXNzaW5nIHBhcnRzIGluIHRoZSBjaHVuayBvZiBjb2RlIGJlbG93OgoKYGBge3IsIGV2YWw9RkFMU0V9CndiY29uICU+JQogIGdncGxvdChhZXMoeD0uLi4sZmlsbD0uLi4pKSArICMjIGZpbGwgaW4gdGhlIGNvcnJlY3QgdmFsdWVzIGZvciB4IGFuZCBmaWxsCiAgZ2VvbV9oaXN0b2dyYW0oKSArCiAgZmFjZXRfZ3JpZChyb3dzID0gdmFycyguLi4pKSArICMjIGZpbGwgaW4gdG8gcHV0IHRoZSBoaXN0b2dyYW1zIGZvciBib3RoIHRyZWF0bWVudCBjb25kaXRpb25zIGluIGEgc2VwYXJhdGUgcm93CiAgdGhlbWVfYncoKSArCiAgeGxhYigicmVsYXRpdmUgYWJ1bmRhbmNlICglKSIpCmBgYAoKQmFzZWQgb24gdGhpcyBwbG90LCBpdCBzZWVtcyB0aGF0IHRoZSB3aGl0ZSBibG9vZCBjZWxsIGNvdW50IAppcyAuLi4gZm9yIHJhdHMgdGhhdCB3ZXJlIHJhbmRvbWl6ZWQgdG8gdGhlIHBlcnR1c3NpcyBpbmZlY3Rpb24gdGhhbiByYXRzIHRoYXQgcmVjZWl2ZWQgdGhlIGNvbnRyb2wgdHJlYXRtZW50LgoKIyMgQm94cGxvdCAKCkhvd2V2ZXIsIGdpdmVuIHRoZSBzbWFsbCBzYW1wbGUgc2l6ZSBhIGJldHRlciBvcHRpb24gdG8gdmlzdWFsaXplIHRoZXNlIGRhdGEgYXJlIGBib3hwbG90c2A6CgpgYGB7ciwgZXZhbD1GQUxTRX0Kd2Jjb24gJT4lICAKICBnZ3Bsb3QoYWVzKHg9Li4uLHk9Li4uLGZpbGw9Li4uKSkgKwogIApgYGAKCldoYXQgZG8geW91IG9ic2VydmU/CgojIyBRUS1wbG90cyAKClRvIGFzc2VzcyB0aGUgYXNzdW1wdGlvbiB0aGF0IHRoZSBkYXRhIGFyZSBub3JtYWxseSBkaXN0cmlidXRlZCBpbiBlYWNoIHRyZWF0bWVudCBncm91cCwgd2Ugd2lsbCB1c2UgUVEgcGxvdHMuCgpgYGB7ciwgZXZhbD1GQUxTRX0Kd2Jjb24gJT4lICAKICBnZ3Bsb3QoYWVzKHNhbXBsZT0uLi4pKSArCiAgLi4uICsKICAuLi4gKwogIGZhY2V0X2dyaWQoLi4uKQpgYGAKCldoYXQgZG8geW91IG9ic2VydmU/IAoKIyBEZXNjcmlwdGl2ZSBzdGF0aXN0aWNzCgpIZXJlLCB3ZSB3aWxsIGdlbmVyYXRlIHNvbWUgaW5mb3JtYXRpdmUgZGVzY3JpcHRpdmUgc3RhdGlzdGljcwpmb3IgdGhlIGRhdGFzZXQuCgpXZSBmaXJzdCBzdW1tYXJpemUgdGhlIGRhdGEgYW5kIGNhbGN1bGF0ZSB0aGUgbWVhbiwgc3RhbmRhcmQKZGV2aWF0aW9uLCBudW1iZXIgb2Ygb2JzZXJ2YXRpb25zIGFuZCBzdGFuZGFyZCBlcnJvciBhbmQgc3RvcmUgdGhlCnJlc3VsdCBpbiBhbiBvYmplY3Qgd2JjU3VtIHZpYSAnd2JjU3VtPC1gCgoxLiBXZSBwaXBlIHRoZSBgd2Jjb25gIGRhdGFmcmFtZSB0byB0aGUgZ3JvdXBfYnkgZnVuY3Rpb24gdG8gZ3JvdXAKdGhlIGRhdGEgYnkgdHJlYXRtZW50IGdyb2VwIGBncm91cF9ieSh0cnQpYAoyLiBXZSBwaXBlIHRoZSByZXN1bHQgdG8gdGhlIGBzdW1tYXJpemUoKWAgZnVuY3Rpb24gdG8gc3VtbWFyaXplCnRoZSAiV0JDIiB2YXJpYWJsZSBhbmQgY2FsY3VsYXRlIHRoZSBtZWFuLCBzdGFuZGFyZCBkZXZpYXRpb24gYW5kCnRoZSBudW1iZXIgb2Ygb2JzZXJ2YXRpb25zCjMuIFdlIHBpcGUgdGhlIHJlc3VsdCB0byB0aGUgYG11dGF0ZWAgZnVuY3Rpb24gdG8gbWFrZSBhIG5ldwp2YXJpYWJsZSBpbiB0aGUgZGF0YSBmcmFtZSB0aGF0IGlzIG5hbWVkIGBzZWAgZm9yIHdoaWNoIHdlIGNhbGN1bGF0ZSB0aGUKc3RhbmRhcmQgZXJyb3IgKCRcc2lnbWEgLyBuJCkKCmBgYHtyLCBldmFsPUZBTFNFfQojIyBVc2UgdGhlIGluc3RydWN0aW9ucyBmcm9tIGFib3ZlIHRvIGdlbmVyYXRlIHRoZSBzdW1tYXJ5IHN0YXRpc3RpY3MKLi4uCmBgYAoKVGhpcyBjb25jbHVkZXMgdGhlIGRhdGEgZXhwbG9yYXRpb24uIEluIHRoZSBuZXh0IHR1dG9yaWFsIHNlc3Npb25zLCB3ZSB3aWxsIGxlYXJuIGhvdyB0byBmb3JtYWxseQp0ZXN0IGlmIHRoZSBvYnNlcnZlZCBkaWZmZXJlbmNlIGluIFdCQyBiZXR3ZWVuIHJhdHMgdGhhdCB3ZXJlIGluZmVjdGVkIHdpdGggcGVydHVzc2lzIGFuZCB0aG9zZSByZWNlaXZpbmcgdGhlIGNvbnRyb2wgdHJlYXRtZW50IGlzICoqc3RhdGlzdGljYWxseSBzaWduaWZpY2FudCoqLgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgNC4zOiBFeHBsb3JpbmcgdGhlIGRpYWJldGVzIGRhdGFzZXQiCmF1dGhvcjogIkxpZXZlbiBDbGVtZW50LCBKZXJvZW4gR2lsaXMgYW5kIE1pbGFuIE1hbGZhaXQiCmRhdGU6ICJzdGF0T21pY3MsIEdoZW50IFVuaXZlcnNpdHkgKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pbykiCi0tLQoKIyBBaW1zIG9mIHRoaXMgZXhlcmNpc2UKCkluIHRoaXMgdHV0b3JpYWwsIHlvdSB3aWxsIGFjcXVpcmUgdGhlIHNraWxscyB0byAKCi0gcmVjb2duaXplIHBhaXJlZCBkYXRhCi0gY29uZHVjdCBhIGRhdGEgZXhwbG9yYXRpb24gaW4gUiBmb3IgZGF0YSBmcm9tCnBhaXJlZCBleHBlcmltZW50YWwgZGVzaWducy4KLSBpbnRlcnByZXQgdGhlIHJlc3VsdHMgb2YgYSBkYXRhIGV4cGxvcmF0aW9uIGZvciBwYWlyZWQgZXhwZXJpbWVudGFsIGRlc2lnbnMKCiMgVGhlIGRpYWJldGVzIGRhdGFzZXQKClRoZSBgZGlhYmV0ZXMgZGF0YXNldGAgaG9sZHMgaW5mb3JtYXRpb24gb24gYSBzbWFsbCBleHBlcmltZW50IHdpdGgKOCBwYXRpZW50cyB0aGF0IGFyZSBzdWJqZWN0ZWQgdG8gIGEgZ2x1Y29zZSB0b2xlcmFuY2UgdGVzdC4KClBhdGllbnRzIGhhZCB0byBmYXN0IGZvciBlaWdodCBob3VycyBiZWZvcmUgdGhlIHRlc3QuIApXaGVuIHRoZSBwYXRpZW50cyBlbnRlcmVkIHRoZSBob3NwaXRhbCB0aGVpciBiYXNlbGluZSBnbHVjb3NlIGxldmVsIHdhcyBtZWFzdXJlZCAobW1vbC9sKS4gCgpQYXRpZW50cyB0aGVuICBoYWQgdG8gZHJpbmsgMjUwIG1sIG9mIGEgc3lydXB5IGdsdWNvc2Ugc29sdXRpb24gY29udGFpbmluZyAxMDAgZ3JhbXMgb2Ygc3VnYXIuIApUd28gaG91cnMgbGF0ZXIsIHRoZWlyIGJsb29kIGdsdWNvc2UgbGV2ZWwgd2FzIG1lYXN1cmVkIGFnYWluLiAKClRoZSBkYXRhIGNvbnNpc3Qgb2YgdGhyZWUgdmFyaWFibGVzOgoKLSBiZWZvcmU6IGdsdWNvc2UgY29uY2VudHJhdGlvbiB1cG9uIDggaG91cnMgb2YgZmFzdGluZyAobW1vbC9sKQotIGFmdGVyOiBnbHVjb3NlIGNvbmNlbnRyYXRpb24gMiBob3VycyBhZnRlciBkcmlua2luZyBnbHVjb3NlIHNvbHV0aW9uIChtbW9sL2wpLgotIHBhdGllbnQ6IGlkZW50aWZpZXIgZm9yIHRoZSBwYXRpZW50CgojIEltcG9ydCB0aGUgZGF0YQoKRGF0YSBwYXRoOgoKICBgaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9kaWFiZXRlcy50eHRgCgpgYGB7ciwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkocmVhZHIpCmxpYnJhcnkoZ2dwbG90MikKYGBgCgpgYGB7ciwgZXZhbCA9IEZBTFNFfQpkaWFiZXRlcyA8LSAuLi4KYGBgCgpIYXZlIGEgZmlyc3QgbG9vayBhdCB0aGUgZGF0YQoKYGBge3J9CgpgYGAKCiMgRGF0YSB2aXN1YWxpemF0aW9uCgpUaGUgZGF0YSBhcmUgbm90IGluIHRpZHkgZm9ybWF0LiAKV2UgY2FuIGVhc2lseSB2aXN1YWxpemUgdGhlIGdsdWNvc2UgbGV2ZWxzIGJ5IGFkb3B0aW5nIHRoZSBgZ2F0aGVyKClgCmZ1bmN0aW9uIGZyb20gdGlkeXZlcnNlLiAKSXQgd2lsbCByZXNoYXBlIHRoZSBkYXRhZnJhbWUsCnN1Y2ggdGhhdCB3ZSBoYXZlIGhhdmUgYSBzaW5nbGUgdmFyaWFibGUgYHRpbWVgLCB3aGljaApwb2ludHMgYXQgdGhlIHRpbWVwb2ludCBvZiB0aGUgbWVhc3VyZW1lbnQsIGFuZCBgY29uY2VudHJhdGlvbmAsCndoaWNoIGNvbnRhaW5zIHRoZSBhY3R1YWwgZ2x1Y29zZSBjb25jZW50cmF0aW9uIGF0IGJlZm9yZSBvciBhZnRlciBkcmlua2luZyB0aGUgZ2x1Y29zZSBzb2x1dGlvbgpmb3IgZWFjaCBwYXRpZW50LgoKYGBge3IsIGV2YWw9RkFMU0V9CmRpYWJldGVzICU+JQogIGdhdGhlcih0aW1lLCBjb25jZW50cmF0aW9uLCAtcGF0aWVudCkKYGBgCgojIyBCYXJwbG90CgpOb3QgYWxsIHZpc3VhbGl6YXRpb24gdHlwZXMgd2lsbCBiZSBlcXVhbGx5IGluZm9ybWF0aXZlLgoKQSBiYXJwbG90IGlzIGEgcGxvdCB0aGF0IHlvdSB3aWxsCmNvbW1vbmx5IGZpbmQgaW4gc2NpZW50aWZpYyBwdWJsaWNhdGlvbnMuIApUaGUgY29kZSBmb3IgZ2VuZXJhdGluZyBzdWNoIGEgYmFycGxvdAppcyBwcm92aWRlZCBiZWxvdzoKCmBgYHtyLCBldmFsPUZBTFNFfQogZGlhYmV0ZXMgJT4lCiAgZ2F0aGVyKHRpbWUsIGNvbmNlbnRyYXRpb24sIC1wYXRpZW50KSAlPiUgCiAgIyMgQ2FsY3VsYXRlIHN1bW1hcnJ5IHN0YXRpc3RpY3MgZm9yIHRoZSAiYnAiIHZhcmlhYmxlIGZvciBlYWNoICJ0eXBlIgogIGdyb3VwX2J5KHRpbWUpICU+JQogIHN1bW1hcml6ZSgKICAgIG1lYW4gPSBtZWFuKGNvbmNlbnRyYXRpb24sIG5hLnJtID0gVFJVRSksCiAgICBzZCA9IHNkKGNvbmNlbnRyYXRpb24sIG5hLnJtID0gVFJVRSksCiAgICBuID0gbigpCiAgKSAlPiUKICAjIyBDb21wdXRlIHRoZSBzdGFuZGFyZCBlcnJvcnMgZm9yIHRoZSBtZWFucwogIG11dGF0ZShzZSA9IHNkIC8gc3FydChuKSkgJT4lCiAgZ2dwbG90KGFlcyh4ID0gdGltZSwgeSA9IG1lYW4sIGZpbGwgPSB0aW1lKSkgKwogIHRoZW1lX2J3KCkgKwogIGdlb21fYmFyKHN0YXQgPSAiaWRlbnRpdHkiKSArCiAgZ2VvbV9lcnJvcmJhcihhZXMoeW1pbiA9IG1lYW4gLSBzZSwgeW1heCA9IG1lYW4gKyBzZSksIHdpZHRoID0gMC4yKSArCiAgZ2d0aXRsZSgiQmFycGxvdCBvZiBnbHVjb3NlIG1lYXN1cmVtZW50cyIpICsKICB5bGFiKCJjb25jZW50cmF0aW9uIChtbW9sL2wpIikKYGBgCgoKQSBiYXJwbG90LCBob3dldmVyLCBpcyBub3QgdmVyeSBpbmZvcm1hdGl2ZS4gClRoZSBoZWlnaHQgb2YgdGhlCmJhcnMgb25seSBwcm92aWRlcyB1cyB3aXRoIGluZm9ybWF0aW9uIG9mIHRoZSBtZWFuIGJsb29kIHByZXNzdXJlLgpIb3dldmVyLCB3ZSBkb24ndCBzZWUgdGhlIGFjdHVhbCB1bmRlcmx5aW5nIHZhbHVlcywgc28gd2UgZm9yCmluc3RhbmNlIGRvbid0IGhhdmUgYW55IGluZm9ybWF0aW9uIG9uIHRoZSBzcHJlYWQgb2YgdGhlIGRhdGEuCkl0IGlzIHVzdWFsbHkgbW9yZSBpbmZvcm1hdGl2ZSB0byByZXByZXNlbnQgdG8gdW5kZXJseWluZwp2YWx1ZXMgYXMgX3Jhd18gYXMgcG9zc2libGUuIApOb3RlIHRoYXQgaXQgaXMgcG9zc2libGUgdG8gYWRkIHRoZQpyYXcgZGF0YSBvbiB0aGUgYmFycGxvdCwgYnV0IHdlIHN0aWxsIHdvdWxkIG5vdCBzZWUgYW55IG1lYXN1cmVzCm9mIHRoZSBzcHJlYWQsIHN1Y2ggYXMgdGhlIGludGVycXVhcnRpbGUgcmFuZ2UuCgpBbm90aGVyIGNydWNpYWwgYXNwZWN0IG9mIHRoZSBkYXRhIGFyZSBhbHNvIG5vdCBkaXNwbGF5ZWQ6IAp0aGUgZGF0YSBhcmUgcGFpcmVkIQoKKipCYXNlZCBvbiB0aGVzZSBjcml0aXNpc21zLCBjYW4geW91IHRoaW5rIG9mIGEgYmV0dGVyKioKKip2aXN1YWxpemF0aW9uIHN0cmF0ZWd5IGZvciB0aGUgY2FwdG9wcmlsIGRhdGE/KioKCioqQWRkIHlvdXIgcHJvcG9zZWQgdmlzdWFsaXphdGlvbiBzdHJhdGVneSBoZXJlKioKCmBgYHtyLCBldmFsPUZBTFNFfQoKYGBgCgojIERlc2NyaXB0aXZlIHN0YXRpc3RpY3MKCi0gR2VuZXJhdGUgYSBjb2RlIGNodW5rIHRvIGNhbGN1bGF0ZSB1c2VmdWwgc3VtbWFyeSBzdGF0aXN0aWNzIGZvcgp0aGUgZGlhYmV0ZXMgZGF0YQo=</div>
 <div class="footer">
     <hr>
     This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
@@ -683,7 +669,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("04_2_pertussis.Rmd");
+  window.initializeSourceEmbed("04_3_diabetes.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
