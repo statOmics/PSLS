@@ -1,0 +1,207 @@
+---
+title: "Exercise 4.3: Exploring the diabetes dataset"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
+date: "statOmics, Ghent University (https://statomics.github.io)"
+---
+
+# The diabetes dataset
+
+The `diabetes dataset` holds information on a small experiment with
+8 patients that are subjected to  a glucose tolerance test.
+
+
+Patients had to fast for eight hours before the test. 
+When the patients entered the hospital their baseline glucose level was measured (mmol/l). 
+
+Patients then  had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar. 
+Two hours later, their blood glucose level was measured again. 
+
+The data consist of three variables:
+
+- before: glucose concentration upon 8 hours of fasting (mmol/l)
+- after: glucose concentration 2 hours after drinking glucose solution (mmol/l).
+- patient: identifier for the patient
+
+# Import the data
+
+Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/diabetes.txt`
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(readr)
+library(ggplot2)
+```
+
+```{r}
+diabetes <- read_delim("https://raw.githubusercontent.com/statOmics/PSLS21/data/diabetes.txt", delim =" ")
+```
+
+Have a first look at the data
+
+```{r}
+glimpse(diabetes)
+```
+
+# Data visualization
+
+The data are not in tidy format. 
+We can easily visualize the glucose levels by adopting the `gather()`
+function from tidyverse. 
+It will reshape the dataframe,
+such that we have have a single variable `time`, which
+points at the timepoint of the measurement, and `concentration`,
+which contains the actual glucose concentration at before or after drinking the glucose solution
+for each patient.
+
+```{r}
+diabetes_long <- diabetes %>%
+  gather(time, concentration, -patient)
+diabetes_long
+```
+
+## Barplot
+
+Not all visualization types will be equally informative.
+
+A barplot is a plot that you will
+commonly find in scientific publications. 
+The code for generating such a barplot
+is provided below:
+
+```{r}
+diabetes_long %>%
+  ## Calculate summarry statistics for the "concentration" variable for each "time"
+  group_by(time) %>%
+  summarize(
+    mean = mean(concentration, na.rm = TRUE),
+    sd = sd(concentration, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ## Compute the standard errors for the means
+  mutate(se = sd / sqrt(n)) %>%
+  ggplot(aes(x = time, y = mean, fill = time)) +
+  theme_bw() +
+  geom_bar(stat = "identity") +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.2) +
+  ggtitle("Barplot of glucose measurements") +
+  ylab("concentration (mmol/l)")
+```
+
+
+A barplot, however, is not very informative. 
+The height of the
+bars only provides us with information of the mean blood pressure.
+However, we don't see the actual underlying values, so we for
+instance don't have any information on the spread of the data.
+It is usually more informative to represent to underlying
+values as _raw_ as possible. 
+Note that it is possible to add the
+raw data on the barplot, but we still would not see any measures
+of the spread, such as the interquartile range.
+
+Another crucial aspect of the data are also not displayed: 
+the data are paired!
+
+**Based on these critisisms, can you think of a better**
+**visualization strategy for the captopril data?**
+
+**Add your proposed visualization strategy here**
+
+It is usually more informative to represent to underlying
+values as _raw_ as possible. Boxplots are ideal for this.
+
+```{r}
+diabetes_long %>%
+  ggplot(aes(x = time, y = concentration, fill = time)) +
+  scale_fill_brewer(palette = "RdGy") +
+  theme_bw() +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.2) +
+  stat_summary(
+    fun = mean, geom = "point",
+    shape = 5, size = 3,
+    color = "black"
+  ) +
+  ggtitle("Naive boxplot of glucose concentration\nNot a good representation for paired data!") +
+  ylab("Concentration (mmol/l)")
+```
+
+Note, however that for these data the boxplots are missing a crucial part of the information: The data are paired!
+
+So the boxplots of glucose measurements before and after the  are not telling the full story! The boxplot is thus not a good plot for exploring the data of the diabetes dataset! 
+
+## Paired data 
+
+A line plot is a better plot for paired data! 
+Note that we also convertthe variable time in a factor first and relevel it so that the concentration before is plotted first. 
+
+```{r}
+diabetes_long <- diabetes_long %>%
+  mutate(time = as.factor(time)) %>% 
+  mutate(time = relevel(time,"before")) 
+diabetes_long %>%
+    ggplot(aes(x = time, y = concentration)) +
+    geom_point() +
+   geom_line(aes(group = patient)) +
+    ylab("Concentration (mmol/l)") +
+    ggtitle("Informative plot on glucose level for paired data")
+```
+
+We observe that the glucose concentrations increase for almost all patients! 
+This is a plot that shows all features in the data and clearly indicates that the data are paired. 
+
+Alternatively, we might plot calculate the differences in glucose levels after and before dosing glucose first and make a boxplot of the differences! 
+
+```{r}
+diabetes <- diabetes %>% 
+  mutate(difference = after - before)
+diabetes %>% 
+  ggplot(aes(x ="", y = difference)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.2) +
+   ylab("Difference (mmol/l)") +
+  stat_summary(
+    fun = mean, geom = "point",
+    shape = 5, size = 3,
+    color = "black"
+  ) +
+  ggtitle("Difference in glucose concentration\nbefore and after sugar intake")
+```
+
+The mean difference in glucose concentration is higher zero. It seems that dosing glucose has increased the glucose concentration on average with around 2 mmol/l. 
+In the next tutorials, we will
+learn how we can test if this increase is statistically significant.
+
+## QQ-plot
+
+We can now assess if the differences are normally distributed. 
+
+```{r}
+diabetes %>% 
+  ggplot(aes(sample = difference)) +
+  geom_qq() +
+  geom_qq_line() 
+```
+
+The differences in glucose concentration appears to be normally distributed.
+
+# Descriptive statistics
+
+- Generate a code chunk to calculate useful summary statistics for
+the diabetes data
+
+```{r}
+diabetesSum <- diabetes %>% 
+   gather(time, concentration, -patient)  %>%
+   group_by(time) %>%
+  summarize(
+    mean = mean(concentration, na.rm = TRUE),
+    sd = sd(concentration, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ## Compute the standard errors for the means
+  mutate(se = sd / sqrt(n)) 
+diabetesSum
+```

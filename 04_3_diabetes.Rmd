@@ -1,0 +1,119 @@
+---
+title: "Exercise 4.3: Exploring the diabetes dataset"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
+date: "statOmics, Ghent University (https://statomics.github.io)"
+---
+
+# The diabetes dataset
+
+The `diabetes dataset` holds information on a small experiment with
+8 patients that are subjected to  a glucose tolerance test.
+
+
+Patients had to fast for eight hours before the test. 
+When the patients entered the hospital their baseline glucose level was measured (mmol/l). 
+
+Patients then  had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar. 
+Two hours later, their blood glucose level was measured again. 
+
+The data consist of three variables:
+
+- before: glucose concentration upon 8 hours of fasting (mmol/l)
+- after: glucose concentration 2 hours after drinking glucose solution (mmol/l).
+- patient: identifier for the patient
+
+# Import the data
+
+Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/diabetes.txt`
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(readr)
+library(ggplot2)
+```
+
+```{r, eval = FALSE}
+diabetes <- ...
+```
+
+Have a first look at the data
+
+```{r}
+
+```
+
+# Data visualization
+
+The data are not in tidy format. 
+We can easily visualize the glucose levels by adopting the `gather()`
+function from tidyverse. 
+It will reshape the dataframe,
+such that we have have a single variable `time`, which
+points at the timepoint of the measurement, and `concentration`,
+which contains the actual glucose concentration at before or after drinking the glucose solution
+for each patient.
+
+```{r, eval=FALSE}
+diabetes %>%
+  gather(time, concentration, -patient)
+```
+
+## Barplot
+
+Not all visualization types will be equally informative.
+
+A barplot is a plot that you will
+commonly find in scientific publications. 
+The code for generating such a barplot
+is provided below:
+
+```{r, eval=FALSE}
+ diabetes %>%
+  gather(time, concentration, -patient) %>% 
+  ## Calculate summarry statistics for the "bp" variable for each "type"
+  group_by(time) %>%
+  summarize(
+    mean = mean(concentration, na.rm = TRUE),
+    sd = sd(concentration, na.rm = TRUE),
+    n = n()
+  ) %>%
+  ## Compute the standard errors for the means
+  mutate(se = sd / sqrt(n)) %>%
+  ggplot(aes(x = time, y = mean, fill = time)) +
+  theme_bw() +
+  geom_bar(stat = "identity") +
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.2) +
+  ggtitle("Barplot of glucose measurements") +
+  ylab("concentration (mmol/l)")
+```
+
+
+A barplot, however, is not very informative. 
+The height of the
+bars only provides us with information of the mean blood pressure.
+However, we don't see the actual underlying values, so we for
+instance don't have any information on the spread of the data.
+It is usually more informative to represent to underlying
+values as _raw_ as possible. 
+Note that it is possible to add the
+raw data on the barplot, but we still would not see any measures
+of the spread, such as the interquartile range.
+
+Another crucial aspect of the data are also not displayed: 
+the data are paired!
+
+**Based on these critisisms, can you think of a better**
+**visualization strategy for the captopril data?**
+
+**Add your proposed visualization strategy here**
+
+```{r, eval=FALSE}
+
+```
+
+# Descriptive statistics
+
+- Generate a code chunk to calculate useful summary statistics for
+the diabetes data

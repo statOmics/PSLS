@@ -74,7 +74,7 @@ Upon this exercise you can
 # The diabetes dataset
 
 The diabetes dataset consists of a small experiment with 9 patients
-that have diabetes and were subjected to a glucose tolerance test. 
+that were subjected to a glucose tolerance test. 
 
 Patients had to fast for eight hours before the test. 
 When the patients entered the hospital their baseline glucose level was measured (mmol/l). 
@@ -110,8 +110,8 @@ their `age`, their `height`, their `gender` and, most importantly, whether the
 child is a smoker or a non-smoker. The goal of this experiment was to find out
 if smoking has an effect on the FEV of children.
 
-In this tutorial, you will learn about the importance of confounders in
-real-life datasets.
+In this tutorial, you will learn how an efficient data exploration can help you to discover confounders in a
+real datasets.
 
 - Exercise: [Exercise4](./04_4_FEV.html)
 - Data path:
