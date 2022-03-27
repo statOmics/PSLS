@@ -14,8 +14,8 @@
 
 <title>Exercises on chapter 4: Data exploration</title>
 
-<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -53,7 +53,6 @@
 
 
 
-
 <style type="text/css">
 #rmd-source-code {
   display: none;
@@ -85,9 +84,6 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
-}
-details > summary > p:only-child {
-  display: inline;
 }
 pre code {
   padding: 0;
@@ -316,7 +312,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -332,7 +328,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="fa fa-chalkboard-teacher"></span>
      
     Lectures
@@ -388,7 +384,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="fa fa-laptop"></span>
      
     Labs
@@ -435,7 +431,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -462,7 +458,7 @@ div.tocify {
 </ul>
 <hr />
 <div id="nhanes-example" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> NHANES example</h1>
+<h1 number="1"><span class="header-section-number">1</span> NHANES example</h1>
 <p>The National Health and Nutrition Examination Survey (NHANES) contains data that has been collected since 1960. For this tutorial, we will make use of the data that was collected between 2009 and 2012, for 10.000 U.S. civilians. The dataset contains a large number of physical, demographic, nutritional and life-style-related parameters.</p>
 <p>The first step in a data analysis is data exploration.</p>
 <p>In this tutorial, you will learn howto:</p>
@@ -481,7 +477,7 @@ div.tocify {
 <hr />
 </div>
 <div id="pertussis-example" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Pertussis example</h1>
+<h1 number="2"><span class="header-section-number">2</span> Pertussis example</h1>
 <p>Researchers wanted to study the immune response on pertussis. They have set up an experiments with 40 rats. 16 rats were infected with pertussis and 24 rats received a control treatment. Researchers measured the white blood cell concentration (WBC) in each rat (count per mm<span class="math inline">\(^3\)</span>.</p>
 <p>The data consist of two variables:</p>
 <ul>
@@ -507,7 +503,7 @@ div.tocify {
 <hr />
 </div>
 <div id="diabetes-example" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Diabetes example</h1>
+<h1 number="3"><span class="header-section-number">3</span> Diabetes example</h1>
 <p>The diabetes dataset consists of a small experiment with 9 patients that were subjected to a glucose tolerance test.</p>
 <p>Patients had to fast for eight hours before the test. When the patients entered the hospital their baseline glucose level was measured (mmol/l).</p>
 <p>Patients then had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar. Two hours later, their blood glucose level was measured again.</p>
@@ -533,7 +529,7 @@ div.tocify {
 <hr />
 </div>
 <div id="fev-dataset" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> FEV dataset</h1>
+<h1 number="4"><span class="header-section-number">4</span> FEV dataset</h1>
 <p>The forced expiratory volume (FEV) is a measure of how much air a person can exhale (in liters) during a forced breath. In this dataset, the FEV of 606 children, between the ages of 6 and 17, were measured. The dataset also provides additional information on these children: their <code>age</code>, their <code>height</code>, their <code>gender</code> and, most importantly, whether the child is a smoker or a non-smoker. The goal of this experiment was to find out if smoking has an effect on the FEV of children.</p>
 <p>In this tutorial, you will learn how plots can help you to discover confounding in a real datasets.</p>
 <ul>
