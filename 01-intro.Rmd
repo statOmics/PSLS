@@ -29,6 +29,25 @@ Statistics is the science to learn from empirical data.
 
 Statistical literacy is key to interpret results from scientific publications.
 
+# Learning objectives 
+
+1. In this introduction you will familiarize yourself with three important tasks of statistics 
+
+  - Experimental design
+  - Data Exploration
+  - Estimation and statistical inference 
+
+2. You understand how the data, the estimated mean, standard deviation and conclusions of a statistical data analysis can change from experiment to experiment 
+
+3. You have notice on how 
+
+  - statistical tests can control for false positives 
+  - the power to pick up an effect depends on the sample size 
+
+4. You can explain the importance of using a good control 
+
+5. You can explain what confounding is
+
 # Smelly armpit example
 
 - Smelly armpits are not caused by sweat itself. The smell is caused by specific micro-organisms belonging to the group of *Corynebacterium spp.* that metabolise sweat.
