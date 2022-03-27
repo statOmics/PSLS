@@ -15,7 +15,7 @@ library(tidyverse)
 # Motivation
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
 
-![](https://images.martechadvisor.com/images/uploads/content_images/ways_to_capture_b2b_customer_data_5bacd2dbe1a09.png)
+![](https://pimages.toolbox.com/300x219/wp-content/uploads/2021/12/14232929/ways_to_capture_b2b_customer_data_5bacd2dbe1a09.png)
 
 ![](./figures/wpGraph.jpeg)
 
