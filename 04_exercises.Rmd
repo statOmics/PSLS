@@ -75,7 +75,7 @@ Files
 
 # Diabetes example
 
-The diabetes dataset consists of a small experiment with 9 patients
+The diabetes dataset consists of a small experiment with 8 patients
 that were subjected to a glucose tolerance test. 
 
 Patients had to fast for eight hours before the test. 

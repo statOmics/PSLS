@@ -144,7 +144,7 @@ So the boxplots of glucose measurements before and after the  are not telling th
 ## Paired data 
 
 A line plot is a better plot for paired data! 
-Note that we also convertthe variable time in a factor first and relevel it so that the concentration before is plotted first. 
+Note that we also convert the variable time in a factor first and relevel it so that the concentration before is plotted first. 
 
 ```{r}
 diabetes_long <- diabetes_long %>%
