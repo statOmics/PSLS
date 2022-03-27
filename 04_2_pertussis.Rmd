@@ -4,6 +4,16 @@ author: "Lieven Clement, and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
+# Aim of this tutorial
+
+An exploratory data analysis is a crucial step in a data analysis to get
+insight in the nature and distribution of the data, and to assess the
+assumptions of the downstream data analysis. 
+
+In this exercise you will acquired the skills to conduct a data exploration for a two group comparison in R and to interpret the results. 
+
+# Background 
+
 Researchers wanted to study the immune response on pertussis. 
 They have set up an experiments with 40 rats. 
 16 rats were infected with pertussis and 24 rats received a control treatment. 
@@ -23,7 +33,7 @@ Load the libraries
 library(tidyverse)
 ```
 
-# Import the dataset
+## Import the dataset
 
 Data path:
 
@@ -37,24 +47,21 @@ wbcon <-
 glimpse(wbcon)
 ```
 
-# Goal
+## Aim of the study
 
-The overarching goal of this study was to assess if the white blood cell count is 
-transplanting by pertussis infection. To this end, the researchers randomized 40 rats
-to two treatments: A control treatment and a treatment with pertussis infection.
+The overarching goal of this study was to assess if the white blood cell count changes upon pertussis infection. To this end, researchers randomized 40 rats
+to two treatments: A control treatment and a treatment in which the rat was infected with pertussis.
 
-In the tutorial on hypotheses testing we will use a formal statistical test to assess if the white blood cell count is on average different between infected and control rats. 
+We will explore the data to get insight on the impact of the pertussis infection on the white blood cell count. 
+
+A secondary goal of the data exploration is to assess assumptions that will be required to use a formal statistical test to assess if the white blood cell count is on average different between infected and control rats (see later tutorials). 
 
 For this test to be valid, we have to assess following assumptions:
 
-1. The data in each treatment group is normally distributed.
+1. The data in each treatment group are normally distributed.
 
 2. The data from the two treatment groups has the same variance.
 
-A statistical analysis always starts with a exploratory data analysis to get
-insight in the nature and distribution of the data, and to assess the
-assumptions of the downstream data analysis. Mastering this data exploration
-step is the purpose of the current exercise.
 
 # Data visualization
 
@@ -113,7 +120,7 @@ deviation, number of observations and standard error and store the
 result in an object wbcSum via 'wbcSum<-`
 
 1. We pipe the `wbcon` dataframe to the group_by function to group
-the data by treatment groep `group_by(groep)`
+the data by treatment groep `group_by(trt)`
 2. We pipe the result to the `summarize()` function to summarize
 the "WBC" variable and calculate the mean, standard deviation and
 the number of observations
