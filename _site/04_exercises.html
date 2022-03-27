@@ -455,14 +455,14 @@ div.tocify {
 
 <p>In this hands-on tutorial session we will explore the data from 4 different studies:</p>
 <ul>
-<li><a href="#the-nhanes-dataset">The NHANES dataset</a></li>
-<li>[The pertruss]</li>
-<li>[The captopril dataset]</li>
-<li><a href="#the-fev-dataset">The FEV dataset</a></li>
+<li><a href="#nhanes-example">NHANES example</a></li>
+<li><a href="#pertussis-example">Pertussis example</a></li>
+<li><a href="#diabetes-example">Diabetes example</a></li>
+<li>[FEV example]</li>
 </ul>
 <hr />
-<div id="the-nhanes-dataset" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> The NHANES dataset</h1>
+<div id="nhanes-example" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> NHANES example</h1>
 <p>The National Health and Nutrition Examination Survey (NHANES) contains data that has been collected since 1960. For this tutorial, we will make use of the data that was collected between 2009 and 2012, for 10.000 U.S. civilians. The dataset contains a large number of physical, demographic, nutritional and life-style-related parameters.</p>
 <p>The first step in a data analysis is data exploration.</p>
 <p>In this tutorial, you will learn howto:</p>
@@ -480,8 +480,8 @@ div.tocify {
 </ul>
 <hr />
 </div>
-<div id="the-pertussis-dataset" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> The pertussis dataset</h1>
+<div id="pertussis-example" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Pertussis example</h1>
 <p>Researchers wanted to study the immune response on pertussis. They have set up an experiments with 40 rats. 16 rats were infected with pertussis and 24 rats received a control treatment. Researchers measured the white blood cell concentration (WBC) in each rat (count per mm<span class="math inline">\(^3\)</span>.</p>
 <p>The data consist of two variables:</p>
 <ul>
@@ -491,20 +491,23 @@ div.tocify {
 <li>control: rat recieved control treatment</li>
 <li>pertussis: rat was infected with pertussis</li>
 </ul></li>
-<li><p>Exercise: <a href="./04_2_pertussis.html">Exercise2</a></p></li>
-<li><p>Data path:</p>
-<p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv</code></p></li>
 </ul>
 <p>Upon this exercise you can</p>
 <ul>
 <li>implement a good data exploration for a two group comparison in R and</li>
-<li>interpret the results.</li>
+<li>interpret the plots and results.</li>
+</ul>
+<p>Files</p>
+<ul>
+<li><p>Exercise: <a href="./04_2_pertussis.html">Exercise2</a></p></li>
+<li><p>Data path:</p>
+<p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv</code></p></li>
 </ul>
 <!-- - Solution: [Solution2](./04_2_pertussis_sol.html) -->
 <hr />
 </div>
-<div id="the-diabetes-dataset" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> The diabetes dataset</h1>
+<div id="diabetes-example" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Diabetes example</h1>
 <p>The diabetes dataset consists of a small experiment with 9 patients that were subjected to a glucose tolerance test.</p>
 <p>Patients had to fast for eight hours before the test. When the patients entered the hospital their baseline glucose level was measured (mmol/l).</p>
 <p>Patients then had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar. Two hours later, their blood glucose level was measured again.</p>
@@ -514,7 +517,13 @@ div.tocify {
 <li>after: glucose concentration 2 hours after drinking glucose solution (mmol/l).</li>
 <li>patient: identifier for the patient</li>
 </ul>
-<p>In this tutorial on data exploration, you will learn how to implement and interpret a data exploration in R for data from paired experimental designs.</p>
+<p>In this tutorial, you will acquire the skills to</p>
+<ul>
+<li>recognize paired data</li>
+<li>conduct a data exploration in R for data from paired experimental designs.</li>
+<li>interpret the results of a data exploration for paired experimental designs</li>
+</ul>
+<p>Files:</p>
 <ul>
 <li><p>Exercise: <a href="./04_3_diabetes.html">Exercise3</a></p></li>
 <li><p>Data path:</p>
@@ -523,10 +532,10 @@ div.tocify {
 <!-- - Solution: [Solution3](./04_3_diabetes_sol.html) -->
 <hr />
 </div>
-<div id="the-fev-dataset" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> The FEV dataset</h1>
-<p>The FEV, which is an acronym for forced expiratory volume, is a measure of how much air a person can exhale (in liters) during a forced breath. In this dataset, the FEV of 606 children, between the ages of 6 and 17, were measured. The dataset also provides additional information on these children: their <code>age</code>, their <code>height</code>, their <code>gender</code> and, most importantly, whether the child is a smoker or a non-smoker. The goal of this experiment was to find out if smoking has an effect on the FEV of children.</p>
-<p>In this tutorial, you will learn how an efficient data exploration can help you to discover confounders in a real datasets.</p>
+<div id="fev-dataset" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> FEV dataset</h1>
+<p>The forced expiratory volume (FEV) is a measure of how much air a person can exhale (in liters) during a forced breath. In this dataset, the FEV of 606 children, between the ages of 6 and 17, were measured. The dataset also provides additional information on these children: their <code>age</code>, their <code>height</code>, their <code>gender</code> and, most importantly, whether the child is a smoker or a non-smoker. The goal of this experiment was to find out if smoking has an effect on the FEV of children.</p>
+<p>In this tutorial, you will learn how plots can help you to discover confounding in a real datasets.</p>
 <ul>
 <li><p>Exercise: <a href="./04_4_FEV.html">Exercise4</a></p></li>
 <li><p>Data path:</p>
@@ -536,7 +545,7 @@ div.tocify {
 <p><br/></p>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2VzIG9uIGNoYXB0ZXIgNDogRGF0YSBleHBsb3JhdGlvbiIKYXV0aG9yOiAiTGlldmVuIENsZW1lbnQsIEplcm9lbiBHaWxpcyBhbmQgTWlsYW4gTWFsZmFpdCIKZGF0ZTogInN0YXRPbWljcywgR2hlbnQgVW5pdmVyc2l0eSAoaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSIKY29kZV9kb3dubG9hZDogZmFsc2UKLS0tCgpJbiB0aGlzIGhhbmRzLW9uIHR1dG9yaWFsIHNlc3Npb24gd2Ugd2lsbCBleHBsb3JlIHRoZSBkYXRhIGZyb20KNCBkaWZmZXJlbnQgc3R1ZGllczoKCiogW1RoZSBOSEFORVMgZGF0YXNldF0KKiBbVGhlIHBlcnRydXNzXQoqIFtUaGUgY2FwdG9wcmlsIGRhdGFzZXRdCiogW1RoZSBGRVYgZGF0YXNldF0KCi0tLQoKIyBUaGUgTkhBTkVTIGRhdGFzZXQKClRoZSBOYXRpb25hbCBIZWFsdGggYW5kIE51dHJpdGlvbiBFeGFtaW5hdGlvbiBTdXJ2ZXkgKE5IQU5FUykgY29udGFpbnMgZGF0YQp0aGF0IGhhcyBiZWVuIGNvbGxlY3RlZCBzaW5jZSAxOTYwLiBGb3IgdGhpcyB0dXRvcmlhbCwgd2Ugd2lsbCBtYWtlIHVzZSBvZiB0aGUKZGF0YSB0aGF0IHdhcyBjb2xsZWN0ZWQgIGJldHdlZW4gMjAwOSBhbmQgIDIwMTIsIGZvciAxMC4wMDAgVS5TLiBjaXZpbGlhbnMuClRoZSBkYXRhc2V0IGNvbnRhaW5zIGEgbGFyZ2UgbnVtYmVyIG9mIHBoeXNpY2FsLCBkZW1vZ3JhcGhpYywgbnV0cml0aW9uYWwgYW5kCmxpZmUtc3R5bGUtcmVsYXRlZCBwYXJhbWV0ZXJzLgoKClRoZSBmaXJzdCBzdGVwIGluIGEgZGF0YSBhbmFseXNpcyBpcyBkYXRhIGV4cGxvcmF0aW9uLiAKCkluIHRoaXMgdHV0b3JpYWwsIHlvdSB3aWxsIGxlYXJuIGhvd3RvOgoKLSBpbXBvcnQgZGF0YSBpbnRvIFIKLSB0aWR5IGFuZCB3cmFuZ2xlIGRhdGEgCi0gZXhwbG9yZSBhbmQgdmlzdWFsaXplIGRhdGEgCgpieSBmb2xsb3dpbmcgYW5kIGludGVycHJldGluZyB0aGUgY29kZSBvZiBhIHdvcmtlZCBvdXQgZXhhbXBsZS4KCi0gUHJlbGltaW5hcnk6IFtQcmVsaW1pbmFyeV0oLi9leHRyYTFfcHJlbGltaW5hcnlfdGlkeXZlcnNlLmh0bWwpCi0gRXhlcmNpc2U6IFtFeGVyY2lzZTFdKC4vMDRfMV9OSEFORVMuaHRtbCkKLSBEYXRhIHBhdGg6CgogIGBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL05IQU5FUy5jc3ZgCgotLS0KCiMgVGhlIHBlcnR1c3NpcyBkYXRhc2V0CgpSZXNlYXJjaGVycyB3YW50ZWQgdG8gc3R1ZHkgdGhlIGltbXVuZSByZXNwb25zZSBvbiBwZXJ0dXNzaXMuIApUaGV5IGhhdmUgc2V0IHVwIGFuIGV4cGVyaW1lbnRzIHdpdGggNDAgcmF0cy4gCjE2IHJhdHMgd2VyZSBpbmZlY3RlZCB3aXRoIHBlcnR1c3NpcyBhbmQgMjQgcmF0cyByZWNlaXZlZCBhIGNvbnRyb2wgdHJlYXRtZW50LiAKUmVzZWFyY2hlcnMgbWVhc3VyZWQgdGhlIHdoaXRlIGJsb29kIGNlbGwgY29uY2VudHJhdGlvbiAoV0JDKSBpbiBlYWNoIHJhdCAoY291bnQgcGVyIG1tJF4zJC4gCgpUaGUgZGF0YSBjb25zaXN0IG9mIHR3byB2YXJpYWJsZXM6CgotIFdCQzogd2hpdGUgYmxvb2QgY2VsbCBjb3VudCAoY291bnRzL21tJF4zJCkuIAotIHRydDogdHJlYXRtZW50IAoKICAgIC0gY29udHJvbDogcmF0IHJlY2lldmVkIGNvbnRyb2wgdHJlYXRtZW50CiAgICAtIHBlcnR1c3NpczogcmF0IHdhcyBpbmZlY3RlZCB3aXRoIHBlcnR1c3NpcwoKLSBFeGVyY2lzZTogW0V4ZXJjaXNlMl0oLi8wNF8yX3BlcnR1c3Npcy5odG1sKQotIERhdGEgcGF0aDoKCiAgYGh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9zdGF0T21pY3MvUFNMUzIxL2RhdGEvd2Jjb24uY3N2YAoKVXBvbiB0aGlzIGV4ZXJjaXNlIHlvdSBjYW4gCgotIGltcGxlbWVudCBhIGdvb2QgZGF0YSBleHBsb3JhdGlvbiBmb3IgYSB0d28gZ3JvdXAgY29tcGFyaXNvbiBpbiBSIGFuZCAKLSBpbnRlcnByZXQgdGhlIHJlc3VsdHMuIAoKPCEtLSAtIFNvbHV0aW9uOiBbU29sdXRpb24yXSguLzA0XzJfcGVydHVzc2lzX3NvbC5odG1sKSAtLT4KCi0tLQoKIyBUaGUgZGlhYmV0ZXMgZGF0YXNldAoKVGhlIGRpYWJldGVzIGRhdGFzZXQgY29uc2lzdHMgb2YgYSBzbWFsbCBleHBlcmltZW50IHdpdGggOSBwYXRpZW50cwp0aGF0IHdlcmUgc3ViamVjdGVkIHRvIGEgZ2x1Y29zZSB0b2xlcmFuY2UgdGVzdC4gCgpQYXRpZW50cyBoYWQgdG8gZmFzdCBmb3IgZWlnaHQgaG91cnMgYmVmb3JlIHRoZSB0ZXN0LiAKV2hlbiB0aGUgcGF0aWVudHMgZW50ZXJlZCB0aGUgaG9zcGl0YWwgdGhlaXIgYmFzZWxpbmUgZ2x1Y29zZSBsZXZlbCB3YXMgbWVhc3VyZWQgKG1tb2wvbCkuIAoKUGF0aWVudHMgdGhlbiAgaGFkIHRvIGRyaW5rIDI1MCBtbCBvZiBhIHN5cnVweSBnbHVjb3NlIHNvbHV0aW9uIGNvbnRhaW5pbmcgMTAwIGdyYW1zIG9mIHN1Z2FyLiAKVHdvIGhvdXJzIGxhdGVyLCB0aGVpciBibG9vZCBnbHVjb3NlIGxldmVsIHdhcyBtZWFzdXJlZCBhZ2Fpbi4gCgpUaGUgZGF0YSBjb25zaXN0IG9mIHRocmVlIHZhcmlhYmxlczoKCi0gYmVmb3JlOiBnbHVjb3NlIGNvbmNlbnRyYXRpb24gdXBvbiA4IGhvdXJzIG9mIGZhc3RpbmcgKG1tb2wvbCkKLSBhZnRlcjogZ2x1Y29zZSBjb25jZW50cmF0aW9uIDIgaG91cnMgYWZ0ZXIgZHJpbmtpbmcgZ2x1Y29zZSBzb2x1dGlvbiAobW1vbC9sKS4KLSBwYXRpZW50OiBpZGVudGlmaWVyIGZvciB0aGUgcGF0aWVudAoKSW4gdGhpcyB0dXRvcmlhbCBvbiBkYXRhIGV4cGxvcmF0aW9uLCB5b3Ugd2lsbCBsZWFybiBob3cgdG8gaW1wbGVtZW50IGFuZCBpbnRlcnByZXQgYSBkYXRhIGV4cGxvcmF0aW9uIGluIFIgZm9yIGRhdGEgZnJvbQpwYWlyZWQgZXhwZXJpbWVudGFsIGRlc2lnbnMuCgotIEV4ZXJjaXNlOiBbRXhlcmNpc2UzXSguLzA0XzNfZGlhYmV0ZXMuaHRtbCkKLSBEYXRhIHBhdGg6CgogIGBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL2RpYWJldGVzLnR4dGAKCjwhLS0gLSBTb2x1dGlvbjogW1NvbHV0aW9uM10oLi8wNF8zX2RpYWJldGVzX3NvbC5odG1sKSAtLT4KCi0tLQoKIyBUaGUgRkVWIGRhdGFzZXQKClRoZSBGRVYsIHdoaWNoIGlzIGFuIGFjcm9ueW0gZm9yIGZvcmNlZCBleHBpcmF0b3J5IHZvbHVtZSwgaXMgYSBtZWFzdXJlIG9mIGhvdwptdWNoIGFpciBhIHBlcnNvbiBjYW4gZXhoYWxlIChpbiBsaXRlcnMpICBkdXJpbmcgIGEgZm9yY2VkIGJyZWF0aC4gSW4gdGhpcwpkYXRhc2V0LCB0aGUgRkVWIG9mIDYwNiBjaGlsZHJlbiwgYmV0d2VlbiB0aGUgYWdlcyBvZiA2IGFuZCAxNywgd2VyZSBtZWFzdXJlZC4KVGhlIGRhdGFzZXQgYWxzbyBwcm92aWRlcyBhZGRpdGlvbmFsIGluZm9ybWF0aW9uIG9uIHRoZXNlIGNoaWxkcmVuOgp0aGVpciBgYWdlYCwgdGhlaXIgYGhlaWdodGAsIHRoZWlyIGBnZW5kZXJgIGFuZCwgbW9zdCBpbXBvcnRhbnRseSwgd2hldGhlciB0aGUKY2hpbGQgaXMgYSBzbW9rZXIgb3IgYSBub24tc21va2VyLiBUaGUgZ29hbCBvZiB0aGlzIGV4cGVyaW1lbnQgd2FzIHRvIGZpbmQgb3V0CmlmIHNtb2tpbmcgaGFzIGFuIGVmZmVjdCBvbiB0aGUgRkVWIG9mIGNoaWxkcmVuLgoKSW4gdGhpcyB0dXRvcmlhbCwgeW91IHdpbGwgbGVhcm4gaG93IGFuIGVmZmljaWVudCBkYXRhIGV4cGxvcmF0aW9uIGNhbiBoZWxwIHlvdSB0byBkaXNjb3ZlciBjb25mb3VuZGVycyBpbiBhCnJlYWwgZGF0YXNldHMuCgotIEV4ZXJjaXNlOiBbRXhlcmNpc2U0XSguLzA0XzRfRkVWLmh0bWwpCi0gRGF0YSBwYXRoOgoKICBgaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9mZXYudHh0YAoKPCEtLSAtIFNvbHV0aW9uOiBbU29sdXRpb240XSguLzA0XzRfRlZfc29sLmh0bWwpIC0tPgoKPGJyLz4K</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2VzIG9uIGNoYXB0ZXIgNDogRGF0YSBleHBsb3JhdGlvbiIKYXV0aG9yOiAiTGlldmVuIENsZW1lbnQsIEplcm9lbiBHaWxpcyBhbmQgTWlsYW4gTWFsZmFpdCIKZGF0ZTogInN0YXRPbWljcywgR2hlbnQgVW5pdmVyc2l0eSAoaHR0cHM6Ly9zdGF0b21pY3MuZ2l0aHViLmlvKSIKY29kZV9kb3dubG9hZDogZmFsc2UKLS0tCgpJbiB0aGlzIGhhbmRzLW9uIHR1dG9yaWFsIHNlc3Npb24gd2Ugd2lsbCBleHBsb3JlIHRoZSBkYXRhIGZyb20KNCBkaWZmZXJlbnQgc3R1ZGllczoKCiogW05IQU5FUyBleGFtcGxlXQoqIFtQZXJ0dXNzaXMgZXhhbXBsZV0KKiBbRGlhYmV0ZXMgZXhhbXBsZV0KKiBbRkVWIGV4YW1wbGVdCgotLS0KCiMgTkhBTkVTIGV4YW1wbGUKClRoZSBOYXRpb25hbCBIZWFsdGggYW5kIE51dHJpdGlvbiBFeGFtaW5hdGlvbiBTdXJ2ZXkgKE5IQU5FUykgY29udGFpbnMgZGF0YQp0aGF0IGhhcyBiZWVuIGNvbGxlY3RlZCBzaW5jZSAxOTYwLiBGb3IgdGhpcyB0dXRvcmlhbCwgd2Ugd2lsbCBtYWtlIHVzZSBvZiB0aGUKZGF0YSB0aGF0IHdhcyBjb2xsZWN0ZWQgIGJldHdlZW4gMjAwOSBhbmQgIDIwMTIsIGZvciAxMC4wMDAgVS5TLiBjaXZpbGlhbnMuClRoZSBkYXRhc2V0IGNvbnRhaW5zIGEgbGFyZ2UgbnVtYmVyIG9mIHBoeXNpY2FsLCBkZW1vZ3JhcGhpYywgbnV0cml0aW9uYWwgYW5kCmxpZmUtc3R5bGUtcmVsYXRlZCBwYXJhbWV0ZXJzLgoKClRoZSBmaXJzdCBzdGVwIGluIGEgZGF0YSBhbmFseXNpcyBpcyBkYXRhIGV4cGxvcmF0aW9uLiAKCkluIHRoaXMgdHV0b3JpYWwsIHlvdSB3aWxsIGxlYXJuIGhvd3RvOgoKLSBpbXBvcnQgZGF0YSBpbnRvIFIKLSB0aWR5IGFuZCB3cmFuZ2xlIGRhdGEgCi0gZXhwbG9yZSBhbmQgdmlzdWFsaXplIGRhdGEgCgpieSBmb2xsb3dpbmcgYW5kIGludGVycHJldGluZyB0aGUgY29kZSBvZiBhIHdvcmtlZCBvdXQgZXhhbXBsZS4KCi0gUHJlbGltaW5hcnk6IFtQcmVsaW1pbmFyeV0oLi9leHRyYTFfcHJlbGltaW5hcnlfdGlkeXZlcnNlLmh0bWwpCi0gRXhlcmNpc2U6IFtFeGVyY2lzZTFdKC4vMDRfMV9OSEFORVMuaHRtbCkKLSBEYXRhIHBhdGg6CgogIGBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL05IQU5FUy5jc3ZgCgotLS0KCiMgUGVydHVzc2lzIGV4YW1wbGUKClJlc2VhcmNoZXJzIHdhbnRlZCB0byBzdHVkeSB0aGUgaW1tdW5lIHJlc3BvbnNlIG9uIHBlcnR1c3Npcy4gClRoZXkgaGF2ZSBzZXQgdXAgYW4gZXhwZXJpbWVudHMgd2l0aCA0MCByYXRzLiAKMTYgcmF0cyB3ZXJlIGluZmVjdGVkIHdpdGggcGVydHVzc2lzIGFuZCAyNCByYXRzIHJlY2VpdmVkIGEgY29udHJvbCB0cmVhdG1lbnQuIApSZXNlYXJjaGVycyBtZWFzdXJlZCB0aGUgd2hpdGUgYmxvb2QgY2VsbCBjb25jZW50cmF0aW9uIChXQkMpIGluIGVhY2ggcmF0IChjb3VudCBwZXIgbW0kXjMkLiAKClRoZSBkYXRhIGNvbnNpc3Qgb2YgdHdvIHZhcmlhYmxlczoKCi0gV0JDOiB3aGl0ZSBibG9vZCBjZWxsIGNvdW50IChjb3VudHMvbW0kXjMkKS4gCi0gdHJ0OiB0cmVhdG1lbnQgCgogICAgLSBjb250cm9sOiByYXQgcmVjaWV2ZWQgY29udHJvbCB0cmVhdG1lbnQKICAgIC0gcGVydHVzc2lzOiByYXQgd2FzIGluZmVjdGVkIHdpdGggcGVydHVzc2lzCgpVcG9uIHRoaXMgZXhlcmNpc2UgeW91IGNhbiAKCi0gaW1wbGVtZW50IGEgZ29vZCBkYXRhIGV4cGxvcmF0aW9uIGZvciBhIHR3byBncm91cCBjb21wYXJpc29uIGluIFIgYW5kIAotIGludGVycHJldCB0aGUgcGxvdHMgYW5kIHJlc3VsdHMuIAoKRmlsZXMKCi0gRXhlcmNpc2U6IFtFeGVyY2lzZTJdKC4vMDRfMl9wZXJ0dXNzaXMuaHRtbCkKLSBEYXRhIHBhdGg6CgogIGBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL3diY29uLmNzdmAKCgo8IS0tIC0gU29sdXRpb246IFtTb2x1dGlvbjJdKC4vMDRfMl9wZXJ0dXNzaXNfc29sLmh0bWwpIC0tPgoKLS0tCgojIERpYWJldGVzIGV4YW1wbGUKClRoZSBkaWFiZXRlcyBkYXRhc2V0IGNvbnNpc3RzIG9mIGEgc21hbGwgZXhwZXJpbWVudCB3aXRoIDkgcGF0aWVudHMKdGhhdCB3ZXJlIHN1YmplY3RlZCB0byBhIGdsdWNvc2UgdG9sZXJhbmNlIHRlc3QuIAoKUGF0aWVudHMgaGFkIHRvIGZhc3QgZm9yIGVpZ2h0IGhvdXJzIGJlZm9yZSB0aGUgdGVzdC4gCldoZW4gdGhlIHBhdGllbnRzIGVudGVyZWQgdGhlIGhvc3BpdGFsIHRoZWlyIGJhc2VsaW5lIGdsdWNvc2UgbGV2ZWwgd2FzIG1lYXN1cmVkIChtbW9sL2wpLiAKClBhdGllbnRzIHRoZW4gIGhhZCB0byBkcmluayAyNTAgbWwgb2YgYSBzeXJ1cHkgZ2x1Y29zZSBzb2x1dGlvbiBjb250YWluaW5nIDEwMCBncmFtcyBvZiBzdWdhci4gClR3byBob3VycyBsYXRlciwgdGhlaXIgYmxvb2QgZ2x1Y29zZSBsZXZlbCB3YXMgbWVhc3VyZWQgYWdhaW4uIAoKVGhlIGRhdGEgY29uc2lzdCBvZiB0aHJlZSB2YXJpYWJsZXM6CgotIGJlZm9yZTogZ2x1Y29zZSBjb25jZW50cmF0aW9uIHVwb24gOCBob3VycyBvZiBmYXN0aW5nIChtbW9sL2wpCi0gYWZ0ZXI6IGdsdWNvc2UgY29uY2VudHJhdGlvbiAyIGhvdXJzIGFmdGVyIGRyaW5raW5nIGdsdWNvc2Ugc29sdXRpb24gKG1tb2wvbCkuCi0gcGF0aWVudDogaWRlbnRpZmllciBmb3IgdGhlIHBhdGllbnQKCkluIHRoaXMgdHV0b3JpYWwsIHlvdSB3aWxsIGFjcXVpcmUgdGhlIHNraWxscyB0byAKCi0gcmVjb2duaXplIHBhaXJlZCBkYXRhCi0gY29uZHVjdCBhIGRhdGEgZXhwbG9yYXRpb24gaW4gUiBmb3IgZGF0YSBmcm9tCnBhaXJlZCBleHBlcmltZW50YWwgZGVzaWducy4KLSBpbnRlcnByZXQgdGhlIHJlc3VsdHMgb2YgYSBkYXRhIGV4cGxvcmF0aW9uIGZvciBwYWlyZWQgZXhwZXJpbWVudGFsIGRlc2lnbnMKCkZpbGVzOgoKLSBFeGVyY2lzZTogW0V4ZXJjaXNlM10oLi8wNF8zX2RpYWJldGVzLmh0bWwpCi0gRGF0YSBwYXRoOgoKICBgaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9kaWFiZXRlcy50eHRgCgo8IS0tIC0gU29sdXRpb246IFtTb2x1dGlvbjNdKC4vMDRfM19kaWFiZXRlc19zb2wuaHRtbCkgLS0+CgotLS0KCiMgRkVWIGRhdGFzZXQKClRoZSBmb3JjZWQgZXhwaXJhdG9yeSB2b2x1bWUgKEZFVikgaXMgYSBtZWFzdXJlIG9mIGhvdwptdWNoIGFpciBhIHBlcnNvbiBjYW4gZXhoYWxlIChpbiBsaXRlcnMpICBkdXJpbmcgIGEgZm9yY2VkIGJyZWF0aC4gSW4gdGhpcwpkYXRhc2V0LCB0aGUgRkVWIG9mIDYwNiBjaGlsZHJlbiwgYmV0d2VlbiB0aGUgYWdlcyBvZiA2IGFuZCAxNywgd2VyZSBtZWFzdXJlZC4KVGhlIGRhdGFzZXQgYWxzbyBwcm92aWRlcyBhZGRpdGlvbmFsIGluZm9ybWF0aW9uIG9uIHRoZXNlIGNoaWxkcmVuOgp0aGVpciBgYWdlYCwgdGhlaXIgYGhlaWdodGAsIHRoZWlyIGBnZW5kZXJgIGFuZCwgbW9zdCBpbXBvcnRhbnRseSwgd2hldGhlciB0aGUKY2hpbGQgaXMgYSBzbW9rZXIgb3IgYSBub24tc21va2VyLiBUaGUgZ29hbCBvZiB0aGlzIGV4cGVyaW1lbnQgd2FzIHRvIGZpbmQgb3V0CmlmIHNtb2tpbmcgaGFzIGFuIGVmZmVjdCBvbiB0aGUgRkVWIG9mIGNoaWxkcmVuLgoKSW4gdGhpcyB0dXRvcmlhbCwgeW91IHdpbGwgbGVhcm4gaG93IHBsb3RzIGNhbiBoZWxwIHlvdSB0byBkaXNjb3ZlciBjb25mb3VuZGluZyBpbiBhIHJlYWwgZGF0YXNldHMuCgotIEV4ZXJjaXNlOiBbRXhlcmNpc2U0XSguLzA0XzRfRkVWLmh0bWwpCi0gRGF0YSBwYXRoOgoKICBgaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9mZXYudHh0YAoKPCEtLSAtIFNvbHV0aW9uOiBbU29sdXRpb240XSguLzA0XzRfRlZfc29sLmh0bWwpIC0tPgoKPGJyLz4K</div>
 <div class="footer">
     <hr>
     This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
