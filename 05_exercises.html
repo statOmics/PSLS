@@ -453,43 +453,81 @@ div.tocify {
 </div>
 
 
-<p>On the second day of the “Practical Statistics for the Life Sciences” course, we will have four exercises on statistical inference, based on different datasets:</p>
+<p>In this hands-on tutorial session you will perform four exercises on statistical inference based on 4 different studies:</p>
 <ul>
-<li><a href="#the-captopril-dataset">The captopril dataset</a></li>
-<li><a href="#the-armpit-dataset">The armpit dataset</a></li>
-<li><a href="#the-cuckoo-dataset">The Cuckoo dataset</a></li>
-<li><a href="#the-shrimps-dataset">The shrimps dataset</a></li>
+<li><a href="#diabetes-example">Diabetes example</a></li>
+<li><a href="#pertussis-example">Pertussis example</a></li>
+<li><a href="#cuckoo-example">Cuckoo example</a></li>
+<li>[Shrimps example]</li>
 </ul>
-<div id="the-captopril-dataset" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> The captopril dataset</h1>
-<p>The captopril dataset holds information on a small experiment with 15 patients that have increased blood pressure values. More specifically, for each patient we will have four values; one value for systolic blood pressure and one for diastolyic, both before and after treating the patient with a drug named captopril.</p>
-<p>In this tutorial on data exploration, you will learn how to perform hypothesis testing with data from paired experimental designs.</p>
+<div id="diabetes-example" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Diabetes example</h1>
+<p>The diabetes dataset consists of a small experiment with 9 patients that were subjected to a glucose tolerance test.</p>
+<p>Patients had to fast for eight hours before the test. When the patients entered the hospital their baseline glucose level was measured (mmol/l).</p>
+<p>Patients then had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar. Two hours later, their blood glucose level was measured again.</p>
+<p>The data consist of three variables:</p>
 <ul>
-<li><p>Exercise: <a href="./05_1_captopril.html">Exercise1</a></p></li>
+<li>before: glucose concentration upon 8 hours of fasting (mmol/l)</li>
+<li>after: glucose concentration 2 hours after drinking glucose solution (mmol/l).</li>
+<li>patient: identifier for the patient</li>
+</ul>
+<p>In this exercise, you will revisit the basics of statistical hypothesis testing. You will acquire the skills</p>
+<ol style="list-style-type: decimal">
+<li>to assess the assumptions of a one-sample and a paired t-test in a data exploration.</li>
+<li>to conduct a one-sample t-test in R and to interpret the results.</li>
+<li>to conduct a paired t-test in R and to interpret the results.</li>
+</ol>
+<p>Files:</p>
+<ul>
+<li><p>Exercise: <a href="./05_1_diabetes.html">Exercise1</a></p></li>
 <li><p>Data path:</p>
-<p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt</code></p></li>
+<p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/diabetes.txt</code></p></li>
 </ul>
-<!-- - Solution: [Solution1](./05_1_captopril_sol.html) -->
+<!-- - Solution: [Solution1](./05_1_diabetes_sol.html) -->
 <hr />
 </div>
-<div id="the-armpit-dataset" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> The armpit dataset</h1>
-<p>Smelly armpits are not caused by sweat, itself. The smell is caused by specific micro-organisms belonging to the group of Corynebacterium spp. that metabolise sweat. Another group of abundant bacteria are the Staphylococcus spp., which do not metabolise sweat in smelly compounds.</p>
-<p>The CMET-groep at Ghent University does research on transplanting the armpit microbiome to help people with smelly armpits. To test the effect of transplanting the microbiome, they conducted an experiment on two groups of volunteers: one group was treated with a placebo, while the other had a microbiome transplant. The goal was to assess whether a microbial transplant can affect the relative abundance Staphylococcus spp. in the microbiome of the armpit.</p>
-<p>In this tutorial, you will use your acquired skills on hypothesis testing to test if the microbial transplant has helped in decreasing the (average) relative bundance Staphylococcus spp. in the microbiome of the armpit.</p>
+<div id="pertussis-example" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Pertussis example</h1>
+<p>Researchers wanted to study the immune response on pertussis. They have set up an experiments with 40 rats. 16 rats were infected with pertussis and 24 rats received a control treatment. Researchers measured the white blood cell concentration (WBC) in each rat (count per mm<span class="math inline">\(^3\)</span>.</p>
+<p>The data consist of two variables:</p>
 <ul>
-<li><p>Exercise: <a href="./05_2_armpit.html">Exercise2</a></p></li>
-<li><p>Data path:</p>
-<p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv</code></p></li>
+<li><p>WBC: white blood cell count (counts/mm<span class="math inline">\(^3\)</span>).</p></li>
+<li><p>trt: treatment</p>
+<ul>
+<li>control: rat recieved control treatment</li>
+<li>pertussis: rat was infected with pertussis</li>
+</ul></li>
 </ul>
-<!-- - Solution: [Solution2](./05_2_armpit_sol.html) -->
+<p>Upon this exercise you can</p>
+<ol style="list-style-type: decimal">
+<li>conduct a statistical hypothesis test for a two group comparison in R and to interpret the results.</li>
+<li>critically evaluate the assumptions for a two sample t-test</li>
+<li>use simulations to assist you when evaluating the assumptions of a two group comparison</li>
+<li>select the correct test based on the data exploration.</li>
+</ol>
+<p>Files</p>
+<ul>
+<li><p>Exercise: <a href="./05_2_pertussis.html">Exercise2</a></p></li>
+<li><p>Data path:</p>
+<p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv</code></p></li>
+</ul>
+<!-- - Solution: [Solution2](./05_2_pertussis_sol.html) -->
 <hr />
 </div>
-<div id="the-cuckoo-dataset" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> The Cuckoo dataset</h1>
+<div id="cuckoo-example" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Cuckoo example</h1>
 <p>The common cuckoo does not build its own nest: it prefers to lay its eggs in another birds’ nest. It is known, since 1892, that the type of cuckoo bird eggs are different between different locations. In a study from 1940, it was shown that cuckoos return to the same nesting area each year, and that they always pick the same bird species to be a “foster parent” for their eggs.</p>
 <p>Over the years, this has lead to the development of geographically determined subspecies of cuckoos. These subspecies have evolved in such a way that their eggs look as similar as possible as those of their foster parents.</p>
 <p>The cuckoo dataset contains information on 120 Cuckoo eggs, obtained from randomly selected “foster” nests. The researchers want to test if the type of foster parent has an effect on the average length of the cuckoo eggs.</p>
+<p>In this tutorial you will further sharpen your skills in</p>
+<ol style="list-style-type: decimal">
+<li>data wrangling</li>
+<li>formulating the null and alternative hypothesis of t-tests</li>
+<li>critically evaluating the assumptions of t-tests,</li>
+<li>selecting the appropriate test for answering the research question, and</li>
+<li>formulating your conclusion in terms of the research question.</li>
+</ol>
+<p>Files:</p>
 <ul>
 <li><p>Exercise: <a href="./05_3_cuckoo.html">Exercise3</a></p></li>
 <li><p>Data path:</p>
@@ -501,8 +539,12 @@ div.tocify {
 <div id="the-shrimps-dataset" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> The shrimps dataset</h1>
 <p>Dataset on the accumulation of PCBs (Polychlorinated biphenyls) in the adipose tissue of shrimps. PCBs are often present in coolants, and are know to accumulate easily in the adipose tissue of shrimps. In this experiment, two groups of 18 samples (each 100 grams) of shrimps each were cultivated in different conditions, one control condition and one condition where the medium was poluted with PCBs.</p>
-<p>The research question is; is there an effect of the growth condition on the PCB concentration in the adipose tissue of shrimps?</p>
+<p>The research question is to assess if there an effect of the growth condition on the PCB concentration in the adipose tissue of shrimps?</p>
+<p>This exercise aims to further sharpen your skills in</p>
 <ul>
+<li><p>translating the research question in a a null and alternative hypothesis of t-tests</p></li>
+<li><p>critically evaluating the assumptions of t-tests, and</p></li>
+<li><p>selecting the appropriate test for answering the research question.</p></li>
 <li><p>Exercise: <a href="./05_4_shrimps.html">Exercise4</a></p></li>
 <li><p>Data path:</p>
 <p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/shrimps.txt</code></p></li>
@@ -510,7 +552,7 @@ div.tocify {
 <!-- - Solution: [Solution4](./05_4_shrimps_sol.html) -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2VzIG9uIGNoYXB0ZXIgNTogU3RhdGlzdGljYWwgaW5mZXJlbmNlIgphdXRob3I6ICJMaWV2ZW4gQ2xlbWVudCwgSmVyb2VuIEdpbGlzIGFuZCBNaWxhbiBNYWxmYWl0IgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgotLS0KCk9uIHRoZSBzZWNvbmQgZGF5IG9mIHRoZSAiUHJhY3RpY2FsIFN0YXRpc3RpY3MgZm9yIHRoZSBMaWZlIFNjaWVuY2VzIiBjb3Vyc2UsIHdlCndpbGwgaGF2ZSBmb3VyIGV4ZXJjaXNlcyBvbiBzdGF0aXN0aWNhbCBpbmZlcmVuY2UsIGJhc2VkIG9uIGRpZmZlcmVudCBkYXRhc2V0czoKCiogW1RoZSBjYXB0b3ByaWwgZGF0YXNldF0KKiBbVGhlIGFybXBpdCBkYXRhc2V0XQoqIFtUaGUgQ3Vja29vIGRhdGFzZXRdCiogW1RoZSBzaHJpbXBzIGRhdGFzZXRdCgojIFRoZSBjYXB0b3ByaWwgZGF0YXNldAoKVGhlIGNhcHRvcHJpbCBkYXRhc2V0IGhvbGRzIGluZm9ybWF0aW9uIG9uIGEgc21hbGwgZXhwZXJpbWVudCB3aXRoIDE1IHBhdGllbnRzCnRoYXQgaGF2ZSBpbmNyZWFzZWQgYmxvb2QgcHJlc3N1cmUgdmFsdWVzLiBNb3JlIHNwZWNpZmljYWxseSwgZm9yIGVhY2ggcGF0aWVudAp3ZSB3aWxsIGhhdmUgZm91ciB2YWx1ZXM7IG9uZSB2YWx1ZSBmb3Igc3lzdG9saWMgYmxvb2QgcHJlc3N1cmUgYW5kIG9uZSBmb3IKZGlhc3RvbHlpYywgYm90aCBiZWZvcmUgYW5kIGFmdGVyIHRyZWF0aW5nIHRoZSBwYXRpZW50IHdpdGggYSBkcnVnIG5hbWVkCmNhcHRvcHJpbC4KCkluIHRoaXMgdHV0b3JpYWwgb24gZGF0YSBleHBsb3JhdGlvbiwgeW91IHdpbGwgbGVhcm4gaG93IHRvIHBlcmZvcm0gaHlwb3RoZXNpcwp0ZXN0aW5nIHdpdGggZGF0YSBmcm9tIHBhaXJlZCBleHBlcmltZW50YWwgZGVzaWducy4KCi0gRXhlcmNpc2U6IFtFeGVyY2lzZTFdKC4vMDVfMV9jYXB0b3ByaWwuaHRtbCkKLSBEYXRhIHBhdGg6CgogIGBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL2NhcHRvcHJpbC50eHRgCgo8IS0tIC0gU29sdXRpb246IFtTb2x1dGlvbjFdKC4vMDVfMV9jYXB0b3ByaWxfc29sLmh0bWwpIC0tPgoKLS0tCgojIFRoZSBhcm1waXQgZGF0YXNldAoKU21lbGx5IGFybXBpdHMgYXJlIG5vdCBjYXVzZWQgYnkgc3dlYXQsIGl0c2VsZi4gVGhlIHNtZWxsIGlzIGNhdXNlZCBieSBzcGVjaWZpYwptaWNyby1vcmdhbmlzbXMgYmVsb25naW5nIHRvIHRoZSBncm91cCBvZiBDb3J5bmViYWN0ZXJpdW0gc3BwLiB0aGF0IG1ldGFib2xpc2UKc3dlYXQuIEFub3RoZXIgZ3JvdXAgb2YgYWJ1bmRhbnQgYmFjdGVyaWEgYXJlIHRoZSBTdGFwaHlsb2NvY2N1cyBzcHAuLCB3aGljaCBkbwpub3QgbWV0YWJvbGlzZSBzd2VhdCBpbiBzbWVsbHkgY29tcG91bmRzLgoKVGhlIENNRVQtZ3JvZXAgYXQgR2hlbnQgVW5pdmVyc2l0eSBkb2VzIHJlc2VhcmNoIG9uIHRyYW5zcGxhbnRpbmcgdGhlIGFybXBpdAptaWNyb2Jpb21lIHRvIGhlbHAgcGVvcGxlIHdpdGggc21lbGx5IGFybXBpdHMuIFRvIHRlc3QgdGhlIGVmZmVjdCBvZgp0cmFuc3BsYW50aW5nIHRoZSBtaWNyb2Jpb21lLCB0aGV5IGNvbmR1Y3RlZCBhbiBleHBlcmltZW50IG9uIHR3byBncm91cHMKb2Ygdm9sdW50ZWVyczogb25lIGdyb3VwIHdhcyB0cmVhdGVkIHdpdGggYSBwbGFjZWJvLCB3aGlsZSB0aGUgb3RoZXIgaGFkIGEKbWljcm9iaW9tZSB0cmFuc3BsYW50LiBUaGUgZ29hbCB3YXMgdG8gYXNzZXNzIHdoZXRoZXIgYSBtaWNyb2JpYWwgdHJhbnNwbGFudCBjYW4gYWZmZWN0IHRoZSByZWxhdGl2ZSBhYnVuZGFuY2UgU3RhcGh5bG9jb2NjdXMgc3BwLiBpbiB0aGUgbWljcm9iaW9tZSBvZiB0aGUgYXJtcGl0LgoKSW4gdGhpcyB0dXRvcmlhbCwgeW91IHdpbGwgdXNlIHlvdXIgYWNxdWlyZWQgc2tpbGxzIG9uIGh5cG90aGVzaXMgdGVzdGluZyB0bwp0ZXN0IGlmIHRoZSBtaWNyb2JpYWwgdHJhbnNwbGFudCBoYXMgaGVscGVkIGluIGRlY3JlYXNpbmcgdGhlIChhdmVyYWdlKSByZWxhdGl2ZQpidW5kYW5jZSBTdGFwaHlsb2NvY2N1cyBzcHAuIGluIHRoZSBtaWNyb2Jpb21lIG9mIHRoZSBhcm1waXQuCgotIEV4ZXJjaXNlOiBbRXhlcmNpc2UyXSguLzA1XzJfYXJtcGl0Lmh0bWwpCi0gRGF0YSBwYXRoOgoKICBgaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9hcm1waXQuY3N2YAoKPCEtLSAtIFNvbHV0aW9uOiBbU29sdXRpb24yXSguLzA1XzJfYXJtcGl0X3NvbC5odG1sKSAtLT4KCi0tLQoKIyBUaGUgQ3Vja29vIGRhdGFzZXQKClRoZSBjb21tb24gY3Vja29vIGRvZXMgbm90IGJ1aWxkIGl0cyBvd24gbmVzdDogaXQgcHJlZmVycyB0byBsYXkgaXRzIGVnZ3MgaW4KYW5vdGhlciBiaXJkcycgbmVzdC4gSXQgaXMga25vd24sIHNpbmNlIDE4OTIsIHRoYXQgdGhlIHR5cGUgb2YgY3Vja29vIGJpcmQgZWdncwphcmUgZGlmZmVyZW50IGJldHdlZW4gZGlmZmVyZW50IGxvY2F0aW9ucy4gSW4gYSBzdHVkeSBmcm9tIDE5NDAsIGl0IHdhcyBzaG93bgp0aGF0IGN1Y2tvb3MgcmV0dXJuIHRvIHRoZSBzYW1lIG5lc3RpbmcgYXJlYSBlYWNoIHllYXIsIGFuZCB0aGF0IHRoZXkgYWx3YXlzCnBpY2sgdGhlIHNhbWUgYmlyZCBzcGVjaWVzIHRvIGJlIGEgImZvc3RlciBwYXJlbnQiIGZvciB0aGVpciBlZ2dzLgoKT3ZlciB0aGUgeWVhcnMsIHRoaXMgaGFzIGxlYWQgdG8gdGhlIGRldmVsb3BtZW50IG9mIGdlb2dyYXBoaWNhbGx5IGRldGVybWluZWQKc3Vic3BlY2llcyBvZiBjdWNrb29zLiBUaGVzZSBzdWJzcGVjaWVzIGhhdmUgZXZvbHZlZCBpbiBzdWNoIGEgd2F5IHRoYXQgdGhlaXIKZWdncyBsb29rIGFzIHNpbWlsYXIgYXMgcG9zc2libGUgYXMgdGhvc2Ugb2YgdGhlaXIgZm9zdGVyIHBhcmVudHMuCgpUaGUgY3Vja29vIGRhdGFzZXQgY29udGFpbnMgaW5mb3JtYXRpb24gb24gMTIwIEN1Y2tvbyBlZ2dzLCBvYnRhaW5lZCBmcm9tCnJhbmRvbWx5IHNlbGVjdGVkICJmb3N0ZXIiIG5lc3RzLiBUaGUgcmVzZWFyY2hlcnMgd2FudCB0byB0ZXN0IGlmIHRoZSB0eXBlIG9mCmZvc3RlciBwYXJlbnQgaGFzIGFuIGVmZmVjdCBvbiB0aGUgYXZlcmFnZSBsZW5ndGggb2YgdGhlIGN1Y2tvbyBlZ2dzLgoKLSBFeGVyY2lzZTogW0V4ZXJjaXNlM10oLi8wNV8zX2N1Y2tvby5odG1sKQotIERhdGEgcGF0aDoKCiAgYGh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9zdGF0T21pY3MvUFNMUzIxL2RhdGEvQ3Vja29vLnR4dGAKCjwhLS0gLSBTb2x1dGlvbjogW1NvbHV0aW9uM10oLi8wNV8zX2N1Y2tvb19zb2wuaHRtbCkgLS0+CgotLS0KCiMgVGhlIHNocmltcHMgZGF0YXNldAoKRGF0YXNldCBvbiB0aGUgYWNjdW11bGF0aW9uIG9mIFBDQnMgKFBvbHljaGxvcmluYXRlZCBiaXBoZW55bHMpCmluIHRoZSBhZGlwb3NlIHRpc3N1ZSBvZiBzaHJpbXBzLiBQQ0JzIGFyZSBvZnRlbiBwcmVzZW50IGluIGNvb2xhbnRzLCBhbmQgYXJlCmtub3cgdG8gYWNjdW11bGF0ZSBlYXNpbHkgaW4gdGhlIGFkaXBvc2UgdGlzc3VlIG9mIHNocmltcHMuIEluIHRoaXMgZXhwZXJpbWVudCwKdHdvIGdyb3VwcyBvZiAxOCBzYW1wbGVzIChlYWNoIDEwMCBncmFtcykgb2Ygc2hyaW1wcyBlYWNoIHdlcmUgY3VsdGl2YXRlZAppbiBkaWZmZXJlbnQgY29uZGl0aW9ucywgb25lIGNvbnRyb2wgY29uZGl0aW9uIGFuZCBvbmUgY29uZGl0aW9uCndoZXJlIHRoZSBtZWRpdW0gd2FzIHBvbHV0ZWQgd2l0aCBQQ0JzLgoKVGhlIHJlc2VhcmNoIHF1ZXN0aW9uIGlzOyBpcyB0aGVyZSBhbiBlZmZlY3Qgb2YgdGhlIGdyb3d0aCBjb25kaXRpb24gb24gdGhlIFBDQgpjb25jZW50cmF0aW9uIGluIHRoZSBhZGlwb3NlIHRpc3N1ZSBvZiBzaHJpbXBzPwoKLSBFeGVyY2lzZTogW0V4ZXJjaXNlNF0oLi8wNV80X3NocmltcHMuaHRtbCkKLSBEYXRhIHBhdGg6CgogIGBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL3NocmltcHMudHh0YAoKPCEtLSAtIFNvbHV0aW9uOiBbU29sdXRpb240XSguLzA1XzRfc2hyaW1wc19zb2wuaHRtbCkgLS0+Cg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2VzIG9uIGNoYXB0ZXIgNTogU3RhdGlzdGljYWwgaW5mZXJlbmNlIgphdXRob3I6ICJMaWV2ZW4gQ2xlbWVudCwgSmVyb2VuIEdpbGlzIGFuZCBNaWxhbiBNYWxmYWl0IgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgpjb2RlX2Rvd25sb2FkOiBmYWxzZQoKLS0tCgpJbiB0aGlzIGhhbmRzLW9uIHR1dG9yaWFsIHNlc3Npb24geW91IHdpbGwgcGVyZm9ybSBmb3VyIGV4ZXJjaXNlcyBvbiBzdGF0aXN0aWNhbCBpbmZlcmVuY2UgYmFzZWQgb24KNCBkaWZmZXJlbnQgc3R1ZGllczoKCiogW0RpYWJldGVzIGV4YW1wbGVdCiogW1BlcnR1c3NpcyBleGFtcGxlXQoqIFtDdWNrb28gZXhhbXBsZV0KKiBbU2hyaW1wcyBleGFtcGxlXQoKIyBEaWFiZXRlcyBleGFtcGxlCgpUaGUgZGlhYmV0ZXMgZGF0YXNldCBjb25zaXN0cyBvZiBhIHNtYWxsIGV4cGVyaW1lbnQgd2l0aCA5IHBhdGllbnRzCnRoYXQgd2VyZSBzdWJqZWN0ZWQgdG8gYSBnbHVjb3NlIHRvbGVyYW5jZSB0ZXN0LiAKClBhdGllbnRzIGhhZCB0byBmYXN0IGZvciBlaWdodCBob3VycyBiZWZvcmUgdGhlIHRlc3QuIApXaGVuIHRoZSBwYXRpZW50cyBlbnRlcmVkIHRoZSBob3NwaXRhbCB0aGVpciBiYXNlbGluZSBnbHVjb3NlIGxldmVsIHdhcyBtZWFzdXJlZCAobW1vbC9sKS4gCgpQYXRpZW50cyB0aGVuICBoYWQgdG8gZHJpbmsgMjUwIG1sIG9mIGEgc3lydXB5IGdsdWNvc2Ugc29sdXRpb24gY29udGFpbmluZyAxMDAgZ3JhbXMgb2Ygc3VnYXIuIApUd28gaG91cnMgbGF0ZXIsIHRoZWlyIGJsb29kIGdsdWNvc2UgbGV2ZWwgd2FzIG1lYXN1cmVkIGFnYWluLiAKClRoZSBkYXRhIGNvbnNpc3Qgb2YgdGhyZWUgdmFyaWFibGVzOgoKLSBiZWZvcmU6IGdsdWNvc2UgY29uY2VudHJhdGlvbiB1cG9uIDggaG91cnMgb2YgZmFzdGluZyAobW1vbC9sKQotIGFmdGVyOiBnbHVjb3NlIGNvbmNlbnRyYXRpb24gMiBob3VycyBhZnRlciBkcmlua2luZyBnbHVjb3NlIHNvbHV0aW9uIChtbW9sL2wpLgotIHBhdGllbnQ6IGlkZW50aWZpZXIgZm9yIHRoZSBwYXRpZW50CgpJbiB0aGlzIGV4ZXJjaXNlLCB5b3Ugd2lsbCByZXZpc2l0IHRoZSBiYXNpY3Mgb2Ygc3RhdGlzdGljYWwgIGh5cG90aGVzaXMgdGVzdGluZy4gWW91IHdpbGwgYWNxdWlyZSB0aGUgc2tpbGxzIAoKMS4gdG8gYXNzZXNzIHRoZSBhc3N1bXB0aW9ucyBvZiBhIG9uZS1zYW1wbGUgYW5kIGEgcGFpcmVkIHQtdGVzdCBpbiBhIGRhdGEgZXhwbG9yYXRpb24uIAoyLiB0byBjb25kdWN0IGEgb25lLXNhbXBsZSB0LXRlc3QgaW4gUiBhbmQgdG8gaW50ZXJwcmV0IHRoZSByZXN1bHRzLgozLiB0byBjb25kdWN0IGEgcGFpcmVkIHQtdGVzdCBpbiBSIGFuZCB0byBpbnRlcnByZXQgdGhlIHJlc3VsdHMuCgoKRmlsZXM6CgotIEV4ZXJjaXNlOiBbRXhlcmNpc2UxXSguLzA1XzFfZGlhYmV0ZXMuaHRtbCkKLSBEYXRhIHBhdGg6CgogIGBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL2RpYWJldGVzLnR4dGAKCjwhLS0gLSBTb2x1dGlvbjogW1NvbHV0aW9uMV0oLi8wNV8xX2RpYWJldGVzX3NvbC5odG1sKSAtLT4KCi0tLQoKIyBQZXJ0dXNzaXMgZXhhbXBsZQoKUmVzZWFyY2hlcnMgd2FudGVkIHRvIHN0dWR5IHRoZSBpbW11bmUgcmVzcG9uc2Ugb24gcGVydHVzc2lzLiAKVGhleSBoYXZlIHNldCB1cCBhbiBleHBlcmltZW50cyB3aXRoIDQwIHJhdHMuIAoxNiByYXRzIHdlcmUgaW5mZWN0ZWQgd2l0aCBwZXJ0dXNzaXMgYW5kIDI0IHJhdHMgcmVjZWl2ZWQgYSBjb250cm9sIHRyZWF0bWVudC4gClJlc2VhcmNoZXJzIG1lYXN1cmVkIHRoZSB3aGl0ZSBibG9vZCBjZWxsIGNvbmNlbnRyYXRpb24gKFdCQykgaW4gZWFjaCByYXQgKGNvdW50IHBlciBtbSReMyQuIAoKVGhlIGRhdGEgY29uc2lzdCBvZiB0d28gdmFyaWFibGVzOgoKLSBXQkM6IHdoaXRlIGJsb29kIGNlbGwgY291bnQgKGNvdW50cy9tbSReMyQpLiAKLSB0cnQ6IHRyZWF0bWVudCAKCiAgICAtIGNvbnRyb2w6IHJhdCByZWNpZXZlZCBjb250cm9sIHRyZWF0bWVudAogICAgLSBwZXJ0dXNzaXM6IHJhdCB3YXMgaW5mZWN0ZWQgd2l0aCBwZXJ0dXNzaXMKClVwb24gdGhpcyBleGVyY2lzZSB5b3UgY2FuIAoKCjEuIGNvbmR1Y3QgYSBzdGF0aXN0aWNhbCBoeXBvdGhlc2lzIHRlc3QgZm9yIGEgdHdvIGdyb3VwIGNvbXBhcmlzb24gaW4gUiBhbmQgdG8gaW50ZXJwcmV0IHRoZSByZXN1bHRzLiAKMi4gY3JpdGljYWxseSBldmFsdWF0ZSB0aGUgYXNzdW1wdGlvbnMgZm9yIGEgdHdvIHNhbXBsZSB0LXRlc3QKMy4gdXNlIHNpbXVsYXRpb25zIHRvIGFzc2lzdCB5b3Ugd2hlbiBldmFsdWF0aW5nIHRoZSBhc3N1bXB0aW9ucyBvZiBhIHR3byBncm91cCBjb21wYXJpc29uCjQuIHNlbGVjdCB0aGUgY29ycmVjdCB0ZXN0IGJhc2VkIG9uIHRoZSBkYXRhIGV4cGxvcmF0aW9uLgogCgpGaWxlcwoKLSBFeGVyY2lzZTogW0V4ZXJjaXNlMl0oLi8wNV8yX3BlcnR1c3Npcy5odG1sKQotIERhdGEgcGF0aDoKCiAgYGh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9zdGF0T21pY3MvUFNMUzIxL2RhdGEvd2Jjb24uY3N2YAoKCjwhLS0gLSBTb2x1dGlvbjogW1NvbHV0aW9uMl0oLi8wNV8yX3BlcnR1c3Npc19zb2wuaHRtbCkgLS0+CgoKLS0tCgojIEN1Y2tvbyBleGFtcGxlCgpUaGUgY29tbW9uIGN1Y2tvbyBkb2VzIG5vdCBidWlsZCBpdHMgb3duIG5lc3Q6IGl0IHByZWZlcnMgdG8gbGF5IGl0cyBlZ2dzIGluCmFub3RoZXIgYmlyZHMnIG5lc3QuIEl0IGlzIGtub3duLCBzaW5jZSAxODkyLCB0aGF0IHRoZSB0eXBlIG9mIGN1Y2tvbyBiaXJkIGVnZ3MKYXJlIGRpZmZlcmVudCBiZXR3ZWVuIGRpZmZlcmVudCBsb2NhdGlvbnMuIEluIGEgc3R1ZHkgZnJvbSAxOTQwLCBpdCB3YXMgc2hvd24KdGhhdCBjdWNrb29zIHJldHVybiB0byB0aGUgc2FtZSBuZXN0aW5nIGFyZWEgZWFjaCB5ZWFyLCBhbmQgdGhhdCB0aGV5IGFsd2F5cwpwaWNrIHRoZSBzYW1lIGJpcmQgc3BlY2llcyB0byBiZSBhICJmb3N0ZXIgcGFyZW50IiBmb3IgdGhlaXIgZWdncy4KCk92ZXIgdGhlIHllYXJzLCB0aGlzIGhhcyBsZWFkIHRvIHRoZSBkZXZlbG9wbWVudCBvZiBnZW9ncmFwaGljYWxseSBkZXRlcm1pbmVkCnN1YnNwZWNpZXMgb2YgY3Vja29vcy4gVGhlc2Ugc3Vic3BlY2llcyBoYXZlIGV2b2x2ZWQgaW4gc3VjaCBhIHdheSB0aGF0IHRoZWlyCmVnZ3MgbG9vayBhcyBzaW1pbGFyIGFzIHBvc3NpYmxlIGFzIHRob3NlIG9mIHRoZWlyIGZvc3RlciBwYXJlbnRzLgoKVGhlIGN1Y2tvbyBkYXRhc2V0IGNvbnRhaW5zIGluZm9ybWF0aW9uIG9uIDEyMCBDdWNrb28gZWdncywgb2J0YWluZWQgZnJvbQpyYW5kb21seSBzZWxlY3RlZCAiZm9zdGVyIiBuZXN0cy4gVGhlIHJlc2VhcmNoZXJzIHdhbnQgdG8gdGVzdCBpZiB0aGUgdHlwZSBvZgpmb3N0ZXIgcGFyZW50IGhhcyBhbiBlZmZlY3Qgb24gdGhlIGF2ZXJhZ2UgbGVuZ3RoIG9mIHRoZSBjdWNrb28gZWdncy4KCkluIHRoaXMgdHV0b3JpYWwgeW91IHdpbGwgZnVydGhlciBzaGFycGVuIHlvdXIgc2tpbGxzIGluCgoxLiBkYXRhIHdyYW5nbGluZyAKMi4gZm9ybXVsYXRpbmcgdGhlIG51bGwgYW5kIGFsdGVybmF0aXZlIGh5cG90aGVzaXMgb2YgdC10ZXN0cwozLiBjcml0aWNhbGx5IGV2YWx1YXRpbmcgdGhlIGFzc3VtcHRpb25zIG9mIHQtdGVzdHMsIAo0LiBzZWxlY3RpbmcgdGhlIGFwcHJvcHJpYXRlIHRlc3QgZm9yIGFuc3dlcmluZyB0aGUgcmVzZWFyY2ggcXVlc3Rpb24sIGFuZAo1LiBmb3JtdWxhdGluZyB5b3VyIGNvbmNsdXNpb24gaW4gdGVybXMgb2YgdGhlIHJlc2VhcmNoIHF1ZXN0aW9uLgoKRmlsZXM6IAoKLSBFeGVyY2lzZTogW0V4ZXJjaXNlM10oLi8wNV8zX2N1Y2tvby5odG1sKQotIERhdGEgcGF0aDoKCiAgYGh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9zdGF0T21pY3MvUFNMUzIxL2RhdGEvQ3Vja29vLnR4dGAKCjwhLS0gLSBTb2x1dGlvbjogW1NvbHV0aW9uM10oLi8wNV8zX2N1Y2tvb19zb2wuaHRtbCkgLS0+CgotLS0KCiMgVGhlIHNocmltcHMgZGF0YXNldAoKRGF0YXNldCBvbiB0aGUgYWNjdW11bGF0aW9uIG9mIFBDQnMgKFBvbHljaGxvcmluYXRlZCBiaXBoZW55bHMpCmluIHRoZSBhZGlwb3NlIHRpc3N1ZSBvZiBzaHJpbXBzLiBQQ0JzIGFyZSBvZnRlbiBwcmVzZW50IGluIGNvb2xhbnRzLCBhbmQgYXJlCmtub3cgdG8gYWNjdW11bGF0ZSBlYXNpbHkgaW4gdGhlIGFkaXBvc2UgdGlzc3VlIG9mIHNocmltcHMuIEluIHRoaXMgZXhwZXJpbWVudCwKdHdvIGdyb3VwcyBvZiAxOCBzYW1wbGVzIChlYWNoIDEwMCBncmFtcykgb2Ygc2hyaW1wcyBlYWNoIHdlcmUgY3VsdGl2YXRlZAppbiBkaWZmZXJlbnQgY29uZGl0aW9ucywgb25lIGNvbnRyb2wgY29uZGl0aW9uIGFuZCBvbmUgY29uZGl0aW9uCndoZXJlIHRoZSBtZWRpdW0gd2FzIHBvbHV0ZWQgd2l0aCBQQ0JzLgoKVGhlIHJlc2VhcmNoIHF1ZXN0aW9uIGlzIHRvIGFzc2VzcyBpZiB0aGVyZSBhbiBlZmZlY3Qgb2YgdGhlIGdyb3d0aCBjb25kaXRpb24gb24gdGhlIFBDQiBjb25jZW50cmF0aW9uIGluIHRoZSBhZGlwb3NlIHRpc3N1ZSBvZiBzaHJpbXBzPwoKVGhpcyBleGVyY2lzZSBhaW1zIHRvIGZ1cnRoZXIgc2hhcnBlbiB5b3VyIHNraWxscyBpbgoKLSB0cmFuc2xhdGluZyB0aGUgcmVzZWFyY2ggcXVlc3Rpb24gaW4gYSBhIG51bGwgYW5kIGFsdGVybmF0aXZlIGh5cG90aGVzaXMgb2YgdC10ZXN0cwotIGNyaXRpY2FsbHkgZXZhbHVhdGluZyB0aGUgYXNzdW1wdGlvbnMgb2YgdC10ZXN0cywgYW5kIAotIHNlbGVjdGluZyB0aGUgYXBwcm9wcmlhdGUgdGVzdCBmb3IgYW5zd2VyaW5nIHRoZSByZXNlYXJjaCBxdWVzdGlvbi4gCgotIEV4ZXJjaXNlOiBbRXhlcmNpc2U0XSguLzA1XzRfc2hyaW1wcy5odG1sKQotIERhdGEgcGF0aDoKCiAgYGh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9zdGF0T21pY3MvUFNMUzIxL2RhdGEvc2hyaW1wcy50eHRgCgo8IS0tIC0gU29sdXRpb246IFtTb2x1dGlvbjRdKC4vMDVfNF9zaHJpbXBzX3NvbC5odG1sKSAtLT4K</div>
 <div class="footer">
     <hr>
     This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
