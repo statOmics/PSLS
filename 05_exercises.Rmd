@@ -16,7 +16,7 @@ In this hands-on tutorial session you will perform four exercises on statistical
 
 # Diabetes example
 
-The diabetes dataset consists of a small experiment with 9 patients
+The diabetes dataset consists of a small experiment with 8 patients
 that were subjected to a glucose tolerance test. 
 
 Patients had to fast for eight hours before the test. 
@@ -121,7 +121,7 @@ Files:
 
 ---
 
-# The shrimps dataset
+# Shrimps example
 
 Dataset on the accumulation of PCBs (Polychlorinated biphenyls)
 in the adipose tissue of shrimps. PCBs are often present in coolants, and are

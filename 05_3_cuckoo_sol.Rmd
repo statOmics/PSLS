@@ -42,12 +42,12 @@ The type column is coded as follows:
 - `type=5`: White wagtail
 - `type=6`: Eurasian wren
 
-# Goal
+# Research question
 
-The researchers want totest if the type of foster parent
+The researchers want to test if the type of foster parent
 has an effect on the average length of the cuckoo eggs.
 
-In theory, they want to study this for all six species.
+In practice, they want to study this for all six species.
 However, a t-test can only be used to study mean differences
 between two groups. If we want to analyze multiple groups, there
 are two options.
@@ -58,8 +58,7 @@ This mean we need to perform n*(n-1)/2 = 15 t-tests.
 2. We perform an ANOVA analysis.
 
 The second strategy is much more efficient and has a higher
-statistical power. We will learn all about ANOVA in a later
-stage of this course week.
+statistical power. We will learn all about ANOVA in chapter 7.
 
 In this tutorial, we will assess a single pairwise comparison,
 between the European robin and the European wren. In a following
