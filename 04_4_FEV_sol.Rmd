@@ -4,12 +4,16 @@ author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
-In this tutorial, you will learn how to import, tidy, wrangle and
-visualize data yourself!
+# Aims
+
+In this tutorial, you will learn how data exploration and plots can help you to discover confounding in a real datasets.
+
+You will also improve your data wrangling skills by importing, tidying, wrangling and visualizing data yourself.
+
 
 # The FEV dataset
 
-The FEV, which is an acronym for `forced expiratory volume`,
+The `forced expiratory volume` (FEV)
 is a measure of how much air a person can exhale (in liters)
 during  a forced breath. In this dataset, the FEV of 606 children,
 between the ages of 6 and 17, were measured. The dataset
@@ -96,63 +100,44 @@ Did you expect these results?
 
 It appears that children that smoke have a higher
 median FEV than children that do not smoke.
-Should we change legislation worldwide and make
-smoking obligatory for children?
-
-Maybe there is something else going on in the data.
-Now, we will generate a similar plot, but we will
-stratify the data based on age (age as factor).
 
 ```{r}
 fev %>%
-  ggplot(aes(x = as.factor(age), y = fev, fill = smoking)) +
-  geom_boxplot(outlier.shape = NA) +
-  geom_point(width = 0.2, size = 0.1, position = position_jitterdodge()) +
-  theme_bw() +
-  scale_fill_manual(values = c("dimgrey", "firebrick")) +
-  ggtitle("Boxplot of FEV by smoking status, stratified on age") +
-  ylab("FEV (l)") +
-  xlab("Age")
+  ggplot(aes(x = age, y = fev, color = smoking)) +
+    geom_point( size = 0.1) + 
+    geom_smooth()
 ```
 
-This plot seems to already be much more plausible. First, it seems
+The trends in the plot seems to match much more with our expectations. 
+
+First, it seems
 that we do not have any smoking children of ages 6, 7 or 8.
-Second, when looking at the results per age "category", it seems
-no longer the case that smokers have a much higher FEV
-than non-smokers; for the higher ages, the contrary
-seems true.
+Second, it no longer seems that smokers have a higher FEV
+than non-smokers; on the contrary smoking seems to lead to a lower lung capacity for the elder pupils.
 
-This shows that taking into account important confounders
-(in this case) is crucial! If we simply analysed based on
-the smoking status and FEV values only, we probably would've
-obtained completely incorrect results.
+This shows that accounting for important confounders
+(in this case age) is crucial! If we simply analysed based on
+the smoking status and FEV values only, we would have made wrong conclusions.
 
-Can we provide an even better visualization of the data, taking
-into account more useful explanatory variables with respect
-to the FEV?
+Can we provide additional insights in the data, e.g. by accounting for other useful explanatory variables?
 
 ```{r}
 fev %>%
-  ggplot(aes(x = as.factor(age), y = fev, fill = smoking)) +
-  geom_boxplot(outlier.shape = NA) +
-  geom_point(width = 0.2, size = 0.1, position = position_jitterdodge()) +
-  theme_bw() +
-  scale_fill_manual(values = c("dimgrey", "firebrick")) +
-  ggtitle("Boxplot of FEV by smoking status, stratified on age and gender") +
-  ylab("FEV (l)") +
-  xlab("Age") +
-  facet_grid(rows = vars(gender))
+  ggplot(aes(x = age, y = fev, color = smoking)) +
+    geom_point(size=0.1) + 
+    geom_smooth() +
+    facet_grid(cols = vars(gender))
 ```
 
 This plot holds one extra level of information, the gender
-of the child. Especially for higher ages, the median FEV
+of the child. Especially for higher ages, the FEV
 is higher for males as compared to females.
 
 The only source of information that is lacking is `height`.
-To look at the effect of height, we could simply make a
+We could simply make a
 scatterplot displaying the FEV in function of a child's
 height (in cm). Additionally, we could color the dots based
-on gender.
+on gender and making two plots according to the smoking status.
 
 ```{r}
 fev %>%
@@ -162,7 +147,8 @@ fev %>%
   theme_bw() +
   ggtitle("Boxplot of FEV versus height") +
   ylab("FEV (l)") +
-  xlab("Height (cm)")
+  xlab("Height (cm)") +
+  facet_grid(cols = vars(smoking))
 ```
 
 There is a clear relationship between height and FEV.

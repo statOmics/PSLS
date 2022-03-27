@@ -8,8 +8,15 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 options(width = 80)
 ```
 
-In this exercise, we will learn how to import, tidy, wrangle and
-visualize data.
+# Aims
+
+In this tutorial, you will learn howto:
+
+- import data into R
+- tidy and wrangle data 
+- explore and visualize data 
+
+by following and interpreting the code of this worked out R/Rmarkdown example.
 
 # The NHANES dataset
 
@@ -340,28 +347,8 @@ the `BMI` variable from the NHANES dataset. Importantly,
 different types of visualizations will provide us with
 different types of information!
 
-Here we will visualize the same data using a dotplot,
+Here we will visualize the same data using
 a histogram and a boxplot.
-
-### Dotplot
-
-```{r}
-NHANES %>%
-  head(NHANES, n = 100) %>% ## to make the visualization more clear, we take only the first 100 subjects
-  ggplot(aes(x = BMI)) +
-  geom_dotplot(method = "histodot", na.rm = TRUE)
-```
-
-In the dotplot, the BMI value for each subject (in this case,
-the first 100 subjects of the NHANES study), is plotted on the
-x-axis. The y-axis allows us to count how many subjects have
-a BMI value that falls within a certain counting bin.
-For instance, in the BMI interval [29.5, 30.[
-we observe 4 subjects.
-
-Note, however, that the dotplot does not provide us with information
-on the mean/median values of the data, which are typically features
-of high interest.
 
 ### Histogram
 
@@ -376,8 +363,10 @@ The information that can be obtained from this histogram
 is similar to that of the dotplot. Here, we can read immediately
 (i.e. without counting) that the BMI interval [29.5, 30.0[
 contains 4 subjects. Again, the histogram does not provide us with
-information on the mean/median values of the data, but only on
-its distribution.
+information on the mean/median values of the data, but on
+its entire distribution.
+
+Histograms are typically useful to visualize data from experiments with large sample sizes. It is not useful to make histograms when the sample size is below 20 observations. 
 
 ### Boxplot
 
@@ -407,10 +396,12 @@ range, whiskers and outliers. Third, with the geom_jitter
 functionality we can also project each individual value
 of the dataset on the plot.
 
-The only disadvantage of the boxplot as compared to the
-dotplat or histogram is that we cannot see (from the figure)
+The latter is useful if you have small to medium sized datasets. 
+It allows you to visualize the raw data! 
+This however becomes cluttered for large experiments because they involve too many datapoints (>100).
+
+The only disadvantage of the boxplot as compared to the histogram is that we cannot see (from the figure)
 how many subjects have a BMI value within a certain interval.
-However, this feature usually is not of primary interest.
 
 ## Bivariate statistics
 

@@ -8,14 +8,14 @@ code_download: false
 In this hands-on tutorial session we will explore the data from
 4 different studies:
 
-* [The NHANES dataset]
-* [The pertruss]
-* [The captopril dataset]
-* [The FEV dataset]
+* [NHANES example]
+* [Pertussis example]
+* [Diabetes example]
+* [FEV example]
 
 ---
 
-# The NHANES dataset
+# NHANES example
 
 The National Health and Nutrition Examination Survey (NHANES) contains data
 that has been collected since 1960. For this tutorial, we will make use of the
@@ -42,7 +42,7 @@ by following and interpreting the code of a worked out example.
 
 ---
 
-# The pertussis dataset
+# Pertussis example
 
 Researchers wanted to study the immune response on pertussis. 
 They have set up an experiments with 40 rats. 
@@ -57,21 +57,24 @@ The data consist of two variables:
     - control: rat recieved control treatment
     - pertussis: rat was infected with pertussis
 
+Upon this exercise you can 
+
+- implement a good data exploration for a two group comparison in R and 
+- interpret the plots and results. 
+
+Files
+
 - Exercise: [Exercise2](./04_2_pertussis.html)
 - Data path:
 
   `https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv`
 
-Upon this exercise you can 
-
-- implement a good data exploration for a two group comparison in R and 
-- interpret the results. 
 
 <!-- - Solution: [Solution2](./04_2_pertussis_sol.html) -->
 
 ---
 
-# The diabetes dataset
+# Diabetes example
 
 The diabetes dataset consists of a small experiment with 9 patients
 that were subjected to a glucose tolerance test. 
@@ -88,8 +91,14 @@ The data consist of three variables:
 - after: glucose concentration 2 hours after drinking glucose solution (mmol/l).
 - patient: identifier for the patient
 
-In this tutorial on data exploration, you will learn how to implement and interpret a data exploration in R for data from
+In this tutorial, you will acquire the skills to 
+
+- recognize paired data
+- conduct a data exploration in R for data from
 paired experimental designs.
+- interpret the results of a data exploration for paired experimental designs
+
+Files:
 
 - Exercise: [Exercise3](./04_3_diabetes.html)
 - Data path:
@@ -100,9 +109,9 @@ paired experimental designs.
 
 ---
 
-# The FEV dataset
+# FEV dataset
 
-The FEV, which is an acronym for forced expiratory volume, is a measure of how
+The forced expiratory volume (FEV) is a measure of how
 much air a person can exhale (in liters)  during  a forced breath. In this
 dataset, the FEV of 606 children, between the ages of 6 and 17, were measured.
 The dataset also provides additional information on these children:
@@ -110,8 +119,7 @@ their `age`, their `height`, their `gender` and, most importantly, whether the
 child is a smoker or a non-smoker. The goal of this experiment was to find out
 if smoking has an effect on the FEV of children.
 
-In this tutorial, you will learn how an efficient data exploration can help you to discover confounders in a
-real datasets.
+In this tutorial, you will learn how plots can help you to discover confounding in a real datasets.
 
 - Exercise: [Exercise4](./04_4_FEV.html)
 - Data path:

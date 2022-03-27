@@ -4,6 +4,15 @@ author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
+# Aims of this exercise
+
+In this tutorial, you will acquire the skills to 
+
+- recognize paired data
+- conduct a data exploration in R for data from
+paired experimental designs.
+- interpret the results of a data exploration for paired experimental designs
+
 # The diabetes dataset
 
 The `diabetes dataset` holds information on a small experiment with
