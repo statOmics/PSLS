@@ -79,6 +79,11 @@ text(7.5, .5, "DATA EXPLORATION &\nDESCRIPTIVE STATISTICS (2)", col = "black", c
 
 ## Histogram
 
+A histogram is very useful to provide an estimate of the distribution of the data without making distributional assumptions. 
+
+For a histogram you typically require to have enough observations.
+A sample size of 30 observations is a bare minimum to construct a histogram.
+
 ```{r,echo=FALSE}
 library(NHANES)
 ```

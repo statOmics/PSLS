@@ -4,7 +4,7 @@ author: "Lieven Clement, and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
-# Aim of this tutorial
+# Aim of this exercise
 
 An exploratory data analysis is a crucial step in a data analysis to get
 insight in the nature and distribution of the data, and to assess the
@@ -55,7 +55,7 @@ to two treatments: A control treatment and a treatment in which the rat was infe
 
 We will explore the data to get insight on the impact of the pertussis infection on the white blood cell count. 
 
-A secondary goal of the data exploration is to assess assumptions that will be required to use a formal statistical test to assess if the white blood cell count is on average different between infected and control rats (see later tutorials). 
+A secondary goal of the data exploration is to assess assumptions that will be required to use a formal statistical test to assess if the white blood cell count is on average different between infected and control rats (see later exercises). 
 
 For this test to be valid, we have to assess following assumptions:
 
@@ -88,7 +88,8 @@ are higher for rats that were infected with pertussis than for rats that receive
 
 ## Boxplots
 
-However, given the relative small sample size a better option to visualize these data are `boxplots` (Histograms get useful in larger datasets,  20 observations per group are a bare minimum). 
+However, given the relative small sample size a better option to visualize these data are `boxplots`.
+Histograms get useful in larger datasets,  30 observations per group are a bare minimum. 
 
 ```{r}
 wbcon %>% ggplot(aes(x = trt, y = WBC, fill = trt)) +
@@ -153,5 +154,5 @@ wbcSum
 ```
 
 
-This concludes the data exploration. In the next tutorial sessions, we will learn how to formally
+This concludes the data exploration. In the next exercise sessions, we will learn how to formally
 test if the observed difference in WBC between rats that were infected with pertussis and those receiving the control treatment is **statistically significant**.

@@ -8,9 +8,9 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 options(width = 80)
 ```
 
-# Aims
+# Aims of this exercise
 
-In this tutorial, you will learn howto:
+In this exercise, you will learn howto:
 
 - import data into R
 - tidy and wrangle data 
@@ -21,7 +21,7 @@ by following and interpreting the code of this worked out R/Rmarkdown example.
 # The NHANES dataset
 
 The National Health and Nutrition Examination Survey (NHANES)
-contains data that has been collected since 1960. For this tutorial,
+contains data that has been collected since 1960. For this exercise,
 we will make use of the data that were collected between 2009 and
 2012, for 10.000 U.S. civilians. The dataset contains a large number of
 physical, demographic, nutritional and life-style-related parameters.
@@ -91,8 +91,7 @@ Each row contains all of the information on
 a single subject (US civilian) in the study.
 
 In te next tutorial, we will work with a dataset on the
-effects of a certain drug, _captopril_, on the systolic
-and diastolic blood pressure of patients. This will not be
+effects of sugar intake  on the blood glucose level of patients. This will not be
 a _tidy_ dataset. As such, the details of tidying data
 with tidyverse will be described there
 

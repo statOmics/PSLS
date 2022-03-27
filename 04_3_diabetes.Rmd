@@ -6,7 +6,7 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 
 # Aims of this exercise
 
-In this tutorial, you will acquire the skills to 
+In this exercise, you will acquire the skills to 
 
 - recognize paired data
 - conduct a data exploration in R for data from
