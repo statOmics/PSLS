@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Lieven Clement, Jeroen Gilis and Milan Malfait" />
+<meta name="author" content="Lieven Clement, and Milan Malfait" />
 
 
-<title>Exercise 4.4: Exploring the FEV dataset</title>
+<title>Exercise 4.2: Exploring the pertussis dataset</title>
 
 <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -545,63 +545,98 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exercise 4.4: Exploring the FEV dataset</h1>
-<h4 class="author">Lieven Clement, Jeroen Gilis and Milan Malfait</h4>
+<h1 class="title toc-ignore">Exercise 4.2: Exploring the pertussis dataset</h1>
+<h4 class="author">Lieven Clement, and Milan Malfait</h4>
 <h4 class="date">statOmics, Ghent University (<a href="https://statomics.github.io" class="uri">https://statomics.github.io</a>)</h4>
 
 </div>
 
 
-<div id="aims" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Aims</h1>
-<p>In this tutorial, you will learn how data exploration and plots can help you to discover confounding in a real datasets.</p>
-<p>You will also improve your data wrangling skills by importing, tidying, wrangling and visualizing data yourself.</p>
+<div id="aim-of-this-tutorial" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Aim of this tutorial</h1>
+<p>An exploratory data analysis is a crucial step in a data analysis to get insight in the nature and distribution of the data, and to assess the assumptions of the downstream data analysis.</p>
+<p>In this exercise you will acquired the skills to conduct a data exploration for a two group comparison in R and to interpret the results.</p>
 </div>
-<div id="the-fev-dataset" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> The FEV dataset</h1>
-<p>The <code>forced expiratory volume</code> (FEV) is a measure of how much air a person can exhale (in liters) during a forced breath. In this dataset, the FEV of 606 children, between the ages of 6 and 17, were measured. The dataset also provides additional information on these children: their <code>age</code>, their <code>height</code>, their <code>gender</code> and, most importantly, whether the child is a smoker or a non-smoker.</p>
-<p>The goal of this experiment was to find out whether or not smoking has an effect on the FEV of children.</p>
-<p>Note: to analyse this dataset properly, we will need some relatively advanced modeling techniques. At the end of this week, you will have seen all three required steps to analyse such a dataset! For now, we will limit ourselves to exploring the data.</p>
-</div>
-<div id="load-libraries" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Load libraries</h1>
-<p>If you do not have these libraries installed, make sure to install them first by using the <code>install.packages()</code> function with missing the package name inside the parentheses (and using quotation marks, like <code>install.packages("car")</code>)</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code></pre></div>
-</div>
-<div id="import-the-data" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> Import the data</h1>
+<div id="background" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Background</h1>
+<p>Researchers wanted to study the immune response on pertussis. They have set up an experiments with 40 rats. 16 rats were infected with pertussis and 24 rats received a control treatment. Researchers measured the white blood cell concentration (WBC) in each rat (count per mm<span class="math inline">\(^3\)</span>.</p>
+<p>De data consists of two variables:</p>
+<ul>
+<li><p>WBC: white blood cell count (counts/mm<span class="math inline">\(^3\)</span>).</p></li>
+<li><p>trt: treatment</p>
+<ul>
+<li>control: rat recieved control treatment</li>
+<li>pertussis: rat was infected with pertussis</li>
+</ul></li>
+</ul>
+<p>Load the libraries</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<div id="import-the-dataset" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Import the dataset</h2>
 <p>Data path:</p>
-<p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/fev.txt</code></p>
-<p>Note: <code>fev.txt</code> is a tab-separated file: make sure to select the correct <code>readr</code> function!</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
-<p>Have a first look at the data</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
-<p>There are a few things in the formatting of the data that can be improved:</p>
+<p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv</code></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wbcon <span class="ot">&lt;-</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(wbcon)</span></code></pre></div>
+</div>
+<div id="aim-of-the-study" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Aim of the study</h2>
+<p>The overarching goal of this study was to assess if the white blood cell count changes upon pertussis infection. To this end, researchers randomized 40 rats to two treatments: A control treatment and a treatment in which the rat was infected with pertussis.</p>
+<p>We will explore the data to get insight on the impact of the pertussis infection on the white blood cell count.</p>
+<p>A secondary goal of the data exploration is to assess assumptions that will be required to use a formal statistical test to assess if the white blood cell count is on average different between infected and control rats (see later tutorials).</p>
+<p>For this test to be valid, we have to assess following assumptions:</p>
 <ol style="list-style-type: decimal">
-<li><p>Both <code>gender</code> and <code>smoking</code> can be transformed to factors.</p></li>
-<li><p>The <code>height</code> variable is written in inches. Assuming that this audience is mainly Portuguese/Belgian, inches are hard to interpret. Let’s add a new column, <code>height_cm</code>, with the values converted to centimeters.</p></li>
+<li><p>The data in each treatment group are normally distributed.</p></li>
+<li><p>The data from the two treatment groups has the same variance.</p></li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
-<p>Now, let’s make a first explorative plot, showing only the FEV for both smoking categories.</p>
-<p>Which type of plot do you suggest? Generate a good-looking, informative representation of the data.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
-<p>Did you expect these results?</p>
-<p>Maybe there is something else going on in the data. By taking more of the information in the dataset into account, can you provide a more detailed/accurate visualizition of the variables that effect the FEV?</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>...</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Try to get a visualization that describes the data as good as possible!!</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
+</div>
+</div>
+<div id="data-visualization" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Data visualization</h1>
+<p>A crucial first step in a data analysis is to visualize and to explore the raw data.</p>
+<div id="histogram" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Histogram</h2>
+<p>First, make a histogram of the data. Fill in the missing parts in the chunk of code below:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>wbcon <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>...,<span class="at">fill=</span>...)) <span class="sc">+</span> <span class="do">## fill in the correct values for x and fill</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(...)) <span class="sc">+</span> <span class="do">## fill in to put the histograms for both treatment conditions in a separate row</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;relative abundance (%)&quot;</span>)</span></code></pre></div>
+<p>Based on this plot, it seems that the white blood cell count is … for rats that were randomized to the pertussis infection than rats that received the control treatment.</p>
+</div>
+<div id="boxplot" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Boxplot</h2>
+<p>However, given the small sample size a better option to visualize these data are <code>boxplots</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>wbcon <span class="sc">%&gt;%</span>  </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>...,<span class="at">y=</span>...,<span class="at">fill=</span>...)) <span class="sc">+</span></span></code></pre></div>
+<p>What do you observe?</p>
+</div>
+<div id="qq-plots" class="section level2" number="3.3">
+<h2 number="3.3"><span class="header-section-number">3.3</span> QQ-plots</h2>
+<p>To assess the assumption that the data are normally distributed in each treatment group, we will use QQ plots.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>wbcon <span class="sc">%&gt;%</span>  </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample=</span>...)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  ... <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  ... <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(...)</span></code></pre></div>
+<p>What do you observe?</p>
+</div>
+</div>
+<div id="descriptive-statistics" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Descriptive statistics</h1>
+<p>Here, we will generate some informative descriptive statistics for the dataset.</p>
+<p>We first summarize the data and calculate the mean, standard deviation, number of observations and standard error and store the result in an object wbcSum via ’wbcSum&lt;-`</p>
+<ol style="list-style-type: decimal">
+<li>We pipe the <code>wbcon</code> dataframe to the group_by function to group the data by treatment groep <code>group_by(trt)</code></li>
+<li>We pipe the result to the <code>summarize()</code> function to summarize the “WBC” variable and calculate the mean, standard deviation and the number of observations</li>
+<li>We pipe the result to the <code>mutate</code> function to make a new variable in the data frame that is named <code>se</code> for which we calculate the standard error (<span class="math inline">\(\sigma / n\)</span>)</li>
+</ol>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Use the instructions from above to generate the summary statistics</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
+<p>This concludes the data exploration. In the next tutorial sessions, we will learn how to formally test if the observed difference in WBC between rats that were infected with pertussis and those receiving the control treatment is <strong>statistically significant</strong>.</p>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgNC40OiBFeHBsb3JpbmcgdGhlIEZFViBkYXRhc2V0IgphdXRob3I6ICJMaWV2ZW4gQ2xlbWVudCwgSmVyb2VuIEdpbGlzIGFuZCBNaWxhbiBNYWxmYWl0IgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgotLS0KCiMgQWltcwoKSW4gdGhpcyB0dXRvcmlhbCwgeW91IHdpbGwgbGVhcm4gaG93IGRhdGEgZXhwbG9yYXRpb24gYW5kIHBsb3RzIGNhbiBoZWxwIHlvdSB0byBkaXNjb3ZlciBjb25mb3VuZGluZyBpbiBhIHJlYWwgZGF0YXNldHMuCgpZb3Ugd2lsbCBhbHNvIGltcHJvdmUgeW91ciBkYXRhIHdyYW5nbGluZyBza2lsbHMgYnkgaW1wb3J0aW5nLCB0aWR5aW5nLCB3cmFuZ2xpbmcgYW5kIHZpc3VhbGl6aW5nIGRhdGEgeW91cnNlbGYuCgoKIyBUaGUgRkVWIGRhdGFzZXQKClRoZSBgZm9yY2VkIGV4cGlyYXRvcnkgdm9sdW1lYCAoRkVWKQppcyBhIG1lYXN1cmUgb2YgaG93IG11Y2ggYWlyIGEgcGVyc29uIGNhbiBleGhhbGUgKGluIGxpdGVycykKZHVyaW5nICBhIGZvcmNlZCBicmVhdGguIEluIHRoaXMgZGF0YXNldCwgdGhlIEZFViBvZiA2MDYgY2hpbGRyZW4sCmJldHdlZW4gdGhlIGFnZXMgb2YgNiBhbmQgMTcsIHdlcmUgbWVhc3VyZWQuIFRoZSBkYXRhc2V0CmFsc28gcHJvdmlkZXMgYWRkaXRpb25hbCBpbmZvcm1hdGlvbiBvbiB0aGVzZSBjaGlsZHJlbjoKdGhlaXIgYGFnZWAsIHRoZWlyIGBoZWlnaHRgLCB0aGVpciBgZ2VuZGVyYCBhbmQsIG1vc3QKaW1wb3J0YW50bHksIHdoZXRoZXIgdGhlIGNoaWxkIGlzIGEgc21va2VyIG9yIGEgbm9uLXNtb2tlci4KClRoZSBnb2FsIG9mIHRoaXMgZXhwZXJpbWVudCB3YXMgdG8gZmluZCBvdXQgd2hldGhlciBvciBub3QKc21va2luZyBoYXMgYW4gZWZmZWN0IG9uIHRoZSBGRVYgb2YgY2hpbGRyZW4uCgpOb3RlOiB0byBhbmFseXNlIHRoaXMgZGF0YXNldCBwcm9wZXJseSwgd2Ugd2lsbCBuZWVkIHNvbWUKcmVsYXRpdmVseSBhZHZhbmNlZCBtb2RlbGluZyB0ZWNobmlxdWVzLiBBdCB0aGUgZW5kIG9mIHRoaXMKd2VlaywgeW91IHdpbGwgaGF2ZSBzZWVuIGFsbCB0aHJlZSByZXF1aXJlZCBzdGVwcyB0byBhbmFseXNlCnN1Y2ggYSBkYXRhc2V0ISBGb3Igbm93LCB3ZSB3aWxsIGxpbWl0IG91cnNlbHZlcyB0byBleHBsb3JpbmcKdGhlIGRhdGEuCgojIExvYWQgbGlicmFyaWVzCgpJZiB5b3UgZG8gbm90IGhhdmUgdGhlc2UgbGlicmFyaWVzIGluc3RhbGxlZCwgbWFrZSBzdXJlIHRvIGluc3RhbGwgdGhlbSBmaXJzdApieSB1c2luZyB0aGUgYGluc3RhbGwucGFja2FnZXMoKWAgZnVuY3Rpb24gd2l0aCBtaXNzaW5nIHRoZSBwYWNrYWdlIG5hbWUgaW5zaWRlCnRoZSBwYXJlbnRoZXNlcyAoYW5kIHVzaW5nIHF1b3RhdGlvbiBtYXJrcywgbGlrZSBgaW5zdGFsbC5wYWNrYWdlcygiY2FyIilgKQoKYGBge3IsIG1lc3NhZ2UgPSBGQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeShyZWFkcikKbGlicmFyeShkcGx5cikKbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkoZ2dwbG90MikKbGlicmFyeShjYXIpCmBgYAoKIyBJbXBvcnQgdGhlIGRhdGEKCkRhdGEgcGF0aDoKCmBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL2Zldi50eHRgCgpOb3RlOiBgZmV2LnR4dGAgaXMgYSB0YWItc2VwYXJhdGVkIGZpbGU6IG1ha2Ugc3VyZSB0byBzZWxlY3QgdGhlIGNvcnJlY3QgYHJlYWRyYApmdW5jdGlvbiEKCmBgYHtyLCBldmFsPUZBTFNFfQouLi4KYGBgCgpIYXZlIGEgZmlyc3QgbG9vayBhdCB0aGUgZGF0YQoKYGBge3IsIGV2YWw9RkFMU0V9Ci4uLgpgYGAKCgpUaGVyZSBhcmUgYSBmZXcgdGhpbmdzIGluIHRoZSBmb3JtYXR0aW5nIG9mIHRoZQpkYXRhIHRoYXQgY2FuIGJlIGltcHJvdmVkOgoKMS4gQm90aCBgZ2VuZGVyYCBhbmQgYHNtb2tpbmdgIGNhbiBiZSB0cmFuc2Zvcm1lZCB0byBmYWN0b3JzLgoKMi4gVGhlIGBoZWlnaHRgIHZhcmlhYmxlIGlzIHdyaXR0ZW4gaW4gaW5jaGVzLiBBc3N1bWluZyB0aGF0CnRoaXMgYXVkaWVuY2UgaXMgbWFpbmx5IFBvcnR1Z3Vlc2UvQmVsZ2lhbiwgaW5jaGVzIGFyZSBoYXJkIHRvCmludGVycHJldC4gTGV0J3MgYWRkIGEgbmV3IGNvbHVtbiwgYGhlaWdodF9jbWAsIHdpdGggdGhlIHZhbHVlcwpjb252ZXJ0ZWQgdG8gY2VudGltZXRlcnMuCgpgYGB7ciwgZXZhbD1GQUxTRX0KLi4uCmBgYAoKTm93LCBsZXQncyBtYWtlIGEgZmlyc3QgZXhwbG9yYXRpdmUgcGxvdCwgc2hvd2luZwpvbmx5IHRoZSBGRVYgZm9yIGJvdGggc21va2luZyBjYXRlZ29yaWVzLgoKV2hpY2ggdHlwZSBvZiBwbG90IGRvIHlvdSBzdWdnZXN0PyBHZW5lcmF0ZSBhIGdvb2QtbG9va2luZywKaW5mb3JtYXRpdmUgcmVwcmVzZW50YXRpb24gb2YgdGhlIGRhdGEuCgpgYGB7ciwgZXZhbD1GQUxTRX0KLi4uCmBgYAoKRGlkIHlvdSBleHBlY3QgdGhlc2UgcmVzdWx0cz8KCk1heWJlIHRoZXJlIGlzIHNvbWV0aGluZyBlbHNlIGdvaW5nIG9uIGluIHRoZSBkYXRhLgpCeSB0YWtpbmcgbW9yZSBvZiB0aGUgaW5mb3JtYXRpb24gaW4gdGhlIGRhdGFzZXQgaW50byBhY2NvdW50LCBjYW4KeW91IHByb3ZpZGUgYSBtb3JlIGRldGFpbGVkL2FjY3VyYXRlIHZpc3VhbGl6aXRpb24gb2YgdGhlCnZhcmlhYmxlcyB0aGF0IGVmZmVjdCB0aGUgRkVWPwoKYGBge3IsIGV2YWw9RkFMU0V9Ci4uLgoKCiMjIFRyeSB0byBnZXQgYSB2aXN1YWxpemF0aW9uIHRoYXQgZGVzY3JpYmVzIHRoZSBkYXRhIGFzIGdvb2QgYXMgcG9zc2libGUhIQoKCgouLi4KYGBgCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgNC4yOiBFeHBsb3JpbmcgdGhlIHBlcnR1c3NpcyBkYXRhc2V0IgphdXRob3I6ICJMaWV2ZW4gQ2xlbWVudCwgYW5kIE1pbGFuIE1hbGZhaXQiCmRhdGU6ICJzdGF0T21pY3MsIEdoZW50IFVuaXZlcnNpdHkgKGh0dHBzOi8vc3RhdG9taWNzLmdpdGh1Yi5pbykiCi0tLQoKIyBBaW0gb2YgdGhpcyB0dXRvcmlhbAoKQW4gZXhwbG9yYXRvcnkgZGF0YSBhbmFseXNpcyBpcyBhIGNydWNpYWwgc3RlcCBpbiBhIGRhdGEgYW5hbHlzaXMgdG8gZ2V0Cmluc2lnaHQgaW4gdGhlIG5hdHVyZSBhbmQgZGlzdHJpYnV0aW9uIG9mIHRoZSBkYXRhLCBhbmQgdG8gYXNzZXNzIHRoZQphc3N1bXB0aW9ucyBvZiB0aGUgZG93bnN0cmVhbSBkYXRhIGFuYWx5c2lzLiAKCkluIHRoaXMgZXhlcmNpc2UgeW91IHdpbGwgYWNxdWlyZWQgdGhlIHNraWxscyB0byBjb25kdWN0IGEgZGF0YSBleHBsb3JhdGlvbiBmb3IgYSB0d28gZ3JvdXAgY29tcGFyaXNvbiBpbiBSIGFuZCB0byBpbnRlcnByZXQgdGhlIHJlc3VsdHMuIAoKIyBCYWNrZ3JvdW5kIAoKUmVzZWFyY2hlcnMgd2FudGVkIHRvIHN0dWR5IHRoZSBpbW11bmUgcmVzcG9uc2Ugb24gcGVydHVzc2lzLiAKVGhleSBoYXZlIHNldCB1cCBhbiBleHBlcmltZW50cyB3aXRoIDQwIHJhdHMuIAoxNiByYXRzIHdlcmUgaW5mZWN0ZWQgd2l0aCBwZXJ0dXNzaXMgYW5kIDI0IHJhdHMgcmVjZWl2ZWQgYSBjb250cm9sIHRyZWF0bWVudC4gClJlc2VhcmNoZXJzIG1lYXN1cmVkIHRoZSB3aGl0ZSBibG9vZCBjZWxsIGNvbmNlbnRyYXRpb24gKFdCQykgaW4gZWFjaCByYXQgKGNvdW50IHBlciBtbSReMyQuIAoKRGUgZGF0YSBjb25zaXN0cyBvZiB0d28gdmFyaWFibGVzOgoKLSBXQkM6IHdoaXRlIGJsb29kIGNlbGwgY291bnQgKGNvdW50cy9tbSReMyQpLiAKLSB0cnQ6IHRyZWF0bWVudAoKICAgIC0gY29udHJvbDogcmF0IHJlY2lldmVkIGNvbnRyb2wgdHJlYXRtZW50CiAgICAtIHBlcnR1c3NpczogcmF0IHdhcyBpbmZlY3RlZCB3aXRoIHBlcnR1c3NpcwoKTG9hZCB0aGUgbGlicmFyaWVzCgpgYGB7ciwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmBgYAoKIyMgSW1wb3J0IHRoZSBkYXRhc2V0CgpEYXRhIHBhdGg6CgogIGBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL3diY29uLmNzdmAKCmBgYHtyLCBldmFsPUZBTFNFfQp3YmNvbiA8LQpgYGAKCmBgYHtyLCBldmFsPUZBTFNFfQpnbGltcHNlKHdiY29uKQpgYGAKCiMjIEFpbSBvZiB0aGUgc3R1ZHkKClRoZSBvdmVyYXJjaGluZyBnb2FsIG9mIHRoaXMgc3R1ZHkgd2FzIHRvIGFzc2VzcyBpZiB0aGUgd2hpdGUgYmxvb2QgY2VsbCBjb3VudCBjaGFuZ2VzIHVwb24gcGVydHVzc2lzIGluZmVjdGlvbi4gVG8gdGhpcyBlbmQsIHJlc2VhcmNoZXJzIHJhbmRvbWl6ZWQgNDAgcmF0cwp0byB0d28gdHJlYXRtZW50czogQSBjb250cm9sIHRyZWF0bWVudCBhbmQgYSB0cmVhdG1lbnQgaW4gd2hpY2ggdGhlIHJhdCB3YXMgaW5mZWN0ZWQgd2l0aCBwZXJ0dXNzaXMuCgpXZSB3aWxsIGV4cGxvcmUgdGhlIGRhdGEgdG8gZ2V0IGluc2lnaHQgb24gdGhlIGltcGFjdCBvZiB0aGUgcGVydHVzc2lzIGluZmVjdGlvbiBvbiB0aGUgd2hpdGUgYmxvb2QgY2VsbCBjb3VudC4gCgpBIHNlY29uZGFyeSBnb2FsIG9mIHRoZSBkYXRhIGV4cGxvcmF0aW9uIGlzIHRvIGFzc2VzcyBhc3N1bXB0aW9ucyB0aGF0IHdpbGwgYmUgcmVxdWlyZWQgdG8gdXNlIGEgZm9ybWFsIHN0YXRpc3RpY2FsIHRlc3QgdG8gYXNzZXNzIGlmIHRoZSB3aGl0ZSBibG9vZCBjZWxsIGNvdW50IGlzIG9uIGF2ZXJhZ2UgZGlmZmVyZW50IGJldHdlZW4gaW5mZWN0ZWQgYW5kIGNvbnRyb2wgcmF0cyAoc2VlIGxhdGVyIHR1dG9yaWFscykuIAoKRm9yIHRoaXMgdGVzdCB0byBiZSB2YWxpZCwgd2UgaGF2ZSB0byBhc3Nlc3MgZm9sbG93aW5nIGFzc3VtcHRpb25zOgoKMS4gVGhlIGRhdGEgaW4gZWFjaCB0cmVhdG1lbnQgZ3JvdXAgYXJlIG5vcm1hbGx5IGRpc3RyaWJ1dGVkLgoKMi4gVGhlIGRhdGEgZnJvbSB0aGUgdHdvIHRyZWF0bWVudCBncm91cHMgaGFzIHRoZSBzYW1lIHZhcmlhbmNlLgoKCiMgRGF0YSB2aXN1YWxpemF0aW9uCgpBIGNydWNpYWwgZmlyc3Qgc3RlcCBpbiBhIGRhdGEgYW5hbHlzaXMgaXMgdG8gdmlzdWFsaXplIGFuZCB0byBleHBsb3JlIHRoZSByYXcgZGF0YS4KCiMjIEhpc3RvZ3JhbSAKCkZpcnN0LCBtYWtlIGEgaGlzdG9ncmFtIG9mIHRoZSBkYXRhLiBGaWxsIGluIHRoZQptaXNzaW5nIHBhcnRzIGluIHRoZSBjaHVuayBvZiBjb2RlIGJlbG93OgoKYGBge3IsIGV2YWw9RkFMU0V9CndiY29uICU+JQogIGdncGxvdChhZXMoeD0uLi4sZmlsbD0uLi4pKSArICMjIGZpbGwgaW4gdGhlIGNvcnJlY3QgdmFsdWVzIGZvciB4IGFuZCBmaWxsCiAgZ2VvbV9oaXN0b2dyYW0oKSArCiAgZmFjZXRfZ3JpZChyb3dzID0gdmFycyguLi4pKSArICMjIGZpbGwgaW4gdG8gcHV0IHRoZSBoaXN0b2dyYW1zIGZvciBib3RoIHRyZWF0bWVudCBjb25kaXRpb25zIGluIGEgc2VwYXJhdGUgcm93CiAgdGhlbWVfYncoKSArCiAgeGxhYigicmVsYXRpdmUgYWJ1bmRhbmNlICglKSIpCmBgYAoKQmFzZWQgb24gdGhpcyBwbG90LCBpdCBzZWVtcyB0aGF0IHRoZSB3aGl0ZSBibG9vZCBjZWxsIGNvdW50IAppcyAuLi4gZm9yIHJhdHMgdGhhdCB3ZXJlIHJhbmRvbWl6ZWQgdG8gdGhlIHBlcnR1c3NpcyBpbmZlY3Rpb24gdGhhbiByYXRzIHRoYXQgcmVjZWl2ZWQgdGhlIGNvbnRyb2wgdHJlYXRtZW50LgoKIyMgQm94cGxvdCAKCkhvd2V2ZXIsIGdpdmVuIHRoZSBzbWFsbCBzYW1wbGUgc2l6ZSBhIGJldHRlciBvcHRpb24gdG8gdmlzdWFsaXplIHRoZXNlIGRhdGEgYXJlIGBib3hwbG90c2A6CgpgYGB7ciwgZXZhbD1GQUxTRX0Kd2Jjb24gJT4lICAKICBnZ3Bsb3QoYWVzKHg9Li4uLHk9Li4uLGZpbGw9Li4uKSkgKwogIApgYGAKCldoYXQgZG8geW91IG9ic2VydmU/CgojIyBRUS1wbG90cyAKClRvIGFzc2VzcyB0aGUgYXNzdW1wdGlvbiB0aGF0IHRoZSBkYXRhIGFyZSBub3JtYWxseSBkaXN0cmlidXRlZCBpbiBlYWNoIHRyZWF0bWVudCBncm91cCwgd2Ugd2lsbCB1c2UgUVEgcGxvdHMuCgpgYGB7ciwgZXZhbD1GQUxTRX0Kd2Jjb24gJT4lICAKICBnZ3Bsb3QoYWVzKHNhbXBsZT0uLi4pKSArCiAgLi4uICsKICAuLi4gKwogIGZhY2V0X2dyaWQoLi4uKQpgYGAKCldoYXQgZG8geW91IG9ic2VydmU/IAoKIyBEZXNjcmlwdGl2ZSBzdGF0aXN0aWNzCgpIZXJlLCB3ZSB3aWxsIGdlbmVyYXRlIHNvbWUgaW5mb3JtYXRpdmUgZGVzY3JpcHRpdmUgc3RhdGlzdGljcwpmb3IgdGhlIGRhdGFzZXQuCgpXZSBmaXJzdCBzdW1tYXJpemUgdGhlIGRhdGEgYW5kIGNhbGN1bGF0ZSB0aGUgbWVhbiwgc3RhbmRhcmQKZGV2aWF0aW9uLCBudW1iZXIgb2Ygb2JzZXJ2YXRpb25zIGFuZCBzdGFuZGFyZCBlcnJvciBhbmQgc3RvcmUgdGhlCnJlc3VsdCBpbiBhbiBvYmplY3Qgd2JjU3VtIHZpYSAnd2JjU3VtPC1gCgoxLiBXZSBwaXBlIHRoZSBgd2Jjb25gIGRhdGFmcmFtZSB0byB0aGUgZ3JvdXBfYnkgZnVuY3Rpb24gdG8gZ3JvdXAKdGhlIGRhdGEgYnkgdHJlYXRtZW50IGdyb2VwIGBncm91cF9ieSh0cnQpYAoyLiBXZSBwaXBlIHRoZSByZXN1bHQgdG8gdGhlIGBzdW1tYXJpemUoKWAgZnVuY3Rpb24gdG8gc3VtbWFyaXplCnRoZSAiV0JDIiB2YXJpYWJsZSBhbmQgY2FsY3VsYXRlIHRoZSBtZWFuLCBzdGFuZGFyZCBkZXZpYXRpb24gYW5kCnRoZSBudW1iZXIgb2Ygb2JzZXJ2YXRpb25zCjMuIFdlIHBpcGUgdGhlIHJlc3VsdCB0byB0aGUgYG11dGF0ZWAgZnVuY3Rpb24gdG8gbWFrZSBhIG5ldwp2YXJpYWJsZSBpbiB0aGUgZGF0YSBmcmFtZSB0aGF0IGlzIG5hbWVkIGBzZWAgZm9yIHdoaWNoIHdlIGNhbGN1bGF0ZSB0aGUKc3RhbmRhcmQgZXJyb3IgKCRcc2lnbWEgLyBuJCkKCmBgYHtyLCBldmFsPUZBTFNFfQojIyBVc2UgdGhlIGluc3RydWN0aW9ucyBmcm9tIGFib3ZlIHRvIGdlbmVyYXRlIHRoZSBzdW1tYXJ5IHN0YXRpc3RpY3MKLi4uCmBgYAoKVGhpcyBjb25jbHVkZXMgdGhlIGRhdGEgZXhwbG9yYXRpb24uIEluIHRoZSBuZXh0IHR1dG9yaWFsIHNlc3Npb25zLCB3ZSB3aWxsIGxlYXJuIGhvdyB0byBmb3JtYWxseQp0ZXN0IGlmIHRoZSBvYnNlcnZlZCBkaWZmZXJlbmNlIGluIFdCQyBiZXR3ZWVuIHJhdHMgdGhhdCB3ZXJlIGluZmVjdGVkIHdpdGggcGVydHVzc2lzIGFuZCB0aG9zZSByZWNlaXZpbmcgdGhlIGNvbnRyb2wgdHJlYXRtZW50IGlzICoqc3RhdGlzdGljYWxseSBzaWduaWZpY2FudCoqLgo=</div>
 <div class="footer">
     <hr>
     This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
@@ -644,7 +679,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("04_4_FEV.Rmd");
+  window.initializeSourceEmbed("04_2_pertussis.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
