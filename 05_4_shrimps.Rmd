@@ -22,9 +22,9 @@ in different conditions, one control condition and one condition
 where the medium was poluted with PCBs. Note that the PCB concentrations were
 measured in pg/g adipose tissue.
 
-# Goal
+# Research question
 
-The research question is; is there an effect of the
+Is there an effect of the
 growth condition on the PCB concentration in the adipose
 tissue of shrimps?
 

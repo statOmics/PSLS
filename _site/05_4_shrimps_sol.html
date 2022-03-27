@@ -14,8 +14,8 @@
 
 <title>Exercise 5.4: Hypothesis testing on the shrimps dataset - solution</title>
 
-<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -49,7 +49,6 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
-
 
 
 <style type="text/css">
@@ -188,9 +187,6 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
-}
-details > summary > p:only-child {
-  display: inline;
 }
 pre code {
   padding: 0;
@@ -419,7 +415,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -435,7 +431,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="fa fa-chalkboard-teacher"></span>
      
     Lectures
@@ -491,7 +487,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="fa fa-laptop"></span>
      
     Labs
@@ -538,7 +534,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -556,19 +552,28 @@ div.tocify {
 </div>
 
 
-<div id="the-shrimps-dataset" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> The shrimps dataset</h1>
+<div id="aims-of-this-exercise" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Aims of this exercise</h1>
+<p>This exercise aims to further sharpen your skills in</p>
+<ul>
+<li>translating the research question in a a null and alternative hypothesis of t-tests</li>
+<li>critically evaluating the assumptions of t-tests, and</li>
+<li>selecting the appropriate test for answering the research question.</li>
+</ul>
+</div>
+<div id="the-shrimps-dataset" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> The shrimps dataset</h1>
 <p>Dataset on the accumulation of PCBs (Polychlorinated biphenyls) in the adipose tissue of shrimps. PCBs are often present in coolants, and are know to accumulate easily in the adipose tissue of shrimps. In this experiment, two groups of 18 samples (each 100 grams) of shrimps each were cultivated in different conditions, one control condition and one condition where the medium was poluted with PCBs. Note that the PCB concentrations were measured in pg/g adipose tissue.</p>
 </div>
-<div id="goal" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Goal</h1>
-<p>The research question is; is there an effect of the growth condition on the PCB concentration in the adipose tissue of shrimps?</p>
+<div id="research-question" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Research question</h1>
+<p>Is there an effect of the growth condition on the PCB concentration in the adipose tissue of shrimps?</p>
 <p>Load libraries:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 </div>
-<div id="import-the-data" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Import the data</h1>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>shrimps <span class="ot">&lt;-</span> <span class="fu">read_table</span>(</span>
+<div id="import-the-data" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Import the data</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>shrimps <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/shrimps.txt&quot;</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## 
@@ -583,13 +588,13 @@ div.tocify {
 ## $ PCB.conc &lt;dbl&gt; 29.7, 24.5, 97.7, 39.1, 22.6, 32.4, 27.7, 100.1, 40.1, 23.3, …
 ## $ group    &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2…</code></pre>
 </div>
-<div id="data-tidying" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Data tidying</h1>
+<div id="data-tidying" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Data tidying</h1>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>shrimps <span class="ot">&lt;-</span> shrimps <span class="sc">%&gt;%</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">as.factor</span>(group))</span></code></pre></div>
 </div>
-<div id="data-exploration" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Data exploration</h1>
+<div id="data-exploration" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> Data exploration</h1>
 <p>The first step is to explore the data.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>shrimps <span class="sc">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(group)</span></code></pre></div>
@@ -614,11 +619,11 @@ div.tocify {
 <p><img src="05_4_shrimps_sol_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>We can see that for group 1 we have four very clear outliers in the data. These values were double-checked (i.e for typing errors), but there was no reason found to believe that these values are incorrect.</p>
 </div>
-<div id="analysis" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Analysis</h1>
+<div id="analysis" class="section level1" number="7">
+<h1 number="7"><span class="header-section-number">7</span> Analysis</h1>
 <p>A good way for testing the research hypothesis is to perform an unpaired two-sample t-test to find out whether there is a significant difference in the mean PCB concentrations between both groups of samples. Before we can do this, we must check if all the required assumptions are met.</p>
-<div id="assumptions" class="section level2" number="6.1">
-<h2><span class="header-section-number">6.1</span> Assumptions</h2>
+<div id="assumptions" class="section level2" number="7.1">
+<h2 number="7.1"><span class="header-section-number">7.1</span> Assumptions</h2>
 <ol style="list-style-type: decimal">
 <li>The observations are independent of each other (in both groups)</li>
 <li>The data (PCB.conc) must be normally distributed (in both groups)</li>
@@ -637,7 +642,7 @@ div.tocify {
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgNS40OiBIeXBvdGhlc2lzIHRlc3Rpbmcgb24gdGhlIHNocmltcHMgZGF0YXNldCAtIHNvbHV0aW9uIgphdXRob3I6ICJMaWV2ZW4gQ2xlbWVudCwgSmVyb2VuIEdpbGlzIGFuZCBNaWxhbiBNYWxmYWl0IgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgotLS0KCiMgVGhlIHNocmltcHMgZGF0YXNldAoKRGF0YXNldCBvbiB0aGUgYWNjdW11bGF0aW9uIG9mIFBDQnMgKFBvbHljaGxvcmluYXRlZCBiaXBoZW55bHMpCmluIHRoZSBhZGlwb3NlIHRpc3N1ZSBvZiBzaHJpbXBzLiBQQ0JzIGFyZSBvZnRlbiBwcmVzZW50IGluIGNvb2xhbnRzLCBhbmQgYXJlCmtub3cgdG8gYWNjdW11bGF0ZSBlYXNpbHkgaW4gdGhlIGFkaXBvc2UgdGlzc3VlIG9mIHNocmltcHMuIEluIHRoaXMgZXhwZXJpbWVudCwKdHdvIGdyb3VwcyBvZiAxOCBzYW1wbGVzIChlYWNoIDEwMCBncmFtcykgb2Ygc2hyaW1wcyBlYWNoIHdlcmUgY3VsdGl2YXRlZAppbiBkaWZmZXJlbnQgY29uZGl0aW9ucywgb25lIGNvbnRyb2wgY29uZGl0aW9uIGFuZCBvbmUgY29uZGl0aW9uCndoZXJlIHRoZSBtZWRpdW0gd2FzIHBvbHV0ZWQgd2l0aCBQQ0JzLiBOb3RlIHRoYXQgdGhlIFBDQiBjb25jZW50cmF0aW9ucyB3ZXJlCm1lYXN1cmVkIGluIHBnL2cgYWRpcG9zZSB0aXNzdWUuCgojIEdvYWwKClRoZSByZXNlYXJjaCBxdWVzdGlvbiBpczsgaXMgdGhlcmUgYW4gZWZmZWN0IG9mIHRoZQpncm93dGggY29uZGl0aW9uIG9uIHRoZSBQQ0IgY29uY2VudHJhdGlvbiBpbiB0aGUgYWRpcG9zZQp0aXNzdWUgb2Ygc2hyaW1wcz8KCkxvYWQgbGlicmFyaWVzOgoKYGBge3IgbGlicmFyaWVzLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKYGBgCgojIEltcG9ydCB0aGUgZGF0YQoKYGBge3J9CnNocmltcHMgPC0gcmVhZF90YWJsZSgKICAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3N0YXRPbWljcy9QU0xTMjEvZGF0YS9zaHJpbXBzLnR4dCIKKQpnbGltcHNlKHNocmltcHMpCmBgYAoKIyBEYXRhIHRpZHlpbmcKCmBgYHtyfQpzaHJpbXBzIDwtIHNocmltcHMgJT4lCiAgbXV0YXRlKGdyb3VwID0gYXMuZmFjdG9yKGdyb3VwKSkKYGBgCgojIERhdGEgZXhwbG9yYXRpb24KClRoZSBmaXJzdCBzdGVwIGlzIHRvIGV4cGxvcmUgdGhlIGRhdGEuCgpgYGB7cn0Kc2hyaW1wcyAlPiUKICBjb3VudChncm91cCkKYGBgCgpWaXN1YWxpemUgdGhlIGRhdGE6CgpgYGB7cn0Kc2hyaW1wcyAlPiUKICBnZ3Bsb3QoYWVzKHggPSBncm91cCwgeSA9IFBDQi5jb25jLCBmaWxsID0gZ3JvdXApKSArCiAgc2NhbGVfZmlsbF9icmV3ZXIocGFsZXR0ZSA9ICJSZEd5IikgKwogIHRoZW1lX2J3KCkgKwogIGdlb21fYm94cGxvdChvdXRsaWVyLnNoYXBlID0gTkEpICsKICBnZW9tX2ppdHRlcih3aWR0aCA9IDAuMikgKwogIGdndGl0bGUoIkJveHBsb3Qgb2YgdGhlIFBDQiBjb25jZW50cmF0aW9ucyBpbiB0d28gZ3JvdXBzIG9mIHNocmltcHMiKSArCiAgeWxhYigiUENCIGNvbmNlbnRyYXRpb24gKHBnL2cpIikgKwogIHN0YXRfc3VtbWFyeSgKICAgIGZ1biA9IG1lYW4sIGdlb20gPSAicG9pbnQiLAogICAgc2hhcGUgPSA1LCBzaXplID0gMywgY29sb3IgPSAiYmxhY2siLAogICkKYGBgCgpXZSBjYW4gc2VlIHRoYXQgZm9yIGdyb3VwIDEgd2UgaGF2ZSBmb3VyIHZlcnkgY2xlYXIgb3V0bGllcnMKaW4gdGhlIGRhdGEuIFRoZXNlIHZhbHVlcyB3ZXJlIGRvdWJsZS1jaGVja2VkIChpLmUgZm9yCnR5cGluZyBlcnJvcnMpLCBidXQgdGhlcmUgd2FzIG5vIHJlYXNvbiBmb3VuZCB0byBiZWxpZXZlCnRoYXQgdGhlc2UgdmFsdWVzIGFyZSBpbmNvcnJlY3QuCgojIEFuYWx5c2lzCgpBIGdvb2Qgd2F5IGZvcgp0ZXN0aW5nIHRoZSByZXNlYXJjaCBoeXBvdGhlc2lzIGlzIHRvIHBlcmZvcm0gYW4gdW5wYWlyZWQKdHdvLXNhbXBsZSB0LXRlc3QgdG8gZmluZCBvdXQgd2hldGhlciB0aGVyZSBpcyBhIHNpZ25pZmljYW50CmRpZmZlcmVuY2UgaW4gdGhlIG1lYW4gUENCIGNvbmNlbnRyYXRpb25zIGJldHdlZW4gYm90aCBncm91cHMKb2Ygc2FtcGxlcy4gQmVmb3JlIHdlIGNhbiBkbyB0aGlzLCB3ZSBtdXN0IGNoZWNrIGlmIGFsbCB0aGUKcmVxdWlyZWQgYXNzdW1wdGlvbnMgYXJlIG1ldC4KCiMjIEFzc3VtcHRpb25zCgoxLiBUaGUgb2JzZXJ2YXRpb25zIGFyZSBpbmRlcGVuZGVudCBvZiBlYWNoIG90aGVyIChpbiBib3RoIGdyb3VwcykKMi4gVGhlIGRhdGEgKFBDQi5jb25jKSBtdXN0IGJlIG5vcm1hbGx5IGRpc3RyaWJ1dGVkIChpbiBib3RoIGdyb3VwcykKMy4gVGhlIHZhcmlhbmNlIGlzIGVxdWFsIGluIHRoZSB0d28gZ3JvdXBzLgoKVGhlIGZpcnN0IGFzc3VtcHRpb24gaXMgbWV0LCBhcyB3ZSByYW5kb21seSBzZWxlY3RlZCBzaHJpbXBzIGFuZApzdWJtaXR0ZWQgdGhlbSB0byBvbmUgb2YgdHdvIGdyb3d0aCBjb25kaXRpb25zLiBObyB1bmRlcmx5aW5nCmNvcnJlbGF0aW9uIHBhdHRlcm5zIGFyZSBleHBlY3RlZC4KCldlIGNhbiBjaGVjayB0aGUgc2Vjb25kIGFzc3VtcHRpb24gd2l0aCBhIFFRLXBsb3QuCgpgYGB7cn0Kc2hyaW1wcyAlPiUKICBnZ3Bsb3QoYWVzKHNhbXBsZSA9IFBDQi5jb25jKSkgKwogIGdlb21fcXEoKSArCiAgZ2VvbV9xcV9saW5lKCkgKwogIGZhY2V0X2dyaWQofmdyb3VwKQpgYGAKCldlIGNsZWFybHkgc2VlIHRoYXQgd2UgaGF2ZSBzdHJvbmcgZGV2aWF0aW9ucyBmcm9tCm5vcm1hbGl0eS4gTWFueSBkYXRhcG9pbnRzIGRvIG5vdCBsaWUgbmVhciB0aGUgcXVhbnRpbGUtcXVhbnRpbGUKbGluZS4gQXMgc3VjaCwgd2UgbWF5IGNvbmNsdWRlIHRoYXQgb3VyIGRhdGEgYXJlIG5vdCBub3JtYWxseSBkaXN0cmlidXRlZC4KSW4gYWRkaXRpb24sIHRoZSBib3hwbG90cyBzdWdnZXN0IHRoYXQgdGhlCnZhcmlhYmlsaXR5IGRpZmZlcnMgYmV0d2VlbiB0aGUgdHdvIGdyb3Vwcy4KCkdpdmVuIHRoZSBsb2NhdGlvbiBvZiB0aGUgb3V0bGllcnMgdHJhbnNmb3JtYXRpb24gd2lsbCBub3QgaGVscCBoZXJlLiBUaGVyZWZvcmUsCnRoZSB0LXRlc3QgaXMgbm90IGFwcHJvcHJpYXRlIGhlcmUuIFdlIHdpbGwgcmV2aXNpdCB0aGlzIGRhdGFzZXQgaW4gW2V4ZXJjaXNlCjkuMV0oLi8wOV8xX3NocmltcHMuaHRtbCkgYW5kIGNvbnNpZGVyIGFuIGFsdGVybmF0aXZlIGFuYWx5c2lzIHVzaW5nIGEKKipub24tcGFyYW1ldHJpYyoqIHRlc3QuCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2UgNS40OiBIeXBvdGhlc2lzIHRlc3Rpbmcgb24gdGhlIHNocmltcHMgZGF0YXNldCAtIHNvbHV0aW9uIgphdXRob3I6ICJMaWV2ZW4gQ2xlbWVudCwgSmVyb2VuIEdpbGlzIGFuZCBNaWxhbiBNYWxmYWl0IgpkYXRlOiAic3RhdE9taWNzLCBHaGVudCBVbml2ZXJzaXR5IChodHRwczovL3N0YXRvbWljcy5naXRodWIuaW8pIgotLS0KIyBBaW1zIG9mIHRoaXMgZXhlcmNpc2UKClRoaXMgZXhlcmNpc2UgYWltcyB0byBmdXJ0aGVyIHNoYXJwZW4geW91ciBza2lsbHMgaW4KCi0gdHJhbnNsYXRpbmcgdGhlIHJlc2VhcmNoIHF1ZXN0aW9uIGluIGEgYSBudWxsIGFuZCBhbHRlcm5hdGl2ZSBoeXBvdGhlc2lzIG9mIHQtdGVzdHMKLSBjcml0aWNhbGx5IGV2YWx1YXRpbmcgdGhlIGFzc3VtcHRpb25zIG9mIHQtdGVzdHMsIGFuZCAKLSBzZWxlY3RpbmcgdGhlIGFwcHJvcHJpYXRlIHRlc3QgZm9yIGFuc3dlcmluZyB0aGUgcmVzZWFyY2ggcXVlc3Rpb24uIAoKIyBUaGUgc2hyaW1wcyBkYXRhc2V0CgpEYXRhc2V0IG9uIHRoZSBhY2N1bXVsYXRpb24gb2YgUENCcyAoUG9seWNobG9yaW5hdGVkIGJpcGhlbnlscykKaW4gdGhlIGFkaXBvc2UgdGlzc3VlIG9mIHNocmltcHMuIFBDQnMgYXJlIG9mdGVuIHByZXNlbnQgaW4gY29vbGFudHMsIGFuZCBhcmUKa25vdyB0byBhY2N1bXVsYXRlIGVhc2lseSBpbiB0aGUgYWRpcG9zZSB0aXNzdWUgb2Ygc2hyaW1wcy4gSW4gdGhpcyBleHBlcmltZW50LAp0d28gZ3JvdXBzIG9mIDE4IHNhbXBsZXMgKGVhY2ggMTAwIGdyYW1zKSBvZiBzaHJpbXBzIGVhY2ggd2VyZSBjdWx0aXZhdGVkCmluIGRpZmZlcmVudCBjb25kaXRpb25zLCBvbmUgY29udHJvbCBjb25kaXRpb24gYW5kIG9uZSBjb25kaXRpb24Kd2hlcmUgdGhlIG1lZGl1bSB3YXMgcG9sdXRlZCB3aXRoIFBDQnMuIE5vdGUgdGhhdCB0aGUgUENCIGNvbmNlbnRyYXRpb25zIHdlcmUKbWVhc3VyZWQgaW4gcGcvZyBhZGlwb3NlIHRpc3N1ZS4KCiMgUmVzZWFyY2ggcXVlc3Rpb24KCklzIHRoZXJlIGFuIGVmZmVjdCBvZiB0aGUKZ3Jvd3RoIGNvbmRpdGlvbiBvbiB0aGUgUENCIGNvbmNlbnRyYXRpb24gaW4gdGhlIGFkaXBvc2UKdGlzc3VlIG9mIHNocmltcHM/CgpMb2FkIGxpYnJhcmllczoKCmBgYHtyIGxpYnJhcmllcywgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmBgYAoKIyBJbXBvcnQgdGhlIGRhdGEKCmBgYHtyfQpzaHJpbXBzIDwtIHJlYWRfdHN2KAogICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vc3RhdE9taWNzL1BTTFMyMS9kYXRhL3NocmltcHMudHh0IgopCmdsaW1wc2Uoc2hyaW1wcykKYGBgCgojIERhdGEgdGlkeWluZwoKYGBge3J9CnNocmltcHMgPC0gc2hyaW1wcyAlPiUKICBtdXRhdGUoZ3JvdXAgPSBhcy5mYWN0b3IoZ3JvdXApKQpgYGAKCiMgRGF0YSBleHBsb3JhdGlvbgoKVGhlIGZpcnN0IHN0ZXAgaXMgdG8gZXhwbG9yZSB0aGUgZGF0YS4KCmBgYHtyfQpzaHJpbXBzICU+JQogIGNvdW50KGdyb3VwKQpgYGAKClZpc3VhbGl6ZSB0aGUgZGF0YToKCmBgYHtyfQpzaHJpbXBzICU+JQogIGdncGxvdChhZXMoeCA9IGdyb3VwLCB5ID0gUENCLmNvbmMsIGZpbGwgPSBncm91cCkpICsKICBzY2FsZV9maWxsX2JyZXdlcihwYWxldHRlID0gIlJkR3kiKSArCiAgdGhlbWVfYncoKSArCiAgZ2VvbV9ib3hwbG90KG91dGxpZXIuc2hhcGUgPSBOQSkgKwogIGdlb21faml0dGVyKHdpZHRoID0gMC4yKSArCiAgZ2d0aXRsZSgiQm94cGxvdCBvZiB0aGUgUENCIGNvbmNlbnRyYXRpb25zIGluIHR3byBncm91cHMgb2Ygc2hyaW1wcyIpICsKICB5bGFiKCJQQ0IgY29uY2VudHJhdGlvbiAocGcvZykiKSArCiAgc3RhdF9zdW1tYXJ5KAogICAgZnVuID0gbWVhbiwgZ2VvbSA9ICJwb2ludCIsCiAgICBzaGFwZSA9IDUsIHNpemUgPSAzLCBjb2xvciA9ICJibGFjayIsCiAgKQpgYGAKCldlIGNhbiBzZWUgdGhhdCBmb3IgZ3JvdXAgMSB3ZSBoYXZlIGZvdXIgdmVyeSBjbGVhciBvdXRsaWVycwppbiB0aGUgZGF0YS4gVGhlc2UgdmFsdWVzIHdlcmUgZG91YmxlLWNoZWNrZWQgKGkuZSBmb3IKdHlwaW5nIGVycm9ycyksIGJ1dCB0aGVyZSB3YXMgbm8gcmVhc29uIGZvdW5kIHRvIGJlbGlldmUKdGhhdCB0aGVzZSB2YWx1ZXMgYXJlIGluY29ycmVjdC4KCiMgQW5hbHlzaXMKCkEgZ29vZCB3YXkgZm9yCnRlc3RpbmcgdGhlIHJlc2VhcmNoIGh5cG90aGVzaXMgaXMgdG8gcGVyZm9ybSBhbiB1bnBhaXJlZAp0d28tc2FtcGxlIHQtdGVzdCB0byBmaW5kIG91dCB3aGV0aGVyIHRoZXJlIGlzIGEgc2lnbmlmaWNhbnQKZGlmZmVyZW5jZSBpbiB0aGUgbWVhbiBQQ0IgY29uY2VudHJhdGlvbnMgYmV0d2VlbiBib3RoIGdyb3VwcwpvZiBzYW1wbGVzLiBCZWZvcmUgd2UgY2FuIGRvIHRoaXMsIHdlIG11c3QgY2hlY2sgaWYgYWxsIHRoZQpyZXF1aXJlZCBhc3N1bXB0aW9ucyBhcmUgbWV0LgoKIyMgQXNzdW1wdGlvbnMKCjEuIFRoZSBvYnNlcnZhdGlvbnMgYXJlIGluZGVwZW5kZW50IG9mIGVhY2ggb3RoZXIgKGluIGJvdGggZ3JvdXBzKQoyLiBUaGUgZGF0YSAoUENCLmNvbmMpIG11c3QgYmUgbm9ybWFsbHkgZGlzdHJpYnV0ZWQgKGluIGJvdGggZ3JvdXBzKQozLiBUaGUgdmFyaWFuY2UgaXMgZXF1YWwgaW4gdGhlIHR3byBncm91cHMuCgpUaGUgZmlyc3QgYXNzdW1wdGlvbiBpcyBtZXQsIGFzIHdlIHJhbmRvbWx5IHNlbGVjdGVkIHNocmltcHMgYW5kCnN1Ym1pdHRlZCB0aGVtIHRvIG9uZSBvZiB0d28gZ3Jvd3RoIGNvbmRpdGlvbnMuIE5vIHVuZGVybHlpbmcKY29ycmVsYXRpb24gcGF0dGVybnMgYXJlIGV4cGVjdGVkLgoKV2UgY2FuIGNoZWNrIHRoZSBzZWNvbmQgYXNzdW1wdGlvbiB3aXRoIGEgUVEtcGxvdC4KCmBgYHtyfQpzaHJpbXBzICU+JQogIGdncGxvdChhZXMoc2FtcGxlID0gUENCLmNvbmMpKSArCiAgZ2VvbV9xcSgpICsKICBnZW9tX3FxX2xpbmUoKSArCiAgZmFjZXRfZ3JpZCh+Z3JvdXApCmBgYAoKV2UgY2xlYXJseSBzZWUgdGhhdCB3ZSBoYXZlIHN0cm9uZyBkZXZpYXRpb25zIGZyb20Kbm9ybWFsaXR5LiBNYW55IGRhdGFwb2ludHMgZG8gbm90IGxpZSBuZWFyIHRoZSBxdWFudGlsZS1xdWFudGlsZQpsaW5lLiBBcyBzdWNoLCB3ZSBtYXkgY29uY2x1ZGUgdGhhdCBvdXIgZGF0YSBhcmUgbm90IG5vcm1hbGx5IGRpc3RyaWJ1dGVkLgpJbiBhZGRpdGlvbiwgdGhlIGJveHBsb3RzIHN1Z2dlc3QgdGhhdCB0aGUKdmFyaWFiaWxpdHkgZGlmZmVycyBiZXR3ZWVuIHRoZSB0d28gZ3JvdXBzLgoKR2l2ZW4gdGhlIGxvY2F0aW9uIG9mIHRoZSBvdXRsaWVycyB0cmFuc2Zvcm1hdGlvbiB3aWxsIG5vdCBoZWxwIGhlcmUuIFRoZXJlZm9yZSwKdGhlIHQtdGVzdCBpcyBub3QgYXBwcm9wcmlhdGUgaGVyZS4gV2Ugd2lsbCByZXZpc2l0IHRoaXMgZGF0YXNldCBpbiBbZXhlcmNpc2UKOS4xXSguLzA5XzFfc2hyaW1wcy5odG1sKSBhbmQgY29uc2lkZXIgYW4gYWx0ZXJuYXRpdmUgYW5hbHlzaXMgdXNpbmcgYQoqKm5vbi1wYXJhbWV0cmljKiogdGVzdC4K</div>
 <div class="footer">
     <hr>
     This work is licensed under the <a href= "https://creativecommons.org/licenses/by-nc-sa/4.0">
