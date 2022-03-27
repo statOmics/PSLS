@@ -1,6 +1,6 @@
 ---
-title: "Exercise 4.2: Exploring the armpit dataset"
-author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
+title: "Exercise 4.2: Exploring the pertussis dataset"
+author: "Lieven Clement, and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
