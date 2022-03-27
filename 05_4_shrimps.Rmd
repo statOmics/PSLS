@@ -4,6 +4,14 @@ author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
+# Aims of this exercise
+
+This exercise aims to further sharpen your skills in
+
+- translating the research question in a a null and alternative hypothesis of t-tests
+- critically evaluating the assumptions of t-tests, and 
+- selecting the appropriate test for answering the research question. 
+
 # The shrimps dataset
 
 Dataset on the accumulation of PCBs (Polychlorinated biphenyls)
