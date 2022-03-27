@@ -14,8 +14,8 @@
 
 <title>Exercise 4.3: Exploring the diabetes dataset</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -49,6 +49,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -187,6 +188,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -415,7 +419,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -431,7 +435,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-chalkboard-teacher"></span>
      
     Lectures
@@ -487,7 +491,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-laptop"></span>
      
     Labs
@@ -534,7 +538,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -553,7 +557,7 @@ div.tocify {
 
 
 <div id="aims-of-this-exercise" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Aims of this exercise</h1>
+<h1><span class="header-section-number">1</span> Aims of this exercise</h1>
 <p>In this exercise, you will acquire the skills to</p>
 <ul>
 <li>recognize paired data</li>
@@ -562,7 +566,7 @@ div.tocify {
 </ul>
 </div>
 <div id="the-diabetes-dataset" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> The diabetes dataset</h1>
+<h1><span class="header-section-number">2</span> The diabetes dataset</h1>
 <p>The <code>diabetes dataset</code> holds information on a small experiment with 8 patients that are subjected to a glucose tolerance test.</p>
 <p>Patients had to fast for eight hours before the test. When the patients entered the hospital their baseline glucose level was measured (mmol/l).</p>
 <p>Patients then had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar. Two hours later, their blood glucose level was measured again.</p>
@@ -574,7 +578,7 @@ div.tocify {
 </ul>
 </div>
 <div id="import-the-data" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Import the data</h1>
+<h1><span class="header-section-number">3</span> Import the data</h1>
 <p>Data path:</p>
 <p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/diabetes.txt</code></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -584,12 +588,12 @@ div.tocify {
 <p>Have a first look at the data</p>
 </div>
 <div id="data-visualization" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> Data visualization</h1>
+<h1><span class="header-section-number">4</span> Data visualization</h1>
 <p>The data are not in tidy format. We can easily visualize the glucose levels by adopting the <code>gather()</code> function from tidyverse. It will reshape the dataframe, such that we have have a single variable <code>time</code>, which points at the timepoint of the measurement, and <code>concentration</code>, which contains the actual glucose concentration at before or after drinking the glucose solution for each patient.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>diabetes <span class="sc">%&gt;%</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(time, concentration, <span class="sc">-</span>patient)</span></code></pre></div>
 <div id="barplot" class="section level2" number="4.1">
-<h2 number="4.1"><span class="header-section-number">4.1</span> Barplot</h2>
+<h2><span class="header-section-number">4.1</span> Barplot</h2>
 <p>Not all visualization types will be equally informative.</p>
 <p>A barplot is a plot that you will commonly find in scientific publications. The code for generating such a barplot is provided below:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a> diabetes <span class="sc">%&gt;%</span></span>
@@ -616,7 +620,7 @@ div.tocify {
 </div>
 </div>
 <div id="descriptive-statistics" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> Descriptive statistics</h1>
+<h1><span class="header-section-number">5</span> Descriptive statistics</h1>
 <ul>
 <li>Generate a code chunk to calculate useful summary statistics for the diabetes data</li>
 </ul>

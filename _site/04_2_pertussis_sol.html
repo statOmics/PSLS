@@ -14,8 +14,8 @@
 
 <title>Exercise 4.2: Exploring the pertussis dataset</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -49,6 +49,7 @@
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
     </style>
+
 
 
 <style type="text/css">
@@ -187,6 +188,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -415,7 +419,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -431,7 +435,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-chalkboard-teacher"></span>
      
     Lectures
@@ -487,7 +491,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-laptop"></span>
      
     Labs
@@ -534,7 +538,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -553,12 +557,12 @@ div.tocify {
 
 
 <div id="aim-of-this-exercise" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Aim of this exercise</h1>
+<h1><span class="header-section-number">1</span> Aim of this exercise</h1>
 <p>An exploratory data analysis is a crucial step in a data analysis to get insight in the nature and distribution of the data, and to assess the assumptions of the downstream data analysis.</p>
 <p>In this exercise you will acquired the skills to conduct a data exploration for a two group comparison in R and to interpret the results.</p>
 </div>
 <div id="background" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Background</h1>
+<h1><span class="header-section-number">2</span> Background</h1>
 <p>Researchers wanted to study the immune response on pertussis. They have set up an experiments with 40 rats. 16 rats were infected with pertussis and 24 rats received a control treatment. Researchers measured the white blood cell concentration (WBC) in each rat (count per mm<span class="math inline">\(^3\)</span>.</p>
 <p>De data consists of two variables:</p>
 <ul>
@@ -573,19 +577,21 @@ div.tocify {
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 </div>
 <div id="import-the-dataset" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Import the dataset</h1>
+<h1><span class="header-section-number">3</span> Import the dataset</h1>
 <p>Data path:</p>
 <p><code>https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv</code></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wbcon <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## 
+<pre><code>## Rows: 40 Columns: 2
 ## ── Column specification ────────────────────────────────────────────────────────
-## cols(
-##   WBC = col_double(),
-##   trt = col_character()
-## )</code></pre>
+## Delimiter: &quot;,&quot;
+## chr (1): trt
+## dbl (1): WBC
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(wbcon)</span></code></pre></div>
 <div id="aim-of-the-study" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> Aim of the study</h2>
+<h2><span class="header-section-number">3.1</span> Aim of the study</h2>
 <p>The overarching goal of this study was to assess if the white blood cell count changes upon pertussis infection. To this end, researchers randomized 40 rats to two treatments: A control treatment and a treatment in which the rat was infected with pertussis.</p>
 <p>We will explore the data to get insight on the impact of the pertussis infection on the white blood cell count.</p>
 <p>A secondary goal of the data exploration is to assess assumptions that will be required to use a formal statistical test to assess if the white blood cell count is on average different between infected and control rats (see later exercises).</p>
@@ -597,10 +603,10 @@ div.tocify {
 </div>
 </div>
 <div id="data-visualization" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> Data visualization</h1>
+<h1><span class="header-section-number">4</span> Data visualization</h1>
 <p>A crucial first step in a data analysis is to visualize and to explore the raw data.</p>
 <div id="histogram" class="section level2" number="4.1">
-<h2 number="4.1"><span class="header-section-number">4.1</span> Histogram</h2>
+<h2><span class="header-section-number">4.1</span> Histogram</h2>
 <p>First, make a histogram of the data. Fill in the missing parts in the chunk of code below:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>wbcon <span class="sc">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> WBC, <span class="at">fill =</span> trt)) <span class="sc">+</span></span>
@@ -613,7 +619,7 @@ div.tocify {
 <p>Based on this plot, it seems that the white blood cell counts are higher for rats that were infected with pertussis than for rats that received the control treatment.</p>
 </div>
 <div id="boxplots" class="section level2" number="4.2">
-<h2 number="4.2"><span class="header-section-number">4.2</span> Boxplots</h2>
+<h2><span class="header-section-number">4.2</span> Boxplots</h2>
 <p>However, given the relative small sample size a better option to visualize these data are <code>boxplots</code>. Histograms get useful in larger datasets, 30 observations per group are a bare minimum.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>wbcon <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> trt, <span class="at">y =</span> WBC, <span class="at">fill =</span> trt)) <span class="sc">+</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
@@ -629,7 +635,7 @@ div.tocify {
 <p>Both the mean and variance of the data seems to differ between control rats and rats infected with pertussis.</p>
 </div>
 <div id="qq-plots" class="section level2" number="4.3">
-<h2 number="4.3"><span class="header-section-number">4.3</span> QQ-plots</h2>
+<h2><span class="header-section-number">4.3</span> QQ-plots</h2>
 <p>To assess the assumption that the data are normally distributed in each treatment group, we will use QQ plots.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>wbcon <span class="sc">%&gt;%</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> WBC)) <span class="sc">+</span></span>
@@ -642,7 +648,7 @@ div.tocify {
 </div>
 </div>
 <div id="descriptive-statistics" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> Descriptive statistics</h1>
+<h1><span class="header-section-number">5</span> Descriptive statistics</h1>
 <p>Here, we will generate some informative descriptive statistics for the dataset.</p>
 <p>We first summarize the data and calculate the mean, standard deviation, number of observations and standard error and store the result in an object wbcSum via ’wbcSum&lt;-`</p>
 <ol style="list-style-type: decimal">
