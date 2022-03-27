@@ -49,45 +49,54 @@ They have set up an experiments with 40 rats.
 16 rats were infected with pertussis and 24 rats received a control treatment. 
 Researchers measured the white blood cell concentration (WBC) in each rat (count per mm$^3$. 
 
-De data consists of two variables:
+The data consist of two variables:
 
 - WBC: white blood cell count (counts/mm$^3$). 
-- groep (group): 
+- trt: treatment 
 
-    - 0: rat recieved control treatment
-    - 1: rat was infected with pertussis
+    - control: rat recieved control treatment
+    - pertussis: rat was infected with pertussis
 
 - Exercise: [Exercise2](./04_2_pertussis.html)
 - Data path:
 
-  `https://raw.githubusercontent.com/statOmics/statistiekBasisCursusData/master/practicum3/wbcon.dat`
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv`
 
 Upon this exercise you can 
 
-- implement a data exploration for a two group comparison in R and 
+- implement a good data exploration for a two group comparison in R and 
 - interpret the results. 
 
 <!-- - Solution: [Solution2](./04_2_pertussis_sol.html) -->
 
 ---
 
-# The captopril dataset
+# The diabetes dataset
 
-The captopril dataset holds information on a small experiment with 15 patients
-that have increased blood pressure values. More specifically, for each patient
-we will have four values; one value for systolic blood pressure and one for
-diastolyic, both before and after treating the patient with a drug named
-captopril.
+The diabetes dataset consists of a small experiment with 9 patients
+that have diabetes and were subjected to a glucose tolerance test. 
 
-In this tutorial on data exploration, you will learn how to deal with data from
+Patients had to fast for eight hours before the test. 
+When the patients entered the hospital their baseline glucose level was measured (mmol/l). 
+
+Patients then  had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar. 
+Two hours later, their blood glucose level was measured again. 
+
+The data consist of three variables:
+
+- before: glucose concentration upon 8 hours of fasting (mmol/l)
+- after: glucose concentration 2 hours after drinking glucose solution (mmol/l).
+- patient: identifier for the patient
+
+In this tutorial on data exploration, you will learn how to implement and interpret a data exploration in R for data from
 paired experimental designs.
 
-- Exercise: [Exercise3](./04_3_captopril.html)
+- Exercise: [Exercise3](./04_3_diabetes.html)
 - Data path:
 
-  `https://raw.githubusercontent.com/statOmics/PSLS21/data/captopril.txt`
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/diabetes.txt`
 
-<!-- - Solution: [Solution3](./04_3_captopril_sol.html) -->
+<!-- - Solution: [Solution3](./04_3_diabetes_sol.html) -->
 
 ---
 
