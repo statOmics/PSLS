@@ -108,7 +108,7 @@ Files:
 
 ---
 
-# FEV dataset
+# FEV example
 
 The forced expiratory volume (FEV) is a measure of how
 much air a person can exhale (in liters)  during  a forced breath. In this
