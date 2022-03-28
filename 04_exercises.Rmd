@@ -23,13 +23,13 @@ The dataset contains a large number of physical, demographic, nutritional and
 life-style-related parameters.
 
 
-The first step in a data analysis is data exploration. 
+The first step in a data analysis is data exploration.
 
 In this exercise, you will learn howto:
 
 - import data into R
-- tidy and wrangle data 
-- explore and visualize data 
+- tidy and wrangle data
+- explore and visualize data
 
 by following and interpreting the code of a worked out example.
 
@@ -43,23 +43,23 @@ by following and interpreting the code of a worked out example.
 
 # Pertussis example
 
-Researchers wanted to study the immune response on pertussis. 
-They have set up an experiments with 40 rats. 
-16 rats were infected with pertussis and 24 rats received a control treatment. 
-Researchers measured the white blood cell concentration (WBC) in each rat (count per mm$^3$. 
+Researchers wanted to study the immune response on pertussis.
+They have set up an experiments with 40 rats.
+16 rats were infected with pertussis and 24 rats received a control treatment.
+Researchers measured the white blood cell concentration (WBC) in each rat (count per mm$^3$.
 
 The data consist of two variables:
 
-- WBC: white blood cell count (counts/mm$^3$). 
-- trt: treatment 
+- WBC: white blood cell count (counts/mm$^3$).
+- trt: treatment
 
     - control: rat recieved control treatment
     - pertussis: rat was infected with pertussis
 
-Upon this exercise you can 
+Upon this exercise you can
 
-- implement a good data exploration for a two group comparison in R and 
-- interpret the plots and results. 
+- implement a good data exploration for a two group comparison in R and
+- interpret the plots and results.
 
 Files
 
@@ -68,21 +68,20 @@ Files
 
   `https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv`
 
-
-<!-- - Solution: [Solution2](./04_2_pertussis_sol.html) -->
+- Solution: [Solution2](./04_2_pertussis_sol.html)
 
 ---
 
 # Diabetes example
 
 The diabetes dataset consists of a small experiment with 8 patients
-that were subjected to a glucose tolerance test. 
+that were subjected to a glucose tolerance test.
 
-Patients had to fast for eight hours before the test. 
-When the patients entered the hospital their baseline glucose level was measured (mmol/l). 
+Patients had to fast for eight hours before the test.
+When the patients entered the hospital their baseline glucose level was measured (mmol/l).
 
-Patients then  had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar. 
-Two hours later, their blood glucose level was measured again. 
+Patients then  had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar.
+Two hours later, their blood glucose level was measured again.
 
 The data consist of three variables:
 
@@ -90,7 +89,7 @@ The data consist of three variables:
 - after: glucose concentration 2 hours after drinking glucose solution (mmol/l).
 - patient: identifier for the patient
 
-In this exercise, you will acquire the skills to 
+In this exercise, you will acquire the skills to
 
 - recognize paired data
 - conduct a data exploration in R for data from

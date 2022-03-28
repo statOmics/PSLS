@@ -8,20 +8,20 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 
 An exploratory data analysis is a crucial step in a data analysis to get
 insight in the nature and distribution of the data, and to assess the
-assumptions of the downstream data analysis. 
+assumptions of the downstream data analysis.
 
-In this exercise you will acquired the skills to conduct a data exploration for a two group comparison in R and to interpret the results. 
+In this exercise you will acquired the skills to conduct a data exploration for a two group comparison in R and to interpret the results.
 
-# Background 
+# Background
 
-Researchers wanted to study the immune response on pertussis. 
-They have set up an experiments with 40 rats. 
-16 rats were infected with pertussis and 24 rats received a control treatment. 
-Researchers measured the white blood cell concentration (WBC) in each rat (count per mm$^3$. 
+Researchers wanted to study the immune response on pertussis.
+They have set up an experiments with 40 rats.
+16 rats were infected with pertussis and 24 rats received a control treatment.
+Researchers measured the white blood cell concentration (WBC) in each rat (count per mm$^3$.
 
 De data consists of two variables:
 
-- WBC: white blood cell count (counts/mm$^3$). 
+- WBC: white blood cell count (counts/mm$^3$).
 - trt: treatment
 
     - control: rat recieved control treatment
@@ -53,9 +53,9 @@ glimpse(wbcon)
 The overarching goal of this study was to assess if the white blood cell count changes upon pertussis infection. To this end, researchers randomized 40 rats
 to two treatments: A control treatment and a treatment in which the rat was infected with pertussis.
 
-We will explore the data to get insight on the impact of the pertussis infection on the white blood cell count. 
+We will explore the data to get insight on the impact of the pertussis infection on the white blood cell count.
 
-A secondary goal of the data exploration is to assess assumptions that will be required to use a formal statistical test to assess if the white blood cell count is on average different between infected and control rats (see later exercises). 
+A secondary goal of the data exploration is to assess assumptions that will be required to use a formal statistical test to assess if the white blood cell count is on average different between infected and control rats (see later exercises).
 
 For this test to be valid, we have to assess following assumptions:
 
@@ -69,27 +69,27 @@ For this test to be valid, we have to assess following assumptions:
 A crucial first step in a data analysis is to visualize and to explore the raw
 data.
 
-## Histogram 
+## Histogram
 
 First, make a histogram of the data. Fill in the
 missing parts in the chunk of code below:
 
 ```{r}
 wbcon %>%
-  ggplot(aes(x = WBC, fill = trt)) +
-  geom_histogram(color = "black") +
+  ggplot() +
+  geom_histogram(aes(x = WBC, fill = trt), color = "black") +
   facet_grid(rows = vars(trt)) +
   theme_bw() +
   xlab("WBC (count/mm3)")
 ```
 
-Based on this plot, it seems that the white blood cell counts 
+Based on this plot, it seems that the white blood cell counts
 are higher for rats that were infected with pertussis than for rats that received the control treatment.
 
 ## Boxplots
 
 However, given the relative small sample size a better option to visualize these data are `boxplots`.
-Histograms get useful in larger datasets,  30 observations per group are a bare minimum. 
+Histograms get useful in larger datasets,  30 observations per group are a bare minimum.
 
 ```{r}
 wbcon %>% ggplot(aes(x = trt, y = WBC, fill = trt)) +
@@ -119,9 +119,9 @@ wbcon %>%
   facet_grid(cols = vars(trt))
 ```
 
-What do you observe? 
+What do you observe?
 
-The white blood cell counts appear to be normally distributed in both treatment groups. 
+The white blood cell counts appear to be normally distributed in both treatment groups.
 
 # Descriptive statistics
 
