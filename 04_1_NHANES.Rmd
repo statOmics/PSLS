@@ -28,7 +28,7 @@ import the required datasets into our R session.
 # Data Import  with the `readr` R package
 
 ```{r, message=FALSE, warning=FALSE}
-library(readr)
+library(tidyverse)
 ```
 
 Let's try reading in some data. We will begin by
@@ -62,15 +62,11 @@ is part of the `dplyr` package, which we will explore in much
 more detail below!
 
 ```{r}
-dplyr::glimpse(NHANES[, 1:10])
+glimpse(NHANES[, 1:10])
 # or glimpse(NHANES) to see all the variables in the dataset
 ```
 
 # Data Tidying
-
-```{r, message=FALSE, warning=FALSE}
-library(tidyverse)
-```
 
 **Important**:
 If you are not familiar yet with the concepts of tidy data,
