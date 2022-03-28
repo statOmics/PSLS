@@ -13,8 +13,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## 2. How confident are you in understanding the importance of randomization?
 
-## 3. How confident are you in understanding how data, statistics and conclusions change from sample to sample and what the impact is of sample size on the uncertainty.
-
+## 3. How confident are you in understanding how data, statistics and conclusions change from sample to sample.
 
 ## 4. How confident are you in explaining somebody the importance of data exploration and the importance of showing the data as raw as possible
 
