@@ -4,17 +4,13 @@ author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
-```{r setup, include=FALSE, cache=FALSE}
-options(width = 80)
-```
-
 # Aims of this exercise
 
 In this exercise, you will learn howto:
 
 - import data into R
-- tidy and wrangle data 
-- explore and visualize data 
+- tidy and wrangle data
+- explore and visualize data
 
 by following and interpreting the code of this worked out R/Rmarkdown example.
 
@@ -365,7 +361,7 @@ contains 4 subjects. Again, the histogram does not provide us with
 information on the mean/median values of the data, but on
 its entire distribution.
 
-Histograms are typically useful to visualize data from experiments with large sample sizes. It is not useful to make histograms when the sample size is below 20 observations. 
+Histograms are typically useful to visualize data from experiments with large sample sizes. It is not useful to make histograms when the sample size is below 20 observations.
 
 ### Boxplot
 
@@ -395,8 +391,8 @@ range, whiskers and outliers. Third, with the geom_jitter
 functionality we can also project each individual value
 of the dataset on the plot.
 
-The latter is useful if you have small to medium sized datasets. 
-It allows you to visualize the raw data! 
+The latter is useful if you have small to medium sized datasets.
+It allows you to visualize the raw data!
 This however becomes cluttered for large experiments because they involve too many datapoints (>100).
 
 The only disadvantage of the boxplot as compared to the histogram is that we cannot see (from the figure)
