@@ -10,11 +10,9 @@ output:
       number_sections: true
 ---
 
-# Importance of Statistics for empirical research?
+# Reproduce scheme of population --> experiment --> back 
 
-- Experimental design
-- Data exploration
-- Statistical inference
+Use armpit example 
 
 ## Concepts on experimental design?
 
@@ -22,12 +20,26 @@ output:
 - Importance of Randomisation
 - Sample size
 - Control: simultaneous, randomizing, blinding
-- Confounding: in which studies do you have a higher risk in confounding?
+- What have we measured (data types?)
+- Types of variables
+
+## Data exploration
+
+- Plots for continuous variables
+- Bar plots vs boxplots
+- Data as raw as possible why?
+- Assessing normality
+- mean vs median vs geometric mean
+- standard deviation vs IQR
+
+## Estimation / inference
+
+- What happens when we repeat experiments? 
+- generalize what we see in sample? 
 
 
 ## Basic Concepts
 
-- Types of variables
 - Random variables
 - Probability theory
 - Statistical modeling
@@ -35,11 +47,3 @@ output:
 - Why are all our statistics/estimators random variables
 - No assumptions: empirical vs assumptions
 
-## Data exploration
-
-- Continuous response and qualitative nominal variable. 
-- Two continuous responses 
-- Assessing normality
-- mean vs median vs geometric mean
-- standard devation vs IQR
-- pearson correlation vs spearman correlation
