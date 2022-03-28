@@ -5,4 +5,4 @@ if (file.exists(normalizePath("~/.Rprofile", mustWork = FALSE))) {
     source(normalizePath("~/.Rprofile"))
 }
 
-options(width = 80)
+options(width = 70)
