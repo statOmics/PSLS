@@ -125,6 +125,11 @@ It is usually more informative to represent to underlying
 values as _raw_ as possible. Boxplots are ideal for this.
 
 ```{r}
+## Recode the `time` variable so "before" is the first level
+diabetes_tidy <- diabetes_tidy %>%
+  mutate(time = as.factor(time)) %>%
+  mutate(time = relevel(time, "before"))
+
 diabetes_tidy %>%
   ggplot(aes(x = time, y = concentration, fill = time)) +
   theme_bw() +
@@ -149,11 +154,6 @@ A line plot is a better plot for paired data!
 Note that we also convert the variable time in a factor first and relevel it so that the concentration before is plotted first.
 
 ```{r}
-## Recode the `time` variable so "before" is the first level
-diabetes_tidy <- diabetes_tidy %>%
-  mutate(time = as.factor(time)) %>%
-  mutate(time = relevel(time, "before"))
-
 diabetes_tidy %>%
   ggplot(aes(x = time, y = concentration)) +
   geom_point() +
