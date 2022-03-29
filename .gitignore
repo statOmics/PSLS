@@ -12,3 +12,5 @@
 
 # Don't ignore these specific files
 !footer.html
+
+.DS_Store
