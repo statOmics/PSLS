@@ -103,7 +103,7 @@ Files:
 
   `https://raw.githubusercontent.com/statOmics/PSLS21/data/diabetes.txt`
 
-<!-- - Solution: [Solution3](./04_3_diabetes_sol.html) -->
+- Solution: [Solution3](./04_3_diabetes_sol.html)
 
 ---
 

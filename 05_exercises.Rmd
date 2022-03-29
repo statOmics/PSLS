@@ -45,11 +45,7 @@ Files:
 
   `https://raw.githubusercontent.com/statOmics/PSLS21/data/diabetes.txt`
 
-<!-- - Solution: [Solution1](./05_1_diabetes_sol.html) -->
-
----
-
-Two-sample t-test: [armpit example](05_armpit_example.html)
+- Solution: [Solution1](./05_1_diabetes_sol.html)
 
 ---
 
@@ -84,8 +80,11 @@ Files
 
   `https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv`
 
-
 <!-- - Solution: [Solution2](./05_2_pertussis_sol.html) -->
+
+---
+
+Two-sample t-test: [armpit example](05_armpit_example.html)
 
 
 ---
