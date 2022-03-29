@@ -15,7 +15,7 @@ paired experimental designs.
 
 # The diabetes dataset
 
-The `diabetes dataset` holds information on a small experiment with
+The `diabetes` dataset holds information on a small experiment with
 8 patients that are subjected to  a glucose tolerance test.
 
 Patients had to fast for eight hours before the test.
@@ -65,7 +65,7 @@ we want to "gather" the `time` (encoded in the column names `before` and
 The `patient` column should stay the same. We can specify this with the
 following syntax.
 
-```{r, eval=FALSE}
+```{r}
 diabetes_tidy <- diabetes %>%
   gather(time, concentration, -patient)
 diabetes_tidy
@@ -80,7 +80,7 @@ commonly find in scientific publications.
 The code for generating such a barplot
 is provided below:
 
-```{r, eval=FALSE}
+```{r}
  diabetes_tidy %>%
   ## Calculate summarry statistics for the "bp" variable for each "type"
   group_by(time) %>%
