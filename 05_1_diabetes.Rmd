@@ -84,7 +84,7 @@ If all assumptions are met, we may continue with
 performing the paired two-sample t-test.
 
 ```{r, eval=FALSE}
-paired_t <- t.test(... ~ ..., data = ..., paired = ...)
+paired_t <- t.test(..., ..., paired = ...)
 paired_t
 ```
 

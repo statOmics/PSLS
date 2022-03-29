@@ -1,0 +1,49 @@
+---
+title: "Wrapup 1: Introduction to statistics and data exploration"   
+output:
+    html_document:
+      code_download: true    
+      theme: cosmo
+      toc: true
+      toc_float: true
+      highlight: tango
+      number_sections: true
+---
+
+# Reproduce scheme of population --> experiment --> back 
+
+Use armpit example 
+
+## Concepts on experimental design?
+
+- Defining Population
+- Importance of Randomisation
+- Sample size
+- Control: simultaneous, randomizing, blinding
+- What have we measured (data types?)
+- Types of variables
+
+## Data exploration
+
+- Plots for continuous variables
+- Bar plots vs boxplots
+- Data as raw as possible why?
+- Assessing normality
+- mean vs median vs geometric mean
+- standard deviation vs IQR
+
+## Estimation / inference
+
+- What happens when we repeat experiments? 
+- generalize what we see in sample? 
+
+
+## Basic Concepts
+
+- Random variables
+- Probability theory
+- Statistical modeling
+- Estimation
+- Why are all our statistics/estimators random variables
+- No assumptions: empirical vs assumptions
+

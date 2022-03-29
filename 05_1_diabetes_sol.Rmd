@@ -11,8 +11,8 @@ In this exercise, you will revisit the basics of statistical hypothesis testing.
 You will acquire the skills
 
 1. to assess the assumptions of a one-sample and a paired t-test in  data exploration.
-2. to conduct a one-sample t-test in R and to interpret the results.
-3. to conduct a paired t-test in R and to interpret the results.
+2. to conduct a paired t-test in R and to interpret the results.
+3. to conduct a one-sample t-test in R and to interpret the results.
 
 # The diabetes dataset
 
@@ -155,6 +155,7 @@ diabetes %>%
 cor(diabetes$before, diabetes$after, method = "spearman")
 ```
 
+
 ## Check the assumptions
 
 The paired t-test has 2 assumptions:
@@ -197,7 +198,7 @@ glucose intake are on average equal.
 - Which will be tested against the alternative hypothesis that the glucose levels before and two hours after the glucose intake are on average different.
 
 ```{r}
-paired_t <- t.test(concentration ~ time, data = diabetes_tidy, paired = TRUE)
+paired_t <- t.test(diabetes$after,diabetes$before, paired = TRUE)
 paired_t
 ```
 
