@@ -8,9 +8,9 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 
 In this tutorial you will further sharpen your skills in
 
-- data wrangling 
+- data wrangling
 - formulating the null and alternative hypothesis of t-tests
-- critically evaluating the assumptions of t-tests, 
+- critically evaluating the assumptions of t-tests,
 - in selecting the appropriate test for answering the research question, and
 - in formulating your conclusion in terms of the research question.
 
@@ -150,7 +150,7 @@ Cuckoo %>%
   ggplot(aes(sample = length)) +
   geom_qq() +
   geom_qq_line() +
-  facet_grid(~type)
+  facet_grid(~ type)
 ```
 
 There seems to be no clear deviation from normality.

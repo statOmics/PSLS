@@ -6,23 +6,23 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 
 # Aim of this tutorial
 
-Upon this exercise you can 
+Upon this exercise you can
 
-1. conduct a statistical hypothesis test for a two group comparison in R and to interpret the results. 
+1. conduct a statistical hypothesis test for a two group comparison in R and to interpret the results.
 2. critically evaluate the assumptions for a two sample t-test
 3. use simulations to assist you when evaluating the assumptions of a two group comparison
 4. select the correct test based on the data exploration.
 
-# Background 
+# Background
 
-Researchers wanted to study the immune response on pertussis. 
-They have set up an experiments with 40 rats. 
-16 rats were infected with pertussis and 24 rats received a control treatment. 
-Researchers measured the white blood cell concentration (WBC) in each rat (count per mm$^3$. 
+Researchers wanted to study the immune response on pertussis.
+They have set up an experiments with 40 rats.
+16 rats were infected with pertussis and 24 rats received a control treatment.
+Researchers measured the white blood cell concentration (WBC) in each rat (count per mm$^3$).
 
 De data consists of two variables:
 
-- WBC: white blood cell count (counts/mm$^3$). 
+- WBC: white blood cell count (counts/mm$^3$).
 - trt: treatment
 
     - control: rat recieved control treatment
@@ -46,7 +46,7 @@ Data path:
 wbcon <- read_csv("https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv")
 ```
 
-```{r, eval=FALSE}
+```{r}
 glimpse(wbcon)
 ```
 
@@ -59,27 +59,27 @@ to two treatments: A control treatment and a treatment in which the rat was infe
 
 A crucial first step in a data analysis is to visualize and to explore the raw data.
 
-This will allow us to gain insight in the data. 
+This will allow us to gain insight in the data.
 
-A secondary goal of the data exploration is to check the assumptions of the test that we will perform. 
+A secondary goal of the data exploration is to check the assumptions of the test that we will perform.
 
-## Which test will you perform to compare the white blood cell count between infected and control rats? 
+## Which test will you perform to compare the white blood cell count between infected and control rats?
 
-40 different rats are assigned at random to a control treatment or a treatment where they are infected with pertussis. 
-The white blood cells of the rats are measured on different animals and we can assume that the data between rats are independent. 
-Note, that this will not be the case if multiple rats are housed in the same cages! 
+40 different rats are assigned at random to a control treatment or a treatment where they are infected with pertussis.
+The white blood cells of the rats are measured on different animals and we can assume that the data between rats are independent.
+Note, that this will not be the case if multiple rats are housed in the same cages!
 
-We will therefore perform a two-sample t-test to assess if the average white blood cell count differs between infected rats and rats that received the control treatment. 
+We will therefore perform a two-sample t-test to assess if the average white blood cell count differs between infected rats and rats that received the control treatment.
 
-## What are the assumptions of this test? 
+## What are the assumptions of this test?
 
 1. The data are independent
-2. The data in both groups have the same variance 
-3. The data in both groups are normally distributed. 
+2. The data in both groups have the same variance
+3. The data in both groups are normally distributed.
 
 ## Boxplots
 
-We can assess the second assumption using boxplots. 
+We can assess the second assumption using boxplots.
 
 ```{r}
 wbcon %>% ggplot(aes(x = trt, y = WBC, fill = trt)) +
@@ -96,8 +96,8 @@ wbcon %>% ggplot(aes(x = trt, y = WBC, fill = trt)) +
 What do you observe?
 
 Both the mean and variance of the data seems to differ between control rats and rats infected with pertussis.
-So the second assumption is not valid. 
-If the data are normally distributed we can compare the groups using a Welch modified t-test, which is valid if the data in both groups are exhibiting a different variance. 
+So the second assumption is not valid.
+If the data are normally distributed we can compare the groups using a Welch modified t-test, which is valid if the data in both groups are exhibiting a different variance.
 
 ## QQ-plots
 
@@ -111,9 +111,9 @@ wbcon %>%
   facet_grid(cols = vars(trt))
 ```
 
-What do you observe? 
+What do you observe?
 
-The white blood cell counts appear to be normally distributed in both treatment groups. 
+The white blood cell counts appear to be normally distributed in both treatment groups.
 
 
 # Assess the research question with the appropriate t-test
@@ -121,15 +121,15 @@ The white blood cell counts appear to be normally distributed in both treatment 
 ## Analysis
 
 ```{r}
-output <- t.test(WBC~ trt, data = wbcon, var.equal = FALSE)
-output 
+output <- t.test(WBC ~ trt, data = wbcon, var.equal = FALSE)
+output
 ```
 
 ## Conclusion
 
-The average white blood cell count is extremely different between rats that are infected with pertussis and rads that received a control treatment  (p << 0.001). 
+The average white blood cell count is extremely different between rats that are infected with pertussis and rads that received a control treatment  (p << 0.001).
 
-The white blood cell count is on average `r output$estimate %>% diff %>% abs %>% format(.,digits = 5)` blood cells/mm$^3$ higher for rats with pertussis than for rats that received a control treatment (95% CI [`r output$conf.int %>% abs %>% sort %>% format(.,digits = 5)`]). 
+The white blood cell count is on average `r output$estimate %>% diff %>% abs %>% format(.,digits = 5)` blood cells/mm$^3$ higher for rats with pertussis than for rats that received a control treatment (95% CI [`r output$conf.int %>% abs %>% sort %>% format(.,digits = 5)`]).
 
 
 # ADDENDUM: Train yourself in checking the assumptions
@@ -164,7 +164,7 @@ normSim <- matrix(
             rep(wbcSum$mean[2], wbcSum$n[2])
             ),
           sd = sigma)
-    ), 
+    ),
   nrow = sum(wbcSum$n)) %>%
   as.data.frame() %>%
   mutate(trt = wbcon$trt)
@@ -181,7 +181,7 @@ normSim %>%
   facet_wrap(~samp)
 ```
 
-We observe that the difference in variability of the original observations (top left plot) is larger than in the each simulations. Indicating that there is indeed evidence that the variances in each group differ. 
+We observe that the difference in variability of the original observations (top left plot) is larger than in the each simulations. Indicating that there is indeed evidence that the variances in each group differ.
 
 ## Evaluation of normality
 
@@ -209,4 +209,4 @@ normSim %>%
   facet_wrap(~samp)
 ```
 
-The data in each group does not show larger deviations from normality than what we observe in each of the eight datasets that were simulated under the model assumptions. 
+The data in each group does not show larger deviations from normality than what we observe in each of the eight datasets that were simulated under the model assumptions.

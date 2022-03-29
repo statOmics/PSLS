@@ -17,13 +17,13 @@ In this hands-on tutorial session you will perform four exercises on statistical
 # Diabetes example
 
 The diabetes dataset consists of a small experiment with 8 patients
-that were subjected to a glucose tolerance test. 
+that were subjected to a glucose tolerance test.
 
-Patients had to fast for eight hours before the test. 
-When the patients entered the hospital their baseline glucose level was measured (mmol/l). 
+Patients had to fast for eight hours before the test.
+When the patients entered the hospital their baseline glucose level was measured (mmol/l).
 
-Patients then  had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar. 
-Two hours later, their blood glucose level was measured again. 
+Patients then  had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar.
+Two hours later, their blood glucose level was measured again.
 
 The data consist of three variables:
 
@@ -31,9 +31,9 @@ The data consist of three variables:
 - after: glucose concentration 2 hours after drinking glucose solution (mmol/l).
 - patient: identifier for the patient
 
-In this exercise, you will revisit the basics of statistical  hypothesis testing. You will acquire the skills 
+In this exercise, you will revisit the basics of statistical  hypothesis testing. You will acquire the skills
 
-1. to assess the assumptions of a one-sample and a paired t-test in a data exploration. 
+1. to assess the assumptions of a one-sample and a paired t-test in a data exploration.
 2. to conduct a one-sample t-test in R and to interpret the results.
 3. to conduct a paired t-test in R and to interpret the results.
 
@@ -51,27 +51,27 @@ Files:
 
 # Pertussis example
 
-Researchers wanted to study the immune response on pertussis. 
-They have set up an experiments with 40 rats. 
-16 rats were infected with pertussis and 24 rats received a control treatment. 
-Researchers measured the white blood cell concentration (WBC) in each rat (count per mm$^3$. 
+Researchers wanted to study the immune response on pertussis.
+They have set up an experiments with 40 rats.
+16 rats were infected with pertussis and 24 rats received a control treatment.
+Researchers measured the white blood cell concentration (WBC) in each rat (count per mm$^3$).
 
 The data consist of two variables:
 
-- WBC: white blood cell count (counts/mm$^3$). 
-- trt: treatment 
+- WBC: white blood cell count (counts/mm$^3$).
+- trt: treatment
 
     - control: rat recieved control treatment
     - pertussis: rat was infected with pertussis
 
-Upon this exercise you can 
+Upon this exercise you can
 
 
-1. conduct a statistical hypothesis test for a two group comparison in R and to interpret the results. 
+1. conduct a statistical hypothesis test for a two group comparison in R and to interpret the results.
 2. critically evaluate the assumptions for a two sample t-test
 3. use simulations to assist you when evaluating the assumptions of a two group comparison
 4. select the correct test based on the data exploration.
- 
+
 
 Files
 
@@ -104,13 +104,13 @@ foster parent has an effect on the average length of the cuckoo eggs.
 
 In this tutorial you will further sharpen your skills in
 
-1. data wrangling 
+1. data wrangling
 2. formulating the null and alternative hypothesis of t-tests
-3. critically evaluating the assumptions of t-tests, 
+3. critically evaluating the assumptions of t-tests,
 4. selecting the appropriate test for answering the research question, and
 5. formulating your conclusion in terms of the research question.
 
-Files: 
+Files:
 
 - Exercise: [Exercise3](./05_3_cuckoo.html)
 - Data path:
@@ -135,8 +135,8 @@ The research question is to assess if there an effect of the growth condition on
 This exercise aims to further sharpen your skills in
 
 - translating the research question in a a null and alternative hypothesis of t-tests
-- critically evaluating the assumptions of t-tests, and 
-- selecting the appropriate test for answering the research question. 
+- critically evaluating the assumptions of t-tests, and
+- selecting the appropriate test for answering the research question.
 
 - Exercise: [Exercise4](./05_4_shrimps.html)
 - Data path:

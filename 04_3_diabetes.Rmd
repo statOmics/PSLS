@@ -6,7 +6,7 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 
 # Aims of this exercise
 
-In this exercise, you will acquire the skills to 
+In this exercise, you will acquire the skills to
 
 - recognize paired data
 - conduct a data exploration in R for data from
@@ -18,11 +18,11 @@ paired experimental designs.
 The `diabetes dataset` holds information on a small experiment with
 8 patients that are subjected to  a glucose tolerance test.
 
-Patients had to fast for eight hours before the test. 
-When the patients entered the hospital their baseline glucose level was measured (mmol/l). 
+Patients had to fast for eight hours before the test.
+When the patients entered the hospital their baseline glucose level was measured (mmol/l).
 
-Patients then  had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar. 
-Two hours later, their blood glucose level was measured again. 
+Patients then  had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar.
+Two hours later, their blood glucose level was measured again.
 
 The data consist of three variables:
 
@@ -38,8 +38,6 @@ Data path:
 
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
-library(readr)
-library(ggplot2)
 ```
 
 ```{r, eval = FALSE}
@@ -54,18 +52,23 @@ Have a first look at the data
 
 # Data visualization
 
-The data are not in tidy format. 
-We can easily visualize the glucose levels by adopting the `gather()`
-function from tidyverse. 
-It will reshape the dataframe,
-such that we have have a single variable `time`, which
-points at the timepoint of the measurement, and `concentration`,
-which contains the actual glucose concentration at before or after drinking the glucose solution
-for each patient.
+Note, that the dataset is not in the tidy format. The glucose concentration
+variable is spread around 2 columns: `before` and `after`, while the "time"
+variable is encoded in the column names instead of in a dedicated column. Data
+in this form is also called *wide* data. Instead, we want to transform the data
+to a *long* format.
+
+To tidy the data, we can use the `gather()` function to
+[pivot](https://r4ds.had.co.nz/tidy-data.html#pivoting) the data. In this case,
+we want to "gather" the `time` (encoded in the column names `before` and
+`after`) and `concentration` variables (which is encoded in the actual values).
+The `patient` column should stay the same. We can specify this with the
+following syntax.
 
 ```{r, eval=FALSE}
-diabetes %>%
+diabetes_tidy <- diabetes %>%
   gather(time, concentration, -patient)
+diabetes_tidy
 ```
 
 ## Barplot
@@ -73,13 +76,12 @@ diabetes %>%
 Not all visualization types will be equally informative.
 
 A barplot is a plot that you will
-commonly find in scientific publications. 
+commonly find in scientific publications.
 The code for generating such a barplot
 is provided below:
 
 ```{r, eval=FALSE}
- diabetes %>%
-  gather(time, concentration, -patient) %>% 
+ diabetes_tidy %>%
   ## Calculate summarry statistics for the "bp" variable for each "type"
   group_by(time) %>%
   summarize(
@@ -98,18 +100,18 @@ is provided below:
 ```
 
 
-A barplot, however, is not very informative. 
+A barplot, however, is not very informative.
 The height of the
 bars only provides us with information of the mean blood pressure.
 However, we don't see the actual underlying values, so we for
 instance don't have any information on the spread of the data.
 It is usually more informative to represent to underlying
-values as _raw_ as possible. 
+values as _raw_ as possible.
 Note that it is possible to add the
 raw data on the barplot, but we still would not see any measures
 of the spread, such as the interquartile range.
 
-Another crucial aspect of the data are also not displayed: 
+Another crucial aspect of the data are also not displayed:
 the data are paired!
 
 **Based on these critisisms, can you think of a better**

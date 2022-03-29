@@ -6,41 +6,38 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 
 # Aims
 
-In this exercise, you will revisit the basics of statistical  hypothesis testing. 
+In this exercise, you will revisit the basics of statistical hypothesis testing.
 
-You will acquire the skills 
+You will acquire the skills
 
-1. to assess the assumptions of a one-sample and a paired t-test in  data exploration. 
+1. to assess the assumptions of a one-sample and a paired t-test in  data exploration.
 2. to conduct a one-sample t-test in R and to interpret the results.
 3. to conduct a paired t-test in R and to interpret the results.
 
 # The diabetes dataset
 
-The `diabetes dataset` holds information on a small experiment with
-8 patients that are subjected to  a glucose tolerance test.
+The `diabetes`  dataset holds information on a small experiment with
+8 patients that are subjected to a glucose tolerance test.
 
+Patients had to fast for eight hours before the test.
+When the patients entered the hospital their baseline glucose level was measured (mmol/l).
 
-Patients had to fast for eight hours before the test. 
-When the patients entered the hospital their baseline glucose level was measured (mmol/l). 
-
-Patients then  had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar. 
-Two hours later, their blood glucose level was measured again. 
+Patients then  had to drink 250 ml of a syrupy glucose solution containing 100
+grams of sugar.  Two hours later, their blood glucose level was measured again.
 
 The data consist of three variables:
 
-- before: glucose concentration upon 8 hours of fasting (mmol/l)
-- after: glucose concentration 2 hours after drinking glucose solution (mmol/l).
-- patient: identifier for the patient
+- `before`: glucose concentration upon 8 hours of fasting (mmol/l)
+- `after`: glucose concentration 2 hours after drinking glucose solution (mmol/l).
+- `patient`: identifier for the patient
 
 ## Research questions
 
 The goal is to answer two research questions;
 
-1. Is the average glucose level (i.e. before treatment) of
-the patients two hours upon the sugar intake higher than 7.8 mmol/L?
+1. Is the average glucose level after the sugar intake different from the average glucose level before sugar intake?
 
-2. Is the average glucose level after the sugar intake different from the average glucose level before sugar intake?
-
+2. Is the average glucose level of the patients two hours after the sugar intake higher than 7.8 mmol/L?
 
 ## Import the data
 
@@ -51,42 +48,62 @@ library(tidyverse)
 ```
 
 ```{r}
-diabetes <- read_delim("https://raw.githubusercontent.com/statOmics/PSLS21/data/diabetes.txt", delim =" ")
+diabetes <- read_delim("https://raw.githubusercontent.com/statOmics/PSLS21/data/diabetes.txt", delim = " ")
 ```
 
 # Data exploration
 
-We will start with a data exploration. 
-We will assess two hypotheses: 
-the first hypothesis involves comparing the average glucose levels in the blood two hours upon 100g of sugar intake with the threshold for pre-diabetes of 7.8 mmol/l. 
-
-The second measurement involves the comparison of the average glucose concentrations before and after the sugar intake. 
-
-From the previous tutorial on data analysis we know that we have to explore the difference between the glucose concentration after and before the sugar intake when we want to assess a difference in glucose levels before and after sugar intake because the data are paired. 
+We will start with a data exploration.
+Have a first look at the raw data. How is the data structured?
+Is this data *tidy*?
 
 ```{r}
 glimpse(diabetes)
-diabetes <- diabetes %>% 
-  mutate(difference=after-before) 
+head(diabetes)
 ```
 
 We have 8 patients, for which glucose concentrations were measured, before and after sugar intake.
 
-Note, that the dataset is not in the tidy format. We could tidy the data using the following code.
+Note, that the dataset is not in the tidy format. The glucose concentration
+variable is spread around 2 columns: `before` and `after`, while the "time"
+variable is encoded in the column names instead of in a dedicated column. Data
+in this form is also called *wide* data. Instead, we want to transform the data
+to a *long* format.
+
+To tidy the data, we can use the `gather()` function to
+[pivot](https://r4ds.had.co.nz/tidy-data.html#pivoting) the data. In this case,
+we want to "gather" the `time` (encoded in the column names `before` and
+`after`) and `concentration` variables (which is encoded in the actual values).
+The `patient` column should stay the same. We can specify this with the
+following syntax.
 
 ```{r}
-diabetes_long <- diabetes %>%
-  gather(time, concentration, -patient)
+diabetes_tidy <- diabetes %>%
+  gather(key = "time", value = "concentration", -patient)
+
+## Take a look at the new data
+glimpse(diabetes_tidy)
+diabetes_tidy
 ```
 
-We can visualize the data using boxplots. 
-Note, that the data are paired so the boxplots are not useful to compare the location of the distributions of the measurements before and after the sugar intake. 
-We can immediately assess the impact of the sugar treatment on the glucose level for each patient by calculating the difference. 
+To improve the visualizations below, we can also sligthly recode the `time` variable, so that the "before" level is the first one. We can do this by converting `time` to a factor.
 
 ```{r}
-diabetes_long %>%
+diabetes_tidy <- diabetes_tidy %>%
+  mutate(
+    time = as.factor(time),
+    time = relevel(time, ref = "before")
+  )
+```
+
+We could visualize the data using boxplots. Note, however, that we lose the
+paired characteristic of the data with this visualization. Nevertheless, it is
+still a useful visualization to assess any differences in mean and variance
+between the two time points.
+
+```{r}
+boxplot <- diabetes_tidy %>%
   ggplot(aes(x = time, y = concentration, fill = time)) +
-  scale_fill_brewer(palette = "RdGy") +
   theme_bw() +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2) +
@@ -96,92 +113,35 @@ diabetes_long %>%
     color = "black"
   ) +
   ylab("Concentration (mmol/l)")
+
+boxplot
 ```
 
-We observe that the variability of the glucose levels are higher after than before the sugar intake. 
-The difference plot also shows that glucose levels in the blood are higher for most of the patients two hours after the sugar intake. Only for one patient the glucose concentration two hours after treatment is lower. 
+We observe that the variability of the glucose levels are higher after than
+before the sugar intake.  The difference plot also shows that glucose levels in
+the blood are higher for most of the patients two hours after the sugar intake.
+Only for one patient the glucose concentration two hours after treatment is
+lower.
+
+To visualize the paired nature of the data, we can use a **line plot**,
+connecting the `before` and `after` points for each patient.
+
+```{r}
+diabetes_tidy %>%
+  ggplot(aes(time, concentration)) +
+  geom_point() +
+  geom_line(aes(group = patient))
+```
+
 
 # Question 1
 
-Is the average glucose level two hours after sugar intake
-higher than the threshold of 7.8 mmol/l for pre-diabetes?
-
-We can test this hypothesis using a **one-sample t-test**.
-Indeed we are interested to compare the average glucose level to a known threshold for pre-diabetes. 
-
-## Assess the assumptions
-
-Before we can perform a one sample t-test, we must check that the required
-assumptions are met!
-
-1. The observations are independent
-2. The glucose levels two hours after the treatment are normally distributed
-
-The first assumption requires us to think about how the data were collected.
-Are there dependences in the data? 
-The 8 glucose levels upon sugar intake are collected on 8 random patients so we can assume that the glucose levels 2 hours after sugar intake are independent.
-
-We can assess the second assumption with a quantile-quantile plot.
-
-```{r}
-diabetes %>%
-  ggplot(aes(sample = after)) +
-  geom_qq() +
-  geom_qq_line()
-```
-
-The data seem to be nicely scattered around the quantile-quantile
-line (black line). 
-We also do not observe large deviations in the plot. 
- 
-So we will assume that our data is normally
-distributed.
-Note, that there are not many observations to assess normality.
-
-## Hypothesis test
-
-Here, we will test if mean glucose level 2 hours after sugar intake is significantly
-higher than the threshold for pre-diabetes of 7.8 mmol/l. More specifically, we will test the null hypothesis;
-
-$H_0:$ the mean glucose level two hours after 100g of sugar intake is equal to 7.8 mmol/l
-
-versus the alternative hypothesis;
-
-$H_1:$ the mean glucose level two hours after 100g of sugar intake is greater than 7.8 mmol/l
-
-```{r}
-output1 <- t.test(diabetes$after,
-  mu = 7.8,
-  alternative = "greater",
-  conf.level = 0.95
-)
-output1
-```
-
-## Conclusion
-
-When writing a conclusion on your research hypothesis,
-it is very important to be precise, concise, and complete.
-
-An example of such a conclusion for our research question
-is given below:
-
-We can conclude that the mean glucose level of patients two hours after 100g of glucose intake is not significantly higher than the threshold  for pre-diabetes of 7.8 mmol/l (p = `r round(output1$p.value,2)`).
-The mean glucose level two hours after the intake of 100g of sugar equals `r round(output1$estimate,1)` mmol/l (95% CI [`r round(output1$conf.int,1)`]).
-
-As we have seen in the theory class, the 95% confidence
-interval can be interpreted as;
-
-With 95% confidence we can conclude that the true average of glucose level of the patients in the population is above `r round(output1$conf.int[1],2)`.
-
-Note, that we only report a one sided confidence interval because we only test against the alternative hypothesis that the glucose level two hours after sugar intake is on average larger than the threshold for pre-diabetes of 7.8 mmol/l.
-
-# Question 2
-
 Is the glucose level after 8 hours of fasting on average different from the glucose level two hours after intake of 100g of glucose?
 
-As the data are paired, we can expect that the measurements before and after the glucose intake are correlated. 
+As the data are paired, we can expect that the measurements before and after the glucose intake are correlated.
 We can illustrate this with a scatterplot.
+
+Note that in this case, the non-tidy data is actually a more suitable format to visualize.
 
 ```{r}
 diabetes %>%
@@ -192,7 +152,7 @@ diabetes %>%
 ```
 
 ```{r}
-cor(diabetes$before,diabetes$after, method = "spearman")
+cor(diabetes$before, diabetes$after, method = "spearman")
 ```
 
 ## Check the assumptions
@@ -204,12 +164,22 @@ The paired t-test has 2 assumptions:
 2. The differences in glucose levels are normally distributed.
 
 The first assumption is met given the experimental design.
-Upon differencing the measurements before and after the glucose intake, we obtained one difference for each patient. As the patients were sampled at random from the population we can expect them to be independent. 
+Upon differencing the measurements before and after the glucose intake, we obtained one difference for each patient. As the patients were sampled at random from the population we can expect them to be independent.
 
 Secondly, we assess if the differences are normally distributed.
 
+We can calculate the differences for each patient using a `group_by()` +
+`summarize()` combination on the tidy data.
+
 ```{r}
-diabetes %>%
+diabetes_diff <- diabetes_tidy %>%
+  group_by(patient) %>%
+  summarize(difference = diff(concentration))
+diabetes_diff
+```
+
+```{r}
+diabetes_diff %>%
   ggplot(aes(sample = difference)) +
   geom_qq() +
   geom_qq_line()
@@ -227,27 +197,113 @@ glucose intake are on average equal.
 - Which will be tested against the alternative hypothesis that the glucose levels before and two hours after the glucose intake are on average different.
 
 ```{r}
-output2 <- t.test(diabetes$after,diabetes$before, paired = TRUE)
-output2
+paired_t <- t.test(concentration ~ time, data = diabetes_tidy, paired = TRUE)
+paired_t
 ```
 
 
 ## Conclusion
 
 There is on average an significant blood increase in the blood pressure upon
-administering 100g of sugar to patients (p = `r round(output2$p.value, 2)`). 
-The glucose levels two hours after administering 100g of glucose are on average `r round(output2$estimate,1)` mmol/l higher than upon 8 hours of fastening 
-(95% CI [`r round(output2$conf.int,1)`]mmol/l).
+administering 100g of sugar to patients (p = `r round(paired_t$p.value, 2)`).
+The glucose levels two hours after administering 100g of glucose are on average `r round(paired_t$estimate,1)` mmol/l higher than upon 8 hours of fastening
+(95% CI [`r round(paired_t$conf.int,1)`]mmol/l).
 
 # Alternative solution: One-sample t-test on the difference
 
-Performing a paired t-test is equivalent to performing a one-sample t-test where we assess if the
-difference between both groups is on average different from 0.
+Since the data is paired, we can also simply calculate the differences in
+glucose level before and after sugar intake for each patient. We can then
+perform a one-sample t-test on these differences, testing whether they are
+significantly different from zero. This is equivalent to the paired t-test we
+performed above.
 
 We can verify this with the analysis below
 
 ```{r}
-t.test(diabetes$difference)
+t.test(difference ~ 1, data = diabetes_diff, mu = 0)
 ```
 
 Indeed, the output is equivalent to that of the paired t-test.
+
+***
+
+# Question 2
+
+Is the average glucose level two hours after sugar intake
+higher than the threshold of 7.8 mmol/l for pre-diabetes?
+
+We can test this hypothesis using a **one-sample t-test**.
+Indeed we are interested to compare the average glucose level to a known threshold for pre-diabetes.
+
+## Assess the assumptions
+
+Before we can perform a one sample t-test, we must check that the required
+assumptions are met!
+
+1. The observations are independent
+2. The glucose levels two hours after the treatment are normally distributed
+
+The first assumption requires us to think about how the data were collected.
+Are there dependences in the data?
+The 8 glucose levels upon sugar intake are collected on 8 random patients so we can assume that the glucose levels 2 hours after sugar intake are independent.
+
+We can assess the second assumption with a quantile-quantile plot. First we need to filter the data, so we only retain the values for the `time == "after"` level
+
+```{r}
+diabetes_after <- diabetes_tidy %>%
+  filter(time == "after")
+```
+
+```{r}
+diabetes_after %>%
+  ggplot(aes(sample = concentration)) +
+  geom_qq() +
+  geom_qq_line()
+```
+
+The data seem to be nicely scattered around the quantile-quantile
+line (black line).
+We also do not observe large deviations in the plot.
+
+So we will assume that our data is normally
+distributed.
+Note, that there are not many observations to assess normality.
+
+## Hypothesis test
+
+Here, we will test if mean glucose level 2 hours after sugar intake is significantly
+higher than the threshold for pre-diabetes of 7.8 mmol/l. More specifically, we will test the null hypothesis;
+
+$H_0:$ the mean glucose level two hours after 100g of sugar intake is equal to 7.8 mmol/l
+
+versus the alternative hypothesis;
+
+$H_1:$ the mean glucose level two hours after 100g of sugar intake is greater than 7.8 mmol/l
+
+```{r}
+t_test_after <- t.test(concentration ~ 1,
+  data = diabetes_after,
+  mu = 7.8,
+  alternative = "greater",
+  conf.level = 0.95
+)
+t_test_after
+```
+
+## Conclusion
+
+When writing a conclusion on your research hypothesis,
+it is very important to be precise, concise, and complete.
+
+An example of such a conclusion for our research question
+is given below:
+
+We can conclude that the mean glucose level of patients two hours after 100g of glucose intake is not significantly higher than the threshold  for pre-diabetes of 7.8 mmol/l (p = `r round(t_test_after$p.value,2)`).
+The mean glucose level two hours after the intake of 100g of sugar equals `r round(t_test_after$estimate,1)` mmol/l (95% CI [`r round(t_test_after$conf.int,1)`]).
+
+As we have seen in the theory class, the 95% confidence
+interval can be interpreted as;
+
+With 95% confidence we can conclude that the true average of glucose level of the patients in the population is above `r round(t_test_after$conf.int[1],2)`.
+
+Note, that we only report a one sided confidence interval because we only test against the alternative hypothesis that the glucose level two hours after sugar intake is on average larger than the threshold for pre-diabetes of 7.8 mmol/l.

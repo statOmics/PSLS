@@ -8,8 +8,8 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 This exercise aims to further sharpen your skills in
 
 - translating the research question in a a null and alternative hypothesis of t-tests
-- critically evaluating the assumptions of t-tests, and 
-- selecting the appropriate test for answering the research question. 
+- critically evaluating the assumptions of t-tests, and
+- selecting the appropriate test for answering the research question.
 
 # The shrimps dataset
 
@@ -63,7 +63,7 @@ Visualize the data:
 ```{r}
 shrimps %>%
   ggplot(aes(x = group, y = PCB.conc, fill = group)) +
-  scale_fill_brewer(palette = "RdGy") +
+  scale_fill_manual(values = c("darkorchid", "olivedrab")) +
   theme_bw() +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2) +
@@ -106,7 +106,7 @@ shrimps %>%
   ggplot(aes(sample = PCB.conc)) +
   geom_qq() +
   geom_qq_line() +
-  facet_grid(~group)
+  facet_grid(~ group)
 ```
 
 We clearly see that we have strong deviations from

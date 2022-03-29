@@ -44,7 +44,7 @@ Data path:
 wbcon <- read_csv("https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv")
 ```
 
-```{r, eval=FALSE}
+```{r}
 glimpse(wbcon)
 ```
 

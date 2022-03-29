@@ -6,41 +6,38 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 
 # Aims
 
-In this exercise, you will revisit the basics of statistical  hypothesis testing. 
+In this exercise, you will revisit the basics of statistical  hypothesis testing.
 
-You will acquire the skills 
+You will acquire the skills
 
-1. to assess the assumptions of a one-sample and a paired t-test in a data exploration. 
+1. to assess the assumptions of a one-sample and a paired t-test in a data exploration.
 2. to conduct a one-sample t-test in R and to interpret the results.
 3. to conduct a paired t-test in R and to interpret the results.
 
 # The diabetes dataset
 
-The `diabetes dataset` holds information on a small experiment with
-8 patients that are subjected to  a glucose tolerance test.
+The `diabetes`  dataset holds information on a small experiment with
+8 patients that are subjected to a glucose tolerance test.
 
+Patients had to fast for eight hours before the test.
+When the patients entered the hospital their baseline glucose level was measured (mmol/l).
 
-Patients had to fast for eight hours before the test. 
-When the patients entered the hospital their baseline glucose level was measured (mmol/l). 
-
-Patients then  had to drink 250 ml of a syrupy glucose solution containing 100 grams of sugar. 
-Two hours later, their blood glucose level was measured again. 
+Patients then had to drink 250 ml of a syrupy glucose solution containing 100
+grams of sugar. Two hours later, their blood glucose level was measured again.
 
 The data consist of three variables:
 
-- before: glucose concentration upon 8 hours of fasting (mmol/l)
-- after: glucose concentration 2 hours after drinking glucose solution (mmol/l).
-- patient: identifier for the patient
+- `before`: glucose concentration upon 8 hours of fasting (mmol/l)
+- `after`: glucose concentration 2 hours after drinking glucose solution (mmol/l).
+- `patient`: identifier for the patient
 
 ## Research questions
 
 The goal is to answer two research questions;
 
-1. Is the average glucose level (i.e. before treatment) of
-the patients two hours upon the sugar intake higher than 7.8 mmol/L?
+1. Is the average glucose level after the sugar intake different from the average glucose level before sugar intake?
 
-2. Is the average glucose level after the sugar intake different from the average glucose level before sugar intake?
-
+2. Is the average glucose level of the patients two hours after the sugar intake higher than 7.8 mmol/L?
 
 ## Import the data
 
@@ -56,77 +53,23 @@ library(tidyverse)
 
 # Data exploration
 
-We will start with a data exploration. 
-We will assess two hypotheses: 
-the first hypothesis involves comparing the average glucose levels in the blood two hours upon 100g of sugar intake with the threshold for pre-diabetes of 7.8 mmol/l. 
-
-The second measurement involves the comparison of the average glucose concentrations before and after the sugar intake. 
-
-From the previous tutorial on data analysis we know that we have to explore the difference between the glucose concentration after and before the sugar intake when we want to assess a difference in glucose levels before and after sugar intake because the data are paired. 
+We will start with a data exploration.
+Have a first look at the raw data. How is the data structured?
+Is this data *tidy*?
 
 ```{r, eval=FALSE}
 
 ```
-
-
 
 # Question 1
 
-Is the average glucose level two hours after sugar intake
-higher than the threshold of 7.8 mmol/l for pre-diabetes?
-
-We can test this hypothesis using a **one-sample t-test**.
-Indeed we are interested to compare the average glucose level to a known threshold for pre-diabetes. 
-
-## Assess the assumptions
-
-Before we can perform a one sample t-test, we must check that the required
-assumptions are met!
-
-1. The observations are independent
-2. The glucose levels two hours after the treatment are normally distributed
-
-```{r, eval=FALSE}
-... %>%
-  ...() +
-  geom_qq() +
-  geom_qq_line()
-```
-
-What do you observe
-
-## Hypothesis test
-
-Here, we will test if mean glucose level 2 hours after sugar intake is significantly
-higher than the threshold for pre-diabetes of 7.8 mmol/l. More specifically, we will test the null hypothesis;
-
-$H_0:$ ...
-
-versus the alternative hypothesis;
-
-$H_1:$ ...
-
-```{r, eval=FALSE}
-output1 <- t.test(..., mu = ..., alternative = ..., conf.level = ..., data = ...)
-output1
-```
-
-## Conclusion
-
-When writing a conclusion on your research hypothesis,
-it is very important to be precise, concise, and complete.
-
-...
-
-# Question 2
-
 Is the glucose level after 8 hours of fasting on average different from the glucose level two hours after intake of 100g of glucose?
 
-As the data are paired, we can expect that the measurements before and after the glucose intake are correlated. 
+As the data are paired, we can expect that the measurements before and after the glucose intake are correlated.
 We can illustrate this with a scatterplot.
 
 ```{r, eval=FALSE}
-#create scatterplot
+
 ```
 
 
@@ -141,8 +84,8 @@ If all assumptions are met, we may continue with
 performing the paired two-sample t-test.
 
 ```{r, eval=FALSE}
-output2 <- t.test(..., ..., paired = ..., data = )
-output2
+paired_t <- t.test(... ~ ..., data = ..., paired = ...)
+paired_t
 ```
 
 
@@ -152,11 +95,75 @@ Formulate a conclusion based on the output.
 
 # Alternative solution: One-sample t-test on the difference
 
-Performing a paired t-test is equivalent to performing a one-sample t-test where we assess if the
-difference between both groups is on average different from 0.
+Since the data is paired, we can also simply calculate the differences in
+glucose level before and after sugar intake for each patient. We can then
+perform a one-sample t-test on these differences, testing whether they are
+significantly different from zero. This is equivalent to the paired t-test we
+performed above.
 
 We can verify this with the analysis below
 
 ```{r, eval=FALSE}
-t.test(...)
+t.test(... ~ 1, data = ..., mu = ...)
 ```
+
+***
+
+# Question 2
+
+Is the average glucose level two hours after sugar intake
+higher than the threshold of 7.8 mmol/l for pre-diabetes?
+
+We can test this hypothesis using a **one-sample t-test**.
+Indeed we are interested to compare the average glucose level to a known threshold for pre-diabetes.
+
+## Assess the assumptions
+
+Before we can perform a one sample t-test, we must check that the required
+assumptions are met!
+
+1. The observations are independent
+2. The glucose levels two hours after the treatment are normally distributed
+
+```{r, eval=FALSE}
+## First filter the data on the desired group
+diabetes_after <- ... %>%
+  filter(... == "...")
+```
+
+```{r, eval=FALSE}
+... %>%
+  ...() +
+  geom_qq() +
+  geom_qq_line()
+```
+
+What do you observe?
+
+## Hypothesis test
+
+Here, we will test if mean glucose level 2 hours after sugar intake is significantly
+higher than the threshold for pre-diabetes of 7.8 mmol/l. More specifically, we will test the null hypothesis;
+
+$H_0:$ ...
+
+versus the alternative hypothesis;
+
+$H_1:$ ...
+
+```{r, eval=FALSE}
+t_test_after <- t.test(... ~ 1,
+  data = ...,
+  mu = ...,
+  alternative = "...",
+  conf.level = ...
+)
+t_test_after
+```
+
+## Conclusion
+
+When writing a conclusion on your research hypothesis,
+it is very important to be precise, concise, and complete.
+
+...

@@ -6,24 +6,24 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 
 # Aim of this tutorial
 
-Upon this exercise you can 
+Upon this exercise you can
 
 
-1. conduct a statistical hypothesis test for a two group comparison in R and to interpret the results. 
+1. conduct a statistical hypothesis test for a two group comparison in R and to interpret the results.
 2. critically evaluate the assumptions for a two sample t-test
 3. use simulations to assist you when evaluating the assumptions of a two group comparison
 4. select the correct test based on the data exploration.
 
-# Background 
+# Background
 
-Researchers wanted to study the immune response on pertussis. 
-They have set up an experiments with 40 rats. 
-16 rats were infected with pertussis and 24 rats received a control treatment. 
-Researchers measured the white blood cell concentration (WBC) in each rat (count per mm$^3$. 
+Researchers wanted to study the immune response on pertussis.
+They have set up an experiments with 40 rats.
+16 rats were infected with pertussis and 24 rats received a control treatment.
+Researchers measured the white blood cell concentration (WBC) in each rat (count per mm$^3$).
 
 De data consists of two variables:
 
-- WBC: white blood cell count (counts/mm$^3$). 
+- WBC: white blood cell count (counts/mm$^3$).
 - trt: treatment
 
     - control: rat recieved control treatment
@@ -60,13 +60,13 @@ to two treatments: A control treatment and a treatment in which the rat was infe
 
 A crucial first step in a data analysis is to visualize and to explore the raw data.
 
-This will allow us to gain insight in the data. 
+This will allow us to gain insight in the data.
 
-A secondary goal of the data exploration is to check the assumptions of the test that we will perform. 
+A secondary goal of the data exploration is to check the assumptions of the test that we will perform.
 
-## Which test will you perform to compare the white blood cell count between infected and control rats? 
+## Which test will you perform to compare the white blood cell count between infected and control rats?
 
-## What are the assumptions of this test? 
+## What are the assumptions of this test?
 
 
 ## Use the appropriate plots to assess the assumptions
@@ -76,4 +76,3 @@ A secondary goal of the data exploration is to check the assumptions of the test
 ## Analysis
 
 ## Conclusion
-

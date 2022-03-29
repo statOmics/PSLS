@@ -8,9 +8,9 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 
 In this tutorial you will further sharpen your skills in
 
-- data wrangling 
+- data wrangling
 - formulating the null and alternative hypothesis of t-tests
-- critically evaluating the assumptions of t-tests, 
+- critically evaluating the assumptions of t-tests,
 - in selecting the appropriate test for answering the research question, and
 - in formulating your conclusion in terms of the research question.
 
@@ -76,6 +76,8 @@ First, load the required libraries
 Data path:
 
 `https://raw.githubusercontent.com/statOmics/PSLS21/data/Cuckoo.txt`
+
+Import the data, make sure to use the appropriate function for the delimiter used in this file!
 
 ```{r, eval=FALSE, message=FALSE}
 ...

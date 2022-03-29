@@ -29,8 +29,8 @@ library(tidyverse)
 # Import the data
 
 ```{r}
-shrimps <- read.table("https://raw.githubusercontent.com/statOmics/PSLS21/data/shrimps.txt",
-  header = TRUE
+shrimps <- read_tsv(
+  "https://raw.githubusercontent.com/statOmics/PSLS21/data/shrimps.txt"
 )
 glimpse(shrimps)
 ```
@@ -56,16 +56,16 @@ Visualize the data:
 ```{r}
 shrimps %>%
   ggplot(aes(x = group, y = PCB.conc, fill = group)) +
-  scale_fill_brewer(palette = "RdGy") +
+  scale_fill_manual(values = c("darkorchid", "olivedrab")) +
   theme_bw() +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2) +
   ggtitle("Boxplot of the PCB concentrations in two groups of shrimps") +
   ylab("PCB concentration (pg/g)") +
-stat_summary(
-  fun = mean, geom = "point",
-  shape = 5, size = 3, color = "black",
-)
+  stat_summary(
+    fun = mean, geom = "point",
+    shape = 5, size = 3, color = "black",
+  )
 ```
 
 We can see that for group 1 we have four very clear outliers
@@ -99,7 +99,7 @@ shrimps %>%
   ggplot(aes(sample = PCB.conc)) +
   geom_qq() +
   geom_qq_line() +
-  facet_grid(~group)
+  facet_grid(~ group)
 ```
 
 We clearly see that we have strong deviations from
@@ -135,21 +135,8 @@ After computing the ranks and midranks, the Wilcoxon test will
 compare the mean rank between both treatment groups:
 
 ```{r}
-PCB_1 <- shrimps %>%
-  filter(group == "1") %>%
-  pull(PCB.conc)
-
-PCB_2 <- shrimps %>%
-  filter(group == "2") %>%
-  pull(PCB.conc)
-
-wilcox.test(PCB_1, PCB_2)
-```
-
-or, equivalently;
-
-```{r}
-wilcox.test(PCB.conc ~ group, data = shrimps)
+wilcox_res <- wilcox.test(PCB.conc ~ group, data = shrimps)
+wilcox_res
 ```
 
 We find that the test is significant on the 5%
@@ -188,7 +175,7 @@ We can estimate this probability based on the observed test statistic.
 
 ```{r}
 n1 <- n2 <- 18 # 18 observations in each group
-WObs <- wilcox.test(PCB.conc ~ group, data = shrimps)$statistic # get the observed test statistic
+WObs <- wilcox_res$statistic # get the observed test statistic
 WObs / (n1 * n2)
 ```
 
