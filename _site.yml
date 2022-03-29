@@ -1,6 +1,5 @@
 name: "PSLS - Practical Statistics for the Life Sciences"
 navbar:
-  title: "PSLS"
   left:
     - icon: fa-home
       href: index.html
