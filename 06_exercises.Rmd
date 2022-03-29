@@ -8,6 +8,18 @@ On the third day of the "Practical Statistics for the Life Sciences"
 course, we will have exercises on linear regression, based on different
 datasets:
 
+- [The puromycin dataset]
+- [The poison datset]
+- [Armpit example]
+
+***
+
+As an additional example to the case studies seen in the theory, you can also have a look at this case study on a breast cancer dataset:
+
+- [Breast cancer example](./breastCancerExample.html)
+
+***
+
 # The puromycin dataset
 
 Data on the velocity of an enzymatic reaction were obtained by Treloar (1974).
@@ -25,7 +37,7 @@ concentration and rate for the **treated** enzyme.
 <!-- - Solution: [Solution1](./06_1_puromycin_sol.html) -->
 
 
-# The poison dataset:
+# The poison dataset
 
 In this experiment, 96 fish (dojofish, goldfish and zebrafish)
 were placed separately in a tank with two litres of water and
