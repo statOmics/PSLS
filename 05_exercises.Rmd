@@ -49,6 +49,10 @@ Files:
 
 ---
 
+Two-sample t-test: [armpit example](05_armpit_example.html)
+
+---
+
 # Pertussis example
 
 Researchers wanted to study the immune response on pertussis.
