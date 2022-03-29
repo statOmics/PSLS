@@ -1,6 +1,6 @@
 ---
 title: "Exercise 6.1: Linear regression on the fish tank dataset - solution"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -31,9 +31,14 @@ library(tidyverse)
 poison <- read_csv("https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv")
 ```
 
+```{r}
+glimpse(poison)
+head(poison)
+```
+
 # Data tidying
 
-We can see a couple of things in the data that can be improved upon:
+We can see a couple of things in the data that can be improved:
 
 1. Capitalise the fist column name. *Hint*: use the `rename` function.
 
@@ -48,7 +53,11 @@ the `mutate` function.
 poison <- poison %>%
   rename("Species" = "species") %>%
   mutate(Species = as.factor(Species)) %>%
-  mutate(Species = fct_recode(Species, Dojofish = "0", Goldfish = "1", Zebrafish = "2"))
+  mutate(
+    Species = fct_recode(Species,
+      Dojofish = "0", Goldfish = "1", Zebrafish = "2"
+    )
+  )
 
 poison
 ```
@@ -89,8 +98,8 @@ assumptions are met.
 
 # Important note on the dataset
 
-In this dataset, there are multiple variables can have an effect on the survival
-time of the fish. The most obvious one is the dose of poison that was
+In this dataset, there are multiple variables that can have an effect on the
+survival time of the fish. The most obvious one is the dose of poison that was
 administered (as displayed above). However, we could also imagine that heavier
 fish are less prone to the poison than light fish. Additionally, one fish
 species may be more resistant to the poison than the other.
@@ -135,11 +144,8 @@ poison_dojo %>%
   ggtitle("Association between dose and weight") +
   theme_bw() +
   stat_summary(
-    geom = "point",
-    fun = "mean",
-    col = "black",
-    size = 4,
-    shape = 24,
+    fun = mean, geom = "point",
+    col = "black", size = 4, shape = 24,
     fill = "red"
   )
 ```
@@ -195,9 +201,9 @@ List assumptions:
 1. The observations are independent of each other
 2. Linearity between the response and predictor variable
 3. The residues of the model must be normally distributed
-4. Homoscedasticity of the data
+4. Homoskedasticity of the data
 
-The first assumption is **met** based on the experimental design. In the
+The first assumption is met based on the experimental design. In the
 data exploration phase, we saw that there is no clear trend in the association
 between `Dose` and `Weight`. With respect to species, we have "avoided" taking
 into account the effect of species into the analysis by only performing an
@@ -261,7 +267,7 @@ Fit a (log-)linear model by log-transforming the response.Generate diagnostic
 plots and assess the assumptions.
 
 ```{r}
-log.model <- lm(Surv_time %>% log10() ~ Dose, data = poison_dojo)
+log.model <- lm(log10(Surv_time) ~ Dose, data = poison_dojo)
 plot(log.model)
 ```
 
@@ -275,19 +281,8 @@ set.seed(1406)
 nobs <- nrow(poison_dojo)
 
 data.frame(
-  y = c(
-    log.model$res,
-    rnorm(nobs * 8,
-      sd = sigma(log.model)
-    )
-  ),
-  label = rep(
-    c(
-      "orig",
-      paste0("sim", 1:8)
-    ),
-    each = nobs
-  )
+  y = c(log.model$res, rnorm(nobs * 8, sd = sigma(log.model))),
+  label = rep(c("orig", paste0("sim", 1:8)), each = nobs)
 ) %>%
   ggplot(aes(sample = y)) +
   geom_qq() +
@@ -296,9 +291,9 @@ data.frame(
 ```
 
 1. The independence assumption is met.
-2. Upon log-transformation, the linearity assumption is still **met**.
-3. Upon log-transformation, the normality assumption is also **met**.
-4. Upon log-transformation, the homoscedasticity assumption is also **met**.
+2. Upon log-transformation, the linearity assumption is still met.
+3. Upon log-transformation, the normality assumption is also met.
+4. Upon log-transformation, the homoscedasticity assumption is also met.
 
 Look at the output of the log-linear model:
 
@@ -375,18 +370,16 @@ because we extrapolated considerably because all fish in the experiment were
 exposed to poison.
 
 ```{r}
-plot(
-  x = poison_dojo$Dose,
-  y = poison_dojo$Surv_time,
-  xlab = "Dose (mg)",
-  ylab = "Survival time (min)",
-  xlim = c(0, 2.2)
-)
-abline(lsfit(poison_dojo$Dose, poison_dojo$Surv_time), lty = 2) ## lty=2 draws a dashed line
+## Extract slope and intercept from the model
+dojo_intercept <- coef(log.model)[1]
+dojo_slope <- coef(log.model)[2]
 
-## add the intercept as a point
-summary_model <- summary(model)
-points(0, summary_model$coefficients["(Intercept)", "Estimate"], col = "red", pch = 16)
+ggplot(poison_dojo, aes(Dose, log10(Surv_time))) +
+  geom_point() +
+  geom_abline(
+    slope = dojo_slope, intercept = dojo_intercept,
+    color = "steelblue", size = 1.2
+  )
 ```
 
 We can see that the dose value of 0 mg does not fall within

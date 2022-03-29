@@ -1,6 +1,6 @@
 ---
 title: "Exercise 6.1: Linear regression on puromycin data"
-author: "Lieven Clement & Alexandre Segers"
+author: "Lieven Clement, Alexandre Segers and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -31,8 +31,6 @@ Puromycin <- Puromycin %>%
 Puromycin %>%
   ggplot(aes(x = conc, y = rate)) +
   geom_point() +
-  stat_smooth(method = "loess", col = "red") + # fit een kromme door de punten (rode lijn)
-  stat_smooth(method = "lm", col = "black") + # fit een rechte door de punten aan de hand van de kleinstekwadratenmethode
   ylab("Reaction rate (counts/min)") +
   xlab("Substrate concentratie (ppm)")
 ```
@@ -43,10 +41,10 @@ We will assess the impact of log-transforming the concentration. Because the con
 
 ```{r}
 Puromycin %>%
-  ggplot(aes(x = conc %>% log10(), y = rate)) +
+  ggplot(aes(x = log10(conc), y = rate)) +
   geom_point() +
-  stat_smooth(method = "loess", col = "red") +
-  stat_smooth(method = "lm", col = "black") +
+  ## To aid the visualization, we can fit a straight line to the data
+  stat_smooth(method = "lm", col = "firebrick", se = FALSE) +
   ylab("Reaction Rate (counts/min)") +
   xlab("log10(Substrate concentration) (log10 ppm)")
 ```
@@ -64,7 +62,7 @@ with $Y_i$ the reaction rate, $x_i$ the adopted concentration, $\beta_0$ the **i
 Note, that we write the substrate concentratio with a small letter because the predictor is not random. The researchers have chosen the substrate concentrations in the design phase and it is thus no random variable.
 
 ```{r}
-mod1 <- lm(rate ~ conc %>% log10(), Puromycin)
+mod1 <- lm(rate ~ log10(conc), Puromycin)
 summary(mod1)
 ```
 
@@ -94,17 +92,16 @@ We will use simulation to assess if we can observe similar residual plots if all
 
 ```{r}
 set.seed(1031)
-sigma <- mod1 %>% sigma()
+sigma <- sigma(mod1)
 dataHlp <- Puromycin
 
 simModels <- list()
 
 par(mfrow = c(3, 3))
-for (i in 1:9)
-{
-  nobs <- Puromycin %>% nrow()
+for (i in 1:9) {
+  nobs <- nrow(Puromycin)
   dataHlp$ySim <- mod1$fit + rnorm(nobs, sd = sigma)
-  simModels[[i]] <- lm(ySim ~ conc %>% log10(), dataHlp)
+  simModels[[i]] <- lm(ySim ~ log10(conc), dataHlp)
   plot(simModels[[i]], which = 1)
 }
 ```
@@ -113,14 +110,13 @@ We observe that similar deviations might be generated for a model where all assu
 
 ### Normality
 
-
 ```{r}
 plot(mod1, which = 2)
 ```
 
 The QQ-plot does not show large deviations from normality.
 
-### Homoscedasticity: equality of the variance
+### Homoskedasticity: equality of the variance
 
 We can again use the residual plot for assessing this assumption or the plot were we plot the square root of the standardized residuals in function of the fit.
 
@@ -139,7 +135,8 @@ for (i in 1:9) {
 ```
 
 ## Inference
-### hypotheses
+
+### Hypotheses
 
 We want to assess if there is a linear association between the reaction rate and the log$_{10}$ transformed concentration.
 
