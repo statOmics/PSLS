@@ -20,9 +20,9 @@ treated with Puromycin, and once with the enzyme untreated.
 The goal is to assess if there is an association between the substrate
 concentration and rate for the **treated** enzyme.
 
-- Exercise: [Exercise1](./06_3_puromycin.html)
+- Exercise: [Exercise1](./06_1_puromycin.html)
 - Data path: Not required
-<!-- - Solution: [Solution1](./06_3_puromycin_sol.html) -->
+<!-- - Solution: [Solution1](./06_1_puromycin_sol.html) -->
 
 
 # The poison dataset:
@@ -37,9 +37,9 @@ minutes). Additionally, the weight of each fish was measured.
 In this tutorial, we will study the association between dose and survival time
 by using a linear regression model.
 
-- Exercise: [Exercise2](./06_1_poison.html)
+- Exercise: [Exercise2](./06_2_poison.html)
 - Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv
-<!-- - Solution: [Solution2](./06_1_poison_sol.html) -->
+<!-- - Solution: [Solution2](./06_2_poison_sol.html) -->
 
 ---
 
