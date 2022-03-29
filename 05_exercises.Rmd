@@ -80,12 +80,11 @@ Files
 
   `https://raw.githubusercontent.com/statOmics/PSLS21/data/wbcon.csv`
 
-<!-- - Solution: [Solution2](./05_2_pertussis_sol.html) -->
+- Solution: [Solution2](./05_2_pertussis_sol.html)
 
 ---
 
 Two-sample t-test: [armpit example](05_armpit_example.html)
-
 
 ---
 
@@ -120,7 +119,7 @@ Files:
 
   `https://raw.githubusercontent.com/statOmics/PSLS21/data/Cuckoo.txt`
 
-<!-- - Solution: [Solution3](./05_3_cuckoo_sol.html) -->
+- Solution: [Solution3](./05_3_cuckoo_sol.html)
 
 ---
 
@@ -146,4 +145,4 @@ This exercise aims to further sharpen your skills in
 
   `https://raw.githubusercontent.com/statOmics/PSLS21/data/shrimps.txt`
 
-<!-- - Solution: [Solution4](./05_4_shrimps_sol.html) -->
+- Solution: [Solution4](./05_4_shrimps_sol.html)
