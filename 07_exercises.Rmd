@@ -51,7 +51,7 @@ Files:
 
   `https://raw.githubusercontent.com/statOmics/PSLS21/data/freshweight_lettuce.txt`
 
-<!-- - Solution: [Solution1](./07_1_lettuce_sol.html) -->
+- Solution: [Solution1](./07_1_lettuce_sol.html)
 
 ---
 

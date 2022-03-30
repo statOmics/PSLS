@@ -59,9 +59,13 @@ glimpse(lettuce)
 First, we will set the `treatment` variable to a factor
 
 ```{r}
-## treatment to factor
 lettuce <- lettuce %>%
-  mutate(treatment = as.factor(treatment))
+  mutate(
+    ## Convert treatment to factor
+    treatment = as.factor(treatment),
+    ## Relevels such that "control" is the reference
+    treatment = relevel(treatment, ref = "control")
+  )
 ```
 
 # Data exploration
