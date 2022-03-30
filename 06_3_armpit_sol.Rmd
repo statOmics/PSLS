@@ -124,7 +124,7 @@ variability of both groups. We can do this visually:
 
 ```{r}
 ap %>%
-  ggplot(aes(x = trt, y = rel)) +
+ggplot(aes(x = trt, y = rel)) +
   geom_boxplot(outlier.shape = NA) +
   geom_point(position = "jitter") +
   ylab("relative abundance (%)") +
@@ -154,7 +154,7 @@ output
 
 ## Conclusion
 
-  On average the relative abundance of *Staphylococcus spp.* in the microbiome of the armpit in the transplant group is extremely significantly different from that in the placebo group ($p<<0.001$). The relative abundance of *Staphylococcus spp.* is on average `r round(diff(output$estimate),1)`% larger in the transplant group than in the placebo group (95\% CI [`r paste(format(-output$conf.int[2:1],digits=2,nsmall=1),collapse=",")`]%).
+On average the relative abundance of *Staphylococcus spp.* in the microbiome of the armpit in the transplant group is extremely significantly different from that in the placebo group ($p<<0.001$). The relative abundance of *Staphylococcus spp.* is on average `r round(diff(t.test(rel~trt,data=ap,var.equal=TRUE)$estimate),1)`% larger in the transplant group than in the placebo group (95\% CI [`r paste(format(-t.test(rel~trt,data=ap,var.equal=TRUE)$conf.int[2:1],digits=2,nsmall=1),collapse=",")`]%).
 
 # Data Analysis with a linear model
 
@@ -162,22 +162,23 @@ output
 
 We do not need to check the assumptions again because we have done this already in the data exploration when analysing the data using the t-test.
 
-```{r, eval=FALSE}
-mod <- ...
+```{r}
+mod <- lm(rel ~ trt, data = ap)
+mod
 ```
 
 ## Inference
 
 1. hypothesis test
 
-```{r eval=FALSE}
-...
+```{r}
+summary(mod)
 ```
 
 2. confidence interval
 
-```{r eval=FALSE}
-...
+```{r}
+confint(mod)
 ```
 
 3. How do your results compare to the analysis with the t-test.
