@@ -96,7 +96,7 @@ Correct solution for testing problem: ANalysis Of VAriance (ANOVA)
 - 1 dummy variable less than the number of groups. Here we need 2 dummy variables.
 - Generalizing to g groups $g>3$ is trivial (extra dummy variables)
 
-### Model
+## Model
 
 \begin{eqnarray}
   Y_i &=& g(x_{i1},x_{i2}) + \epsilon_i\\
