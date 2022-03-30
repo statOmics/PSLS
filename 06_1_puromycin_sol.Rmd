@@ -29,10 +29,15 @@ Puromycin <- Puromycin %>%
 
 ```{r}
 Puromycin %>%
-  ggplot(aes(x = conc, y = rate)) +
+  ggplot(aes(conc, rate)) +
   geom_point() +
-  ylab("Reaction rate (counts/min)") +
-  xlab("Substrate concentratie (ppm)")
+  stat_smooth(method = "lm") +
+  stat_smooth(color = "firebrick", se = FALSE) +
+  labs(
+    x = "Concentration (ppm)",
+    y = "Reaction rate (counts/min/min)"
+  ) +
+  ggtitle("Reaction rates for puromycin-treated enzymes")
 ```
 
 The plot shows that there is a relation between the velocity and the concentration, however, the relation does not seem to be linear.
@@ -41,12 +46,15 @@ We will assess the impact of log-transforming the concentration. Because the con
 
 ```{r}
 Puromycin %>%
-  ggplot(aes(x = log10(conc), y = rate)) +
+  ggplot(aes(log10(conc), rate)) +
   geom_point() +
-  ## To aid the visualization, we can fit a straight line to the data
-  stat_smooth(method = "lm", col = "firebrick", se = FALSE) +
-  ylab("Reaction Rate (counts/min)") +
-  xlab("log10(Substrate concentration) (log10 ppm)")
+  stat_smooth(method = "lm") +
+  stat_smooth(color = "firebrick", se = FALSE) +
+  labs(
+    x = "Concentration (log10(ppm))",
+    y = "Reaction rate (counts/min/min)"
+  ) +
+  ggtitle("Reaction rates for puromycin-treated enzymes")
 ```
 
 The relation between the velocity and the log$_{10}$ transformed concentration seems to be linear.
@@ -62,8 +70,8 @@ with $Y_i$ the reaction rate, $x_i$ the adopted concentration, $\beta_0$ the **i
 Note, that we write the substrate concentratio with a small letter because the predictor is not random. The researchers have chosen the substrate concentrations in the design phase and it is thus no random variable.
 
 ```{r}
-mod1 <- lm(rate ~ log10(conc), Puromycin)
-summary(mod1)
+mod <- lm(rate ~ log10(conc), Puromycin)
+summary(mod)
 ```
 
 Before we perform inference we will first assess the assumptions
@@ -82,7 +90,7 @@ We assume that the experiment was well designed and that the different reactions
 We assess linearity in a residual analysis
 
 ```{r}
-plot(mod1, which = 1)
+plot(mod, which = 1)
 ```
 
 There seem to be small deviations for the residuals at high concentrations.
@@ -92,7 +100,7 @@ We will use simulation to assess if we can observe similar residual plots if all
 
 ```{r}
 set.seed(1031)
-sigma <- sigma(mod1)
+sigma <- sigma(mod)
 dataHlp <- Puromycin
 
 simModels <- list()
@@ -100,7 +108,7 @@ simModels <- list()
 par(mfrow = c(3, 3))
 for (i in 1:9) {
   nobs <- nrow(Puromycin)
-  dataHlp$ySim <- mod1$fit + rnorm(nobs, sd = sigma)
+  dataHlp$ySim <- mod$fit + rnorm(nobs, sd = sigma)
   simModels[[i]] <- lm(ySim ~ log10(conc), dataHlp)
   plot(simModels[[i]], which = 1)
 }
@@ -111,17 +119,17 @@ We observe that similar deviations might be generated for a model where all assu
 ### Normality
 
 ```{r}
-plot(mod1, which = 2)
+plot(mod, which = 2)
 ```
 
 The QQ-plot does not show large deviations from normality.
 
-### Homoskedasticity: equality of the variance
+### Homoscedasticity: equality of the variance
 
 We can again use the residual plot for assessing this assumption or the plot were we plot the square root of the standardized residuals in function of the fit.
 
 ```{r}
-plot(mod1, which = 3)
+plot(mod, which = 3)
 ```
 
 We see that the spread of the majority of the residuals is more or less similar. However, the two residuals at low concentrations are slightly higher.
@@ -151,12 +159,12 @@ $H_A$: $\beta_1 \ne 0$
 using a t-test on the slope parameter.
 
 ```{r}
-summary(mod1)
-confint(mod1)
+summary(mod)
+confint(mod)
 ```
 
 
 ### Conclusion
 
 There is an extremely significant linear association between the substrate concentration on the log-scale and the reaction rate (p<<0.001).
-A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average  `r round(mod1$coef[2],1)` counts/min higher (95% CI [`r round(confint(mod1)[2,],1)`] counts/min).
+A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average  `r round(mod$coef[2],1)` counts/min higher (95% CI [`r round(confint(mod)[2,],1)`] counts/min).
