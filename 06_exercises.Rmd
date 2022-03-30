@@ -9,14 +9,14 @@ course, we will have exercises on linear regression, based on different
 datasets:
 
 - [The puromycin dataset]
-- [The poison datset]
+- [The poison dataset]
 - [Armpit example]
 
 ***
 
-As an additional example to the case studies seen in the theory, you can also have a look at this case study on a breast cancer dataset:
+For your reference you can find the code for the brca case study from the lecture for chapter 6:
 
-- [Breast cancer example](./breastCancerExample.html)
+- [Breast cancer example](./breastcancerExample.html)
 
 ***
 
