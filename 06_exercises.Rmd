@@ -94,8 +94,7 @@ The aims of this exercise are to
 1. Learn how the linear regression model can also be used to compare two group means
 2. Grasp how a two sample t-test can be recasted in a test on the slope term for a dummy variable
 
+- Exercise: [Exercise3](./06_3_armpit.html)
 - Data path:
 
-  `https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv"`
-
-- Exercise: [Exercise3](./06_3_armpit.html)
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv`
