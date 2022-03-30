@@ -1,6 +1,6 @@
 ---
 title: "Exercise 7.2: ANOVA on the cuckoo dataset - solution"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -46,6 +46,7 @@ Load the required libraries
 
 ```{r, message=FALSE}
 library(tidyverse)
+library(multcomp)
 ```
 
 ## Import the data
@@ -94,29 +95,94 @@ Cuckoo %>%
   geom_jitter(width = 0.2) +
   ggtitle("Boxplot of the length of eggs per type") +
   ylab("length (mm)") +
-  stat_summary(fun = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
+  stat_summary(
+    fun = mean, geom = "point",
+    shape = 5, size = 3, color = "black"
+  )
 ```
 
 # ANOVA
 
 To study if the observed differences in average egg length
-between the different foster bird types are significant, we may perform
+between the different foster bird types are significant, we can perform
 an ANOVA.
+
+## The model
+
+We will fit the following linear model:
+
+$$
+E(Y_i) = \beta_0 + \beta_1 X_{i1} + \beta_2 X_{i2} +
+  \beta_3 X_{i3} + \beta_4 X_{i4} + \beta_5 X_{i5}
+$$
+
+where $Y_i$ is the length of egg $i$ and the coefficients $beta_j$ corresond to
+the **additional expected** length of a cuckoo egg fostered by bird type $j + 1$. By
+convention, the intercept is called $\beta_0$ and it corresponds to the
+reference bird type, in this case bird type 1 (the Meadow pipit). The variables
+$X_ij$ are **dummy variables** which take on the value 1 if egg $i$ was fostered
+by bird type $j + 1$ and are 0 otherwise. Note that in this case, eggs are
+always fostered by a single bird type, so only one of the X's will be equal to
+1.
+
+For example, if egg $i$ was fostered by the meadow pipit (type 1), all the $X_{i1}, \dots, X_{i5}$ would be zero and we are left with:
+
+$$E(Y_i | X_{i1} = \dots = X_{i5} = 0) = \beta_0$$
+
+i.e. the intercept. If egg $i$ was fostered by the European robin (type 4), we would have:
+
+$$E(Y_i | X_{i3} = 1) = \beta_0 + \beta_3$$
+
+So $\beta_3$ can be interpreted as the *change* in average length of cuckoo eggs
+between the reference bird type (the meadow pipit) and the European robin. The
+coefficients can be negative or positive, so the change can be an increase or a
+decrease.
+
+To further aid with intepretation, we can visualize the model design using the **ExploreModelMatrix** package:
+
+```{r}
+ExploreModelMatrix::VisualizeDesign(Cuckoo, ~type)$plotlist[[1]]
+```
+
 
 ## Formulate null and alternative hypothesis
 
 The null hypothesis of ANOVA states that:
+
 $H0$: The mean egg length is equal between the different bird types.
+
+In terms of the linear model:
+
+$$
+H_0:\ \beta_1 = \beta_2 = \beta_3 = \beta_4 = \beta_5 = 0
+$$
 
 The alternative hypothesis of ANOVA states that:
 $HA$: The mean egg length for at least one bird type is different
 from the mean egg length in at least one other bird type.
 
+$$
+H_A:\ \beta_i \neq \beta_j \text{ for at least one } i \neq j
+$$
+
 ## Parameter estimation
 
 ```{r}
-mod1 <- lm(length ~ type, Cuckoo)
+mod <- lm(length ~ type, Cuckoo)
+summary(mod)
 ```
+
+The output of the model suggests that there are indeed differences in the
+*average* length of cuckoo eggs between different foster parents. Note, however,
+that in the standard output of `lm()`, the p-values are not adjusted for
+multiple testing (a topic which we will touch upon later). In addition, this
+model only shows the differences between foster types 2-6 and the **reference
+type** (1), represented by the intercept.
+
+The p-value of the F-test, given at the bottom of the summary, corresponds to a
+**one-way ANOVA** where the full model is compared to a reduced model containing
+only the intercept. Thus, it is testing the *omnibus* null hypothesis that all
+slope coefficients ($\beta_1$ - $\beta_5$) are equal to 0.
 
 ## Check assumptions
 
@@ -133,7 +199,7 @@ specific patterns of correlation between the randomly selected nests.
 To check the normality assumption, we will use QQ plots.
 
 ```{r}
-plot(mod1, which = 2)
+plot(mod, which = 2)
 ```
 
 ```{r}
@@ -156,7 +222,7 @@ As such, we may proceed with the ANOVA analysis.
 
 ```{r}
 set.seed(1031)
-sigma <- mod1 %>% sigma()
+sigma <- mod %>% sigma()
 dataHlp <- Cuckoo
 
 simModels <- list()
@@ -167,7 +233,7 @@ par(mfrow = c(3, 3))
 for (i in 1:9)
 {
   nobs <- Cuckoo %>% nrow()
-  dataHlp$ySim <- mod1$fit + rnorm(nobs, sd = sigma)
+  dataHlp$ySim <- mod$fit + rnorm(nobs, sd = sigma)
   simModels[[i]] <- lm(ySim ~ type, dataHlp)
   plot(simModels[[i]], which = 2)
   plotList[[i]] <- dataHlp %>%
@@ -187,6 +253,7 @@ do.call(gridExtra::grid.arrange, plotListQQ1)
 ```
 
 The most deviating QQ-plot of the residuals in the nine simulation runs:
+
 ```{r}
 par(mfrow = c(1, 1))
 plot(simModels[[8]], which = 2)
@@ -195,9 +262,18 @@ plot(simModels[[8]], which = 2)
 
 ## ANOVA model
 
+We perform the ANOVA test using the results of the linear regression model.
+Essentially, we test the following null hypothesis:
+
+$$
+H_0:\ \beta_1 = \beta_2 = \beta_3 = \beta_4 = \beta_5 = 0
+$$
+
+with the alternative being that at least one of the parameters is different from
+0.
+
 ```{r}
-mod1_anova <- anova(mod1)
-mod1_anova
+anova(mod)
 ```
 
 The p-value of the ANOVA analysis is extremely significant
@@ -209,7 +285,7 @@ between at least two bird types on the 5% significance level.
 
 Based on this analysis, we do not yet know between which particular
 bird types there is a significant difference. To study this, we will
-perform the Tuckey post-hoc analysis.
+perform a **Tukey post-hoc analysis**.
 
 ## Post-hoc analysis
 
@@ -226,19 +302,31 @@ is indeed a difference in the mean egg length between both bird types.
 
 We will also calculate the confidence interval on the mean differences.
 
-```{r,message=FALSE}
-library(multcomp, quietly = TRUE)
-mcp <- glht(mod1, linfct = mcp(type = "Tukey"))
+The post-hoc analysis is carried out using the `glht()` ("General Linear
+Hypotheses") function from the *multcomp* package. We apply this to our linear
+model object `mod` and specify in the `linfct=` argument that we want to perform
+*multiple comparisons* (`mcp`), using Tukey's method. We store the output of
+`glht()` and then display the results using the `summary()` function and
+calculating confidence intervals.
+
+```{r}
+mcp <- glht(mod, linfct = mcp(type = "Tukey"))
 summary(mcp)
 confint(mcp)
 ```
 
+We can also visualize the confidence interval by calling `plot()` on the `mcp` object:
+
+```{r}
+plot(mcp)
+```
+
 ## Conclusion
 
-There association between the mean length of a cuckoo's egg and the foster bird species is an extremely significant (p << 0.001).
+The association between the mean length of a cuckoo's egg and the foster bird species is extremely significant (p << 0.001).
 
 The mean length of cuckoo's eggs in nests of the Eurasian
-wern are smaller as compared to those from all other bird
+wren are smaller as compared to those from all other bird
 species in the study:
 
 - the meadow pipit (adjusted p-value = `r summary(mcp)$test$pvalues[names(summary(mcp)$test$tstat) == "wren - meadow"] %>% format(digits=1)`, mean difference = `r round(confint(mcp)$confint["wren - meadow",1],1)`mm, 95% CI [`r round(confint(mcp)$confint["wren - meadow",-1],1)`])
@@ -247,4 +335,6 @@ species in the study:
 - the European robin (adjusted p-value = `r summary(mcp)$test$pvalues[names(summary(mcp)$test$tstat) == "wren - robin"] %>% format(digits=1)`, mean difference = `r round(confint(mcp)$confint["wren - robin",1],1)`mm, 95% CI [`r round(confint(mcp)$confint["wren - robin",-1],1)`])
 - the white wagtail (adjusted p-value = `r summary(mcp)$test$pvalues[names(summary(mcp)$test$tstat) == "wren - wagtail"] %>% format(digits=1)`, mean difference = `r round(confint(mcp)$confint["wren - wagtail",1],1)`mm, 95% CI [`r round(confint(mcp)$confint["wren - wagtail",-1],1)`])
 
-The mean length of the cuckoo bird's eggs for all other pairwise comparisons between foster bird species are not statistically significantly different at the 5% level.
+There is no evidence taht the mean length of the cuckoo bird's eggs for all
+other pairwise comparisons between foster bird species are significantly
+different at the 5% level.
