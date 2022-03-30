@@ -43,7 +43,9 @@ Load the required libraries
 
 ```{r, message = FALSE, warning=FALSE}
 library(tidyverse)
-library(car)
+theme_set(theme_bw()) # Change ggplot2 default theme
+
+library(multcomp)
 ```
 
 # Data import
@@ -73,15 +75,18 @@ lettuce %>%
 Now let's make a boxplot displaying the freshweight of each treatment condition:
 
 ```{r}
-lettuce %>%
+boxplot <- lettuce %>%
   ggplot(aes(x = treatment, y = freshweight, fill = treatment)) +
   scale_fill_brewer(palette = "RdGy") +
-  theme_bw() +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.2) +
   ggtitle("Boxplot of the freshweigth for each treatment condition") +
   ylab("freshweight (gram)") +
-  stat_summary(fun = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
+  stat_summary(
+    fun = mean, geom = "point",
+    shape = 5, size = 3, color = "black"
+  )
+boxplot
 ```
 
 Note that there are no clear outliers in the data.
@@ -128,11 +133,11 @@ between treatment groups, other than the actual treatment.
 For the second assumption, we must check normality in each group.
 
 ```{r}
-## get qqplots for each individual treatment group
-par(mfrow = c(2, 2))
-for (i in levels(lettuce$treatment)) {
-  qqPlot(subset(lettuce, treatment == i)$freshweight, main = i, ylab = "")
-}
+ggplot(lettuce, aes(sample = freshweight)) +
+  geom_qq() +
+  geom_qq_line(aes(col = treatment), show.legend = FALSE) +
+  scale_color_brewer(palette = "Dark2") +
+  facet_wrap(vars(treatment))
 ```
 
 According to these plots, the normality assumption is met
@@ -150,11 +155,14 @@ Simulate from uniform distribution:
 
 ```{r}
 set.seed(5)
-par(mfrow = c(3, 2), mar = c(2, 4, 2, 0.2))
-for (i in 1:6) {
-  x <- runif(7) ## sample 7 observations from a uniform distribution
-  qqPlot(x, ylab = "")
-}
+
+## sample 7 observations from a uniform distribution, repeat 6 times
+df <- data.frame(x = runif(7 * 6), rep = rep(1:6, each = 7))
+ggplot(df, aes(sample = x)) +
+  geom_qq() +
+  geom_qq_line(col = "darkorchid") +
+  facet_wrap(vars(rep)) +
+  ggtitle("QQ plots for uniformly distributed data")
 ```
 
 Even though the data originates from a uniform distribution, several
@@ -164,11 +172,13 @@ Sample from normal distribution:
 
 ```{r}
 set.seed(5)
-par(mfrow = c(3, 2), mar = c(2, 4, 2, 0.2))
-for (i in 1:6) {
-  x <- rnorm(7) ## sample 7 sobservations from a normal distribution
-  qqPlot(x, ylab = "")
-}
+## sample 7 observations from a normal distribution, repeat 6 times
+df <- data.frame(x = rnorm(7 * 6), rep = rep(1:6, each = 7))
+ggplot(df, aes(sample = x)) +
+  geom_qq() +
+  geom_qq_line(col = "dodgerblue") +
+  facet_wrap(vars(rep)) +
+  ggtitle("QQ plots for normally distributed data")
 ```
 
 Even though the data originates from a normal distribution, several
@@ -192,15 +202,7 @@ with a slight left skew.
 We can check the assumption of equal variance with a boxplot:
 
 ```{r}
-lettuce %>%
-  ggplot(aes(x = treatment, y = freshweight, fill = treatment)) +
-  scale_fill_brewer(palette = "RdGy") +
-  theme_bw() +
-  geom_boxplot(outlier.shape = NA) +
-  geom_jitter(width = 0.2) +
-  ggtitle("Boxplot of the freshweigth for each treatment condition") +
-  ylab("freshweight (gram)") +
-  stat_summary(fun = mean, geom = "point", shape = 5, size = 3, color = "black", fill = "black")
+boxplot
 ```
 
 As a measure of variability, we may take the height
@@ -251,8 +253,7 @@ The alternative hypothesis for each pairwise test states that
 $HA$ there is indeed a difference in the average freshweight values
 between both groups.
 
-```{r,message=FALSE}
-library(multcomp, quietly = TRUE)
+```{r}
 mcp <- glht(fit, linfct = mcp(treatment = "Tukey"))
 mcp_summary <- summary(mcp)
 mcp_summary
