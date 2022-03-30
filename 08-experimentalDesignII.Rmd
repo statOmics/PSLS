@@ -17,9 +17,9 @@ library(tidyverse)
 - Replication: technical vs biological, sample size - power
 - Sources of variation: technical, biological, within subject, between subject
 
-# Replicatie
+# Replication
 
-Two pager on Replication in nature methods [[PDF](https://www.nature.com/articles/nmeth.3091.pdf)]
+Two pager on Replication in nature methods: [[PDF](https://www.nature.com/articles/nmeth.3091.pdf)]
 ![](https://www.nature.com/articles/nmeth.3091.pdf){ width=100% }
 
 ## Example
