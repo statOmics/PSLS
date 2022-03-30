@@ -1,0 +1,92 @@
+---
+title: "Exercises on chapter 6: Simple linear regression"
+author: "Lieven Clement and Jeroen Gilis"
+date: "statOmics, Ghent University (https://statomics.github.io)"
+---
+
+In this hands-on tutorial session you will perform three exercises on linear regression. 
+For your reference you can find the code for the brca case study from the lecture for chapter 6: 
+
+[LINK TO FILE]
+
+
+# The puromycin dataset
+
+Data on the velocity of an enzymatic reaction were obtained by Treloar (1974).
+The number of counts per minute of radioactive product from the reaction was
+measured as a function of substrate concentration in parts per million (ppm)
+and from these counts the initial rate (or velocity) of the reaction was
+calculated (counts/min/min). The experiment was conducted once with the enzyme
+treated with Puromycin, and once with the enzyme untreated.
+
+In this tutorial you will assess if there is an association between the substrate
+concentration and rate for the **treated** enzyme.
+
+The aims of this exercise are to 
+
+1. independently perform a linear regression analysis on a new case study
+2. critically assess the assumptions for linear regression
+3. grasp how an appropriate transformation can remediate invalid assumptions
+4. get more proficient in formulating the conclusion of a statistical analysis in terms of the research question.
+
+FILES: 
+
+- Exercise: [Exercise1](./06_3_puromycin.html)
+- Data path: Not required
+<!-- - Solution: [Solution1](./06_3_puromycin_sol.html) -->
+
+
+# The poison dataset:
+
+In this experiment, 96 fish (dojofish, goldfish and zebrafish)
+were placed separately in a tank with two litres of water and
+a certain dose (in mg) of a certain poison EI-43,064. The resistance
+of the fish a against the poison was measured as the amount of
+minutes the fish survived upon adding the poison (Surv_time, in
+minutes). Additionally, the weight of each fish was measured.
+
+In this tutorial, we will study the association between dose and survival time
+by using a linear regression model.
+
+
+The aims of this exercise are to sharpen your skills in 
+ 
+1. data exploration for datasets with multiple variables 
+
+2. assessing the assumptions of the linear model and remediating the fit using transformations
+
+3. interpreting the linear model parameters in the context of the research question
+
+Files:
+
+- Exercise: [Exercise2](./06_1_poison.html)
+- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv
+<!-- - Solution: [Solution2](./06_1_poison_sol.html) -->
+
+---
+
+# Armpit example
+
+Smelly armpits are not caused by sweat, itself. The smell is caused by specific
+micro-organisms belonging to the group of Corynebacterium spp. that metabolise
+sweat. Another group of abundant bacteria are the Staphylococcus spp., which do
+not metabolise sweat in smelly compounds.
+
+The CMET-groep at Ghent University does research on transplanting the armpit
+microbiome to help people with smelly armpits. To test the effect of
+transplanting the microbiome, they conducted an experiment on two groups
+of volunteers: one group was treated with a placebo, while the other had a
+microbiome transplant. The goal was to assess whether a microbial transplant can affect the relative abundance Staphylococcus spp. in the microbiome of the armpit.
+
+In the previous tutorial, we analysed the armpit data using a two sample t-test.
+Add a section to the script file for the armpit example where you model the data using a linear model. Compare the output of the linear model to the results you optained with the two sample t-test and formulate your conclusion based on the output of the linear model.
+
+The aims of this exercise are to
+
+1. learn how the linear regression model can also be used to compare two group means.
+2. grasp how a two sample t-test can be recasted in a test on the slope term for a dummy variable
+
+Files: 
+
+- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv"
+- Exercise: [Exercise3](./06_3_armpit.html)

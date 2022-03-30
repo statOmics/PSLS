@@ -4,8 +4,9 @@ author: "Lieven Clement and Jeroen Gilis"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
-On the third day of the "Practical Statistics for the Life Sciences"
-course, we will have three tutorials on ANOVA, based on different datasets:
+In this hands-on tutorial session you will perform three exercises on one-way Anova.,
+
+For your reference you can find the code for the prostacyclin case study from the lecture for chapter 7: [prostacyclin example](./07_prostacyclin_example.Rmd)
 
 
 # The lettuce freshweight dataset
@@ -32,6 +33,18 @@ plants in a greenhouse. The pots were filled with one of four soil types;
 The dataset `freshweight_lettuce.txt` contains the freshweight for 28 lettuce
 plants. The researchers want to test if there is an effect of one or more of
 the treatments on the growth of lettuce plants.
+
+The aims of this exercise are to learn how to:
+
+- formulate the null and alternative hypotheses for ANOVA
+
+- assess the assumptions for one-way ANOVA in a data exploration 
+
+- conduct a one-way anova and posthoc tests using a linear model 
+
+- interpret the results from an anova analysis in the context of the research question
+
+Files: 
 
 - Exercise: [Exercise1](./07_1_lettuce.html)
 - Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/freshweight_lettuce.txt
