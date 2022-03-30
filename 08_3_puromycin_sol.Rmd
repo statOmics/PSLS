@@ -1,6 +1,6 @@
 ---
 title: "8.3. Multiple regression with interaction: puromycin example - solution"
-author: "Lieven Clement & Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -8,6 +8,7 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
+theme_set(theme_bw())
 ```
 
 # Puromycin data
@@ -44,13 +45,15 @@ rate, for both of the enzyme states.
 
 ```{r}
 Puromycin %>%
-  ggplot(aes(x = conc, y = rate)) +
-  geom_point() +
-  stat_smooth(method = "loess", col = "red") + # fit een kromme door de punten (rode lijn)
-  stat_smooth(method = "lm", col = "black") + # fit een rechte door de punten aan de hand van de kleinstekwadratenmethode
-  ylab("Reaction rate (counts/min)") +
-  xlab("Substrate concentratie (ppm)") +
-  facet_grid(~state)
+  ggplot(aes(conc, rate)) +
+  geom_point(aes(col = state)) +
+  stat_smooth(method = "lm") +
+  stat_smooth(color = "firebrick", se = FALSE) +
+  labs(
+    x = "Substrate concentration (ppm)",
+    y = "Reaction rate (counts/min/min)"
+  ) +
+  ggtitle("Reaction rates for puromycin-treated enzymes")
 ```
 
 The plot shows that there is a relation between the velocity and the
@@ -61,13 +64,15 @@ concentration is measured in ppm we will log$_{10}$ transform the data.
 
 ```{r}
 Puromycin %>%
-  ggplot(aes(x = conc %>% log10(), y = rate)) +
-  geom_point() +
-  stat_smooth(method = "loess", col = "red") +
-  stat_smooth(method = "lm", col = "black") +
-  ylab("Reaction Rate (counts/min)") +
-  xlab("log10(Substrate concentration) (log10 ppm)") +
-  facet_grid(~state)
+  ggplot(aes(x = log10(conc), y = rate)) +
+  geom_point(aes(col = state)) +
+  stat_smooth(method = "lm") +
+    stat_smooth(color = "firebrick", se = FALSE) +
+    labs(
+      x = "Substrate concentration (log10(ppm))",
+      y = "Reaction rate (counts/min/min)"
+    ) +
+    ggtitle("Reaction rates for puromycin-treated enzymes")
 ```
 
 The relation between the velocity and the log$_{10}$ transformed concentration
@@ -120,7 +125,8 @@ The interaction term has the interpretation as the change in slope between treat
 
 ```{r}
 Puromycin <- Puromycin %>%
-  mutate(log10conc = conc %>% log10())
+  mutate(log10conc = log10(conc))
+
 mod1 <- lm(rate ~ log10conc * state, Puromycin)
 summary(mod1)
 ```
@@ -136,7 +142,7 @@ Before we perform inference we will first assess the assumptions
 
 We assume that the experiment was well designed and that the different reactions that were use in the experiment are independent.
 
-## Linearity
+### Linearity
 
 We assess linearity in a residual analysis
 
@@ -167,9 +173,95 @@ plot(mod1, which = 3)
 We see that the spread of the majority of the residuals is more or less similar.
 As such, we may assume homoscedasticity of the data.
 
-## Inference
 
-### hypotheses
+## Intermezzo: Graphical interpretation of the parameters
+
+### Simple linear model: 1 slope {-}
+
+This is the same model that we fit in the
+[Chapter 6 exercise](./06_1_puromycin.html):
+
+$$ Y_i = \beta_0 + \beta_{\text{rate}} X_{i, \text{rate}} + \epsilon_i $$
+
+```{r}
+mod_simple <- lm(rate ~ log10conc, data = Puromycin)
+mod_simple
+
+ggplot(Puromycin, aes(log10conc, rate)) +
+  geom_point(aes(color = state)) +
+  geom_abline(
+     intercept = coef(mod_simple)[1],
+     slope = coef(mod_simple)[2]
+  ) +
+  scale_color_manual(values = c("darkorchid", "forestgreen")) +
+  ggtitle("The simple linear model")
+```
+
+### Additive model: 2 parallel slopes {-}
+
+We add an additional term for the state of the reactin (treated or untreated).
+Note that this variable is **categorical**.
+
+$$
+Y_i = \beta_0 + \beta_{\text{rate}} X_{i, \text{rate}} +
+  \beta_{\text{state}} X_{i, \text{state}} + epsilon_i
+$$
+
+```{r}
+mod_add <- lm(rate ~ log10conc + state, data = Puromycin)
+mod_add
+
+ggplot(Puromycin, aes(log10conc, rate, col = state)) +
+  geom_point() +
+  ## Line for the untreated group
+  geom_abline(
+     intercept = coef(mod_add)[1],
+     slope = coef(mod_add)[2],
+     col = "darkorchid"
+  ) +
+  ## Line for the treated group
+  geom_abline(
+     intercept = coef(mod_add)[1] + coef(mod_add)[3],
+     slope = coef(mod_add)[2],
+     col = "forestgreen"
+  ) +
+  scale_color_manual(values = c("darkorchid", "forestgreen")) +
+  ggtitle("The additive linear model with parallel slopes")
+```
+
+
+### The interaction model: 2 non-parallel slopes {-}
+
+$$
+Y_i = \beta_0 + \beta_{\text{rate}} X_{i, \text{rate}} +
+  \beta_{\text{state}} X_{i, \text{state}} +
+  \beta_{\text{rate:state}} X_{i, \text{rate}} X_{i, \text{state}} +
+  epsilon_i
+$$
+
+```{r}
+mod_int <- lm(rate ~ log10conc * state, data = Puromycin)
+mod_int
+
+ggplot(Puromycin, aes(log10conc, rate, col = state)) +
+  geom_point() +
+  ## Line for the untreated group
+  geom_abline(
+     intercept = coef(mod_int)[1],
+     slope = coef(mod_int)[2],
+     col = "darkorchid"
+  ) +
+  ## Line for the treated group
+  geom_abline(
+     intercept = coef(mod_int)[1] + coef(mod_int)[3],
+     slope = coef(mod_int)[2] + coef(mod_int)[4],
+     col = "forestgreen"
+  ) +
+  scale_color_manual(values = c("darkorchid", "forestgreen")) +
+  ggtitle("The additive linear model with parallel slopes")
+```
+
+## Inference
 
 We first do an omnibus test to assess is there is an effect of the log10 concentration on the velocity.
 
@@ -181,7 +273,7 @@ anova(mod0, mod1)
 Next, we assess the interaction.
 
 ```{r}
-car::Anova(mod1)
+anova(mod1)
 ```
 
 We cannot remove the interaction of the model.
@@ -211,13 +303,19 @@ We can assess all these hypotheses using multcomp while correcting for multiple 
 
 ```{r}
 library(multcomp)
-mcp1 <- glht(mod1, linfct = c("log10conc = 0", "log10conc + log10conc:statetreated = 0", "log10conc:statetreated = 0"))
+mcp1 <- glht(mod1,
+  linfct = c(
+    "log10conc = 0",
+    "log10conc + log10conc:statetreated = 0",
+    "log10conc:statetreated = 0"
+  )
+)
 summary(mcp1)
 confint(mcp1)
 ```
 
 
-### Conclusion
+## Conclusion
 
 There is an extremely significant effect of the substrate concentration on the reaction rate (p<<0.001).
 The effect of the substrate concentration on the reaction rate is extremely significant for reactions catalysed with untreated enzymes. A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average  `r round(confint(mcp1)$confint[1,1],1)` counts/min higher (95% CI [`r round(confint(mcp1)$confint[1,-1],1)`] counts/min) (p << 0.001).
