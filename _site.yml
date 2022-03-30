@@ -3,7 +3,7 @@ navbar:
   left:
     - icon: fa-home
       href: index.html
-    - text: "Lectures"
+    - text: "Topics"
       icon: fa-chalkboard-teacher
       menu:
         - text: "1. Introduction"
@@ -37,7 +37,7 @@ navbar:
         - text: "10. Categorical Data Analysis"
           href: 10-categoricalDataAnalysis.html
 
-    - text: "Labs"
+    - text: "Exercises"
       icon: fa-laptop
       menu:
       - text: "4. Data Exploration"
