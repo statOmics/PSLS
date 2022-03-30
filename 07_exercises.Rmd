@@ -6,7 +6,7 @@ date: "statOmics, Ghent University (https://statomics.github.io)"
 
 In this hands-on tutorial session you will perform three exercises on one-way Anova.,
 
-For your reference you can find the code for the prostacyclin case study from the lecture for chapter 7: [prostacyclin example](./07_prostacyclin_example.Rmd)
+For your reference you can find the code for the prostacyclin case study from the lecture for chapter 7: [prostacyclin example](./07_prostacyclin_example.html)
 
 
 # The lettuce freshweight dataset
