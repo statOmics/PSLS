@@ -43,7 +43,7 @@ Load the required libraries
 
 ```{r, message = FALSE, warning=FALSE}
 library(tidyverse)
-library(car)
+library(multcomp)
 ```
 
 # Data import
