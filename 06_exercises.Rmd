@@ -30,7 +30,14 @@ calculated (counts/min/min). The experiment was conducted once with the enzyme
 treated with Puromycin, and once with the enzyme untreated.
 
 The goal is to assess if there is an association between the substrate
-concentration and rate for the **treated** enzyme.
+concentration and rate for the treated enzyme.
+
+The aims of this exercise are to
+
+1. Independently perform a linear regression analysis on a new case study
+2. Critically assess the assumptions for linear regression
+3. Grasp how an appropriate transformation can remediate invalid assumptions
+4. Get more proficient in formulating the conclusion of a statistical analysis in terms of the research question
 
 - Exercise: [Exercise1](./06_1_puromycin.html)
 - Data path: Not required
@@ -49,8 +56,19 @@ minutes). Additionally, the weight of each fish was measured.
 In this tutorial, we will study the association between dose and survival time
 by using a linear regression model.
 
+The aims of this exercise are to sharpen your skills in
+
+1. Data exploration for datasets with multiple variables
+
+2. Assessing the assumptions of the linear model and remediating the fit using transformations
+
+3. Interpreting the linear model parameters in the context of the research question
+
 - Exercise: [Exercise2](./06_2_poison.html)
-- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv`
+
 <!-- - Solution: [Solution2](./06_2_poison_sol.html) -->
 
 ---
@@ -71,5 +89,13 @@ microbiome transplant. The goal was to assess whether a microbial transplant can
 In the previous tutorial, we analysed the armpit data using a two sample t-test.
 Add a section to the script file for the armpit example where you model the data using a linear model. Compare the output of the linear model to the results you optained with the two sample t-test and formulate your conclusion based on the output of the linear model.
 
-- Data path: https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv"
+The aims of this exercise are to
+
+1. Learn how the linear regression model can also be used to compare two group means
+2. Grasp how a two sample t-test can be recasted in a test on the slope term for a dummy variable
+
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/armpit.csv"`
+
 - Exercise: [Exercise3](./06_3_armpit.html)
