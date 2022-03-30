@@ -47,7 +47,7 @@ generalize the results from the sample to that of the population.
 # Import the dataset
 
 ```{r, message=FALSE}
-#Load the libraries
+# Load the libraries
 library(tidyverse)
 ```
 

@@ -17,7 +17,7 @@ set.seed(140)
 ```
 
 
-#Intro
+# Introduction
 
 Inference was only correct if distributional assumptions were satisfied
 
@@ -85,7 +85,7 @@ chol %>% ggplot(aes(sample = cholest)) +
 
 ---
 
-#Ranks
+# Ranks
 
 Rank tests start from rank-transformed data.
 

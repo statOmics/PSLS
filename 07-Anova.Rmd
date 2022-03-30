@@ -35,7 +35,7 @@ head(prostacyclin)
 
 ---
 
-##Data exploration
+## Data exploration
 
 ```{r}
 prostacyclin %>%
@@ -210,7 +210,7 @@ The decomposition of SSTot can be written as
   \text{SSTot} = \text{SST} + \text{SSE}
 \]
 
-##SSTot
+### SSTot
 
 \vspace{10pt}
 
@@ -232,7 +232,7 @@ axis(at = 1:3, labels = c(expression(paste(y[i], " - ", bar(y))), expression(pas
 ```
 
 
-##SST
+### SST
 
 \vspace{10pt}
 
@@ -253,7 +253,7 @@ points(rep(2, 3), predict(model1, data.frame(dose = factor(c(10, 25, 50)))) - me
 axis(at = 1:3, labels = c(expression(paste(y[i], " - ", bar(y))), expression(paste(bar(y)[j], " - ", bar(y))), expression(paste(y[i], " - ", bar(y)[j]))), side = 1, cex.axis = 1.5)
 ```
 
-##SSE
+### SSE
 
 \vspace{10pt}
 
@@ -345,7 +345,7 @@ lines(grid, df(grid, 50, 50), type = "l", col = 5, lwd = 2)
 legend("topright", lty = 1, col = c(1, 2, 3, 4, 5), legend = c("F(1,5)", "F(5,5)", "F(10,30)", "F(20,30)", "F(50,50)"), lwd = 2, cex = 1.5)
 ```
 
-###Prostacyclin example: which groups are different?
+### Prostacyclin example: which groups are different?
 
 ```{r}
 summary(model1)
@@ -466,7 +466,7 @@ An alternative approach is to report
   1. *adjusted p-values* that can be compared to the FWER $\alpha_F$ level: $$\tilde{p}=min(m\times p,1)$$
   2. and $(1-\alpha_F/m)100\%$ confidence intervals.
 
-### prostacyclin example
+### Prostacyclin example
 
 ```{r}
 with(prostacyclin, pairwise.t.test(prostac, dose, data = prostacyclin, p.adjust.method = "bonferroni"))
@@ -561,7 +561,7 @@ confint(model1.mcp)
 plot(confint(model1.mcp))
 ```
 
-###Evaluate Tukey method
+### Evaluate Tukey method
 
 ```{r}
 g <- 3 # number of treatments (g=3)
