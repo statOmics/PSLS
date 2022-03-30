@@ -24,11 +24,12 @@ knitr::opts_chunk$set(include = TRUE, comment = NA, echo = TRUE,
 - ESR1 in active in $\pm$ 75% of breast cancer tumours.
 
 - Expression of ER gene positive for treatment: tumour responds to hormone therapy
-    - Tamoxifen interacts with ER and modulates gene expression.
+
+- Tamoxifen interacts with ER and modulates gene expression.
 
 - Proteins of S100 family often dysregulated in cancer
 
-      - S100A8 expression represses immune system in tumour en creates an environment of inflammation that promotes tumour growth.
+- S100A8 expression represses immune system in tumour en creates an environment of inflammation that promotes tumour growth.
 
 
 ```{r libraries, message=FALSE}
