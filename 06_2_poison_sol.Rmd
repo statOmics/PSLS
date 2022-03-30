@@ -201,7 +201,7 @@ List assumptions:
 1. The observations are independent of each other
 2. Linearity between the response and predictor variable
 3. The residues of the model must be normally distributed
-4. Homoskedasticity of the data
+4. Homoscedasticity of the data
 
 The first assumption is met based on the experimental design. In the
 data exploration phase, we saw that there is no clear trend in the association

@@ -51,7 +51,7 @@ brcaSubset <- brca %>% filter(S100A8 < 2000)
 brcaSubset[, -(1:4)] %>% ggpairs()
 ```
 
-## Association between ESR1 and S100A8 expressie
+## Association between ESR1 and S100A8 expression
 
 - ESR1 in $\pm$ 75% of breast cancer tumors.
 
@@ -60,7 +60,7 @@ brcaSubset[, -(1:4)] %>% ggpairs()
 
 - Proteins of S100 family often dysregulated in cancer
 
-    - S100A8 expressie represses immune systeem in tumor en creates an environment of inflamation that promotes tumor growth.
+- S100A8 expression represses immune systeem in tumor en creates an environment of inflamation that promotes tumor growth.
 
 - Assess association between ESR1 and S100A8 expression.
 
@@ -625,7 +625,7 @@ And that the interval becomes much wider! This is particularly important here fo
 
 
 # Sum of squares and Anova-table
-##Total sum of squares
+## Total sum of squares
 $$\text{SSTot} = \sum_{i=1}^n (Y_i-\bar{Y})^2.$$
 
 - SStot can be used to estimate the variance of the **marginal distribution** of the response.
@@ -638,7 +638,7 @@ $$\text{SSTot} = \sum_{i=1}^n (Y_i-\bar{Y})^2.$$
 ```{r out.width='100%', fig.asp=.8, fig.align='center', echo=FALSE}
 brca$log2ESR1 <- log2(brca$ESR1)
 brca$log2S100A8 <- log2(brca$S100A8)
-plot(log2S100A8 ~ log2ESR1, data = brca, xlab = "ESR1 expressie (log2)", ylab = "S100A8 expressie (log2)", cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5, col = 4)
+plot(log2S100A8 ~ log2ESR1, data = brca, xlab = "ESR1 expression (log2)", ylab = "S100A8 expression (log2)", cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5, col = 4)
 abline(h = mean(brca$log2S100A8))
 for (i in 1:length(brca$log2S100A8)) lines(rep(brca$log2ESR1[i], 2), c(mean(brca$log2S100A8), brca$log2S100A8[i]), lty = 2, col = 4)
 ```
@@ -657,7 +657,7 @@ $$\text{SSR} = \sum_{i=1}^n (\hat{Y}_i - \bar{Y})^2 = \sum_{i=1}^n (\hat{g}(x_i)
 - SSR measures the size of the effect of the predictor
 
 ```{r out.width='100%', fig.asp=.8, fig.align='center',echo=FALSE}
-plot(log2S100A8 ~ log2ESR1, brca, xlab = "ESR1 expressie (log2)", ylab = "S100A8 expressie (log2)", cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)
+plot(log2S100A8 ~ log2ESR1, brca, xlab = "ESR1 expression (log2)", ylab = "S100A8 expression (log2)", cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)
 abline(h = mean(brca$log2S100A8))
 abline(lm2, col = 2)
 points(brca$log2ESR1, lm2$fitted, pch = 2, col = 2)
@@ -677,7 +677,7 @@ $$ \text{SSE} = \sum_{i=1}^n (Y_i-\hat{Y}_i )^2 = \sum_{i=1}^n \left\{Y_i-\hat{g
 ---
 
 ```{r out.width='100%', fig.asp=.8, fig.align='center',echo=FALSE}
-plot(log2S100A8 ~ log2ESR1, brca, xlab = "ESR1 expressie (log2)", ylab = "S100A8 expressie (log2)", cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)
+plot(log2S100A8 ~ log2ESR1, brca, xlab = "ESR1 expression (log2)", ylab = "S100A8 expression (log2)", cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)
 abline(lm2, col = 2)
 points(brca$log2ESR1, lm2$fitted, pch = 2, col = 2)
 for (i in 1:length(brca$log2S100A8)) lines(rep(brca$log2ESR1[i], 2), c(brca$log2S100A8[i], lm2$fitted[i]), lty = 2)
