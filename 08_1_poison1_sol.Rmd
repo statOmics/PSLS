@@ -1,6 +1,6 @@
 ---
 title: "Exercise 8.1: Additive linear model on the poison dataset - solution"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -28,12 +28,13 @@ weight
 Load libraries
 
 ```{r, message=FALSE, warning=FALSE}
-library(tidyverse)
-library(ggplot2)
 # install.packages("GGally")
 library(GGally)
 library(car)
 library(multcomp)
+
+library(tidyverse)
+theme_set(theme_bw())
 ```
 
 # Import the data
@@ -66,9 +67,11 @@ and remove the non-transformed values.
 poison <- poison %>%
   rename("Species" = "species") %>%
   mutate(Species = as.factor(Species)) %>%
-  mutate(Species = fct_recode(Species, Dojofish = "0", Goldfish = "1", Zebrafish = "2")) %>%
-  mutate(log2Surv_time = Surv_time %>% log2()) %>%
-  dplyr::select(-Surv_time) %>%
+  mutate(Species = fct_recode(Species,
+    Dojofish = "0", Goldfish = "1", Zebrafish = "2"
+  )) %>%
+  mutate(log2Surv_time = log2(Surv_time)) %>%
+  select(-Surv_time) %>%
   filter(Species == "Dojofish")
 
 poison
@@ -83,9 +86,8 @@ multiple panels, which display (1) univariate plots of the different variables
 in our dataset, (2) bivariate plots and (3) correlation coefficients between
 the different variables.
 
-```{r, message=FALSE}
-poison %>%
-  ggpairs() + theme_bw()
+```{r, message=FALSE, fig.width=12}
+ggpairs(poison)
 ```
 
 Based on these plots, we observe that:
@@ -102,12 +104,9 @@ poison %>%
   ggtitle("Association between dose and weight") +
   theme_bw() +
   stat_summary(
-    geom = "point",
-    fun = "mean",
-    col = "black",
-    size = 4,
-    shape = 24,
-    fill = "red"
+    fun = mean, geom = "point",
+    col = "black", size = 4,
+    shape = 24, fill = "red"
   )
 ```
 
@@ -143,7 +142,7 @@ Or for an interpretation at the original scale (minutes in stead of log2
 minutes):
 
 ```{r}
-2^(lm_simple$coef)["Dose"]
+2^(coef(lm_simple))["Dose"]
 2^(confint(lm_simple))[2, ]
 ```
 
@@ -187,20 +186,19 @@ residual plots if all assumptions for the linear model hold.
 
 ```{r}
 set.seed(1031)
-sigma <- lm_additive %>% sigma()
+sigma <- sigma(lm_additive)
 
 dataHlp <- poison
-simModels <- list()
 
 par(mfrow = c(3, 3))
-for (i in 1:9)
-{
-  nobs <- poison %>% nrow()
-  dataHlp$ySim <- lm_additive$fit + rnorm(nobs, sd = sigma)
-  simModels[[i]] <- lm(ySim ~ Dose + Weight, dataHlp)
-  plot(simModels[[i]], which = 2)
+for (i in 1:9) {
+  nobs <- nrow(poison)
+  dataHlp$ySim <- fitted.values(lm_additive) + rnorm(nobs, sd = sigma)
+  simModel <- lm(ySim ~ Dose + Weight, dataHlp)
+  plot(simModel, which = 2)
 }
 ```
+
 It seems that deviations of the size that we see in our real data may be
 expected even when normality is met. As such, all assumptions for linear
 regression seem to be valid.
@@ -245,7 +243,7 @@ that are exposed to a poison dosage that differs 1 mg/L. In symbols:
 ## Conclusion
 
 ```{r}
-2^(lm_additive$coef)
+2^(coef(lm_additive))
 2^(confint(lm_additive))
 ```
 

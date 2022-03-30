@@ -1,6 +1,6 @@
 ---
 title: "Exercise 8.2: Non-additive linear model on the poison dataset"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -27,12 +27,13 @@ survival time in function of the dose and the weight of the fish,
 Load libraries
 
 ```{r, message=FALSE, warning=FALSE}
-library(tidyverse)
-library(ggplot2)
 # install.packages("GGally")
 library(GGally)
 library(car)
 library(multcomp)
+
+library(tidyverse)
+theme_set(theme_bw())
 ```
 
 # Import the data
@@ -64,9 +65,11 @@ variable `log2Surv_time` and remove the non-transformed values.
 poison <- poison %>%
   rename("Species" = "species") %>%
   mutate(Species = as.factor(Species)) %>%
-  mutate(Species = fct_recode(Species, Dojofish = "0", Goldfish = "1", Zebrafish = "2")) %>%
-  mutate(log2Surv_time = Surv_time %>% log2()) %>%
-  dplyr::select(-Surv_time) %>%
+  mutate(Species = fct_recode(Species,
+    Dojofish = "0", Goldfish = "1", Zebrafish = "2"
+  )) %>%
+  mutate(log2Surv_time = log2(Surv_time)) %>%
+  select(-Surv_time) %>%
   filter(Species == "Dojofish")
 
 poison
@@ -81,9 +84,8 @@ multiple panels, which display (1) univariate plots of the different variables
 in our dataset, (2) bivariate plots and (3) correlation coefficients between
 the different variables.
 
-```{r, message=FALSE}
-poison %>%
-  ggpairs() + theme_bw()
+```{r, message=FALSE, fig.width=12}
+  ggpairs(poison)
 ```
 
 Based on these plots, we observe that:
@@ -102,12 +104,9 @@ poison %>%
   ggtitle("Association between dose and weight") +
   theme_bw() +
   stat_summary(
-    geom = "point",
-    fun = "mean",
-    col = "black",
-    size = 4,
-    shape = 24,
-    fill = "red"
+    fun = mean, geom = "point",
+    col = "black", size = 4,
+    shape = 24, fill = "red"
   )
 ```
 
@@ -208,7 +207,7 @@ summary(lm_additive)
 ```
 
 ```{r}
-2^(lm_additive$coef) # original scale
+2^(coef(lm_additive)) # original scale
 2^(confint(lm_additive))
 ```
 

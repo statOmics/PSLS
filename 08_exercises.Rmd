@@ -1,12 +1,22 @@
 ---
 title: "Exercises on chapter 8: Multiple linear regression"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
 On the fourth day of the "Practical Statistics for the Life Sciences"
-course, we will have four tutorials on multiple linear regression, based on
+course, we will have 9 tutorials on multiple linear regression, based on
 different datasets:
+
+- [The poison dataset]
+- [The poison dataset (2)]
+- [The puromycin dataset]
+- [The KPNA2 dataset]
+- [Blocking: the rats dataset (1)]
+- [Blocking: the rats dataset (2)]
+- [Power analysis: the rodents dataset]
+- [Power analysis: the Puromycin dataset]
+- [Power analysis: the KPNA2 dataset]
 
 
 # The poison dataset
@@ -41,8 +51,11 @@ above, we here we will model the survival time in function of the dose and the
 weight of the fish, **and including an interaction between dose and weight.**
 
 - Exercise: [Exercise2](./08_2_poison2.html)
-- Data path: "https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv"
-<!-- - Solution2: [Solution2](./08_2_poison1_sol.html) -->
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv`
+
+<!-- - Solution2: [Solution2](./08_2_poison2_sol.html) -->
 
 ---
 
@@ -79,7 +92,10 @@ grade, but also on their lymph node status. The lymph nodes were
 not affected (0) or surgically removed (1).
 
 - Exercise: [Exercise4](./08_4_kpna2.html)
-- Data path: "https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt"
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt`
+
 <!-- - Solution: [Solution4](./08_4_kpna2_sol.html) -->
 
 ---
@@ -103,7 +119,10 @@ In this exercise we will perform the data exploration using all diets, but,
 to keep the data analysis simple we will only assess the beef and cereal diets.
 
 - Exercise: [Exercise5](./08_5_rats.html)
-- Data path: "https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt"
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt`
+
 <!-- - Exercise: [Solution5](./08_5_rats_sol.html) -->
 
 ---
@@ -114,7 +133,10 @@ Again, we make use of the *rats* dataset defined above. In contrast to the
 previous exercise, we perform the analysis for all three diets in the dataset.
 
 - Exercise: [Exercise6](./08_6_rats.html)
-- Data path: "https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt"
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/PSLS21/data/dietRats.txt`
+
 <!-- - Exercise: [Solution6](./08_6_rats_sol.html) -->
 
 
@@ -184,7 +206,7 @@ increase in the substrate concentration ($\beta_1=10$).
 ---
 
 
-# Power analysis: he KPNA2 dataset
+# Power analysis: the KPNA2 dataset
 
 Histologic grade in breast cancer provides clinically important prognostic
 information. Researchers examined whether histologic grade was associated with
@@ -208,5 +230,8 @@ the ones we observed in the study?
 
 - What is the power to pick up each of the contrasts when the FC for grade for patients with unaffected lymph nodes equals 1.5 ($\beta_g = log2(1.5)$)?
 
-- Data path: "https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt"
+- Data path:
+
+  `https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt`
+
 <!-- - Solution: [Solution9](./08_ExperimentalDesignII_3_kpna2_sol.Rmd.html) -->
