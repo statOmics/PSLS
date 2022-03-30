@@ -20,7 +20,7 @@ set.seed(140)
 
 - Extend  $F$-test from a one-way ANOVA to non-parametric alternatives.
 
-# DMH Voorbeeld
+# DMH example
 
 Assess genotoxicity of 1,2-dimethylhydrazine dihydrochloride (DMH)  (EU directive)
 

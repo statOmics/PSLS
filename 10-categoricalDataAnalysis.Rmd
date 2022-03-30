@@ -105,7 +105,7 @@ In our example $\bar x =$ `r boys` / `r n` = `r format(pi*100,digits=3)`%.
 
 ---
 
-## Binomiale test
+## Binomial test
 
 - Is the observed probability `r format(pi*100,digit=3)`% that an unborn child is male, sufficient evidence to conclude that there is a higher chance on a boy than on a girl?
 
@@ -190,7 +190,7 @@ S is a:
 
 ### Some Binomial probability mass functions.
 
-```{r binoms,fig.cap='Binomiale verdelingen.', out.width='80%', fig.asp=.8, fig.align='center',echo=FALSE}
+```{r binoms,fig.cap='Binomial distributions.', out.width='80%', fig.asp=.8, fig.align='center',echo=FALSE}
 par(mfrow = c(2, 2))
 probs <- c(0.25, .5, .75)
 for (i in 1:length(probs))
@@ -487,7 +487,7 @@ mcnemar.test(hamster)
 
 ---
 
-- Normale approximation is not optimal and we can perform an exact test using the binomiale test
+- Normale approximation is not optimal and we can perform an exact test using the binomial test
 
 ```{r}
 binom.test(x = f, n = f + g, p = 0.5)

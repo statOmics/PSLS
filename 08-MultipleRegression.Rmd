@@ -449,7 +449,7 @@ surf3D(x.pred3D, y.pred3D, z2.pred3D, col = "orange", facets = NA, add = TRUE)
 
 ---
 
-# ANOVA Tabel
+# ANOVA table
 
 The total SSTot is again
 
@@ -626,7 +626,7 @@ Note, however, that all dummies for factors with multiple levels will be taken o
 ---
 
 # Diagnostics
-## Multicollineariteit
+## Multicollinearity
 
 ```{r echo=FALSE}
 summary(lmVWS)
@@ -667,7 +667,7 @@ cor(cbind(prostate$lcavol, prostate$lweight, prostate$lcavol * prostate$lweight)
 
 ---
 
-- Detect multicollineariteit based on the correlation matrix or scatterplot matrix is suboptimal.
+- Detect multicollinearity based on the correlation matrix or scatterplot matrix is suboptimal.
 - In models with 3 or more predictors, say X1, X2, X3 we can have high multicollinearity while alle pairswise correlations between the predictors are low.
 - We also have multicollinearity if there is a high correlation between X1 and a linair combination of X2 and X3.
 
@@ -727,7 +727,7 @@ vif(lmVWS_IntVW)
 
 ---
 
-## Influencial Observaties
+## Influential observations
 
 
 ```{r}

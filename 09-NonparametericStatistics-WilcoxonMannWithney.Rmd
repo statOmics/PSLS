@@ -40,7 +40,7 @@ Inference was only correct if distributional assumptions were satisfied
 
 ---
 
-## Cholesterol voorbeeld
+## Cholesterol example
 
 - Cholesterol concentration in blood measured for
   - 5 patients (group=1) two days upon a stroke
@@ -101,7 +101,7 @@ rank(chol$cholest)
 
 ---
 
-## ties
+## Ties
 
 Sometimes *ties* occur: two observations with identical values
 
@@ -137,7 +137,7 @@ rank(z)
 
  Simultaneously developed by Wilcoxon, and,  Mann and Whitney:  **Wilcoxon-Mann-Whitney**, **Wilcoxon rank sum test**  or **Mann-Whitney U test**
 
-## hypotheses
+## Hypotheses
 
 Under $H_0$ the distributions of the two groups are equal
 $$H_0: f_1=f_2$$
@@ -316,4 +316,4 @@ Without the location-shift assumption the conclusion in terms of the probabilist
 
 ## Conclusion
 
-There is a significant difference in the distribution of the cholesterol concentration of hart patients two days upon a stroke and that of healthy subject (($p=$ `r format(wTest$p.value,digits=3)`). It is more likely to observe higher cholesterol levels for hart patients then for healthy subjects. The point estimator for this probability is `r probInd*100`%.
+There is a significant difference in the distribution of the cholesterol concentration of hart patients two days upon a stroke and that of healthy subject ($p=$ `r format(wTest$p.value,digits=3)`). It is more likely to observe higher cholesterol levels for hart patients then for healthy subjects. The point estimator for this probability is `r probInd*100`%.

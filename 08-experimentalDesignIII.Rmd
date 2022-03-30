@@ -337,7 +337,7 @@ So, the block to block variability is then absorbed in the variance estimator of
 
 Of course, we are never allowed to analyse an RCB with a model for a CRD (without block factor) because blocking imposes a randomization restriction: we randomize the treatment within block.
 
-## Powergain of blocking?
+## Power gain of blocking?
 
 ### Power for completely randomized design
 
@@ -571,7 +571,7 @@ powerFastBlockingLow %>%
 
 - Note, that the same number of mass spectrometry runs have to be done for both the RCB and CRD design. However, for the RCB we only need half of the mice.
 
-# Penilin example
+# Penicillin example
 
 The production of penicillin corn steep liquor is used. Corn steep liquor is produced in blends and there is a considerable variability between the blends. Suppose that
 
