@@ -289,7 +289,6 @@ $$
 2. the association between velocity and the concentration is significant in the treated group
 
 $$
-
 H_0: \beta_c + \beta_{c:s}= 0 \text { vs } H_1: \beta_c + \beta_{c:s}\neq 0
 $$
 
