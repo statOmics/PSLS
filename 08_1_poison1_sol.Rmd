@@ -87,7 +87,7 @@ in our dataset, (2) bivariate plots and (3) correlation coefficients between
 the different variables.
 
 ```{r, message=FALSE, fig.width=12}
-ggpairs(poison)
+ggpairs(poison, columns = 2:4)
 ```
 
 Based on these plots, we observe that:
