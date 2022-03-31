@@ -185,8 +185,8 @@ ggplot(df, aes(sample = x)) +
   ggtitle("QQ plots for normally distributed data")
 ```
 
-Even though the data originates from a normal distribution, several
-samples do not meet the normality requirements by chance.
+Even though the data originates from a normal distribution, some deviations
+can be observed due to random chance.
 
 Alternatively, we may generate a qq-plot of the residuals
 of a linear model. These residuals should be normally distributed
@@ -198,8 +198,10 @@ plot(fit, which = 2, col = fit$model$treatment)
 legend("bottomright", levels(fit$model$treatment), text.col = 1:4)
 ```
 
-The data seems to be approximately normally distributed,
-with a slight left skew.
+The Q-Q plot of the residuals shows a slight skew to the left. Care should be
+taken when interpreting the results for this dataset. Due to the sample size, a
+better alternative might be a non-parametric approach.
+
 
 ### Assumption of equal variances
 
