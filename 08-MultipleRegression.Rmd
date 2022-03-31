@@ -176,7 +176,7 @@ surf3D(x.pred3D, y.pred3D, z2.pred3D, col = "red", facets = NA, add = TRUE)
 # Inference in multiple linear models
 
 If data are representative than the least squares estimators for the intercept and slopes are unbiased.
-$$E[\hat \beta_j]=\beta_j,\quad j=0,\ldots,p-1.$$
+$$E[\hat \beta_j]=\beta_j,\quad j=0,\ldots,p-1$$
 
 - Gain insight in the distribution of the parameter estimators so as to generalize the effect in the sample to the population.
 
@@ -190,8 +190,8 @@ $$E[\hat \beta_j]=\beta_j,\quad j=0,\ldots,p-1.$$
 4. *Normality*: residuals $\epsilon_i$ are normally distributed.
 
 Under these assumptions:
-$$\epsilon_i \sim N(0,\sigma^2).$$
-en
+$$\epsilon_i \sim N(0,\sigma^2)$$
+and
 $$Y_i\sim N(\beta_0+\beta_1 X_{i1}+\ldots+\beta_{p-1} X_{ip-1},\sigma^2)$$
 
 ---
@@ -200,10 +200,10 @@ $$Y_i\sim N(\beta_0+\beta_1 X_{i1}+\ldots+\beta_{p-1} X_{ip-1},\sigma^2)$$
 
 - Conditional variance ($\sigma^2$) can again be estimated based on the *mean squared error* (MSE):
 
-$$\hat\sigma^2=MSE=\frac{\sum\limits_{i=1}^n \left(y_i-\hat\beta_0-\hat\beta_1 X_{i1}-\ldots-\hat\beta_{p-1} X_{ip-1}\right)^2}{n-p}=\frac{\sum\limits_{i=1}^n e^2_i}{n-p}.$$
+$$\hat\sigma^2=MSE=\frac{\sum\limits_{i=1}^n \left(y_i-\hat\beta_0-\hat\beta_1 X_{i1}-\ldots-\hat\beta_{p-1} X_{ip-1}\right)^2}{n-p}=\frac{\sum\limits_{i=1}^n e^2_i}{n-p}$$
 
 Again hypothesis tests and confidence intervals by
-$$T_k=\frac{\hat{\beta}_k-\beta_k}{SE(\hat{\beta}_k)} \text{ met } k=0, \ldots, p-1.$$
+$$T_k=\frac{\hat{\beta}_k-\beta_k}{SE(\hat{\beta}_k)} \text{ met } k=0, \ldots, p-1$$
 
 If all assumptions are satisfied than the statistics $T_k$ t-distributed with $n-p$ degrees of freedom.
 
@@ -214,7 +214,7 @@ When normality thus not hold, but lineariteit, independence and homoscedasticity
 ---
 
 We can build confidence intervals on the slopes by:
-$$[\hat\beta_j - t_{n-p,\alpha/2} \text{SE}_{\hat\beta_j},\hat\beta_j + t_{n-p,\alpha/2} \text{SE}_{\hat\beta_j}]$$.
+$$[\hat\beta_j - t_{n-p,\alpha/2} \text{SE}_{\hat\beta_j},\hat\beta_j + t_{n-p,\alpha/2} \text{SE}_{\hat\beta_j}]$$
 
 ```{r}
 confint(lmVWS)
