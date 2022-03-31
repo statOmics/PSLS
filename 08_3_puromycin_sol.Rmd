@@ -204,7 +204,7 @@ Note that this variable is **categorical**.
 
 $$
 Y_i = \beta_0 + \beta_{\text{rate}} X_{i, \text{rate}} +
-  \beta_{\text{state}} X_{i, \text{state}} + epsilon_i
+  \beta_{\text{state}} X_{i, \text{state}} + \epsilon_i
 $$
 
 ```{r}
@@ -236,7 +236,7 @@ $$
 Y_i = \beta_0 + \beta_{\text{rate}} X_{i, \text{rate}} +
   \beta_{\text{state}} X_{i, \text{state}} +
   \beta_{\text{rate:state}} X_{i, \text{rate}} X_{i, \text{state}} +
-  epsilon_i
+  \epsilon_i
 $$
 
 ```{r}
@@ -258,7 +258,7 @@ ggplot(Puromycin, aes(log10conc, rate, col = state)) +
      col = "forestgreen"
   ) +
   scale_color_manual(values = c("darkorchid", "forestgreen")) +
-  ggtitle("The additive linear model with parallel slopes")
+  ggtitle("The linear model with interaction: non-parallel slopes")
 ```
 
 ## Inference
