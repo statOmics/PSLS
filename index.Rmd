@@ -122,8 +122,8 @@ source("https://raw.githubusercontent.com/statOmics/PSLS/master/install.R")
 
     - [Multiple Regression](./08-MultipleRegression.html)
     - [Factorial Designs](./08-MultipleRegression-SpecificDesigns.html)
-    - [Experimental Design II: Power and Replication](./08-experimentalDesignII.html)
-    - [Experimental Design III: Blocking](./08-experimentalDesignIII.html)
+    - [Experimental Design II: Blocking](./08-experimentalDesign2.html)
+    - [Experimental Design III: Power and Replication](./08-experimentalDesign3.html)
     - [Exercises](./08_exercises.html)
 
 9. Nonparametric Statistics:

@@ -27,9 +27,9 @@ navbar:
         - text: "8.2 Multiple Regression: Factorial Designs"
           href: 08-MultipleRegression-SpecificDesigns.html
         - text: "8.3. Experimental Design II"
-          href: 08-experimentalDesignII.html
+          href: 08-experimentalDesign2.html
         - text: "8.4. Experimental Design III"
-          href: 08-experimentalDesignIII.html
+          href: 08-experimentalDesign3.html
         - text: "9.1. Nonparametric Statistics 1"
           href: 09-NonparametericStatistics-WilcoxonMannWithney.html
         - text: "9.2. Nonparametric Statistics 2"

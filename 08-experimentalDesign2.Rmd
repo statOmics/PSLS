@@ -1,5 +1,5 @@
 ---
-title: "8.4 Experimental Design III: Randomized Complete Block Designs and Pseudo-replication"
+title: "8.3 Experimental Design II: Randomized Complete Block Designs and Pseudo-replication"
 author: "Lieven Clement"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
