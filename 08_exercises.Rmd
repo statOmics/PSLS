@@ -199,9 +199,9 @@ at most 12 reactions, how would you choose your design points? Calculate
 the power for this design when the effect size is 10 counts/min per 10 times
 increase in the substrate concentration ($\beta_1=10$).
 
-- Exercise: [Exercise8](./08_ExperimentalDesignII_1_puromycin.html)
+- Exercise: [Exercise8](./08_ExperimentalDesignII_2_puromycin.html)
 - Data path: Not required
-<!-- - Solution: [Solution8](./08_ExperimentalDesignII_1_puromycin_sol.html) -->
+<!-- - Solution: [Solution8](./08_ExperimentalDesignII_2_puromycin_sol.html) -->
 
 ---
 
