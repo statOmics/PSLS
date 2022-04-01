@@ -208,16 +208,16 @@ We can now relate this to the output of the `lm` function:
 diet for rats in block 1.
 
 - The parameter $\beta_c$: the average weight gain difference between cereal-low and
-beef-low diet is `r lm1$coef["protSourcec"]`g.
+beef-low diet is `r lm1$coef["protSourcecereal"]`g.
 
 - The parameter $\beta_h$: the average weight gain difference between beef-high and
-beef-Low diet is `r lm1$coef["protLevelh"]`g.
+beef-Low diet is `r lm1$coef["protLevelhigh"]`g.
 
 - The parameter $\beta_{ch}$ is the difference in the average weight gain difference
 due to the high protein level as compared to the low protein level for cereal diets
 as compared to the weight gain difference that occurs due to the protein level
 in the reference class (here beef diet). Here this is negative,
-i.e. `r lm1$coef["protSourcec:protLevelh"]`g, thus the weight gain
+i.e. `r lm1$coef["protSourcecereal:protLevelhigh"]`g, thus the weight gain
 for the cereal protein source increases on average less between high and
 low protein diets than in beef based diets.
 
@@ -284,11 +284,11 @@ set.seed(75468) # to get reproducible results (small effect if removed)
 lm1MultComp <- glht(
   model = lm1,
   linfct = c(
-    "protSourcec = 0",
-    "protSourcec + protSourcec:protLevelh = 0",
-    "protLevelh = 0",
-    "protLevelh +  protSourcec:protLevelh = 0",
-    "protSourcec:protLevelh = 0"
+    "protSourcecereal = 0",
+    "protSourcecereal + protSourcecereal:protLevelhigh = 0",
+    "protLevelhigh = 0",
+    "protLevelhigh +  protSourcecereal:protLevelhigh = 0",
+    "protSourcecereal:protLevelhigh = 0"
   )
 )
 ```
@@ -311,22 +311,22 @@ for multiple testing.
 weight gain of rats  (p<<1e-3).
 
 - The average weight gain does not vary significantly according to protein
-source in the diets with low protein levels (p = `r format(summary(lm1MultComp)$test$pvalues[names(summary(lm1MultComp)$test$tstat)=="protSourcec"],digits=2)`).
+source in the diets with low protein levels (p = `r format(summary(lm1MultComp)$test$pvalues[names(summary(lm1MultComp)$test$tstat)=="protSourcecereal"],digits=2)`).
 
 - The weight gain in the cereal diet at high protein concentration is on
-average `r confint(lm1MultComp)$confint["protSourcec + protSourcec:protLevelh",1] %>% abs %>% round(.,1)`g lower than in the high protein beef diet (95% CI [`r confint(lm1MultComp)$confint["protSourcec + protSourcec:protLevelh",-1] %>% abs %>% round(.,1) %>% sort`]) and the difference is
-very significant (p = format(summary(lm1MultComp)$test$pvalues[names(summary(lm1MultComp)$test$tstat)=="protSourcec + protSourcec:protLevelh"],digits=1)).
+average `r confint(lm1MultComp)$confint["protSourcecereal + protSourcecereal:protLevelhigh",1] %>% abs %>% round(.,1)`g lower than in the high protein beef diet (95% CI [`r confint(lm1MultComp)$confint["protSourcecereal + protSourcecereal:protLevelhigh",-1] %>% abs %>% round(.,1) %>% sort`]) and the difference is
+very significant (p = format(summary(lm1MultComp)$test$pvalues[names(summary(lm1MultComp)$test$tstat)=="protSourcecereal + protSourcecereal:protLevelhigh"],digits=1)).
 
 - We also discovered an extremely significant difference in weight gain
 according to the protein level for beef based diets (p<<0.001).
-The weight gain on average increases with `r round(confint(lm1MultComp)$confint["protLevelh",1],1)`g in the high protein
+The weight gain on average increases with `r round(confint(lm1MultComp)$confint["protLevelhigh",1],1)`g in the high protein
 level as compared to the low protein beef diet
-(95%CI [`r round(confint(lm1MultComp)$confint["protLevelh",-1],1)`]).
+(95%CI [`r round(confint(lm1MultComp)$confint["protLevelhigh",-1],1)`]).
 The protein level effect is not significant
-for the cereal diet (`r format(summary(lm1MultComp)$test$pvalues[names(summary(lm1MultComp)$test$tstat)=="protLevelh + protSourcec:protLevelh"],digits=2)`).
+for the cereal diet (`r format(summary(lm1MultComp)$test$pvalues[names(summary(lm1MultComp)$test$tstat)=="protLevelhigh + protSourcecereal:protLevelhigh"],digits=2)`).
 
-- Finally there is a significant interaction between protein level and protein source (p = `r format(summary(lm1MultComp)$test$pvalues[names(summary(lm1MultComp)$test$tstat)=="protSourcec:protLevelh"],digits=2)`), i.e. the increase in weight gain due to protein level in beef
-based diets was `r confint(lm1MultComp)$confint["protSourcec:protLevelh",1] %>% abs %>% round(.,1)`g than that in the cerial diet (95% CI [`r confint(lm1MultComp)$confint["protSourcec:protLevelh",-1] %>% abs %>% round(.,1) %>% sort`]).
+- Finally there is a significant interaction between protein level and protein source (p = `r format(summary(lm1MultComp)$test$pvalues[names(summary(lm1MultComp)$test$tstat)=="protSourcecereal:protLevelhigh"],digits=2)`), i.e. the increase in weight gain due to protein level in beef
+based diets was `r confint(lm1MultComp)$confint["protSourcecereal:protLevelhigh",1] %>% abs %>% round(.,1)`g than that in the cerial diet (95% CI [`r confint(lm1MultComp)$confint["protSourcecereal:protLevelhigh",-1] %>% abs %>% round(.,1) %>% sort`]).
 
 All reported p-values and confidence intervals were corrected for multiple
 testing

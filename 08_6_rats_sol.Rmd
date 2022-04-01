@@ -205,19 +205,19 @@ We can now relate this to the output of the `lm` function:
 diet for rats in block 1.
 
 - The parameter $\beta_c$: the average difference in weight gain between cereal-low and
-beef-low diet is `r lm1$coef["protSourcec"]`g.
+beef-low diet is `r lm1$coef["protSourcecereal"]`g.
 
 - The parameter $\beta_p$: the average difference in weight gain between pork-low and
-beef-low diet is `r lm1$coef["protSourcep"]`g.
+beef-low diet is `r lm1$coef["protSourcepork"]`g.
 
 - The parameter $\beta_h$: the average difference in weight gain between beef-high and
-beef-Low diet is `r lm1$coef["protLevelh"]`g.
+beef-Low diet is `r lm1$coef["protLevelhigh"]`g.
 
 - The parameter $\beta_{ch}$ is the difference in the average weight gain difference
 due to the high protein level as compared to the low protein level for cereal diets
 as compared to the weight gain difference that occurs due to the protein level
 in the reference class (here beef diet). Here this is negative,
-i.e. `r lm1$coef["protSourcec:protLevelh"]`g, thus the weight gain
+i.e. `r lm1$coef["protSourcecereal:protLevelhigh"]`g, thus the weight gain
 for the cereal protein source increases on average less between high and low protein diets
 than in beef based diets.
 
@@ -225,7 +225,7 @@ than in beef based diets.
 due to the high protein level as compared to the low protein level for pork diets
 as compared to the weight gain difference that occurs due to the protein level
 in the reference class (here beef diet). Here this is negative,
-i.e. `r lm1$coef["protSourcep:protLevelh"]`g, thus the weight gain
+i.e. `r lm1$coef["protSourcepork:protLevelhigh"]`g, thus the weight gain
 for the proc protein source increases on average less between high and low protein diets
 than in beef based diets.
 
@@ -301,18 +301,18 @@ set.seed(75468) # to get reproducible results (small effect if removed)
 lm1MultComp <- glht(
   model = lm1,
   linfct = c(
-    "protSourcec = 0",
-    "protSourcep = 0",
-    "protSourcec- protSourcep = 0",
-    "protSourcec + protSourcec:protLevelh = 0",
-    "protSourcep + protSourcep:protLevelh = 0",
-    "(protSourcec + protSourcec:protLevelh) - (protSourcep + protSourcep:protLevelh) = 0",
-    "protLevelh = 0",
-    "protLevelh +  protSourcec:protLevelh = 0",
-    "protLevelh +  protSourcep:protLevelh = 0",
-    "protSourcec:protLevelh = 0",
-    "protSourcep:protLevelh = 0",
-    "protSourcec:protLevelh - protSourcep:protLevelh = 0"
+    "protSourcecereal = 0",
+    "protSourcepork = 0",
+    "protSourcecereal- protSourcepork = 0",
+    "protSourcecereal + protSourcecereal:protLevelhigh = 0",
+    "protSourcepork + protSourcepork:protLevelhigh = 0",
+    "(protSourcecereal + protSourcecereal:protLevelhigh) - (protSourcepork + protSourcepork:protLevelhigh) = 0",
+    "protLevelhigh = 0",
+    "protLevelhigh +  protSourcecereal:protLevelhigh = 0",
+    "protLevelhigh +  protSourcepork:protLevelhigh = 0",
+    "protSourcecereal:protLevelhigh = 0",
+    "protSourcepork:protLevelhigh = 0",
+    "protSourcecereal:protLevelhigh - protSourcepork:protLevelhigh = 0"
   )
 )
 ```
@@ -338,17 +338,17 @@ source is also very significant (p=`r round(Anova(lm1,type=3)$Pr[5],4)`).
 source in the diets with low protein levels (all p>0.99).
 
 - The weight gain in the cereal diet at high protein concentration is on
-average `r confint(lm1MultComp)$confint["protSourcec + protSourcec:protLevelh",1] %>% abs %>% round(.,1)`g and `r confint(lm1MultComp)$confint["(protSourcec + protSourcec:protLevelh) - (protSourcep + protSourcep:protLevelh)",1] %>% abs %>% round(.,1)`g g lower than in the high protein beef and pork diet,
-respectively (95% CI [`r confint(lm1MultComp)$confint["protSourcec + protSourcec:protLevelh",-1] %>% abs %>% round(.,1) %>% sort`] and [`r confint(lm1MultComp)$confint["(protSourcec + protSourcec:protLevelh) - (protSourcep + protSourcep:protLevelh)",-1] %>% abs %>% round(.,1) %>% sort`]) and the differences are
+average `r confint(lm1MultComp)$confint["protSourcecereal + protSourcecereal:protLevelhigh",1] %>% abs %>% round(.,1)`g and `r confint(lm1MultComp)$confint["(protSourcecereal + protSourcecereal:protLevelhigh) - (protSourcepork + protSourcepork:protLevelhigh)",1] %>% abs %>% round(.,1)`g g lower than in the high protein beef and pork diet,
+respectively (95% CI [`r confint(lm1MultComp)$confint["protSourcecereal + protSourcecereal:protLevelhigh",-1] %>% abs %>% round(.,1) %>% sort`] and [`r confint(lm1MultComp)$confint["(protSourcecereal + protSourcecereal:protLevelhigh) - (protSourcepork + protSourcepork:protLevelhigh)",-1] %>% abs %>% round(.,1) %>% sort`]) and the differences are
 extremely significant (p<0.001). The average weight gains after meat based
 diets at high protein levels, however, do not differ significantly
 (p>0.99).
 
 - We also discovered an extremely significant difference in weight gain
 according to the protein level for beef and pork based diets (p<0.001).
-The weight gain on average increases with `r round(confint(lm1MultComp)$confint["protLevelh",1],1)`g and `r round(confint(lm1MultComp)$confint["protLevelh + protSourcep:protLevelh",1],1)`g in the high protein
+The weight gain on average increases with `r round(confint(lm1MultComp)$confint["protLevelhigh",1],1)`g and `r round(confint(lm1MultComp)$confint["protLevelhigh + protSourcepork:protLevelhigh",1],1)`g in the high protein
 level as compared to the low protein beef and pork diet, respectively
-(95%CI [`r round(confint(lm1MultComp)$confint["protLevelh",-1],1)`] and [`r round(confint(lm1MultComp)$confint["protLevelh + protSourcep:protLevelh",-1],1)`]). The protein level effect is not significant
+(95%CI [`r round(confint(lm1MultComp)$confint["protLevelhigh",-1],1)`] and [`r round(confint(lm1MultComp)$confint["protLevelhigh + protSourcepork:protLevelhigh",-1],1)`]). The protein level effect is not significant
 for the cereal diet (p>0.99).
 
 - Finally significant interactions between protein level and protein source were
