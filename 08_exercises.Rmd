@@ -76,6 +76,8 @@ an interaction term between these two variables.
 - Data path: Not required
 - Solution: [Solution3](./08_3_puromycin_sol.html)
 
+- [Wrapup summary](./08-wrapup-puromycin.html)
+
 ---
 
 # The KPNA2 dataset
