@@ -1,6 +1,6 @@
 ---
 title: "Experimenteel Design II: replication en power - KPNA2"
-author: "Lieven Clement & Alexandre Segers"
+author: "Lieven Clement, Alexandre Segers and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -55,25 +55,18 @@ As discussed in a previous exercise, it seems that there is both an effect of hi
 
 As we saw before, we can model this with a model that contains both histologic grade, lymph node status and the interaction term between both. When checking the linear model assumptions, we see that the variance is not equal. Therefore we model the gene expression with a log2-transformation, which makes that all the assumptions of the linear model are satisfied.
 
-
 ```{r}
-# Model with main effects for histological grade and node and grade x node interaction
-fit <- lm(gene ~ grade * node, data = kpna2)
-summary(fit)
+fit <- lm(log2(gene) ~ grade * node, data = kpna2)
 plot(fit)
 ```
-
-```{r}
-fit <- lm(gene %>% log2() ~ grade * node, data = kpna2)
-plot(fit)
-```
-
-When checking the significance of the interaction term, we see that it is significant on the 5% significance level. We therefore keep the full model.
 
 ```{r}
 library(car)
 Anova(fit, type = "III")
 ```
+
+When checking the significance of the interaction term, we see that it is significant on the 5% significance level. We therefore keep the full model.
+
 
 As we are dealing with a factorial design, we can calculate the mean gene expression for each group by the following parameter summations.
 
@@ -108,7 +101,13 @@ We can test this using multcomp, which controls for multiple testing.
 ```{r}
 library(multcomp)
 
-mcp <- glht(fit, linfct = c("grade3 = 0", "grade3 + grade3:node1 = 0", "node1 = 0", "node1 + grade3:node1 = 0", "grade3:node1 = 0"))
+mcp <- glht(fit, linfct = c(
+  "grade3 = 0",
+  "grade3 + grade3:node1 = 0",
+  "node1 = 0",
+  "node1 + grade3:node1 = 0",
+  "grade3:node1 = 0"
+))
 summary(mcp)
 ```
 
