@@ -1,6 +1,6 @@
 ---
-title: "Experimental Design II: replication and power exercise 2"
-author: "Lieven Clement & Alexandre Segers"
+title: "Experimental Design II: replication and power exercise 2 - Solution"
+author: "Lieven Clement, Alexandre Segers and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -107,10 +107,9 @@ power
 ```
 
 The power to pick up a slope of $\beta_1=10$ for this experiment is only
-`round(power*100,1)`%.
+`r round(power*100,1)`%.
 
 ## Calculate the number of repeats needed per concentration to obtain a power of 90% to pick up an effect of $\beta=10$.
-
 
 ```{r}
 mod1 <- lm(rate ~ conc %>% log10(), Puromycin)
@@ -142,7 +141,8 @@ powers %>%
   geom_line() +
   geom_hline(yintercept = .9, lty = 2)
 ```
-We need `which(powers$power>0.9) %>%min` repeats for each concentration to
+
+We need `r min(which(powers$power>0.9))` repeats for each concentration to
 obtain a power above 90%.
 
 # Optimal design with 12 reactions
@@ -180,6 +180,7 @@ powers %>%
   geom_line() +
   geom_hline(yintercept = powerOpt, lty = 2)
 ```
+
 Indeed, the power for our optimal design with 12 reactions is as high as the
 power for an experiment where you would repeat every concentration 3 times for
 which we need to conduct 18 reactions!
