@@ -1,20 +1,12 @@
 ---
-title: "Wrapup 3: linear model & anova"   
-output:
-    html_document:
-      code_download: true    
-      theme: cosmo
-      toc: true
-      toc_float: true
-      highlight: tango
-      number_sections: true
+title: "Wrapup 3: linear model & anova"
 ---
 
 # Linear model with puromycin example
 - Research question
 - Model
 - Interpretation
-- Assumptions 
+- Assumptions
 - Dummy
 - Prediction interval
 
@@ -25,4 +17,3 @@ output:
 - Assumptions
 - Multiple testing
 - Nonparameteric test
-

@@ -134,6 +134,12 @@ source("https://raw.githubusercontent.com/statOmics/PSLS/master/install.R")
 
 10. [Categorical Data Analysis](./10-categoricalDataAnalysis.html)
 
+Wrap-ups:
+
+- [Wrap-up 1](./wrapup1.html)
+- [Wrap-up 2](./wrapup2.html)
+- [Wrap-up 3](./wrapup3.html)
+
 ---
 
 ## Instructors
