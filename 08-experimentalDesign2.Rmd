@@ -70,7 +70,7 @@ mouse %>%
 ```{r}
 mouse %>%
   ggplot(aes(x = celltype, y = intensity)) +
-  geom_boxplot(aes(col = celltype), outlier.shape = NA) +
+  geom_point() +
   geom_line(aes(group = mouse)) +
   geom_point(aes(col = celltype))
 ```
@@ -156,6 +156,11 @@ deltaSum
 - The standard deviation on the difference is much lower because of the strong correlation!
 - Note, that the paired design enabled us to estimate the difference in log2-expression between the two cell types in every animal (log2 FC).
 
+
+```{r}
+t.test(delta~1, mouseWide)
+```
+
 ## Randomized complete block analysis
 
 We can also analyse the design using a linear model, i.e. with
@@ -197,7 +202,7 @@ Hence, we can use the model for statistical inference.
 ```{r}
 anovaRCB <- car::Anova(lmRCB, type = "III")
 summary(lmRCB)
-t.test(mouseWide$delta)
+t.test(delta ~1 , mouseWide)
 anovaRCB
 ```
 
@@ -209,7 +214,7 @@ Notice that
 
 $$
 \begin{array}{lcl}
-\text{SSTot} &=& \text{SSCT} + \text{SSM} + \text{SSR}\\
+\text{SSTot} &=& \text{SSCT} + \text{SSM} + \text{SSE}\\
 `r round(anovaRCB[-1,"Sum Sq"] %>% sum(),1)` &=& `r round(anovaRCB["celltype","Sum Sq"],1)` + `r round(anovaRCB["mouse","Sum Sq"],1)` + `r round(anovaRCB["Residuals","Sum Sq"],1)`
 \end{array}
 $$
@@ -225,7 +230,7 @@ $$
 
 percent of the variability in the protein expression values and
 $$
-\frac{\text{RSS}}{\text{SSTot}} \times 100 = `r round(anovaRCB["Residuals","Sum Sq"]/sum(anovaRCB[-1,"Sum Sq"])*100,1)`
+\frac{\text{SSE}}{\text{SSTot}} \times 100 = `r round(anovaRCB["Residuals","Sum Sq"]/sum(anovaRCB[-1,"Sum Sq"])*100,1)`
 $$
 percent cannot be explained.
 
@@ -259,7 +264,7 @@ $\rightarrow$ This reduces the variance of the residuals and leads to a power ga
 Also note that,
 
 $$
-\hat\sigma^2 = \frac{\text{SSR}}{n-p} = \frac{SSTot - SSM - SSCT}{n-p}
+\hat\sigma^2 = \frac{\text{SSE}}{n-p} = \frac{SSTot - SSM - SSCT}{n-p}
 $$
 
 - Hence, blocking is beneficial if the reduction in sum of squares of the residuals is large compared to the degrees of freedom that are sacrificed.
@@ -564,7 +569,7 @@ powerFastBlockingLow %>%
 
 - So if the variance that is explained by the block effect is small you will loose power as compared to the analysis with a CRD design. Indeed, then
 
-    - SSR does not reduce much and
+    - SSE does not reduce much and
     - n$_\text{blocks}$-1 degrees of freedom have been sacrificed.
 
 - As soon as the block effect explains a large part of the variability it is very beneficial to use a randomized complete block design!
