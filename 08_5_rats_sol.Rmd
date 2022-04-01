@@ -1,6 +1,6 @@
 ---
 title: "Exercise 8.5: Blocking on the rat diet dataset - solution"
-author: "Lieven Clement and Jeroen Gilis"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
 date: "statOmics, Ghent University (https://statomics.github.io)"
 ---
 
@@ -56,12 +56,21 @@ head(diet)
 
 ```{r}
 diet <- diet %>%
+  ## Convert categorical levels to factors
   mutate(
     block = as.factor(block),
     protSource = as.factor(protSource),
     protLevel = as.factor(protLevel)
   ) %>%
-  mutate(protLevel = fct_relevel(protLevel, "l"))
+  ## Recode factors to make them more verbose
+  mutate(
+    protLevel = fct_recode(protLevel, high = "h", low = "l"),
+    protSource = fct_recode(protSource, beef = "b", cereal = "c", pork = "p")
+  ) %>%
+  ## Set "low" as the reference level for `protLevel`
+  mutate(protLevel = fct_relevel(protLevel, "low"))
+
+head(diet)
 ```
 
 # Data exploration
@@ -76,23 +85,26 @@ diet %>%
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(aes(color = block)) +
   ggtitle("Weight gain dependence on protein source") +
-  ylab("Weigth gain (g)") +
-  # stat_summary(fun = mean, geom="point", shape=5, size=3, color="black", fill="black") +
-  facet_wrap(. ~ protSource)
+  labs(x = "Protein level", y = "Weight gain (g)") +
+  stat_summary(
+    fun = mean, geom="point",
+    shape=5, size=3, color="black"
+  ) +
+  facet_wrap(vars(protSource))
 ```
 
 - Lineplot of the weight gain against protein source, protein level with coloring and grouping according to block
 
 ```{r}
 diet %>%
-  ggplot(aes(x = protSource:protLevel, y = weightGain)) +
+  ggplot(aes(x = protLevel, y = weightGain, color = block)) +
   scale_fill_brewer(palette = "RdGy") +
   theme_bw() +
-  geom_line(aes(group = block, color = block)) +
-  geom_point(aes(color = block)) +
+  geom_line(aes(group = block)) +
+  geom_point() +
   ggtitle("Weight gain dependence on protein source") +
-  ylab("Weigth gain (g)")
-# stat_summary(fun = mean, geom="point", shape=5, size=3, color="black", fill="black")
+  ylab("Weight gain (g)") +
+  facet_wrap(vars(protSource))
 ```
 
 - An increase in the weight of the rats seems to depend on the protein source
@@ -112,7 +124,7 @@ restriction, hence, we will have to include the block effect anyway.
 # Filter the data to only use the beef and cereal diet
 
 ```{r}
-diet.bc <- diet %>% filter(protSource != "p")
+diet_bc <- diet %>% filter(protSource != "pork")
 ```
 
 # Multivariate linear regression analysis
@@ -132,7 +144,7 @@ can be assessed by fitting the linear model and calling the `plot()` function
 as follows.
 
 ```{r}
-lm1 <- lm(weightGain ~ block + protSource * protLevel, data = diet.bc)
+lm1 <- lm(weightGain ~ block + protSource * protLevel, data = diet_bc)
 plot(lm1)
 ```
 
@@ -150,8 +162,7 @@ summary(lm1)
 ## Interpretation of the regression parameters
 
 ```{r}
-library(ExploreModelMatrix)
-ExploreModelMatrix::VisualizeDesign(diet.bc, ~ block + protSource * protLevel)$plotlist
+ExploreModelMatrix::VisualizeDesign(diet_bc, ~ block + protSource * protLevel)$plotlist
 ```
 
 There are 3 levels for protein source, 2 levels for protein level and 10 levels
@@ -220,7 +231,7 @@ the alternative hyptohesis $H_1:$ that at least two treatment means are
 different.
 
 ```{r}
-lm0 <- lm(weightGain ~ block, data = diet.bc)
+lm0 <- lm(weightGain ~ block, data = diet_bc)
 anova(lm0, lm1)
 ```
 
