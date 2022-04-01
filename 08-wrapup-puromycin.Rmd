@@ -225,7 +225,7 @@ Before we perform inference we will first assess the assumptions
 ## Assumptions
 
 
-1. Linearity and representative sample 
+1. Linearity and representative sample
 
 \[E[\hat \beta_j]=\beta_j\]
 
@@ -259,7 +259,7 @@ $$
 SE_{L^T\hat{\boldsymbol{\beta}}} = c_L \hat \sigma^2
 $$
 
-- t statistiek
+- t-statistic
 
 $$
 T = \frac{L\hat{\boldsymbol{\beta}} - L\boldsymbol{\beta}}{\text{SE}_{L\hat{\boldsymbol{\beta}}}}
@@ -369,7 +369,7 @@ The effect of the substrate concentration on the reaction rate is very significa
 
 # Additional concepts
 
-## Interaction between two continuous predictors? 
+## Interaction between two continuous predictors?
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -436,7 +436,7 @@ th=-25
 ph=5
 scatter3D(x, y, z, pch = 16,col=c("darkblue","red")[as.double(prostate$svi)], cex = .75,
     theta = th, phi = ph, ticktype = "detailed",
-    xlab = "lcavol", ylab = "lweight", zlab = "lpsa",  
+    xlab = "lcavol", ylab = "lweight", zlab = "lpsa",
    colvar=FALSE,bty = "g",main="Additive model")
 
 for (i in which(prostate$svi=="healthy"))
@@ -450,7 +450,7 @@ surf3D(x.pred3D,y.pred3D,z.pred3D,col="blue",facets=NA,add=TRUE)
 
 scatter3D(x, y, z, pch = 16,col=c("darkblue","red")[as.double(prostate$svi)], cex = .75,
     theta = th, phi = ph, ticktype = "detailed",
-    xlab = "lcavol", ylab = "lweight", zlab = "lpsa",  
+    xlab = "lcavol", ylab = "lweight", zlab = "lpsa",
    colvar=FALSE,bty = "g",main="Model met lcavol:lweight interactie")
 
 for (i in which(prostate$svi=="healthy"))
@@ -462,7 +462,7 @@ y.pred3D <- outer(x.pred,y.pred,function(x,y) y)
 surf3D(x.pred3D,y.pred3D,z.pred3D,col="blue",facets=NA,add=TRUE)
 ```
 
-## Interaction between two factors? 
+## Interaction between two factors?
 
 ```{r}
 kpna2 <- read_tsv("https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt")
@@ -499,4 +499,3 @@ ggplot(kpna2, aes(x = grade, y = log2gene, fill = node)) +
 fit <- lm(log2(gene) ~ grade * node, data = kpna2)
 ExploreModelMatrix::VisualizeDesign(kpna2, ~ grade * node)$plotlist[[1]]
 ```
-
