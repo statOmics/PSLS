@@ -1,0 +1,502 @@
+---
+title: "Wrapup Multiple regression"
+author: "Lieven Clement, Jeroen Gilis and Milan Malfait"
+date: "statOmics, Ghent University (https://statomics.github.io)"
+---
+
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+theme_set(theme_bw())
+```
+
+# Puromycin data
+
+Data on the velocity of an enzymatic reaction were obtained by Treloar (1974).
+The number of counts per minute of radioactive product from the reaction was
+measured as a function of substrate concentration in parts per million (ppm) and
+from these counts the initial rate (or velocity) of the reaction was calculated (counts/min/min). The experiment was conducted once with the enzyme treated
+with Puromycin, and once with the enzyme untreated.
+
+Assess if there is an association between the substrate concentration and rate
+**for both the treated and untreated enzymes.**
+
+# Import data
+
+```{r}
+data(Puromycin)
+```
+
+# Data wrangling
+
+For a clearer interpretation of the model parameters later on, we will make
+the untreated state enzymes the reference category.
+
+```{r}
+Puromycin <- Puromycin %>%
+  mutate(state = fct_relevel(state, c("untreated", "treated")))
+```
+
+## Data Exploration
+
+First, we visualize the association between the concentration and the enzyme
+rate, for both of the enzyme states.
+
+```{r}
+Puromycin %>%
+  ggplot(aes(conc, rate,col=state)) +
+  geom_point() +
+  stat_smooth(method = "lm") +
+  labs(
+    x = "Substrate concentration (ppm)",
+    y = "Reaction rate (counts/min/min)"
+  ) +
+  ggtitle("Reaction rates for puromycin-treated enzymes")
+```
+
+The plot shows that there is a relation between the velocity and the
+concentration, however, the relation does not seem to be linear.
+
+We will assess the impact of log-transforming the concentration. Because the
+concentration is measured in ppm we will log$_{10}$ transform the data.
+
+```{r}
+Puromycin %>%
+  ggplot(aes(x = log10(conc), y = rate,col=state)) +
+  geom_point() +
+  stat_smooth(method = "lm") +
+    labs(
+      x = "Substrate concentration (log10(ppm))",
+      y = "Reaction rate (counts/min/min)"
+    ) +
+    ggtitle("Reaction rates for puromycin-treated enzymes")
+```
+
+The relation between the velocity and the log$_{10}$ transformed concentration
+seems to be linear.
+
+```{r}
+Puromycin <- Puromycin %>%
+  mutate(log10conc = log10(conc))
+```
+
+# Linear regression
+
+We will fit the following model to the data
+
+$Y_i = \beta_0 + \beta_c x_c+ \beta_s x_s +\beta_{c:s}x_{c}x_{s} + \epsilon_i$
+
+with
+
+- $Y_i$ the reaction rate,
+
+- $\beta_0$ the intercept,
+
+- $\beta_{c}$ the main effect for log10 concentration,
+
+- $x_c$ the log10 concentration,
+
+- $\beta_{p}$ the main effect for treatment ,
+
+- $x_s$ a dummy variable for "state" that is 0 if the enzymes that are untreated and 1 if
+the enzymes are treated with Puromycin,
+
+- $\beta_{c:s}$ the interaction effect between concentration and treatment state,
+
+- $\epsilon_i$ i.i.d. normally distributed with mean 0 and variance $\sigma^2$.
+
+Note, that we write the substrate concentration with a small letter because
+the predictor is not random. The researchers have chosen the substrate
+concentrations in the design phase and it is thus no random variable.
+
+The model implies two different regression lines
+
+- no treatment ($x_s = 0$)
+$$
+Y_i = \beta_0 + \beta_c x_c + \epsilon
+$$
+- treatment (x_s = 1)
+
+$$
+Y_i = (\beta_0 + \beta_s)  + (\beta_c+\beta_{c:s}) x_c + \epsilon
+$$
+
+So the main effect for treatment has the interpretation as the change in intercept between treated and untreated samples.
+
+The interaction term has the interpretation as the change in slope between treated and untreated samples.
+
+
+## Intermezzo: Graphical interpretation of the parameters
+
+### Simple linear model: 1 slope {-}
+
+This is the same model that we fit in the
+[Chapter 6 exercise](./06_1_puromycin.html):
+
+$$ Y_i = \beta_0 + \beta_{\text{rate}} X_{i, \text{rate}} + \epsilon_i $$
+
+```{r}
+mod_simple <- lm(rate ~ log10conc, data = Puromycin)
+mod_simple
+
+ggplot(Puromycin, aes(log10conc, rate)) +
+  geom_point(aes(color = state)) +
+  geom_abline(
+     intercept = coef(mod_simple)[1],
+     slope = coef(mod_simple)[2]
+  ) +
+  scale_color_manual(values = c("darkorchid", "forestgreen")) +
+  ggtitle("The simple linear model")
+```
+
+
+### Additive model: 2 parallel slopes {-}
+
+We add an additional term for the state of the reactin (treated or untreated).
+Note that this variable is **categorical**.
+
+$$
+Y_i = \beta_0 + \beta_{\text{rate}} X_{i, \text{rate}} +
+  \beta_{\text{state}} X_{i, \text{state}} + \epsilon_i
+$$
+
+```{r}
+mod_add <- lm(rate ~ log10conc + state, data = Puromycin)
+mod_add
+
+ggplot(Puromycin, aes(log10conc, rate, col = state)) +
+  geom_point() +
+  ## Line for the untreated group
+  geom_abline(
+     intercept = coef(mod_add)[1],
+     slope = coef(mod_add)[2],
+     col = "darkorchid"
+  ) +
+  ## Line for the treated group
+  geom_abline(
+     intercept = coef(mod_add)[1] + coef(mod_add)[3],
+     slope = coef(mod_add)[2],
+     col = "forestgreen"
+  ) +
+  scale_color_manual(values = c("darkorchid", "forestgreen")) +
+  ggtitle("The additive linear model with parallel slopes")
+```
+
+
+### The interaction model: 2 non-parallel slopes {-}
+
+$$
+Y_i = \beta_0 + \beta_{\text{rate}} X_{i, \text{rate}} +
+  \beta_{\text{state}} X_{i, \text{state}} +
+  \beta_{\text{rate:state}} X_{i, \text{rate}} X_{i, \text{state}} +
+  \epsilon_i
+$$
+
+```{r}
+mod_int <- lm(rate ~ log10conc * state, data = Puromycin)
+mod_int
+
+ggplot(Puromycin, aes(log10conc, rate, col = state)) +
+  geom_point() +
+  ## Line for the untreated group
+  geom_abline(
+     intercept = coef(mod_int)[1],
+     slope = coef(mod_int)[2],
+     col = "darkorchid"
+  ) +
+  ## Line for the treated group
+  geom_abline(
+     intercept = coef(mod_int)[1] + coef(mod_int)[3],
+     slope = coef(mod_int)[2] + coef(mod_int)[4],
+     col = "forestgreen"
+  ) +
+  scale_color_manual(values = c("darkorchid", "forestgreen")) +
+  ggtitle("The linear model with interaction: non-parallel slopes")
+```
+
+```{r}
+mod1 <- lm(rate ~ log10conc * state, Puromycin)
+summary(mod1)
+```
+
+Before we perform inference we will first assess the assumptions
+
+## Assumptions
+
+
+1. Linearity and representative sample 
+
+\[E[\hat \beta_j]=\beta_j\]
+
+2. Normal distribution of the residuals
+
+\[Y_{i} \sim N(\mu_i,\sigma^2)\]
+\[Y_i \sim N(\beta_0 + \beta_c x_{ci}+ \beta_s x_{si} +\beta_{c:s}x_{ci}x_{si},\sigma^2)  \longrightarrow \hat \beta_j \sim N(\beta_j, \sigma^2_{\hat \beta_j})\]
+
+linear combinations of model parameter estimators are also normally distributed, e.g.
+$$
+\longrightarrow \hat \beta_c + \hat \beta_{c:s} \sim N(\beta_c+\beta_{cs}, \sigma^2_{\hat\beta_c+\hat\beta_{c:s}})
+$$
+$$
+\longrightarrow L^T\hat \beta \sim N(L^T\beta, \sigma^2_{L^T\hat{\boldsymbol{\beta}}})
+$$
+
+
+
+4. Independence and Homoscedasticity
+
+We assume that the experiment was well designed and that the different reactions that were use in the experiment are independent.
+
+$$\sigma^2_{L^T\hat{\boldsymbol{\beta}}} = c_L \sigma^2$$
+
+
+- $\sigma^2?$
+
+$$\hat \sigma^2 = MSE = \sum\limits_{i=1} ^ n \frac{(Y_i - \hat Y_i)^2}{n-p}$$
+
+$$
+SE_{L^T\hat{\boldsymbol{\beta}}} = c_L \hat \sigma^2
+$$
+
+- t statistiek
+
+$$
+T = \frac{L\hat{\boldsymbol{\beta}} - L\boldsymbol{\beta}}{\text{SE}_{L\hat{\boldsymbol{\beta}}}}
+ \sim t_{n-p}
+$$
+
+- CI and T-test $H_0: L\boldsymbol{\beta} = 0$ vs  $H_1: L\boldsymbol{\beta} \neq 0$
+
+- F statistic follows F-distribution under $H_0$
+\[ F = \frac{MSR_2 - MSR_1}{MSE} \sim F_{p_2 - p_1,n-p_2}\]
+
+
+### Linearity
+
+We assess linearity in a residual analysis
+
+```{r}
+plot(mod1, which = 1)
+```
+
+The assumption of linearity is met.
+
+### Normality
+
+```{r}
+plot(mod1, which = 2)
+```
+
+The QQ-plot does not show large deviations from normality.
+
+### Homoscedasticity: equality of the variance
+
+We can again use the residual plot for assessing this assumption or the plot
+were we plot the square root of the standardized residuals in function of
+the fit.
+
+```{r}
+plot(mod1, which = 1)
+plot(mod1, which = 3)
+```
+
+We see that the spread of the majority of the residuals is more or less similar.
+As such, we may assume homoscedasticity of the data.
+
+
+
+## Inference
+
+We first do an omnibus test to assess is there is an effect of the log10 concentration on the velocity.
+
+```{r}
+mod0 <- lm(rate ~ state, data = Puromycin)
+anova(mod0, mod1)
+```
+
+Next, we assess the interaction.
+
+```{r}
+anova(mod1)
+```
+
+We cannot remove the interaction of the model.
+
+Hence, we cannot study the effect of the concentration without accounting for the treatment and have to assess following research questions.
+
+1. the association between velocity and the concentration is significant in the untreated group
+
+$$
+H_0: \beta_c = 0 \text{ vs } H_1: \beta_c \neq 0
+$$
+
+2. the association between velocity and the concentration is significant in the treated group
+
+$$
+H_0: \beta_c + \beta_{c:s}= 0 \text{ vs } H_1: \beta_c + \beta_{c:s}\neq 0
+$$
+
+3. the association between velocity and the concentration is different between treated and untreated group
+
+$$
+H_0: \beta_{c:s}= 0\text{ vs }H_1: \beta_{c:s}\neq 0
+$$
+
+We can assess all these hypotheses using multcomp while correcting for multiple testing.
+
+```{r}
+library(multcomp)
+mcp1 <- glht(mod1,
+  linfct = c(
+    "log10conc = 0",
+    "log10conc + log10conc:statetreated = 0",
+    "log10conc:statetreated = 0"
+  )
+)
+summary(mcp1)
+confint(mcp1)
+```
+
+
+## Conclusion
+
+There is an extremely significant effect of the substrate concentration on the reaction rate (p<<0.001).
+The effect of the substrate concentration on the reaction rate is extremely significant for reactions catalysed with untreated enzymes. A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average  `r round(confint(mcp1)$confint[1,1],1)` counts/min higher (95% CI [`r round(confint(mcp1)$confint[1,-1],1)`] counts/min) (p << 0.001).
+The effect of the substrate concentration on the reaction rate is extremely significant for reactions catalysed puromycin treated enzymes  (p << 0.001). A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average  `r round(confint(mcp1)$confint[2,1],1)` counts/min higher (95% CI [`r round(confint(mcp1)$confint[2,-1],1)`] counts/min).
+The effect of the substrate concentration on the reaction rate is very significantly higher for reactions catalysed with Puromycin treated enzymes than when catalysed with non-treated enzymes  (p = `r round(summary(mcp1)$test$pvalue[3],3)`). A reaction at a substrate concentration that is 10 times higher will have a reaction speed that is on average `r round(confint(mcp1)$confint[3,1],1)` counts/min higher for reactions that are catalysed with Puromycin treated enzymes than with untreated enzymes (95% CI [`r round(confint(mcp1)$confint[3,-1],1)`] counts/min).
+
+
+# Additional concepts
+
+## Interaction between two continuous predictors? 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(multcomp)
+library(GGally)
+library(car)
+prostate <- read_csv("https://raw.githubusercontent.com/statomics/sbc20/master/data/prostate.csv")
+prostate <- prostate %>%
+  mutate(svi = as.factor(svi))
+
+library(GGally)
+prostate %>%
+  dplyr::select(-pgg45)  %>%
+  ggpairs()
+lmVWS <- lm(lpsa~lcavol + lweight + svi, prostate)
+```
+
+$$
+Y_i = \beta_0 + \beta_v x_{iv} + \beta_w x_{iw} +\beta_s x_{is} + \beta_{vw} x_{iv}x_{iw} +\epsilon_i
+$$
+
+---
+
+Patient with a 1 unit difference in $X_v$ have an average difference in lpsa of
+
+$$
+\begin{array}{l}
+E(Y | X_v=x_v +1, X_w=x_w, X_s=x_s) - E(Y | X_v=x_v, X_w=x_w, X_s=x_s) \\
+\quad = \left[\beta_0 + \beta_v (x_{v}+1) + \beta_w x_w +\beta_s x_{s} + \beta_{vw} (x_{v}+1) x_w \right] - \left[\beta_0 + \beta_v x_{v} + \beta_w x_w  + \beta_s x_{s} + \beta_{vw} (x_{v}) x_w \right]\\
+\quad = \beta_v +  \beta_{vw} x_w
+ \end{array}
+ $$
+
+- Slope for lcavol depends on log weight of prostate!
+
+- We can do the same for the lweight. Slope for lweight depends on lcavol of prostate!
+
+---
+
+```{r}
+lmVWS_IntVW <- lm(
+  lpsa ~ lcavol +
+    lweight +
+    svi +
+    lcavol:lweight,
+  prostate)
+
+summary(lmVWS_IntVW)
+```
+
+```{r out.width='100%', fig.asp=.8, fig.align='center', message=FALSE,echo=FALSE}
+par(mfrow=c(1,2))
+library(plot3D)
+grid.lines = 10
+x<-prostate$lcavol
+y<-prostate$lweight
+z<-prostate$lpsa
+fit<-lm(z~x+y+svi,data=prostate)
+x.pred <- seq(min(x), max(x), length.out = grid.lines)
+y.pred <- seq(min(y), max(y), length.out = grid.lines)
+
+# fitted points for droplines to surface
+th=-25
+ph=5
+scatter3D(x, y, z, pch = 16,col=c("darkblue","red")[as.double(prostate$svi)], cex = .75,
+    theta = th, phi = ph, ticktype = "detailed",
+    xlab = "lcavol", ylab = "lweight", zlab = "lpsa",  
+   colvar=FALSE,bty = "g",main="Additive model")
+
+for (i in which(prostate$svi=="healthy"))
+lines3D(x=rep(prostate$lcavol[i],2),y=rep(prostate$lweight[i],2),z=c(prostate$lpsa[i],lmVWS$fit[i]),col=c("darkblue","red")[as.double(prostate$svi)[i]],add=TRUE,lty=2)
+
+z.pred3D <- outer(x.pred, y.pred, function(x,y) {lmVWS$coef[1]+lmVWS$coef[2]*x+lmVWS$coef[3]*y})
+x.pred3D <- outer(x.pred,y.pred,function(x,y) x)
+y.pred3D <- outer(x.pred,y.pred,function(x,y) y)
+surf3D(x.pred3D,y.pred3D,z.pred3D,col="blue",facets=NA,add=TRUE)
+
+
+scatter3D(x, y, z, pch = 16,col=c("darkblue","red")[as.double(prostate$svi)], cex = .75,
+    theta = th, phi = ph, ticktype = "detailed",
+    xlab = "lcavol", ylab = "lweight", zlab = "lpsa",  
+   colvar=FALSE,bty = "g",main="Model met lcavol:lweight interactie")
+
+for (i in which(prostate$svi=="healthy"))
+lines3D(x=rep(prostate$lcavol[i],2),y=rep(prostate$lweight[i],2),z=c(prostate$lpsa[i],lmVWS_IntVW$fit[i]),col=c("darkblue","red")[as.double(prostate$svi)[i]],add=TRUE,lty=2)
+
+z.pred3D <- outer(x.pred, y.pred, function(x,y) {lmVWS_IntVW$coef[1]+lmVWS_IntVW$coef[2]*x+lmVWS_IntVW$coef[3]*y+lmVWS_IntVW$coef[5]*x*y})
+x.pred3D <- outer(x.pred,y.pred,function(x,y) x)
+y.pred3D <- outer(x.pred,y.pred,function(x,y) y)
+surf3D(x.pred3D,y.pred3D,z.pred3D,col="blue",facets=NA,add=TRUE)
+```
+
+## Interaction between two factors? 
+
+```{r}
+kpna2 <- read_tsv("https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt")
+kpna2 <- kpna2 %>%
+  mutate(
+    grade = as.factor(grade),
+    node = as.factor(node),
+    node = fct_recode(node, Unaffected = "0", Removed = "1"),
+    log2gene = log2(gene)
+  )
+```
+
+```{r}
+ggplot(kpna2, aes(x = grade, y = gene, fill = node)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = position_jitterdodge(), shape = 21, size = 2) +
+  labs(
+    x = "Histologic grade", y = "KPNA2 expression",
+    fill = "Lymph node status"
+  ) +
+  ggtitle("KPNA2 gene expression in breast cancer patients")
+
+ggplot(kpna2, aes(x = grade, y = log2gene, fill = node)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = position_jitterdodge(), shape = 21, size = 2) +
+  labs(
+    x = "Histologic grade", y = "KPNA2 log2 expression",
+    fill = "Lymph node status"
+  ) +
+  ggtitle("KPNA2 gene expression in breast cancer patients")
+```
+
+```{r}
+fit <- lm(log2(gene) ~ grade * node, data = kpna2)
+ExploreModelMatrix::VisualizeDesign(kpna2, ~ grade * node)$plotlist[[1]]
+```
+
