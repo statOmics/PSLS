@@ -76,7 +76,7 @@ foster parent has an effect on the average length of the cuckoo eggs.
 
   `https://raw.githubusercontent.com/statOmics/PSLS21/data/Cuckoo.txt`
 
-<!-- - Solution: [Solution2](./07_2_cuckoo_sol.html) -->
+- Solution: [Solution2](./07_2_cuckoo_sol.html)
 
 ---
 
@@ -97,4 +97,4 @@ categories. To this end, we will use an ANOVA analysis.
 
   `https://raw.githubusercontent.com/statOmics/PSLS21/data/NHANES.csv`
 
-<!-- - Solution: [Solution3](./07_3_NHANES_sol.html) -->
+- Solution: [Solution3](./07_3_NHANES_sol.html)

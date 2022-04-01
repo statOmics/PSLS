@@ -124,6 +124,6 @@ In this exercise, you will learn how plots can help you to discover confounding 
 
   `https://raw.githubusercontent.com/statOmics/PSLS21/data/fev.txt`
 
-<!-- - Solution: [Solution4](./04_4_FV_sol.html) -->
+- Solution: [Solution4](./04_4_FEV_sol.html)
 
 <br/>

@@ -40,7 +40,7 @@ weight
 
 - Exercise: [Exercise1](./08_1_poison1.html)
 - Data path: "https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv"
-<!-- - Solution1: [Solution1](./08_1_poison1_sol.html) -->
+- Solution1: [Solution1](./08_1_poison1_sol.html)
 
 ---
 
@@ -55,7 +55,7 @@ weight of the fish, **and including an interaction between dose and weight.**
 
   `https://raw.githubusercontent.com/statOmics/PSLS21/data/poison.csv`
 
-<!-- - Solution2: [Solution2](./08_2_poison2_sol.html) -->
+- Solution2: [Solution2](./08_2_poison2_sol.html)
 
 ---
 
@@ -74,7 +74,7 @@ an interaction term between these two variables.
 
 - Exercise: [Exercise3](./08_3_puromycin.html)
 - Data path: Not required
-<!-- - Solution: [Solution3](./08_3_puromycin_sol.html) -->
+- Solution: [Solution3](./08_3_puromycin_sol.html)
 
 ---
 
@@ -96,7 +96,7 @@ not affected (0) or surgically removed (1).
 
   `https://raw.githubusercontent.com/statOmics/SGA21/master/data/kpna2.txt`
 
-<!-- - Solution: [Solution4](./08_4_kpna2_sol.html) -->
+- Solution: [Solution4](./08_4_kpna2_sol.html)
 
 ---
 
